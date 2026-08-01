@@ -7,6 +7,11 @@ import type { BrandIconName } from "@/lib/brand/icons";
 import { properties } from "@/lib/data/seed";
 import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
 import { micrositePath } from "@/lib/demand/travel-brief";
+import {
+  categoryCover,
+  guideCoverUrl,
+  mediaSrc,
+} from "@/lib/demand/guide-images";
 import type { CampaignInterest, CampaignPack } from "@/lib/demand/types";
 
 export const dynamic = "force-dynamic";
@@ -87,8 +92,17 @@ function sortUpcoming(packs: CampaignPack[]): CampaignPack[] {
 }
 
 function coverFor(pack: CampaignPack): string | null {
-  const photo = pack.properties[0]?.photos?.[0] || pack.properties[0]?.photo;
-  return photo || null;
+  const propertyPhoto =
+    pack.properties[0]?.photos?.[0] || pack.properties[0]?.photo || null;
+  return guideCoverUrl(
+    {
+      interest: pack.interest,
+      venueName: pack.venueName,
+      eventTitle: pack.eventTitle,
+      slug: pack.slug,
+    },
+    propertyPhoto,
+  );
 }
 
 function GuideCard({
@@ -112,7 +126,7 @@ function GuideCard({
           {cover ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={`${cover}?im_w=720`}
+              src={mediaSrc(cover, 720)}
               alt=""
               className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
             />
@@ -213,9 +227,8 @@ export default async function HomePage() {
               </a>
               <Link
                 href="/santiago"
-                className="inline-flex items-center gap-2 rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
+                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
               >
-                <BrandIcon name="bed" size={18} />
                 Alojamientos
               </Link>
             </div>
@@ -265,20 +278,33 @@ export default async function HomePage() {
             Por categoría
           </h2>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {categories.map((cat) => (
-              <a
-                key={cat.id}
-                href={`#cat-${cat.id}`}
-                className="group flex flex-col items-center gap-3 rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-panel)]/80 px-3 py-5 text-center transition hover:-translate-y-0.5 hover:border-[var(--ms-olive)]/45"
-              >
-                <BrandIcon name={cat.icon} size={34} />
-                <span className="text-sm font-semibold">{cat.label}</span>
-                <span className="text-[11px] text-[var(--ms-muted)]">
-                  {cat.packs.length}{" "}
-                  {cat.packs.length === 1 ? "guía" : "guías"}
-                </span>
-              </a>
-            ))}
+            {categories.map((cat) => {
+              const thumb = categoryCover(cat.id);
+              return (
+                <a
+                  key={cat.id}
+                  href={`#cat-${cat.id}`}
+                  className="group relative flex flex-col items-center gap-3 overflow-hidden rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-panel)]/80 px-3 py-5 text-center transition hover:-translate-y-0.5 hover:border-[var(--ms-olive)]/45"
+                >
+                  {thumb ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={thumb}
+                      alt=""
+                      className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.14] transition duration-500 group-hover:scale-105 group-hover:opacity-20"
+                    />
+                  ) : null}
+                  <BrandIcon name={cat.icon} size={48} className="relative" />
+                  <span className="relative text-sm font-semibold">
+                    {cat.label}
+                  </span>
+                  <span className="relative text-[11px] text-[var(--ms-muted)]">
+                    {cat.packs.length}{" "}
+                    {cat.packs.length === 1 ? "guía" : "guías"}
+                  </span>
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -335,7 +361,7 @@ export default async function HomePage() {
           >
             <div className="mx-auto max-w-6xl">
               <div className="flex items-center gap-3">
-                <BrandIcon name={cat.icon} size={32} />
+                <BrandIcon name={cat.icon} size={44} />
                 <h2 className="ms-editorial text-2xl md:text-3xl">
                   {cat.label}
                 </h2>

@@ -46,3 +46,9 @@ data/ingested/ad-metrics.json
 data/ingested/campaigns-approved.json
 
 .vercel-deploy-payload.json
+
+# backup local de iconos sin normalizar
+/public/brand/icons-raw/
+
+# videos editoriales pesados (local)
+/public/guides/**/*.mp4

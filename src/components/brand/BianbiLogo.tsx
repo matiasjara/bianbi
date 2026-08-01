@@ -17,12 +17,12 @@ type Props = {
 
 const ASSETS = {
   logo: {
-    onLight: { src: "/brand/logo-dark.png", w: 598, h: 108 },
-    onDark: { src: "/brand/logo.png", w: 598, h: 108 },
+    onLight: { src: "/brand/logo-dark.png", w: 830, h: 135 },
+    onDark: { src: "/brand/logo.png", w: 830, h: 135 },
   },
   mark: {
-    onLight: { src: "/brand/iso.png", w: 324, h: 337 },
-    onDark: { src: "/brand/iso-light.png", w: 324, h: 337 },
+    onLight: { src: "/brand/iso.png", w: 377, h: 377 },
+    onDark: { src: "/brand/iso-light.png", w: 377, h: 377 },
   },
 } as const;
 

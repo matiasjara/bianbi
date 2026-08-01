@@ -6,6 +6,10 @@ import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
 import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import type { BrandIconName } from "@/lib/brand/icons";
+import {
+  mediaSrc,
+  resolveGuideImages,
+} from "@/lib/demand/guide-images";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 
 const AIRBNB_BTN =
@@ -13,8 +17,8 @@ const AIRBNB_BTN =
 
 function IconBadge({ name }: { name: BrandIconName }) {
   return (
-    <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--ms-line)] bg-white/80">
-      <BrandIcon name={name} size={26} />
+    <span className="inline-flex size-14 shrink-0 items-center justify-center rounded-2xl border border-[var(--ms-line)] bg-white/80">
+      <BrandIcon name={name} size={36} />
     </span>
   );
 }
@@ -115,9 +119,21 @@ export function MicrositeInfographic({
   ];
 
   const nearest = props[0];
-  const heroPhoto =
+  const editorial = resolveGuideImages({
+    interest: m.interest,
+    venueName: m.venueName,
+    eventTitle: m.eventTitle,
+    slug,
+  });
+  const propertyPhoto =
     nearest?.photos?.[0] || nearest?.photo || props[1]?.photo || "";
-  const sidePhoto = props[1]?.photos?.[0] || props[1]?.photo || heroPhoto;
+  const heroPhoto = editorial.cover || propertyPhoto;
+  const sidePhoto =
+    editorial.support[0] ||
+    props[1]?.photos?.[0] ||
+    props[1]?.photo ||
+    editorial.support[1] ||
+    (heroPhoto !== propertyPhoto ? propertyPhoto : "");
 
   const nav = [
     ["must", ui.navMust],
@@ -186,7 +202,7 @@ export function MicrositeInfographic({
                 href="#alojar"
                 className="inline-flex items-center gap-2 rounded-lg bg-[var(--ms-ink)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black"
               >
-                <BrandIcon name="bed" size={16} />
+                <BrandIcon name="bed" size={22} tone="onDark" />
                 {ui.ctaStay}
               </a>
               <a
@@ -211,14 +227,16 @@ export function MicrositeInfographic({
                 <span className="ms-tape ms-tape-olive -top-1 right-8" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={`${heroPhoto}?im_w=720`}
-                  alt={nearest?.neighborhood ?? m.venueName}
+                  src={mediaSrc(heroPhoto, 720)}
+                  alt={m.venueName}
                   className="aspect-[4/5] w-full object-cover"
                 />
                 <p className="mt-2 px-1 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ms-muted)]">
-                  {nearest
-                    ? `${nearest.neighborhood} · ${nearest.walkingMinutes} ${ui.minWalk}`
-                    : m.venueName}
+                  {editorial.cover
+                    ? m.venueName
+                    : nearest
+                      ? `${nearest.neighborhood} · ${nearest.walkingMinutes} ${ui.minWalk}`
+                      : m.venueName}
                 </p>
               </div>
             ) : null}
@@ -228,7 +246,7 @@ export function MicrositeInfographic({
                 <span className="ms-tape ms-tape-terracotta -top-2 left-8" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={`${sidePhoto}?im_w=480`}
+                  src={mediaSrc(sidePhoto, 480)}
                   alt=""
                   className="aspect-square w-full object-cover"
                 />
@@ -287,7 +305,7 @@ export function MicrositeInfographic({
                 i % 2 === 0 ? "md:-rotate-1" : "md:rotate-1"
               }`}
             >
-              <BrandIcon name={item.icon} size={26} />
+              <BrandIcon name={item.icon} size={34} />
               <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-muted)]">
                 {item.label}
               </p>
@@ -529,7 +547,7 @@ export function MicrositeInfographic({
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ms-muted)]">
                     <span className="inline-flex items-center gap-1 text-[var(--ms-olive)]">
-                      <BrandIcon name="pin" size={14} />
+                      <BrandIcon name="pin" size={18} />
                       {prop.walkingMinutes} {ui.minWalk}
                     </span>
                     <span aria-hidden>·</span>
