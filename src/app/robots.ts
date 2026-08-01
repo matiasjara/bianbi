@@ -4,7 +4,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/", "/santiago", "/g/", "/c/"],
+      allow: ["/", "/santiago", "/g/", "/c/", "/api/share-card/"],
       disallow: [
         "/login",
         "/propiedades",
@@ -12,7 +12,8 @@ export default function robots(): MetadataRoute.Robots {
         "/campanas",
         "/base-datos",
         "/fuentes",
-        "/api/",
+        "/api/robots/",
+        "/api/campaigns/",
       ],
     },
     sitemap: "https://bianbi.cl/sitemap.xml",

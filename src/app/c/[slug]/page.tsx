@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
+import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { localizeLanding } from "@/lib/i18n/landing";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
@@ -110,6 +111,9 @@ export default async function CampaignLandingPage({
       >
         <LandingLangSwitch basePath={`/c/${slug}`} locale={locale} />
         <div className="mx-auto flex min-h-[78vh] max-w-4xl flex-col justify-end px-5 pb-14 pt-24">
+          <div className="animate-rise mb-4 inline-flex rounded-xl bg-[var(--brand-crema,#F4F0E8)]/95 shadow-sm">
+            <BianbiLogo variant="logo" href="/" />
+          </div>
           <p className="animate-rise mb-3 text-xs font-medium uppercase tracking-[0.2em] text-white/75">
             {pack.venueName} · {pack.eventDates}
           </p>

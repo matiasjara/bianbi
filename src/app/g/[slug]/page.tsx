@@ -34,6 +34,8 @@ export async function generateMetadata({
   const locale = await resolveMicrositeLocale(sp.lang);
   const L = localizeMicrosite(pack, locale);
   const m = L.content;
+  const ogImage = `/api/share-card/${encodeURIComponent(slug)}?lang=${locale}&format=og`;
+
   return {
     title: m.seoTitle,
     description: m.seoDescription,
@@ -41,11 +43,13 @@ export async function generateMetadata({
       title: m.seoTitle,
       description: m.seoDescription,
       type: "article",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: m.guideTitle }],
     },
     twitter: {
       card: "summary_large_image",
       title: m.seoTitle,
       description: m.seoDescription,
+      images: [ogImage],
     },
     alternates: {
       canonical: `/g/${slug}`,

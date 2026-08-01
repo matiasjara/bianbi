@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { Syne, Manrope } from "next/font/google";
+import { Fraunces, Manrope, Syne } from "next/font/google";
 import "./globals.css";
 
+/** Tipografía principal — geométrica (logo, nav, datos) */
 const display = Syne({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
+});
+
+/** Tipografía secundaria — editorial serif (titulares, relatos) */
+const editorial = Fraunces({
+  variable: "--font-editorial",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const body = Manrope({
@@ -29,7 +38,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${display.variable} ${body.variable} h-full`}>
+    <html
+      lang="es"
+      className={`${display.variable} ${editorial.variable} ${body.variable} h-full`}
+    >
       <body className="min-h-full antialiased">{children}</body>
     </html>
   );

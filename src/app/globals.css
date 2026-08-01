@@ -1,22 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #e8eef3;
-  --bg-deep: #d9e3ec;
-  --panel: #f7fafc;
-  --panel-2: #e2ebf2;
-  --ink: #15202b;
-  --muted: #5a6b7a;
-  --line: #c5d2de;
-  --accent: #0b6e4f;
-  --accent-soft: #d3efe4;
-  --accent-ink: #084c37;
-  --signal: #1b4d89;
-  --signal-soft: #d7e4f4;
-  --good: #1f6b45;
-  --good-soft: #d7ecdf;
-  --warn: #8a5a10;
-  --warn-soft: #f3e7c8;
+  /* Manual Bianbi — paleta oficial */
+  --brand-carbon: #161a22;
+  --brand-crema: #f4f0e8;
+  --brand-arena: #d9d4ca;
+  --brand-terracota: #d96a4b;
+  --brand-oliva: #7b8b3e;
+  --brand-azul-agua: #7fb7c5;
+  --brand-mostaza: #e1b53a;
+  --brand-coral: #ef7a82;
+
+  /* Aliases de uso */
+  --brand-ink: var(--brand-carbon);
+  --brand-paper: var(--brand-crema);
+  --brand-mist: var(--brand-arena);
+  --brand-terracotta: var(--brand-terracota);
+  --brand-olive: var(--brand-oliva);
+  --brand-teal: var(--brand-azul-agua);
+  --brand-mustard: var(--brand-mostaza);
+
+  --bg: var(--brand-crema);
+  --bg-deep: color-mix(in oklab, var(--brand-arena) 55%, var(--brand-crema));
+  --panel: #faf7f1;
+  --panel-2: var(--brand-arena);
+  --ink: var(--brand-carbon);
+  --muted: color-mix(in oklab, var(--brand-carbon) 55%, var(--brand-arena));
+  --line: var(--brand-arena);
+  --accent: var(--brand-oliva);
+  --accent-soft: color-mix(in oklab, var(--brand-oliva) 18%, white);
+  --accent-ink: color-mix(in oklab, var(--brand-oliva) 70%, black);
+  --signal: var(--brand-azul-agua);
+  --signal-soft: color-mix(in oklab, var(--brand-azul-agua) 22%, white);
+  --good: var(--brand-oliva);
+  --good-soft: color-mix(in oklab, var(--brand-oliva) 18%, white);
+  --warn: var(--brand-mostaza);
+  --warn-soft: color-mix(in oklab, var(--brand-mostaza) 22%, white);
   --background: var(--bg);
   --foreground: var(--ink);
 }
@@ -26,6 +45,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
+  --font-editorial: var(--font-editorial);
 }
 
 * {
@@ -38,8 +58,9 @@ html {
 
 body {
   background:
-    radial-gradient(circle at 10% -8%, rgba(11, 110, 79, 0.14), transparent 40%),
-    radial-gradient(circle at 92% 4%, rgba(27, 77, 137, 0.12), transparent 38%),
+    radial-gradient(circle at 12% -6%, rgba(127, 183, 197, 0.22), transparent 42%),
+    radial-gradient(circle at 90% 2%, rgba(225, 181, 58, 0.16), transparent 36%),
+    radial-gradient(circle at 50% 100%, rgba(123, 139, 62, 0.1), transparent 48%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
   color: var(--ink);
   font-family: var(--font-body), sans-serif;
@@ -47,8 +68,8 @@ body {
 }
 
 ::selection {
-  background: var(--accent-soft);
-  color: var(--accent-ink);
+  background: color-mix(in srgb, var(--accent) 28%, white);
+  color: var(--ink);
 }
 
 .metric-block {
@@ -118,35 +139,139 @@ body {
   animation: story-fill 4.2s linear forwards;
 }
 
-/* —— Micrositio infográfico —— */
+/* —— Micrositio / público (línea gráfica Bianbi) —— */
 .ms-root {
-  --ms-ink: #101820;
-  --ms-muted: #5c6b78;
-  --ms-line: #b8c8d4;
-  --ms-paper: #eef3f7;
-  --ms-panel: #f8fbfd;
-  --ms-accent: #0b6e4f;
-  --ms-accent-2: #1b4d89;
-  --ms-warm: #d97706;
+  --ms-ink: var(--brand-carbon);
+  --ms-muted: color-mix(in oklab, var(--brand-carbon) 55%, var(--brand-arena));
+  --ms-line: var(--brand-arena);
+  --ms-paper: var(--brand-crema);
+  --ms-panel: #faf7f1;
+  --ms-teal: var(--brand-azul-agua);
+  --ms-pink: var(--brand-coral);
+  --ms-gold: var(--brand-mostaza);
+  --ms-olive: var(--brand-oliva);
+  --ms-terracotta: var(--brand-terracota);
+  --ms-sky: color-mix(in oklab, var(--brand-azul-agua) 55%, white);
+  --ms-accent: var(--ms-olive);
+  --ms-accent-2: var(--ms-terracotta);
+  --ms-warm: var(--ms-gold);
   --ms-airbnb: #ff5a5f;
-  background:
-    radial-gradient(ellipse 80% 50% at 0% 0%, rgba(11, 110, 79, 0.1), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 100% 8%, rgba(27, 77, 137, 0.1), transparent 50%),
-    linear-gradient(180deg, #e8f0f5 0%, var(--ms-paper) 35%, #e4ecf2 100%);
+  position: relative;
   color: var(--ms-ink);
+  background-color: var(--ms-paper);
+  background-image:
+    radial-gradient(rgba(28, 28, 28, 0.055) 0.65px, transparent 0.65px),
+    radial-gradient(rgba(28, 28, 28, 0.035) 0.8px, transparent 0.8px);
+  background-size: 3px 3px, 11px 11px;
+  background-position: 0 0, 4px 7px;
 }
 
-.ms-dotgrid {
-  background-image: radial-gradient(circle, color-mix(in oklab, var(--ms-line) 70%, transparent) 1px, transparent 1px);
-  background-size: 18px 18px;
+.ms-root::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.4;
+  background:
+    radial-gradient(ellipse 50% 40% at 92% 0%, rgba(107, 138, 144, 0.16), transparent 55%),
+    radial-gradient(ellipse 45% 35% at 0% 28%, rgba(194, 90, 58, 0.1), transparent 50%),
+    radial-gradient(ellipse 40% 30% at 70% 90%, rgba(125, 139, 78, 0.1), transparent 50%);
 }
 
-.ms-connector {
-  stroke: var(--ms-accent);
-  stroke-width: 2;
-  stroke-dasharray: 6 8;
-  fill: none;
+.ms-root > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Titulares / relatos — tipografía secundaria editorial */
+.ms-editorial {
+  font-family: var(--font-editorial), Georgia, "Times New Roman", serif;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+/* Logo / nav / datos — tipografía principal geométrica */
+.ms-wordmark {
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Área de seguridad aprox. del logo (alto de la B) */
+.ms-logo-safe {
+  padding: 0.35em;
+}
+
+.ms-tape-coral {
+  background: color-mix(in oklab, var(--ms-pink) 70%, white);
+  transform: rotate(-12deg);
+}
+
+.ms-tape-olive {
+  background: color-mix(in oklab, var(--ms-olive) 65%, white);
+  transform: rotate(9deg);
+}
+
+.ms-tape-terracotta {
+  background: color-mix(in oklab, var(--ms-terracotta) 68%, white);
+  transform: rotate(-7deg);
+}
+
+.ms-tilt-l {
+  transform: rotate(-2.5deg);
+}
+
+.ms-tilt-r {
+  transform: rotate(2.8deg);
+}
+
+@media (max-width: 767px) {
+  .ms-tilt-l,
+  .ms-tilt-r {
+    transform: none;
+  }
+}
+
+.ms-polaroid {
+  background: #fff;
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  box-shadow: 0 18px 40px -28px rgba(20, 20, 20, 0.55);
+  padding: 0.55rem 0.55rem 1.35rem;
+}
+
+.ms-tape {
+  position: absolute;
+  z-index: 3;
+  height: 1.15rem;
+  width: 3.4rem;
+  opacity: 0.78;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.ms-tape-pink {
+  background: color-mix(in oklab, var(--ms-pink) 72%, white);
+  transform: rotate(-12deg);
+}
+
+.ms-tape-teal {
+  background: color-mix(in oklab, var(--ms-teal) 68%, white);
+  transform: rotate(8deg);
+}
+
+.ms-tape-gold {
+  background: color-mix(in oklab, var(--ms-gold) 70%, white);
+  transform: rotate(-6deg);
+}
+
+.ms-stroke {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(0.2px);
   opacity: 0.55;
+  pointer-events: none;
 }
 
 @keyframes ms-dash {
@@ -155,28 +280,22 @@ body {
   }
 }
 
+.ms-connector {
+  stroke: var(--ms-ink);
+  stroke-width: 1.75;
+  stroke-dasharray: 5 7;
+  fill: none;
+  opacity: 0.45;
+}
+
 .ms-connector-live {
   animation: ms-dash 2.8s linear infinite;
-}
-
-@keyframes ms-draw {
-  from {
-    stroke-dashoffset: 240;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.ms-draw-line {
-  stroke-dasharray: 240;
-  animation: ms-draw 1.4s ease-out forwards;
 }
 
 @keyframes ms-node-in {
   from {
     opacity: 0;
-    transform: scale(0.85) translateY(8px);
+    transform: scale(0.9) translateY(10px);
   }
   to {
     opacity: 1;
@@ -192,8 +311,6 @@ body {
 .ms-node:nth-child(2) { animation-delay: 0.12s; }
 .ms-node:nth-child(3) { animation-delay: 0.19s; }
 .ms-node:nth-child(4) { animation-delay: 0.26s; }
-.ms-node:nth-child(5) { animation-delay: 0.33s; }
-.ms-node:nth-child(6) { animation-delay: 0.4s; }
 
 @keyframes ms-rise {
   from {
@@ -224,12 +341,6 @@ body {
   left: 19px;
   top: 8px;
   bottom: 8px;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    var(--ms-accent),
-    color-mix(in oklab, var(--ms-accent-2) 70%, var(--ms-accent)),
-    transparent
-  );
-  opacity: 0.35;
+  width: 0;
+  border-left: 2px dashed color-mix(in oklab, var(--ms-ink) 28%, transparent);
 }

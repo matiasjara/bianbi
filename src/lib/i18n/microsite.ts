@@ -8,6 +8,10 @@ type Ui = {
   shareLabel: string;
   copyLabel: string;
   copiedLabel: string;
+  shareImageLabel: string;
+  downloadImageLabel: string;
+  sharingLabel: string;
+  shareHint: string;
   snapshotKicker: string;
   snapshotTitle: string;
   when: string;
@@ -55,6 +59,10 @@ const UI: Record<Locale, Ui> = {
     shareLabel: "Compartir",
     copyLabel: "Copiar link",
     copiedLabel: "Link copiado",
+    shareImageLabel: "Compartir guía",
+    downloadImageLabel: "Guardar imagen",
+    sharingLabel: "Preparando…",
+    shareHint: "Se comparte una mini-infografía + el link",
     snapshotKicker: "Snapshot",
     snapshotTitle: "Todo lo clave, de un vistazo",
     when: "Cuándo",
@@ -103,6 +111,10 @@ const UI: Record<Locale, Ui> = {
     shareLabel: "Share",
     copyLabel: "Copy link",
     copiedLabel: "Link copied",
+    shareImageLabel: "Share guide",
+    downloadImageLabel: "Save image",
+    sharingLabel: "Preparing…",
+    shareHint: "Shares a mini-infographic + the link",
     snapshotKicker: "Snapshot",
     snapshotTitle: "The essentials at a glance",
     when: "When",
@@ -151,6 +163,10 @@ const UI: Record<Locale, Ui> = {
     shareLabel: "Compartilhar",
     copyLabel: "Copiar link",
     copiedLabel: "Link copiado",
+    shareImageLabel: "Compartilhar guia",
+    downloadImageLabel: "Salvar imagem",
+    sharingLabel: "Preparando…",
+    shareHint: "Compartilha um mini-infográfico + o link",
     snapshotKicker: "Snapshot",
     snapshotTitle: "O essencial de um olhar",
     when: "Quando",
