@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LoginForm } from "@/app/login/login-form";
 
 export const metadata: Metadata = {
@@ -24,12 +25,20 @@ export default async function LoginPage({
         className="pointer-events-none absolute inset-0 grid-fade opacity-40"
       />
       <div className="relative w-full max-w-md animate-[rise-in_0.5s_ease-out]">
-        <h1 className="font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--ink)] sm:text-5xl">
+        <Link
+          href="/"
+          className="font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--ink)] sm:text-5xl"
+        >
           Bianbi
-        </h1>
+        </Link>
         <div className="surface mt-8 rounded-2xl p-6 shadow-sm">
           <LoginForm nextPath={nextPath} />
         </div>
+        <p className="mt-6 text-center text-xs text-[var(--muted)]">
+          <Link href="/" className="underline-offset-4 hover:underline">
+            Volver al inicio
+          </Link>
+        </p>
       </div>
     </main>
   );

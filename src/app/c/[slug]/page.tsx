@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
+import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { localizeLanding } from "@/lib/i18n/landing";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
 import { loadCampaignPackBySlug } from "@/lib/demand/load-campaign-packs";
@@ -301,16 +302,9 @@ export default async function CampaignLandingPage({
         </div>
       </section>
 
-      <footer className="bg-[#1a1a1a] px-5 py-10 text-center text-xs leading-relaxed text-white/45">
-        <p
-          className="font-[family-name:var(--font-display)] text-[11px] font-semibold tracking-[0.28em] text-white/30"
-          aria-label="Bianbi"
-        >
-          BIANBI
-        </p>
-        <p className="mt-6">{ui.footerStay(pack.eventDates)}</p>
-        <p className="mx-auto mt-3 max-w-2xl">{ui.footerDisclaimer}</p>
-      </footer>
+      <PublicSiteFooter
+        note={`${ui.footerStay(pack.eventDates)} ${ui.footerDisclaimer}`}
+      />
     </div>
   );
 }

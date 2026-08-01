@@ -3,6 +3,7 @@ import { cookies, headers } from "next/headers";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
+import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import {
   getCatalogAttractions,
   getCatalogProperties,
@@ -295,16 +296,9 @@ export default async function CatalogStayPage({ searchParams }: Props) {
         </div>
       </section>
 
-      <footer className="bg-[#1a1a1a] px-5 py-10 text-center text-xs leading-relaxed text-white/45">
-        <p
-          className="font-[family-name:var(--font-display)] text-[11px] font-semibold tracking-[0.28em] text-white/30"
-          aria-label="Bianbi"
-        >
-          BIANBI
-        </p>
-        <p className="mt-6">{ui.footerStay}</p>
-        <p className="mx-auto mt-3 max-w-2xl">{ui.footerDisclaimer}</p>
-      </footer>
+      <PublicSiteFooter
+        note={`${ui.footerStay} ${ui.footerDisclaimer}`}
+      />
     </div>
   );
 }
