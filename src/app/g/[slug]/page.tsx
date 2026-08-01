@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { MicrositeInfographic } from "@/components/campaigns/MicrositeInfographic";
-import { loadCampaignPackBySlug } from "@/lib/demand/load-campaign-packs";
+import { buildRotatingSequenceMap } from "@/lib/demand/guide-images";
+import {
+  loadAllCampaignPacks,
+  loadCampaignPackBySlug,
+} from "@/lib/demand/load-campaign-packs";
 import { localizeMicrosite } from "@/lib/i18n/microsite";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
 
@@ -76,6 +80,10 @@ export default async function MicrositeGuidePage({
   const L = localizeMicrosite(pack, locale);
   const m = L.content;
 
+  const allPacks = await loadAllCampaignPacks(28);
+  const photoSequence = buildRotatingSequenceMap(allPacks);
+  const photoSequenceIndex = photoSequence.get(slug);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -103,7 +111,11 @@ export default async function MicrositeGuidePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <MicrositeInfographic slug={slug} L={L} />
+      <MicrositeInfographic
+        slug={slug}
+        L={L}
+        photoSequenceIndex={photoSequenceIndex}
+      />
     </>
   );
 }

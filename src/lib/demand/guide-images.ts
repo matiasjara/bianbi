@@ -1,4 +1,4 @@
-import type { CampaignInterest } from "@/lib/demand/types";
+import type { CampaignInterest, CampaignPack } from "@/lib/demand/types";
 
 /**
  * Imágenes editoriales en /public/guides/
@@ -41,6 +41,14 @@ const ATLETISMO = [
   "/guides/deportes/atletismo-4.png",
   "/guides/deportes/atletismo-5.png",
 ] as const;
+
+/** Pools que rotan en orden 1→2→3… entre guías del mismo deporte */
+const ROTATING_POOLS = {
+  hockey: HOCKEY,
+  atletismo: ATLETISMO,
+} as const;
+
+type RotatingPoolKey = keyof typeof ROTATING_POOLS;
 
 const DEPORTES = [
   ...ATLETISMO,
@@ -108,14 +116,64 @@ function pickMany(
   return out;
 }
 
+function pickSequential(
+  pool: readonly string[],
+  index: number,
+  count = 1,
+  exclude: string[] = [],
+): string[] {
+  if (!pool.length) return [];
+  const ex = new Set(exclude);
+  const out: string[] = [];
+  for (let i = 0; i < pool.length * 2 && out.length < count; i += 1) {
+    const item = pool[(index + i) % pool.length]!;
+    if (!ex.has(item) && !out.includes(item)) out.push(item);
+  }
+  return out;
+}
+
+function rotatingPoolKey(title: string, venue = ""): RotatingPoolKey | null {
+  const t = `${title} ${venue}`.toLowerCase();
+  if (/hockey|fehoch|pat[ií]n/.test(t)) return "hockey";
+  if (/atletismo|marat[oó]n|running|track|media marat[oó]n|10k|21k|42k/.test(t))
+    return "atletismo";
+  return null;
+}
+
+/** Índice estable 0,1,2… por deporte (fecha + slug) para rotar fotos sin repetir tanto */
+export function buildRotatingSequenceMap(
+  packs: CampaignPack[],
+): Map<string, number> {
+  const map = new Map<string, number>();
+  const byPool = new Map<RotatingPoolKey, CampaignPack[]>();
+
+  for (const pack of packs) {
+    const key = rotatingPoolKey(pack.eventTitle, pack.venueName);
+    if (!key) continue;
+    const list = byPool.get(key) ?? [];
+    list.push(pack);
+    byPool.set(key, list);
+  }
+
+  for (const list of byPool.values()) {
+    list.sort(
+      (a, b) =>
+        a.eventStartsOn.localeCompare(b.eventStartsOn) ||
+        a.slug.localeCompare(b.slug),
+    );
+    list.forEach((pack, index) => map.set(pack.slug, index));
+  }
+
+  return map;
+}
+
 function sportPool(title: string, venue = ""): readonly string[] | null {
   const t = `${title} ${venue}`.toLowerCase();
-  if (/hockey|fehoch|pat[ií]n/.test(t)) return HOCKEY;
+  const key = rotatingPoolKey(title, venue);
+  if (key) return ROTATING_POOLS[key];
   if (/rugby/.test(t)) return ["/guides/deportes/rugby.png"];
   if (/volley|vóleibol|voleibol/.test(t))
     return ["/guides/deportes/volleyball.png"];
-  if (/atletismo|marat[oó]n|running|track|media marat[oó]n|10k|21k|42k/.test(t))
-    return ATLETISMO;
   if (/f[uú]tbol|soccer|clasico|clásico|udechile|colo-colo|uc\b/.test(t))
     return FUTBOL;
   return null;
@@ -160,6 +218,8 @@ export function resolveGuideImages(input: {
   venueName?: string;
   eventTitle?: string;
   slug?: string;
+  /** Posición en la cola del deporte (0 = foto 1, 1 = foto 2…) */
+  sequenceIndex?: number;
 }): GuideImageSet {
   const seed = input.slug || input.eventTitle || input.venueName || input.interest;
   const title = input.eventTitle || "";
@@ -178,11 +238,28 @@ export function resolveGuideImages(input: {
   const pool =
     venueSpecific || sportSpecific || interestPool(input.interest);
 
-  const cover = pickOne(pool, seed);
+  const rotateKey = rotatingPoolKey(title, venue);
+  const useSequential =
+    input.sequenceIndex != null &&
+    rotateKey != null &&
+    pool === ROTATING_POOLS[rotateKey];
+
+  let cover: string | null;
+  let support: string[];
+
+  if (useSequential) {
+    const idx = input.sequenceIndex! % pool.length;
+    cover = pool[idx] ?? null;
+    support = pickSequential(pool, idx + 1, 2, cover ? [cover] : []);
+  } else {
+    cover = pickOne(pool, seed);
+    support = pickMany(pool, `${seed}-b`, 2, cover ? [cover] : []);
+  }
+
   const localFlavor = [...BARRIOS, ...GASTRONOMIA];
-  const support = [
-    ...pickMany(pool, `${seed}-b`, 2, cover ? [cover] : []),
-    ...pickMany(localFlavor, `${seed}-c`, 2, cover ? [cover] : []),
+  support = [
+    ...support,
+    ...pickMany(localFlavor, `${seed}-c`, 2, cover ? [cover, ...support] : support),
   ].filter((v, i, arr) => arr.indexOf(v) === i);
 
   return { cover, support };
@@ -195,6 +272,7 @@ export function guideCoverUrl(
     venueName?: string;
     eventTitle?: string;
     slug?: string;
+    sequenceIndex?: number;
   },
   propertyPhoto?: string | null,
 ): string | null {

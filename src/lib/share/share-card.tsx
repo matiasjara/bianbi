@@ -15,6 +15,8 @@ const TERRACOTTA = "#D96A4B";
 const TEAL = "#7FB7C5";
 const MUSTARD = "#E1B53A";
 
+const FLEX = { display: "flex" } as const;
+
 function truncate(s: string, n: number) {
   const t = s.trim();
   if (t.length <= n) return t;
@@ -44,20 +46,20 @@ export async function renderShareCard(
     (
       <div
         style={{
+          ...FLEX,
           width: "100%",
           height: "100%",
-          display: "flex",
           flexDirection: "column",
           backgroundColor: PAPER,
           color: INK,
-          padding: isStory ? "72px 64px" : "48px 56px",
           fontFamily: "system-ui, sans-serif",
           position: "relative",
         }}
       >
-        {/* acentos */}
+        {/* acentos decorativos */}
         <div
           style={{
+            ...FLEX,
             position: "absolute",
             top: 40,
             right: -40,
@@ -65,12 +67,12 @@ export async function renderShareCard(
             height: 90,
             backgroundColor: TEAL,
             opacity: 0.22,
-            transform: "rotate(-8deg)",
             borderRadius: 999,
           }}
         />
         <div
           style={{
+            ...FLEX,
             position: "absolute",
             bottom: isStory ? 220 : 40,
             left: -50,
@@ -84,197 +86,215 @@ export async function renderShareCard(
 
         <div
           style={{
-            display: "flex",
+            ...FLEX,
             flexDirection: "column",
-            gap: 10,
-            marginBottom: isStory ? 36 : 20,
+            flex: 1,
+            padding: isStory ? "72px 64px" : "48px 56px",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={logoSrc}
-            alt="Bianbi"
-            width={isStory ? 360 : 280}
-            height={isStory ? 72 : 56}
-            style={{ objectFit: "contain", objectPosition: "left" }}
-          />
           <div
             style={{
-              fontSize: 18,
-              letterSpacing: "0.16em",
+              ...FLEX,
+              flexDirection: "column",
+              gap: 10,
+              marginBottom: isStory ? 36 : 20,
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoSrc}
+              alt="Bianbi"
+              width={isStory ? 360 : 280}
+              height={isStory ? 72 : 56}
+              style={{ objectFit: "contain", objectPosition: "left" }}
+            />
+            <div
+              style={{
+                ...FLEX,
+                fontSize: 18,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: MUTED,
+              }}
+            >
+              {ui.productLabel}
+            </div>
+          </div>
+
+          <div
+            style={{
+              ...FLEX,
+              fontSize: 22,
+              fontWeight: 700,
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
+              color: TERRACOTTA,
+              marginBottom: 16,
+            }}
+          >
+            {m.interestLabel} · {m.eventDates}
+          </div>
+
+          <div
+            style={{
+              ...FLEX,
+              fontSize: isStory ? 64 : 48,
+              fontWeight: 800,
+              lineHeight: 1.08,
+              letterSpacing: "-0.02em",
+              marginBottom: 20,
+              maxWidth: isStory ? 920 : 1000,
+            }}
+          >
+            {truncate(m.guideTitle, isStory ? 72 : 64)}
+          </div>
+
+          <div
+            style={{
+              ...FLEX,
+              alignItems: "center",
+              gap: 10,
+              fontSize: isStory ? 30 : 26,
               color: MUTED,
+              marginBottom: isStory ? 40 : 24,
             }}
           >
-            {ui.productLabel}
-          </div>
-        </div>
-
-        <div
-          style={{
-            fontSize: 22,
-            fontWeight: 700,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: TERRACOTTA,
-            marginBottom: 16,
-          }}
-        >
-          {m.interestLabel} · {m.eventDates}
-        </div>
-
-        <div
-          style={{
-            fontSize: isStory ? 64 : 48,
-            fontWeight: 800,
-            lineHeight: 1.08,
-            letterSpacing: "-0.02em",
-            marginBottom: 20,
-            maxWidth: isStory ? 920 : 1000,
-          }}
-        >
-          {truncate(m.guideTitle, isStory ? 72 : 64)}
-        </div>
-
-        <div
-          style={{
-            fontSize: isStory ? 30 : 26,
-            color: MUTED,
-            marginBottom: isStory ? 40 : 24,
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-          }}
-        >
-          <span style={{ color: OLIVE, fontWeight: 700 }}>●</span>
-          {m.venueName}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: isStory ? 18 : 12,
-            flexGrow: 1,
-          }}
-        >
-          {tips.map((tip, i) => (
-            <div
-              key={tip}
-              style={{
-                display: "flex",
-                gap: 16,
-                alignItems: "flex-start",
-                backgroundColor: "rgba(255,255,255,0.55)",
-                borderRadius: 18,
-                padding: isStory ? "18px 20px" : "12px 16px",
-                border: "1px solid rgba(28,28,28,0.08)",
-              }}
-            >
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 999,
-                  border: `2px solid ${INK}`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 16,
-                  fontWeight: 800,
-                  flexShrink: 0,
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </div>
-              <div
-                style={{
-                  fontSize: isStory ? 28 : 22,
-                  lineHeight: 1.3,
-                  paddingTop: 4,
-                }}
-              >
-                {truncate(tip, isStory ? 90 : 70)}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            marginTop: isStory ? 36 : 20,
-            gap: 24,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 6,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 18,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: MUTED,
-              }}
-            >
-              {ui.nearest}
-            </div>
-            <div
-              style={{
-                fontSize: isStory ? 44 : 36,
-                fontWeight: 800,
-                color: OLIVE,
-              }}
-            >
-              {nearest
-                ? `${nearest.walkingMinutes} ${ui.minWalk}`
-                : ui.nearbyOptions}
-            </div>
-            {nearest ? (
-              <div style={{ fontSize: 22, color: MUTED }}>
-                {nearest.neighborhood}
-              </div>
-            ) : null}
+            <span style={{ color: OLIVE, fontWeight: 700 }}>●</span>
+            <span>{m.venueName}</span>
           </div>
 
           <div
             style={{
-              display: "flex",
+              ...FLEX,
               flexDirection: "column",
+              gap: isStory ? 18 : 12,
+              flex: 1,
+            }}
+          >
+            {tips.map((tip, i) => (
+              <div
+                key={tip}
+                style={{
+                  ...FLEX,
+                  gap: 16,
+                  alignItems: "flex-start",
+                  backgroundColor: "rgba(255,255,255,0.55)",
+                  borderRadius: 18,
+                  padding: isStory ? "18px 20px" : "12px 16px",
+                  border: "1px solid rgba(28,28,28,0.08)",
+                }}
+              >
+                <div
+                  style={{
+                    ...FLEX,
+                    width: 40,
+                    height: 40,
+                    borderRadius: 999,
+                    border: `2px solid ${INK}`,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 16,
+                    fontWeight: 800,
+                    flexShrink: 0,
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div
+                  style={{
+                    ...FLEX,
+                    fontSize: isStory ? 28 : 22,
+                    lineHeight: 1.3,
+                    paddingTop: 4,
+                    flex: 1,
+                  }}
+                >
+                  {truncate(tip, isStory ? 90 : 70)}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div
+            style={{
+              ...FLEX,
+              justifyContent: "space-between",
               alignItems: "flex-end",
-              gap: 8,
+              marginTop: isStory ? 36 : 20,
+              gap: 24,
             }}
           >
             <div
               style={{
-                backgroundColor: MUSTARD,
-                color: INK,
-                fontSize: 18,
-                fontWeight: 700,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                padding: "10px 16px",
-                borderRadius: 999,
+                ...FLEX,
+                flexDirection: "column",
+                gap: 6,
               }}
             >
-              {ui.ctaStay}
+              <div
+                style={{
+                  ...FLEX,
+                  fontSize: 18,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: MUTED,
+                }}
+              >
+                {ui.nearest}
+              </div>
+              <div
+                style={{
+                  ...FLEX,
+                  fontSize: isStory ? 44 : 36,
+                  fontWeight: 800,
+                  color: OLIVE,
+                }}
+              >
+                {nearest
+                  ? `${nearest.walkingMinutes} ${ui.minWalk}`
+                  : ui.nearbyOptions}
+              </div>
+              {nearest ? (
+                <div style={{ ...FLEX, fontSize: 22, color: MUTED }}>
+                  {nearest.neighborhood}
+                </div>
+              ) : null}
             </div>
+
             <div
               style={{
-                fontSize: 20,
-                color: MUTED,
-                maxWidth: 420,
-                textAlign: "right",
+                ...FLEX,
+                flexDirection: "column",
+                alignItems: "flex-end",
+                gap: 8,
               }}
             >
-              bianbi.cl{opts.pagePath}
+              <div
+                style={{
+                  ...FLEX,
+                  backgroundColor: MUSTARD,
+                  color: INK,
+                  fontSize: 18,
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  padding: "10px 16px",
+                  borderRadius: 999,
+                }}
+              >
+                {ui.ctaStay}
+              </div>
+              <div
+                style={{
+                  ...FLEX,
+                  fontSize: 20,
+                  color: MUTED,
+                  maxWidth: 420,
+                  textAlign: "right",
+                }}
+              >
+                bianbi.cl{opts.pagePath}
+              </div>
             </div>
           </div>
         </div>

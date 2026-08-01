@@ -23,8 +23,13 @@ export async function GET(request: Request, { params }: Props) {
   }
 
   const L = localizeMicrosite(pack, locale);
-  return await renderShareCard(L, {
-    format,
-    pagePath: `/g/${slug}`,
-  });
+  try {
+    return await renderShareCard(L, {
+      format,
+      pagePath: `/g/${slug}`,
+    });
+  } catch (err) {
+    console.error("[share-card]", slug, err);
+    return new Response("Error al generar imagen", { status: 500 });
+  }
 }

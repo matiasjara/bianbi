@@ -8,6 +8,7 @@ import { properties } from "@/lib/data/seed";
 import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
 import { micrositePath } from "@/lib/demand/travel-brief";
 import {
+  buildRotatingSequenceMap,
   categoryCover,
   guideCoverUrl,
   mediaSrc,
@@ -91,7 +92,10 @@ function sortUpcoming(packs: CampaignPack[]): CampaignPack[] {
     });
 }
 
-function coverFor(pack: CampaignPack): string | null {
+function coverFor(
+  pack: CampaignPack,
+  sequenceMap: Map<string, number>,
+): string | null {
   const propertyPhoto =
     pack.properties[0]?.photos?.[0] || pack.properties[0]?.photo || null;
   return guideCoverUrl(
@@ -100,6 +104,7 @@ function coverFor(pack: CampaignPack): string | null {
       venueName: pack.venueName,
       eventTitle: pack.eventTitle,
       slug: pack.slug,
+      sequenceIndex: sequenceMap.get(pack.slug),
     },
     propertyPhoto,
   );
@@ -108,11 +113,13 @@ function coverFor(pack: CampaignPack): string | null {
 function GuideCard({
   pack,
   tilt,
+  sequenceMap,
 }: {
   pack: CampaignPack;
   tilt?: "l" | "r";
+  sequenceMap: Map<string, number>;
 }) {
-  const cover = coverFor(pack);
+  const cover = coverFor(pack, sequenceMap);
   const mins = pack.properties[0]?.walkingMinutes;
   return (
     <Link
@@ -158,10 +165,22 @@ function GuideCard({
 
 export default async function HomePage() {
   const packs = sortUpcoming(await loadAllCampaignPacks(28));
+  const photoSequence = buildRotatingSequenceMap(packs);
   const featured = packs.slice(0, 6);
-  const stayPhotos = properties
-    .filter((p) => p.isReal && p.photos[0])
-    .slice(0, 4);
+  const realProperties = properties.filter((p) => p.isReal && p.photos[0]);
+  const stayPhotos = (
+    ["prop-e801", "prop-z114", "prop-t112", "prop-z107"] as const
+  )
+    .map((id) => realProperties.find((p) => p.id === id))
+    .filter(Boolean) as typeof realProperties;
+
+  /** Polaroids del hero: depto + nieve + centro (no repetir el mismo edificio) */
+  const heroCollage = [
+    realProperties.find((p) => p.id === "prop-e801")?.photos[0] ??
+      realProperties[0]?.photos[0],
+    "/guides/nieve/ski.png",
+    "/guides/santiago/centro-historico.jpg",
+  ].filter(Boolean) as string[];
 
   const categories = CATEGORIES.map((cat) => ({
     ...cat,
@@ -235,7 +254,7 @@ export default async function HomePage() {
           </div>
 
           <div className="relative mx-auto h-[340px] w-full max-w-md md:h-[420px] md:max-w-none">
-            {stayPhotos.slice(0, 3).map((p, i) => {
+            {heroCollage.map((src, i) => {
               const poses = [
                 "left-2 top-4 w-[58%] rotate-[-4deg] z-10",
                 "right-0 top-16 w-[52%] rotate-[5deg] z-20",
@@ -243,7 +262,7 @@ export default async function HomePage() {
               ];
               return (
                 <div
-                  key={p.id}
+                  key={src}
                   className={`ms-polaroid absolute ${poses[i]}`}
                 >
                   <span
@@ -257,7 +276,7 @@ export default async function HomePage() {
                   />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={`${p.photos[0]}?im_w=720`}
+                    src={mediaSrc(src, 720)}
                     alt=""
                     className="aspect-[4/5] w-full object-cover"
                   />
@@ -344,6 +363,7 @@ export default async function HomePage() {
                   key={pack.slug}
                   pack={pack}
                   tilt={i % 2 === 0 ? "l" : "r"}
+                  sequenceMap={photoSequence}
                 />
               ))}
             </div>
@@ -372,7 +392,7 @@ export default async function HomePage() {
               <div className="mt-7 flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {cat.packs.slice(0, 8).map((pack) => (
                   <div key={pack.slug} className="w-[260px] shrink-0 sm:w-[280px]">
-                    <GuideCard pack={pack} />
+                    <GuideCard pack={pack} sequenceMap={photoSequence} />
                   </div>
                 ))}
               </div>
@@ -412,7 +432,7 @@ export default async function HomePage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={`${p.photos[0]}?im_w=720`}
+                  src={mediaSrc(p.photos[0], 720)}
                   alt={p.name}
                   className="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                 />

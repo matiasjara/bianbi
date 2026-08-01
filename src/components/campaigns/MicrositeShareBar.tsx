@@ -94,6 +94,7 @@ export function MicrositeShareBar({
   const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const cardUrl = `/api/share-card/${encodeURIComponent(slug)}?lang=${locale}&format=story`;
 
@@ -109,6 +110,9 @@ export function MicrositeShareBar({
     const res = await fetch(cardUrl);
     if (!res.ok) throw new Error("No se pudo generar la imagen");
     const blob = await res.blob();
+    if (!blob.type.startsWith("image/")) {
+      throw new Error("Respuesta inválida del servidor");
+    }
     const file = new File([blob], `bianbi-${slug}.png`, { type: "image/png" });
     return { blob, file };
   }
@@ -121,6 +125,7 @@ export function MicrositeShareBar({
 
   async function shareGuide() {
     setBusy(true);
+    setError(null);
     try {
       const { file } = await fetchCardFile();
       const text = `${shareText}\n${pageUrl}`;
@@ -151,7 +156,7 @@ export function MicrositeShareBar({
       URL.revokeObjectURL(a.href);
       await copyLink();
     } catch {
-      /* cancelado o error */
+      setError("No pudimos generar la mini-infografía. Intenta de nuevo.");
     } finally {
       setBusy(false);
     }
@@ -159,6 +164,7 @@ export function MicrositeShareBar({
 
   async function downloadImage() {
     setBusy(true);
+    setError(null);
     try {
       const { file } = await fetchCardFile();
       const a = document.createElement("a");
@@ -167,7 +173,7 @@ export function MicrositeShareBar({
       a.click();
       URL.revokeObjectURL(a.href);
     } catch {
-      /* ignore */
+      setError("No pudimos descargar la imagen. Intenta de nuevo.");
     } finally {
       setBusy(false);
     }
@@ -205,6 +211,11 @@ export function MicrositeShareBar({
             {shareLabel}
           </p>
           <p className={`mt-1 text-sm ${ink}`}>{shareHint}</p>
+          {error ? (
+            <p className="mt-2 text-sm text-[var(--ms-terracotta,#D96A4B)]">
+              {error}
+            </p>
+          ) : null}
 
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <button

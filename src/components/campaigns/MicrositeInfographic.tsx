@@ -97,9 +97,12 @@ function DoodlePath({ className }: { className?: string }) {
 export function MicrositeInfographic({
   slug,
   L,
+  photoSequenceIndex,
 }: {
   slug: string;
   L: LocalizedMicrosite;
+  /** Posición en la cola del deporte (0 = foto 1, 1 = foto 2…) */
+  photoSequenceIndex?: number;
 }) {
   const { ui, content: m, properties: props, locale } = L;
 
@@ -124,6 +127,7 @@ export function MicrositeInfographic({
     venueName: m.venueName,
     eventTitle: m.eventTitle,
     slug,
+    sequenceIndex: photoSequenceIndex,
   });
   const propertyPhoto =
     nearest?.photos?.[0] || nearest?.photo || props[1]?.photo || "";
