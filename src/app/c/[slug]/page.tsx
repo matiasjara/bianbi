@@ -285,8 +285,14 @@ export default async function CampaignLandingPage({ params }: Props) {
         </div>
       </section>
 
-      <footer className="bg-[#1a1a1a] px-5 py-8 text-center text-xs leading-relaxed text-white/45">
-        <p>
+      <footer className="bg-[#1a1a1a] px-5 py-10 text-center text-xs leading-relaxed text-white/45">
+        <p
+          className="font-[family-name:var(--font-display)] text-[11px] font-semibold tracking-[0.28em] text-white/30"
+          aria-label="Bianbi"
+        >
+          BIANBI
+        </p>
+        <p className="mt-4">
           Alojamiento independiente en Santiago · {pack.eventDates}
         </p>
         <p className="mx-auto mt-3 max-w-2xl">

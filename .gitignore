@@ -44,3 +44,5 @@ next-env.d.ts
 # runtime local (se regeneran en la app)
 data/ingested/ad-metrics.json
 data/ingested/campaigns-approved.json
+
+.vercel-deploy-payload.json
