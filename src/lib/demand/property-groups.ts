@@ -4,6 +4,8 @@ export type StayUnit = {
   slug: string;
   name: string;
   airbnbUrl: string;
+  photo: string;
+  photos: string[];
   rating?: number;
   reviewCount?: number;
 };
@@ -18,6 +20,8 @@ export type PropertyStayGroup = {
   lat: number;
   lng: number;
   photo: string;
+  /** Galería del edificio (une fotos de todas las unidades). */
+  photos: string[];
   units: StayUnit[];
 };
 
@@ -30,10 +34,13 @@ export function groupPropertiesByLocation(
 
   for (const p of props) {
     const key = `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`;
+    const unitPhotos = p.photos.length ? p.photos : [p.photo].filter(Boolean);
     const unit: StayUnit = {
       slug: p.slug,
       name: p.name,
       airbnbUrl: p.airbnbUrl,
+      photo: p.photo,
+      photos: unitPhotos,
       rating: p.rating,
       reviewCount: p.reviewCount,
     };
@@ -41,6 +48,7 @@ export function groupPropertiesByLocation(
     const idx = indexByKey.get(key);
     if (idx != null) {
       groups[idx].units.push(unit);
+      groups[idx].photos.push(...unitPhotos);
       continue;
     }
 
@@ -55,6 +63,7 @@ export function groupPropertiesByLocation(
       lat: p.lat,
       lng: p.lng,
       photo: p.photo,
+      photos: [...unitPhotos],
       units: [unit],
     });
   }

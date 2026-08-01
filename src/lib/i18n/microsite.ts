@@ -1,4 +1,5 @@
 import type { CampaignInterest, CampaignPack, MicrositeContent } from "@/lib/demand/types";
+import { climateForCampaign } from "@/lib/demand/climate-copy";
 import type { Locale } from "@/lib/i18n/locale";
 
 type Ui = {
@@ -249,81 +250,6 @@ const INTEREST: Record<CampaignInterest, Record<Locale, string>> = {
   otro_evento: { es: "Evento", en: "Event", pt: "Evento" },
 };
 
-function monthClimate(isoDate: string, locale: Locale) {
-  const m = Number(isoDate.slice(5, 7));
-  if (locale === "en") {
-    if (m >= 12 || m <= 2) {
-      return {
-        summary: "Summer in Santiago: hot days and mild nights.",
-        tip: "Pack light clothes plus a layer for the night after the venue.",
-      };
-    }
-    if (m >= 3 && m <= 5) {
-      return {
-        summary: "Fall: pleasant temperatures, cooler evenings possible.",
-        tip: "A light jacket is enough for the way back.",
-      };
-    }
-    if (m >= 6 && m <= 8) {
-      return {
-        summary: "Winter: cold mornings; mountains may have snow.",
-        tip: "Coat and closed shoes. For snow trips, Santiago is a comfortable base.",
-      };
-    }
-    return {
-      summary: "Spring: changeable, great for walking.",
-      tip: "Ideal to combine the event with a neighborhood stroll or metro rides.",
-    };
-  }
-  if (locale === "pt") {
-    if (m >= 12 || m <= 2) {
-      return {
-        summary: "Verão em Santiago: dias quentes e noites amenas.",
-        tip: "Leve roupa leve e uma camada para a noite ao sair do venue.",
-      };
-    }
-    if (m >= 3 && m <= 5) {
-      return {
-        summary: "Outono: temperaturas agradáveis, tardes mais frescas.",
-        tip: "Uma jaqueta leve basta para o caminho de volta.",
-      };
-    }
-    if (m >= 6 && m <= 8) {
-      return {
-        summary: "Inverno: manhãs frias; na cordilheira pode nevar.",
-        tip: "Casaco e calçado fechado. Para neve, Santiago é sua base confortável.",
-      };
-    }
-    return {
-      summary: "Primavera: clima variável, ótimo para caminhar.",
-      tip: "Ideal para combinar o evento com o bairro a pé ou de metrô.",
-    };
-  }
-  // es — reuse Spanish from generator via pack when locale es
-  if (m >= 12 || m <= 2) {
-    return {
-      summary: "Verano en Santiago: días calurosos y noches templadas.",
-      tip: "Lleva ropa fresca y una capa liviana para la noche al salir del venue.",
-    };
-  }
-  if (m >= 3 && m <= 5) {
-    return {
-      summary: "Otoño: temperaturas agradables, posibles tardes frescas.",
-      tip: "Una chaqueta liviana alcanza para el trayecto de vuelta.",
-    };
-  }
-  if (m >= 6 && m <= 8) {
-    return {
-      summary: "Invierno: mañanas frías; en cordillera puede haber nieve.",
-      tip: "Abrigo y calzado cerrado. Si vienes por nieve, Santiago es tu base cómoda.",
-    };
-  }
-  return {
-    summary: "Primavera: clima variable, agradable para caminar.",
-    tip: "Ideal para combinar evento + barrio a pie o en metro.",
-  };
-}
-
 function guideTitle(
   pack: CampaignPack,
   locale: Locale,
@@ -560,6 +486,13 @@ function recommendations(pack: CampaignPack, locale: Locale): string[] {
         "Avoid driving if you'll celebrate: skip the car or use rideshare.",
       ];
     }
+    if (pack.interest === "deporte_competencia") {
+      return [
+        ...base,
+        "In winter, dress in layers for early outdoor sessions.",
+        "Stay hydrated and rest near the venue — competition days are long.",
+      ];
+    }
     if (pack.interest === "nieve") {
       return [
         "Use Santiago as a base: sleep well and leave early for the mountains.",
@@ -591,6 +524,13 @@ function recommendations(pack: CampaignPack, locale: Locale): string[] {
         ...base,
         "Se houver torcida visitante, ande em grupo e use rotas iluminadas / metrô.",
         "Evite dirigir se for comemorar: deixe o carro ou use rideshare.",
+      ];
+    }
+    if (pack.interest === "deporte_competencia") {
+      return [
+        ...base,
+        "No inverno, vá em camadas para provas ao ar livre cedo.",
+        "Hidrate-se e descanse perto do venue — dias de competição são longos.",
       ];
     }
     if (pack.interest === "nieve") {
@@ -848,7 +788,7 @@ export function localizeMicrosite(
   const title = guideTitle(pack, locale);
   const interestLabel =
     INTEREST[pack.interest]?.[locale] ?? pack.interestLabel;
-  const weather = monthClimate(pack.eventStartsOn, locale);
+  const weather = climateForCampaign(pack.eventStartsOn, pack.interest, locale);
   const summary = eventSummary(pack, locale);
 
   const content: MicrositeContent = {

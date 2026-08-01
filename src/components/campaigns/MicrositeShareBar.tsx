@@ -268,7 +268,7 @@ export function MicrositeShareBar({
               <img
                 src={cardBlobUrl}
                 alt=""
-                className="h-28 w-[63px] object-cover sm:h-32 sm:w-[72px]"
+                className="h-28 w-[63px] object-contain object-top sm:h-32 sm:w-[72px]"
               />
             ) : (
               <div className="flex h-28 w-[63px] items-center justify-center bg-[var(--ms-mist,#cfc9c0)]/30 sm:h-32 sm:w-[72px]">
@@ -356,8 +356,8 @@ export function MicrositeShareBar({
             onClick={() => setPreviewOpen(false)}
           />
 
-          <div className="relative z-10 flex max-h-[92vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-paper)] shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[var(--ms-line)] px-4 py-3">
+          <div className="relative z-10 flex max-h-[min(92vh,900px)] w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-paper)] shadow-2xl sm:max-w-md">
+            <div className="flex shrink-0 items-center justify-between border-b border-[var(--ms-line)] px-4 py-3">
               <p
                 id="share-preview-title"
                 className="text-sm font-semibold text-[var(--ms-ink)]"
@@ -373,9 +373,9 @@ export function MicrositeShareBar({
               </button>
             </div>
 
-            <div className="flex flex-1 items-center justify-center overflow-auto bg-[var(--ms-mist,#cfc9c0)]/20 p-4">
+            <div className="min-h-0 flex-1 overflow-y-auto bg-[var(--ms-mist,#cfc9c0)]/20 p-3 sm:p-4">
               {loadingPreview && !cardBlobUrl ? (
-                <p className="py-16 text-sm text-[var(--ms-muted)]">
+                <p className="py-16 text-center text-sm text-[var(--ms-muted)]">
                   {previewLoadingLabel}
                 </p>
               ) : cardBlobUrl ? (
@@ -383,16 +383,16 @@ export function MicrositeShareBar({
                 <img
                   src={cardBlobUrl}
                   alt={title}
-                  className="max-h-[58vh] w-auto max-w-full rounded-xl shadow-lg"
+                  className="mx-auto block h-auto w-full max-w-[min(100%,320px)] rounded-xl shadow-lg"
                 />
               ) : (
-                <p className="py-16 text-sm text-[var(--ms-terracotta)]">
+                <p className="py-16 text-center text-sm text-[var(--ms-terracotta)]">
                   {error ?? previewLoadingLabel}
                 </p>
               )}
             </div>
 
-            <div className="flex flex-wrap gap-2 border-t border-[var(--ms-line)] p-4">
+            <div className="flex shrink-0 flex-wrap gap-2 border-t border-[var(--ms-line)] p-4">
               <button
                 type="button"
                 className={primary}

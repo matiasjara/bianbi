@@ -10,6 +10,7 @@ import type {
   MicrositeContent,
   TravelBrief,
 } from "./types";
+import { climateForCampaign } from "./climate-copy";
 
 type PackCore = Omit<CampaignPack, "publishPlan" | "travelBrief" | "microsite">;
 
@@ -47,30 +48,8 @@ function guideTitle(pack: PackCore): string {
   }
 }
 
-function monthClimate(isoDate: string): { summary: string; tip: string } {
-  const m = Number(isoDate.slice(5, 7));
-  if (m >= 12 || m <= 2) {
-    return {
-      summary: "Verano en Santiago: días calurosos y noches templadas.",
-      tip: "Lleva ropa fresca y una capa liviana para la noche al salir del venue.",
-    };
-  }
-  if (m >= 3 && m <= 5) {
-    return {
-      summary: "Otoño: temperaturas agradables, posibles tardes frescas.",
-      tip: "Una chaqueta liviana alcanza para el trayecto de vuelta.",
-    };
-  }
-  if (m >= 6 && m <= 8) {
-    return {
-      summary: "Invierno: mañanas frías; en cordillera puede haber nieve.",
-      tip: "Abrigo y calzado cerrado. Si vienes por nieve, Santiago es tu base cómoda.",
-    };
-  }
-  return {
-    summary: "Primavera: clima variable, agradable para caminar.",
-    tip: "Ideal para combinar evento + barrio a pie o en metro.",
-  };
+function monthClimate(isoDate: string, interest: CampaignInterest) {
+  return climateForCampaign(isoDate, interest, "es");
 }
 
 function persona(pack: PackCore): TravelBrief["persona"] {
@@ -290,6 +269,13 @@ function recommendations(pack: PackCore): string[] {
       "Evita manejar si piensas celebrar: deja el auto o usa rideshare.",
     ];
   }
+  if (pack.interest === "deporte_competencia") {
+    return [
+      ...base,
+      "En invierno, sal con capas: mañanas frías en canchas al aire libre.",
+      "Hidrátate y descansa cerca del venue: los días de competencia son largos.",
+    ];
+  }
   return [
     ...base,
     "Combina el evento con un paseo por el barrio (cafés, plazas, miradores).",
@@ -412,7 +398,7 @@ export function buildTravelBrief(pack: PackCore): TravelBrief {
 }
 
 export function buildMicrosite(pack: PackCore): MicrositeContent {
-  const climate = monthClimate(pack.eventStartsOn);
+  const climate = monthClimate(pack.eventStartsOn, pack.interest);
   const kind = guideKind(pack.interest);
   const title = guideTitle(pack);
   const slug = pack.slug;
