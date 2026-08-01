@@ -160,7 +160,6 @@ export function MicrositeInfographic({
     shareImageLabel: ui.shareImageLabel,
     downloadImageLabel: ui.downloadImageLabel,
     sharingLabel: ui.sharingLabel,
-    shareHint: ui.shareHint,
     previewTitle: ui.previewTitle,
     previewCloseLabel: ui.previewCloseLabel,
     previewLoadingLabel: ui.previewLoadingLabel,
@@ -407,7 +406,7 @@ export function MicrositeInfographic({
           />
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--ms-muted)]">
             {m.interest === "nieve"
-              ? "Departamentos hub en Santiago para combinar ciudad y días de ski."
+              ? "Alojamientos hub en Santiago para combinar ciudad y días de ski."
               : ui.mapBody(m.venueName)}
           </p>
           <div className="ms-polaroid ms-tilt-l relative mt-6 max-w-3xl">
@@ -517,11 +516,18 @@ export function MicrositeInfographic({
           />
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--ms-muted)]">
             {m.interest === "nieve"
-              ? "Deptos en barrios bien conectados. Reserva en Airbnb."
+              ? "Alojamientos en barrios bien conectados. Reserva en Airbnb."
               : ui.stayBody(m.venueName)}
           </p>
 
-          <MicrositeStayList properties={props} ui={ui} />
+          <MicrositeStayList
+            properties={props}
+            ui={{
+              minWalk: ui.minWalk,
+              ctaAirbnb: ui.ctaAirbnb,
+              locale,
+            }}
+          />
         </section>
       </div>
 

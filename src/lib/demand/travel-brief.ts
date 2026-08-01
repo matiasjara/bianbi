@@ -116,7 +116,7 @@ function strategy(pack: PackCore): TravelBrief["strategy"] {
     pack.interest === "nieve"
       ? [
           "¿Queda muy lejos de los centros de ski?",
-          "¿Cómo llego a Valle Nevado o Farellones desde el depto?",
+          "¿Cómo llego a Valle Nevado o Farellones desde el alojamiento?",
           "¿Conviene van, tour o auto propio?",
           "¿Hay check-in flexible si llego tarde del aeropuerto?",
           "¿Qué pasa si cancelo por mal clima en la cordillera?",
@@ -139,8 +139,8 @@ function strategy(pack: PackCore): TravelBrief["strategy"] {
   const trustProof =
     pack.interest === "nieve"
       ? [
-          "Deptos hub en barrios bien conectados (Italia, Centro, Ñuñoa)",
-          "Fotos reales del departamento (no stock)",
+          "Alojamientos hub en barrios bien conectados (Italia, Centro, Ñuñoa)",
+          "Fotos reales del alojamiento (no stock)",
           pack.properties.some((p) => p.isSuperhost)
             ? "Anfitrión Superhost en Airbnb"
             : "Reserva protegida en Airbnb",
@@ -149,7 +149,7 @@ function strategy(pack: PackCore): TravelBrief["strategy"] {
         ]
       : [
           `Mapa con tiempo a pie (~${mins} min al venue)`,
-          "Fotos reales del departamento (no stock)",
+          "Fotos reales del alojamiento (no stock)",
           pack.properties.some((p) => p.isSuperhost)
             ? "Anfitrión Superhost en Airbnb"
             : "Reserva protegida en Airbnb",
@@ -165,7 +165,7 @@ function strategy(pack: PackCore): TravelBrief["strategy"] {
       : pack.interest === "partido_futbol"
         ? `Base en barrio seguro a ~${mins} min de ${venue}. Llegas, ves el partido y duermes cerca.`
         : pack.interest === "nieve"
-          ? "Santiago como hub: depto full equipado, metro cerca, sales a la cordillera cuando quieras."
+          ? "Santiago como hub: alojamiento full equipado, metro cerca, sales a la cordillera cuando quieras."
           : `A ~${mins} min de ${venue}, en barrio seguro y con reserva directa en Airbnb.`;
 
   return { problem, objections, trustProof, winningMessage };
@@ -182,7 +182,7 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
   if (pack.interest === "nieve") {
     return [
       {
-        q: "¿Dónde quedan los departamentos?",
+        q: "¿Dónde quedan los alojamientos?",
         a: `En barrios hub de Santiago${hoods.length ? ` (${hoods.join(", ")})` : ""}: bien conectados, metro cerca y cómodos para descansar entre días de ski.`,
       },
       {
@@ -196,12 +196,12 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
       {
         q: "¿Cómo llego desde el aeropuerto?",
         a: metro
-          ? `Transfer o taxi/Uber al depto. Luego te mueves por Metro ${metro} y alrededores en los días sin ski.`
-          : "Transfer o taxi/Uber directo al departamento. Luego metro o rideshare en la ciudad.",
+          ? `Transfer o taxi/Uber al alojamiento. Luego te mueves por Metro ${metro} y alrededores en los días sin ski.`
+          : "Transfer o taxi/Uber directo al alojamiento. Luego metro o rideshare en la ciudad.",
       },
       {
         q: "¿Dónde reservo y pago?",
-        a: "Solo en Airbnb, en el link de cada departamento. Ahí está el pago protegido, la cancelación según política del anuncio y el chat con el anfitrión.",
+        a: "Solo en Airbnb, en el link de cada alojamiento. Ahí está el pago protegido, la cancelación según política del anuncio y el chat con el anfitrión.",
       },
       {
         q: "¿Bianbi es parte de Airbnb?",
@@ -212,8 +212,8 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
 
   return [
     {
-      q: `¿Qué tan cerca quedan los departamentos de ${venue}?`,
-      a: `Las opciones destacadas están desde ~${mins} minutos a pie (según depto). En el mapa ves la distancia real antes de reservar.`,
+      q: `¿Qué tan cerca quedan los alojamientos de ${venue}?`,
+      a: `Las opciones destacadas están desde ~${mins} minutos a pie (según unidad). En el mapa ves la distancia real antes de reservar.`,
     },
     {
       q: "¿Es seguro el barrio?",
@@ -222,16 +222,16 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
     {
       q: "¿Cómo llego desde el aeropuerto?",
       a: metro
-        ? `Desde el aeropuerto: transfer o taxi/Uber al depto. Después te mueves fácil por Metro ${metro} y alrededores.`
-        : "Desde el aeropuerto: transfer o taxi/Uber directo al departamento. Luego te mueves en metro, a pie o rideshare.",
+        ? `Desde el aeropuerto: transfer o taxi/Uber al alojamiento. Después te mueves fácil por Metro ${metro} y alrededores.`
+        : "Desde el aeropuerto: transfer o taxi/Uber directo al alojamiento. Luego te mueves en metro, a pie o rideshare.",
     },
     {
       q: "¿Puedo hacer check-in tarde?",
-      a: "La mayoría de nuestros deptos tienen cerradura digital / check-in autónomo. Confirmas detalles con el anfitrión en Airbnb al reservar.",
+      a: "La mayoría de los alojamientos tienen cerradura digital / check-in autónomo. Confirmas detalles con el anfitrión en Airbnb al reservar.",
     },
     {
       q: "¿Dónde reservo y pago?",
-      a: "Solo en Airbnb, en el link de cada departamento. Ahí está el pago protegido, la cancelación según política del anuncio y el chat con el anfitrión.",
+      a: "Solo en Airbnb, en el link de cada alojamiento. Ahí está el pago protegido, la cancelación según política del anuncio y el chat con el anfitrión.",
     },
     {
       q: "¿Bianbi es parte de Airbnb?",
@@ -252,7 +252,7 @@ function recommendations(pack: PackCore): string[] {
   }
   const base = [
     `Llega con margen: calcula ~${pack.properties[0]?.walkingMinutes ?? 15} min a pie hasta ${venue}.`,
-    "Guarda el pin del departamento y el del venue en tu mapa offline.",
+    "Guarda el pin del alojamiento y el del venue en tu mapa offline.",
     "Coordina check-in en Airbnb el mismo día que reserves.",
   ];
   if (pack.interest === "concierto") {
@@ -279,7 +279,7 @@ function recommendations(pack: PackCore): string[] {
   return [
     ...base,
     "Combina el evento con un paseo por el barrio (cafés, plazas, miradores).",
-    "Si viajas en pareja, elige depto con cama matrimonial y sofá-cama por si llega alguien más.",
+    "Si viajas en pareja, elige alojamiento con cama matrimonial y sofá-cama por si llega alguien más.",
   ];
 }
 
@@ -290,7 +290,7 @@ function transport(pack: PackCore): string[] {
   if (pack.interest === "nieve") {
     return [
       metros.length
-        ? `En la ciudad: Metro ${metros.slice(0, 3).join(", ")} cerca de los deptos hub.`
+        ? `En la ciudad: Metro ${metros.slice(0, 3).join(", ")} cerca de los alojamientos hub.`
         : "Buena conexión a transporte público en Santiago.",
       "A la cordillera: van/tour desde Santiago a Valle Nevado, Farellones o Portillo (reserva con anticipación).",
       "Auto propio: revisa estado de la ruta, neblina y obligatoriedad de cadenas.",
@@ -302,7 +302,7 @@ function transport(pack: PackCore): string[] {
       ? `Metro cercano: ${metros.slice(0, 3).join(", ")}.`
       : "Buena conexión a transporte público de Santiago.",
     "A pie al venue cuando la distancia es corta; rideshare de noche si prefieres.",
-    "Desde regiones: bus a terminales + metro/Uber al departamento.",
+    "Desde regiones: bus a terminales + metro/Uber al alojamiento.",
     "Aeropuerto SCL: transfer oficial, taxi o Uber hasta el check-in.",
   ];
 }
@@ -328,7 +328,7 @@ function mustKnow(pack: PackCore): string[] {
   const tips = [
     `Fecha: ${pack.eventDates}.`,
     `Lugar: ${pack.venueName}, Santiago.`,
-    `Llega con tiempo: desde los deptos recomendados son ~${mins} min a pie.`,
+    `Llega con tiempo: desde los alojamientos recomendados son ~${mins} min a pie.`,
     "Guarda esta guía y compártela con quien va contigo.",
   ];
   if (pack.interest === "concierto") {
@@ -374,7 +374,7 @@ function news(pack: PackCore): string[] {
     );
   }
   items.push(
-    "Tips locales: metro + barrio seguro + departamento full equipado para llegar y descansar.",
+    "Tips locales: metro + barrio seguro + alojamiento full equipado para llegar y descansar.",
   );
   return items;
 }

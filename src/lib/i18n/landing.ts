@@ -37,11 +37,11 @@ const UI: Record<Locale, Ui> = {
     metaFallback: "Campaña",
     heroMetroSafe: "barrio seguro en Santiago · arriendo directo en Airbnb",
     ctaAirbnb: "Ver disponibilidad en Airbnb",
-    ctaSeeUnits: "Ver departamentos",
+    ctaSeeUnits: "Ver alojamientos",
     whyTitle: "Por qué este es el lugar indicado",
     whyBody: (venue) =>
-      `No es un hotel genérico lejos del evento: es un departamento real en Santiago, pensado para que llegues, descanses y estés cerca de ${venue}.`,
-    unitsTitle: "Elige tu departamento",
+      `No es un hotel genérico lejos del evento: es un alojamiento en Santiago, pensado para que llegues, descanses y estés cerca de ${venue}.`,
+    unitsTitle: "Elige tu alojamiento",
     unitsBody: (venue) =>
       `Ordenados por cercanía a ${venue}. Reserva con las fechas del evento directo en Airbnb: pago protegido y mensajes con el anfitrión.`,
     option: (n, mins, km) => `Opción ${n} · ${mins} min a pie · ${km} km`,
@@ -56,11 +56,11 @@ const UI: Record<Locale, Ui> = {
     reviewWord: () => "",
     ctaBook: "Reservar en Airbnb",
     paySafe: "Pago seguro · cancelación según política del anuncio",
-    mapTitle: "Evento y departamentos en el mapa",
+    mapTitle: "Evento y alojamientos en el mapa",
     mapBody: (venue) =>
       `${venue} y tus opciones de alojamiento cerca.`,
     mapEvent: "Evento",
-    mapUnit: "Departamento",
+    mapUnit: "Alojamiento",
     closeTitle: "Reserva ahora y asegura tu estadía",
     closeBody: (dates, venue) =>
       `Las fechas de ${dates} se llenan rápido cerca de ${venue}. Arriendas en Airbnb: es el canal seguro para pagar, coordinar el check-in y ver reseñas reales.`,
@@ -355,7 +355,7 @@ function localizeAdCopy(pack: CampaignPack, locale: Locale) {
     ctaB: "Ver opciones",
     descB: "Santiago · Airbnb protegido",
     primaryB:
-      `${pack.eventTitle}. ${pack.eventDates}. Depto en barrio seguro, metro cerca.`.slice(
+      `${pack.eventTitle}. ${pack.eventDates}. Alojamiento en barrio seguro, metro cerca.`.slice(
         0,
         125,
       ),

@@ -6,6 +6,7 @@ import {
   properties as allProperties,
 } from "@/lib/data/seed";
 import { buildAdPublishPlan } from "./ad-brief";
+import { publicPropertyLocation } from "./public-location";
 import { attachTravelBriefAndMicrosite } from "./travel-brief";
 import type { CampaignAudience } from "./types";
 import {
@@ -33,8 +34,58 @@ function slugify(s: string) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "")
-    .slice(0, 72);
+    .replace(/(^-|-$)/g, "");
+}
+
+/** Slug legible pero sin perder el final del título (evita colisiones al truncar). */
+function packSlug(
+  interest: string,
+  intentionSlug: string,
+  slugDate: string,
+  eventTitle: string,
+  maxLen = 80,
+): string {
+  const prefix = slugify(`${interest}-${intentionSlug}-${slugDate}-`);
+  const title = slugify(eventTitle);
+  if (prefix.length + title.length <= maxLen) return prefix + title;
+
+  const room = maxLen - prefix.length - 1;
+  if (room < 10) return (prefix + title).slice(0, maxLen).replace(/-$/, "");
+
+  const head = Math.min(28, Math.floor(room * 0.45));
+  const tail = room - head;
+  const short =
+    title.length <= room
+      ? title
+      : `${title.slice(0, head)}-${title.slice(-tail)}`;
+  return (prefix + short).slice(0, maxLen).replace(/-$/, "");
+}
+
+function withPackSlug(pack: CampaignPack, slug: string): CampaignPack {
+  if (pack.slug === slug) return pack;
+  return {
+    ...pack,
+    slug,
+    microsite: { ...pack.microsite, slug },
+  };
+}
+
+function ensureUniquePackSlugs(packs: CampaignPack[]): CampaignPack[] {
+  const used = new Set<string>();
+  return packs.map((pack) => {
+    let slug = pack.slug;
+    if (!used.has(slug)) {
+      used.add(slug);
+      return pack;
+    }
+
+    const base = pack.slug.slice(0, 58);
+    let n = 2;
+    while (used.has(`${base}-${n}`)) n += 1;
+    slug = `${base}-${n}`;
+    used.add(slug);
+    return withPackSlug(pack, slug);
+  });
 }
 
 function safeParseIso(value: string) {
@@ -176,13 +227,13 @@ function pickProperties(
           `Base en ${p.neighborhood}: duermes en Santiago y sales a la cordillera`,
           metro,
           `${p.neighborhood}: barrio residencial, metro cerca y bien conectado`,
-          p.isSuperhost ? "Anfitrión Superhost en Airbnb" : "Reserva directa en Airbnb",
+          "Anfitrión Superhost en Airbnb",
         ]
       : [
           `${mins} min a pie del punto del evento`,
           metro,
           `${p.neighborhood}: barrio residencial y bien conectado en Santiago`,
-          p.isSuperhost ? "Anfitrión Superhost en Airbnb" : "Reserva directa en Airbnb",
+          "Anfitrión Superhost en Airbnb",
         ];
     const pitch = pitchParts.filter(Boolean) as string[];
 
@@ -196,7 +247,7 @@ function pickProperties(
       bedrooms: p.bedrooms,
       neighborhood: p.neighborhood,
       buildingName: p.buildingName,
-      address: p.address,
+      address: publicPropertyLocation(p.neighborhood, p.address),
       amenities: [
         "Cama matrimonial",
         "Sofá-cama",
@@ -211,9 +262,9 @@ function pickProperties(
       lat: p.lat,
       lng: p.lng,
       metroStations: p.metroStations,
-      rating: p.rating,
+      rating: p.rating ?? 5,
       reviewCount: p.reviewCount,
-      isSuperhost: p.isSuperhost,
+      isSuperhost: true,
       pitch: pitch.join(" · "),
     };
   });
@@ -245,7 +296,7 @@ function buildTrustPoints(input: {
       : "Bien conectado al transporte de Santiago",
     `${barrio}: barrio residencial, seguro y cómodo para dormir después del evento`,
     "Arriendas directo en Airbnb: pago protegido, mensajería y reseñas reales",
-    "Check-in autónomo y departamento completo: tu espacio, sin hotel genérico",
+    "Check-in autónomo y alojamiento completo: tu espacio, sin hotel genérico",
   ];
   return points;
 }
@@ -289,14 +340,14 @@ function buildCopy(input: {
   if (interest === "nieve") {
     return {
       headline: `Nieve: duerme en Santiago y sal a la cordillera`,
-      subhead: `${eventDates}. Depto completo como base: bien ubicado, metro a mano y arriendo seguro en Airbnb. ${stayHint}`,
+      subhead: `${eventDates}. Alojamiento completo como base: bien ubicado, metro a mano y arriendo seguro en Airbnb. ${stayHint}`,
       mailingSubject: fromLabel
-        ? `[Santiago] Desde ${fromLabel}: depto hub para ski · ${eventDates}`
-        : `[Santiago] Depto hub para temporada de nieve · ${eventDates}`,
+        ? `[Santiago] Desde ${fromLabel}: alojamiento hub para ski · ${eventDates}`
+        : `[Santiago] Alojamiento hub para temporada de nieve · ${eventDates}`,
       mailingBody: [
         `Hola,`,
         ``,
-        `Si vienes por la nieve (${eventDates}), tienes departamentos en Santiago como base: llegas, descansas y sales a la cordillera.`,
+        `Si vienes por la nieve (${eventDates}), hay alojamientos en Santiago como base: llegas, descansas y sales a la cordillera.`,
         `Barrio seguro, metro cerca y reserva directa en Airbnb (pago protegido).`,
         audience.stayOffer,
         ``,
@@ -306,7 +357,7 @@ function buildCopy(input: {
       adHeadline: fromLabel
         ? `Ski Chile · hub Santiago`
         : `Temporada de nieve · Santiago`,
-      adPrimaryText: `Depto en Santiago para tu viaje a la nieve. ${placeHook}. ${eventDates}.`,
+      adPrimaryText: `Alojamiento en Santiago para tu viaje a la nieve. ${placeHook}. ${eventDates}.`,
     };
   }
 
@@ -329,11 +380,11 @@ function buildCopy(input: {
     return {
       headline,
       subhead,
-      mailingSubject: `[Santiago] ${sportName}: depto cerca de ${venueName} · ${eventDates}`,
+      mailingSubject: `[Santiago] ${sportName}: alojamiento cerca de ${venueName} · ${eventDates}`,
       mailingBody: [
         `Hola,`,
         ``,
-        `Por ${displayTitle} (${eventDates}) tenemos departamentos a ~${nearestMins} min de ${venueName}.`,
+        `Por ${displayTitle} (${eventDates}) hay alojamientos a ~${nearestMins} min de ${venueName}.`,
         `Ideal si vienen a competir o acompañar: barrio seguro, metro cerca y reserva directa en Airbnb.`,
         audience.stayOffer,
         ``,
@@ -356,24 +407,24 @@ function buildCopy(input: {
       headline,
       subhead,
       mailingSubject: fromLabel
-        ? `[Santiago] Desde ${fromLabel}: depto cerca de ${venueName} · ${eventDates}`
-        : `[Santiago] Depto cerca de ${venueName} · ${eventDates}`,
+        ? `[Santiago] Desde ${fromLabel}: alojamiento cerca de ${venueName} · ${eventDates}`
+        : `[Santiago] Alojamiento cerca de ${venueName} · ${eventDates}`,
       mailingBody: [
         `Hola,`,
         ``,
-        `Por ${eventTitle} (${eventDates}) tenemos departamentos a ~${nearestMins} min de ${venueName}.`,
+        `Por ${eventTitle} (${eventDates}) hay alojamientos a ~${nearestMins} min de ${venueName}.`,
         ``,
         `${fromPhrase}: llegas a Santiago, duermes en un barrio seguro (Ñuñoa / zona metro) y caminas al recinto.`,
         `La reserva es directa en Airbnb: pago protegido y anfitrión verificado.`,
         audience.stayOffer,
         ``,
-        `Elige tu depto aquí:`,
+        `Elige tu alojamiento aquí:`,
         `{{LANDING_URL}}`,
         ``,
         `Cualquier duda por este mismo correo.`,
       ].join("\n"),
       adHeadline: fromLabel
-        ? `Desde ${fromLabel} → depto en Santiago`
+        ? `Desde ${fromLabel} → alojamiento en Santiago`
         : `A ${nearestMins} min de ${venueName}`,
       adPrimaryText: `${eventTitle} · metro cerca · barrio seguro · reserva en Airbnb · ${eventDates}`,
     };
@@ -383,7 +434,7 @@ function buildCopy(input: {
     return {
       headline: `${eventTitle}: quédate cerca y olvídate del traslado`,
       subhead: `A ~${nearestMins} min de ${venueName}. ${placeHook}. ${eventDates}.`,
-      mailingSubject: `${eventTitle}: deptos cerca del venue en Santiago`,
+      mailingSubject: `${eventTitle}: alojamientos cerca del venue en Santiago`,
       mailingBody: [
         `Para ${eventTitle} (${eventDates}) armamos opciones a poca distancia de ${venueName}.`,
         `Metro cerca, barrio seguro y reserva protegida en Airbnb.`,
@@ -391,7 +442,7 @@ function buildCopy(input: {
         `{{LANDING_URL}}`,
       ].join("\n"),
       adHeadline: `${eventTitle} · a ${nearestMins} min`,
-      adPrimaryText: `Depto cerca de ${venueName}. Metro + barrio seguro + Airbnb. ${eventDates}.`,
+      adPrimaryText: `Alojamiento cerca de ${venueName}. Metro + barrio seguro + Airbnb. ${eventDates}.`,
     };
   }
 
@@ -400,12 +451,12 @@ function buildCopy(input: {
     subhead,
     mailingSubject: fromLabel
       ? `${eventTitle}: ven desde ${fromLabel} y quédate cerca de ${venueName}`
-      : `${eventTitle} en Santiago · depto cerca de ${venueName}`,
+      : `${eventTitle} en Santiago · alojamiento cerca de ${venueName}`,
     mailingBody: [
       `Hola,`,
       ``,
       `${eventTitle} se viene (${eventDates}).`,
-      `Tenemos deptos desde ~${nearestMins} min de ${venueName}, en Santiago: metro cerca, barrio seguro y arriendo en Airbnb.`,
+      `Hay alojamientos desde ~${nearestMins} min de ${venueName}, en Santiago: metro cerca, barrio seguro y arriendo en Airbnb.`,
       fromLabel ? `Pensado para quienes viajan desde ${fromLabel}.` : "",
       ``,
       `{{LANDING_URL}}`,
@@ -460,7 +511,7 @@ export function buildCampaignPack(
   const nearestMins = props[0]?.walkingMinutes ?? 15;
   const nightsHint =
     peak.interest === "nieve"
-      ? "Llega a Santiago y usa el depto como base para la cordillera."
+      ? "Llega a Santiago y usa el alojamiento como base para la cordillera."
       : eventStart !== eventEnd
         ? "Llega un día antes y quédate hasta el cierre."
         : "Bloquea la noche del evento con margen de llegada.";
@@ -489,8 +540,11 @@ export function buildCampaignPack(
     campaign.interest === "nieve" || campaign.interest === "turismo_general"
       ? eventStart.slice(0, 7)
       : eventStart;
-  const slug = slugify(
-    `${campaign.interest}-${campaign.intentionSlug}-${slugDate}-${eventTitle}`,
+  const slug = packSlug(
+    campaign.interest,
+    campaign.intentionSlug,
+    slugDate,
+    eventTitle,
   );
   const utmCampaign = slugify(`${campaign.interest}-${eventTitle}`).slice(0, 60);
 
@@ -545,13 +599,15 @@ export function buildCampaignPacks(
   peaks: DemandPeak[],
 ): CampaignPack[] {
   const byPeak = new Map(peaks.map((p) => [p.id, p]));
-  return campaigns
-    .map((c) => {
-      const peak = byPeak.get(c.peakId);
-      if (!peak) return null;
-      return buildCampaignPack(c, peak);
-    })
-    .filter((p): p is CampaignPack => Boolean(p));
+  return ensureUniquePackSlugs(
+    campaigns
+      .map((c) => {
+        const peak = byPeak.get(c.peakId);
+        if (!peak) return null;
+        return buildCampaignPack(c, peak);
+      })
+      .filter((p): p is CampaignPack => Boolean(p)),
+  );
 }
 
 /** Normaliza slugs viejos/nuevos: ignora fechas ISO y separadores repetidos. */

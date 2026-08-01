@@ -506,7 +506,7 @@ export function suggestCampaignsFromPeaks(
             rationale:
               "Temporada de nieve: apuntar a quienes buscan ski en Chile (flujo Brasil). Santiago es hub de pernocta puente — campaña separada de partidos y conciertos.",
             stayOffer:
-              "Deptos en Santiago como base cómoda para ir a la cordillera y volver.",
+              "Alojamientos en Santiago como base cómoda para ir a la cordillera y volver.",
           }
         : audienceBase;
 

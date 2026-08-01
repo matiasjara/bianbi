@@ -176,8 +176,7 @@ export default async function CampaignLandingPage({
           ui={{
             minWalk: stayUi.minWalk,
             ctaAirbnb: ui.ctaBook,
-            stayUnitOption: stayUi.stayUnitOption,
-            stayReviews: stayUi.stayReviews,
+            locale,
           }}
         />
         <p className="mt-6 text-xs text-[#6a6a6a]">{ui.paySafe}</p>

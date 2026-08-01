@@ -73,7 +73,7 @@ async function logoDataUri() {
 function mapLabels(locale: Locale) {
   if (locale === "en") return { event: "Event", stay: "Apt" };
   if (locale === "pt") return { event: "Evento", stay: "Apto" };
-  return { event: "Evento", stay: "Depto" };
+  return { event: "Evento", stay: "Alojamiento" };
 }
 
 function whereLabel(m: LocalizedMicrosite["content"]) {
@@ -151,6 +151,8 @@ function SnapshotCard({
   color,
   icon,
   compact,
+  story,
+  fullWidth,
   tilt = 0,
 }: {
   label: string;
@@ -159,6 +161,8 @@ function SnapshotCard({
   color: string;
   icon: ReactElement;
   compact?: boolean;
+  story?: boolean;
+  fullWidth?: boolean;
   tilt?: number;
 }) {
   return (
@@ -166,21 +170,24 @@ function SnapshotCard({
       style={{
         ...FLEX,
         flexDirection: "column",
-        flex: 1,
-        backgroundColor: "rgba(250,247,242,0.96)",
-        borderRadius: compact ? 14 : 18,
+        flex: fullWidth ? undefined : 1,
+        width: fullWidth ? "100%" : undefined,
+        backgroundColor: story ? "#FFFFFF" : "rgba(250,247,242,0.96)",
+        borderRadius: story ? 22 : compact ? 14 : 18,
         border: `1.5px solid ${LINE}`,
-        padding: compact ? "12px 10px" : "16px 14px",
+        padding: story ? "20px 22px" : compact ? "12px 10px" : "16px 14px",
         minWidth: 0,
         boxShadow: "0 10px 28px rgba(22,26,34,0.07)",
         transform: tilt ? `rotate(${tilt}deg)` : undefined,
       }}
     >
-      <div style={{ ...FLEX, marginBottom: compact ? 6 : 8 }}>{icon}</div>
+      <div style={{ ...FLEX, marginBottom: story ? 10 : compact ? 6 : 8 }}>
+        {icon}
+      </div>
       <div
         style={{
           ...FLEX,
-          fontSize: compact ? 8 : 9,
+          fontSize: story ? 10 : compact ? 8 : 9,
           fontFamily: "Manrope",
           fontWeight: 600,
           letterSpacing: "0.2em",
@@ -193,14 +200,14 @@ function SnapshotCard({
       <div
         style={{
           ...FLEX,
-          marginTop: compact ? 3 : 5,
-          fontSize: compact ? 17 : 20,
+          marginTop: story ? 6 : compact ? 3 : 5,
+          fontSize: story ? 26 : compact ? 17 : 20,
           fontFamily: "Fraunces",
           fontWeight: 700,
           lineHeight: 1.12,
           color,
           overflow: "hidden",
-          maxHeight: compact ? 48 : 68,
+          maxHeight: story ? 88 : compact ? 48 : 68,
         }}
       >
         {value}
@@ -209,8 +216,8 @@ function SnapshotCard({
         <div
           style={{
             ...FLEX,
-            marginTop: 3,
-            fontSize: compact ? 10 : 11,
+            marginTop: story ? 5 : 3,
+            fontSize: story ? 13 : compact ? 10 : 11,
             fontFamily: "Manrope",
             color: MUTED,
           }}
@@ -227,36 +234,39 @@ function SnapshotGrid({
   m,
   nearest,
   compact,
+  variant = "row",
 }: {
   ui: LocalizedMicrosite["ui"];
   m: LocalizedMicrosite["content"];
   nearest: LocalizedMicrosite["properties"][number] | undefined;
   compact?: boolean;
+  variant?: "row" | "story";
 }) {
+  const isStory = variant === "story";
   const items = [
     {
       label: ui.when,
-      value: truncate(m.eventDates, compact ? 16 : 20),
+      value: truncate(m.eventDates, isStory ? 22 : compact ? 16 : 20),
       color: OLIVE,
-      icon: <IconCalendar size={compact ? 24 : 30} />,
-      tilt: -1.2,
+      icon: <IconCalendar size={isStory ? 32 : compact ? 24 : 30} />,
+      tilt: isStory ? 0 : -1.2,
     },
     {
       label: ui.where,
-      value: truncate(whereLabel(m), compact ? 14 : 18),
+      value: truncate(whereLabel(m), isStory ? 20 : compact ? 14 : 18),
       color: TERRACOTTA,
-      icon: <IconPin size={compact ? 24 : 30} />,
-      tilt: 1.1,
+      icon: <IconPin size={isStory ? 32 : compact ? 24 : 30} />,
+      tilt: isStory ? 0 : 1.1,
     },
     {
       label: ui.weather,
       value: truncate(
         m.weather.summary.replace(/^[^:]+:\s*/, ""),
-        compact ? 22 : 28,
+        isStory ? 42 : compact ? 22 : 28,
       ),
       color: MUSTARD,
-      icon: <IconSun size={compact ? 24 : 30} />,
-      tilt: -0.8,
+      icon: <IconSun size={isStory ? 32 : compact ? 24 : 30} />,
+      tilt: isStory ? 0 : -0.8,
     },
     {
       label: ui.nearest,
@@ -265,64 +275,127 @@ function SnapshotGrid({
         : ui.nearbyOptions,
       sub: nearest?.neighborhood,
       color: INK,
-      icon: <IconBed size={compact ? 24 : 30} />,
-      tilt: 1.3,
+      icon: <IconBed size={isStory ? 32 : compact ? 24 : 30} />,
+      tilt: isStory ? 0 : 1.3,
     },
   ];
 
-  return (
-    <div style={{ ...FLEX, flexDirection: "column", width: "100%" }}>
-      <div style={{ ...FLEX, flexDirection: "column", marginBottom: compact ? 12 : 18 }}>
-        <div
-          style={{
-            ...FLEX,
-            fontSize: compact ? 8 : 10,
-            fontFamily: "Manrope",
-            fontWeight: 600,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: MUTED,
-          }}
-        >
-          {ui.snapshotKicker}
-        </div>
-        <div
-          style={{
-            ...FLEX,
-            marginTop: 4,
-            fontSize: compact ? 24 : 34,
-            fontFamily: "Fraunces",
-            fontWeight: 700,
-            lineHeight: 1.08,
-            color: INK,
-          }}
-        >
-          {ui.snapshotTitle}
-        </div>
-      </div>
-
+  const cardGrid = isStory ? (
+    <div
+      style={{
+        ...FLEX,
+        flexDirection: "column",
+        gap: 12,
+        width: "100%",
+      }}
+    >
+      <SnapshotCard
+        story
+        fullWidth
+        label={items[0]!.label}
+        value={items[0]!.value}
+        color={items[0]!.color}
+        icon={items[0]!.icon}
+      />
+      <SnapshotCard
+        story
+        fullWidth
+        label={items[1]!.label}
+        value={items[1]!.value}
+        color={items[1]!.color}
+        icon={items[1]!.icon}
+      />
       <div
         style={{
           ...FLEX,
           flexDirection: "row",
-          gap: compact ? 8 : 12,
+          gap: 12,
           width: "100%",
           alignItems: "stretch",
         }}
       >
-        {items.map((item) => (
-          <SnapshotCard
-            key={item.label}
-            compact={compact}
-            label={item.label}
-            value={item.value}
-            sub={"sub" in item ? item.sub : undefined}
-            color={item.color}
-            icon={item.icon}
-            tilt={item.tilt}
-          />
-        ))}
+        <SnapshotCard
+          story
+          label={items[2]!.label}
+          value={items[2]!.value}
+          color={items[2]!.color}
+          icon={items[2]!.icon}
+        />
+        <SnapshotCard
+          story
+          label={items[3]!.label}
+          value={items[3]!.value}
+          sub={items[3]!.sub}
+          color={items[3]!.color}
+          icon={items[3]!.icon}
+        />
       </div>
+    </div>
+  ) : (
+    <div
+      style={{
+        ...FLEX,
+        flexDirection: "row",
+        gap: compact ? 8 : 12,
+        width: "100%",
+        alignItems: "stretch",
+      }}
+    >
+      {items.map((item) => (
+        <SnapshotCard
+          key={item.label}
+          compact={compact}
+          label={item.label}
+          value={item.value}
+          sub={"sub" in item ? item.sub : undefined}
+          color={item.color}
+          icon={item.icon}
+          tilt={item.tilt}
+        />
+      ))}
+    </div>
+  );
+
+  return (
+    <div style={{ ...FLEX, flexDirection: "column", width: "100%" }}>
+      {!isStory ? (
+        <div
+          style={{
+            ...FLEX,
+            flexDirection: "column",
+            marginBottom: compact ? 12 : 18,
+          }}
+        >
+          <div
+            style={{
+              ...FLEX,
+              fontSize: compact ? 8 : 10,
+              fontFamily: "Manrope",
+              fontWeight: 600,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: MUTED,
+            }}
+          >
+            {ui.snapshotKicker}
+          </div>
+          <div
+            style={{
+              ...FLEX,
+              marginTop: 4,
+              fontSize: compact ? 24 : 34,
+              fontFamily: "Fraunces",
+              fontWeight: 700,
+              lineHeight: 1.08,
+              color: INK,
+            }}
+          >
+            {ui.snapshotTitle}
+          </div>
+        </div>
+      ) : null}
+
+      {cardGrid}
     </div>
   );
 }
@@ -559,6 +632,7 @@ export async function renderShareCard(
   const logoSrc = await logoDataUri();
   const fonts = await getFonts();
   const pageLabel = "bianbi.cl";
+  const storyMapHeight = 920;
   const eventLine = truncate(
     m.interest === "nieve"
       ? `${m.interestLabel} · Santiago hub cordillera`
@@ -601,7 +675,7 @@ export async function renderShareCard(
           style={{
             ...FLEX,
             position: "absolute",
-            bottom: 96,
+            bottom: 420,
             left: -48,
             width: 180,
             height: 180,
@@ -618,7 +692,7 @@ export async function renderShareCard(
               ...FLEX,
               flexDirection: "column",
               height: "100%",
-              padding: "44px 44px 48px",
+              padding: "48px 52px 44px",
               position: "relative",
               zIndex: 1,
             }}
@@ -626,61 +700,82 @@ export async function renderShareCard(
             <div
               style={{
                 ...FLEX,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
               }}
             >
-              <div style={{ ...FLEX, flexDirection: "column", gap: 4 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={logoSrc}
-                  alt="Bianbi"
-                  width={220}
-                  height={44}
-                  style={{ objectFit: "contain", objectPosition: "left" }}
-                />
-                <div
-                  style={{
-                    ...FLEX,
-                    fontSize: 12,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: MUTED,
-                  }}
-                >
-                  {ui.productLabel}
-                </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={logoSrc}
+                alt="Bianbi"
+                width={260}
+                height={52}
+                style={{ objectFit: "contain" }}
+              />
+              <div
+                style={{
+                  ...FLEX,
+                  marginTop: 8,
+                  fontSize: 13,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: MUTED,
+                }}
+              >
+                {ui.productLabel}
               </div>
               <div
                 style={{
                   ...FLEX,
+                  marginTop: 14,
                   backgroundColor: TERRACOTTA,
                   color: "#FFFFFF",
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  padding: "8px 14px",
+                  padding: "9px 18px",
                   borderRadius: 999,
                 }}
               >
                 {truncate(m.interestLabel, 16)}
               </div>
+              <div
+                style={{
+                  ...FLEX,
+                  marginTop: 22,
+                  fontSize: 44,
+                  fontFamily: "Fraunces",
+                  fontWeight: 700,
+                  lineHeight: 1.08,
+                  color: INK,
+                  textAlign: "center",
+                  maxWidth: 860,
+                }}
+              >
+                {ui.snapshotTitle}
+              </div>
             </div>
 
             <div style={{ ...FLEX, marginTop: 28, width: "100%" }}>
-              <SnapshotGrid ui={ui} m={m} nearest={nearest} />
+              <SnapshotGrid
+                ui={ui}
+                m={m}
+                nearest={nearest}
+                variant="story"
+              />
             </div>
 
             <div
               style={{
                 ...FLEX,
-                marginTop: 14,
-                fontSize: 15,
+                marginTop: 18,
+                justifyContent: "center",
+                fontSize: 18,
                 fontWeight: 600,
-                letterSpacing: "0.04em",
-                color: TERRACOTTA,
+                letterSpacing: "0.02em",
+                color: INK,
               }}
             >
               {eventLine}
@@ -689,11 +784,14 @@ export async function renderShareCard(
             <div
               style={{
                 ...FLEX,
-                marginTop: 20,
+                flex: 1,
+                marginTop: 16,
                 width: "100%",
+                minHeight: storyMapHeight,
                 borderRadius: 28,
                 overflow: "hidden",
                 border: `1.5px solid ${LINE}`,
+                backgroundColor: "#FFFFFF",
                 boxShadow: "0 16px 40px rgba(22,26,34,0.1)",
               }}
             >
@@ -702,18 +800,17 @@ export async function renderShareCard(
                 venueLng={m.venueLng}
                 properties={L.properties}
                 locale={L.locale}
-                width={992}
-                height={520}
+                width={976}
+                height={storyMapHeight}
               />
             </div>
 
             <div
               style={{
                 ...FLEX,
-                marginTop: 28,
-                flexDirection: "row",
+                marginTop: 24,
+                flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "space-between",
                 gap: 16,
               }}
             >
@@ -722,11 +819,11 @@ export async function renderShareCard(
                   ...FLEX,
                   backgroundColor: MUSTARD,
                   color: INK,
-                  fontSize: 15,
+                  fontSize: 17,
                   fontWeight: 700,
-                  letterSpacing: "0.06em",
+                  letterSpacing: "0.08em",
                   textTransform: "uppercase",
-                  padding: "12px 22px",
+                  padding: "16px 36px",
                   borderRadius: 999,
                   boxShadow: "0 8px 20px rgba(225,181,58,0.35)",
                 }}
@@ -736,7 +833,7 @@ export async function renderShareCard(
               <div
                 style={{
                   ...FLEX,
-                  fontSize: 15,
+                  fontSize: 16,
                   color: MUTED,
                 }}
               >

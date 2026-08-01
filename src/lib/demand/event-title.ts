@@ -141,9 +141,9 @@ export function sportLandingHeadline(input: {
     return `${sport} en Santiago: duerme a ${mins} min de ${venue}`;
   }
   if (detail.length <= 48) {
-    return `${detail}: depto a ${mins} min de ${venue}`;
+    return `${detail}: alojamiento a ${mins} min de ${venue}`;
   }
-  return `Competencia en Santiago: depto a ${mins} min de ${venue}`;
+  return `Competencia en Santiago: alojamiento a ${mins} min de ${venue}`;
 }
 
 export function sportLandingSubhead(input: {

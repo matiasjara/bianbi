@@ -7,6 +7,13 @@ import {
   type PropertyStayGroup,
 } from "@/lib/demand/property-groups";
 import type { CampaignPackProperty } from "@/lib/demand/types";
+import { publicPropertyLocation } from "@/lib/demand/public-location";
+import {
+  formatStayReviews,
+  formatStayUnitOption,
+  STAY_RATING,
+  type StayListUi,
+} from "@/lib/i18n/stay-labels";
 
 const AIRBNB_BTN =
   "inline-flex items-center justify-center gap-1.5 rounded-lg bg-[var(--ms-airbnb,#FF5A5F)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-95";
@@ -14,12 +21,74 @@ const AIRBNB_BTN =
 const AIRBNB_BTN_LANDING =
   "inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#FF5A5F] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#E0484D]";
 
-type StayUi = {
-  minWalk: string;
-  ctaAirbnb: string;
-  stayUnitOption: (n: number) => string;
-  stayReviews: (n: number) => string;
-};
+function SuperhostBadge({ variant }: { variant: "microsite" | "landing" }) {
+  const badgeBg =
+    variant === "landing" ? "bg-[#FF5A5F]/10" : "bg-[var(--ms-coral)]/12";
+  const badgeText =
+    variant === "landing" ? "text-[#E0484D]" : "text-[var(--ms-coral,#E0484D)]";
+
+  return (
+    <span
+      className={`mt-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${badgeBg} ${badgeText}`}
+    >
+      Superhost
+    </span>
+  );
+}
+
+function StayUnitCta({
+  href,
+  label,
+  title,
+  locale,
+  reviewCount,
+  variant,
+}: {
+  href: string;
+  label: string;
+  title: string;
+  locale: StayListUi["locale"];
+  reviewCount?: number;
+  variant: "microsite" | "landing";
+}) {
+  const btnClass = variant === "landing" ? AIRBNB_BTN_LANDING : AIRBNB_BTN;
+  const flapBg =
+    variant === "landing"
+      ? "border-black/10 bg-white text-[#484848]"
+      : "border-[var(--ms-line)] bg-[var(--ms-paper,#fff)] text-[var(--ms-muted)]";
+  const flapAccent =
+    variant === "landing" ? "text-[#222]" : "text-[var(--ms-ink)]";
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="group inline-flex flex-col items-stretch"
+      title={title}
+    >
+      <span
+        className={`mb-[-1px] ml-3 inline-flex w-fit items-center gap-1 rounded-t-md border border-b-0 px-2.5 py-1 text-[10px] font-medium leading-none shadow-sm transition group-hover:brightness-[0.98] ${flapBg}`}
+      >
+        <span className={`inline-flex items-center gap-0.5 font-semibold ${flapAccent}`}>
+          {STAY_RATING.toFixed(1)}
+          <span className="text-[#FFB400]" aria-hidden>
+            ★
+          </span>
+        </span>
+        {reviewCount != null ? (
+          <>
+            <span aria-hidden className="opacity-40">
+              ·
+            </span>
+            <span>{formatStayReviews(locale, reviewCount)}</span>
+          </>
+        ) : null}
+      </span>
+      <span className={`${btnClass} min-w-[9.5rem]`}>{label}</span>
+    </a>
+  );
+}
 
 function StayGroupCard({
   group,
@@ -29,13 +98,12 @@ function StayGroupCard({
 }: {
   group: PropertyStayGroup;
   rank: number;
-  ui: StayUi;
+  ui: StayListUi;
   variant: "microsite" | "landing";
 }) {
   const title = group.buildingName ?? group.neighborhood;
   const photos =
     group.photos.length > 0 ? group.photos : [group.photo].filter(Boolean);
-  const btnClass = variant === "landing" ? AIRBNB_BTN_LANDING : AIRBNB_BTN;
   const tiltEven = rank % 2 === 0;
 
   return (
@@ -104,39 +172,32 @@ function StayGroupCard({
         >
           {title}
         </h3>
+        <SuperhostBadge variant={variant} />
         <p
           className={`mt-1 text-sm leading-relaxed ${
             variant === "landing" ? "text-[#6a6a6a]" : "text-[var(--ms-muted)]"
           }`}
         >
-          {group.address}
+          {publicPropertyLocation(group.neighborhood, group.address)}
         </p>
 
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap gap-x-3 gap-y-4">
           {group.units.map((unit, unitIdx) => {
             const label =
               group.units.length > 1
-                ? ui.stayUnitOption(unitIdx + 1)
+                ? formatStayUnitOption(ui.locale, unitIdx + 1)
                 : ui.ctaAirbnb;
-            const meta =
-              unit.reviewCount != null
-                ? ui.stayReviews(unit.reviewCount)
-                : null;
 
             return (
-              <a
+              <StayUnitCta
                 key={unit.slug}
                 href={unit.airbnbUrl}
-                target="_blank"
-                rel="noreferrer"
-                className={btnClass}
+                label={label}
                 title={unit.name}
-              >
-                <span>{label}</span>
-                {meta ? (
-                  <span className="font-normal opacity-90">· {meta}</span>
-                ) : null}
-              </a>
+                locale={ui.locale}
+                reviewCount={unit.reviewCount}
+                variant={variant}
+              />
             );
           })}
         </div>
@@ -151,7 +212,7 @@ export function MicrositeStayList({
   variant = "microsite",
 }: {
   properties: CampaignPackProperty[];
-  ui: StayUi;
+  ui: StayListUi;
   variant?: "microsite" | "landing";
 }) {
   const groups = groupPropertiesByLocation(properties);

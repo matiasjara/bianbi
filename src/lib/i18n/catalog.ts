@@ -1,4 +1,7 @@
 import { getPoi, properties as allProperties } from "@/lib/data/seed";
+import { distanceKm, walkingMinutes } from "@/lib/demand/geo";
+import { publicPropertyLocation } from "@/lib/demand/public-location";
+import type { CampaignPackProperty } from "@/lib/demand/types";
 import type { Locale } from "@/lib/i18n/locale";
 import type { Property } from "@/lib/types";
 
@@ -37,21 +40,21 @@ type CatalogUi = {
 
 const UI: Record<Locale, CatalogUi> = {
   es: {
-    metaTitle: "Departamentos en Santiago",
+    metaTitle: "Alojamientos en Santiago",
     metaDescription:
-      "Cinco departamentos en Santiago: Barrio Italia, Ñuñoa y Centro. Metro cerca, barrio seguro y reserva directa en Airbnb.",
+      "Alojamientos en Santiago: Barrio Italia, Ñuñoa y Centro. Metro cerca, barrio seguro y reserva directa en Airbnb.",
     eyebrow: "Santiago",
-    headline: "Departamentos para tu estadía en Santiago",
+    headline: "Alojamientos para tu estadía en Santiago",
     subhead:
       "Alojamientos nuevos y modernos, full equipados y en excelentes condiciones. Barrios seguros, metro cerca y reserva directa en Airbnb.",
-    ctaSee: "Ver departamentos",
-    whyTitle: "Por qué quedarte con nosotros",
+    ctaSee: "Ver alojamientos",
+    whyTitle: "Por qué estos alojamientos",
     whyBody:
-      "No es un hotel genérico: son departamentos completos en Santiago, pensados para llegar, descansar y moverte con facilidad.",
+      "No es un hotel genérico: son alojamientos completos en Santiago, pensados para llegar, descansar y moverte con facilidad.",
     attractionsTitle: "Atractivos cerca",
     attractionsBody:
-      "Barrios, venues y parques a los que llegas fácil desde nuestros deptos — conciertos, deporte, gastronomía o turismo.",
-    unitsTitle: "Nuestros departamentos",
+      "Barrios, venues y parques a los que llegas fácil desde los alojamientos — conciertos, deporte, gastronomía o turismo.",
+    unitsTitle: "Alojamientos",
     unitsBody:
       "Cinco opciones full equipadas en Barrio Italia, Ñuñoa y Santiago Centro. Hasta 3 huéspedes, cama matrimonial y sofá-cama.",
     nearby: "Cerca de",
@@ -67,8 +70,8 @@ const UI: Record<Locale, CatalogUi> = {
     ctaBook: "Reservar en Airbnb",
     paySafe: "Pago seguro · cancelación según política del anuncio",
     mapTitle: "Dónde están",
-    mapBody: "Ubicación de los departamentos en Santiago.",
-    mapUnit: "Departamento",
+    mapBody: "Ubicación de los alojamientos en Santiago.",
+    mapUnit: "Alojamiento",
     closeTitle: "Elige tu base en Santiago",
     closeBody:
       "Arriendas en Airbnb: pago protegido, check-in coordinado y reseñas reales. Nosotros te mostramos las opciones.",
@@ -78,21 +81,21 @@ const UI: Record<Locale, CatalogUi> = {
       "Este sitio no es parte de Airbnb ni está afiliado a Airbnb, Inc. No gestionamos arriendos, no cobramos reservas ni procesamos pagos: solo mostramos opciones y te redirigimos al anuncio oficial en Airbnb para que reserves allí.",
   },
   en: {
-    metaTitle: "Apartments in Santiago",
+    metaTitle: "Accommodations in Santiago",
     metaDescription:
-      "Five apartments in Santiago: Barrio Italia, Ñuñoa and Centro. Near the metro, safe neighborhoods, book direct on Airbnb.",
+      "Accommodations in Santiago: Barrio Italia, Ñuñoa and Centro. Near the metro, safe neighborhoods, book direct on Airbnb.",
     eyebrow: "Santiago",
-    headline: "Apartments for your stay in Santiago",
+    headline: "Accommodations for your stay in Santiago",
     subhead:
       "New, modern stays — fully equipped and in excellent condition. Safe neighborhoods, metro nearby, book direct on Airbnb.",
-    ctaSee: "See apartments",
-    whyTitle: "Why stay with us",
+    ctaSee: "See accommodations",
+    whyTitle: "Why these stays",
     whyBody:
-      "Not a generic hotel: full apartments in Santiago, made for arriving, resting, and getting around easily.",
+      "Not a generic hotel: full accommodations in Santiago, made for arriving, resting, and getting around easily.",
     attractionsTitle: "Nearby attractions",
     attractionsBody:
-      "Neighborhoods, venues and parks you can reach easily from our places — concerts, sports, food or sightseeing.",
-    unitsTitle: "Our apartments",
+      "Neighborhoods, venues and parks you can reach easily from the stays — concerts, sports, food or sightseeing.",
+    unitsTitle: "Accommodations",
     unitsBody:
       "Five fully equipped options in Barrio Italia, Ñuñoa and Santiago Centro. Up to 3 guests, queen bed and sofa bed.",
     nearby: "Near",
@@ -108,8 +111,8 @@ const UI: Record<Locale, CatalogUi> = {
     ctaBook: "Book on Airbnb",
     paySafe: "Secure payment · cancellation per listing policy",
     mapTitle: "Where they are",
-    mapBody: "Where the apartments are in Santiago.",
-    mapUnit: "Apartment",
+    mapBody: "Where the accommodations are in Santiago.",
+    mapUnit: "Stay",
     closeTitle: "Pick your base in Santiago",
     closeBody:
       "You book on Airbnb: protected payment, arranged check-in and real reviews. We just show the options.",
@@ -119,21 +122,21 @@ const UI: Record<Locale, CatalogUi> = {
       "This site is not part of Airbnb and is not affiliated with Airbnb, Inc. We do not manage rentals, take bookings, or process payments — we only show options and send you to the official Airbnb listing to book there.",
   },
   pt: {
-    metaTitle: "Apartamentos em Santiago",
+    metaTitle: "Alojamentos em Santiago",
     metaDescription:
-      "Cinco apartamentos em Santiago: Barrio Italia, Ñuñoa e Centro. Perto do metrô, bairro seguro e reserva direta no Airbnb.",
+      "Alojamentos em Santiago: Barrio Italia, Ñuñoa e Centro. Perto do metrô, bairro seguro e reserva direta no Airbnb.",
     eyebrow: "Santiago",
-    headline: "Apartamentos para sua estadia em Santiago",
+    headline: "Alojamentos para sua estadia em Santiago",
     subhead:
       "Acomodações novas e modernas, totalmente equipadas e em excelentes condições. Bairros seguros, metrô perto e reserva direta no Airbnb.",
-    ctaSee: "Ver apartamentos",
-    whyTitle: "Por que ficar conosco",
+    ctaSee: "Ver alojamentos",
+    whyTitle: "Por que estes alojamentos",
     whyBody:
-      "Não é um hotel genérico: são apartamentos completos em Santiago, pensados para chegar, descansar e se locomover com facilidade.",
+      "Não é um hotel genérico: são alojamentos completos em Santiago, pensados para chegar, descansar e se locomover com facilidade.",
     attractionsTitle: "Atrações por perto",
     attractionsBody:
-      "Bairros, venues e parques a que você chega fácil dos nossos aptos — shows, esporte, gastronomia ou turismo.",
-    unitsTitle: "Nossos apartamentos",
+      "Bairros, venues e parques a que você chega fácil dos alojamentos — shows, esporte, gastronomia ou turismo.",
+    unitsTitle: "Alojamentos",
     unitsBody:
       "Cinco opções totalmente equipadas em Barrio Italia, Ñuñoa e Santiago Centro. Até 3 hóspedes, cama de casal e sofá-cama.",
     nearby: "Perto de",
@@ -149,8 +152,8 @@ const UI: Record<Locale, CatalogUi> = {
     ctaBook: "Reservar no Airbnb",
     paySafe: "Pagamento seguro · cancelamento conforme o anúncio",
     mapTitle: "Onde ficam",
-    mapBody: "Localização dos apartamentos em Santiago.",
-    mapUnit: "Apartamento",
+    mapBody: "Localização dos alojamentos em Santiago.",
+    mapUnit: "Alojamento",
     closeTitle: "Escolha sua base em Santiago",
     closeBody:
       "Você aluga no Airbnb: pagamento protegido, check-in combinado e avaliações reais. Nós só mostramos as opções.",
@@ -364,4 +367,43 @@ export function getCatalogProperties(locale: Locale) {
         .filter((n): n is string => Boolean(n))
         .slice(0, 4),
     }));
+}
+
+/** Deptos en formato MicrositeStayList (agrupados por edificio). */
+export function getCatalogStayProperties(locale: Locale): CampaignPackProperty[] {
+  return allProperties
+    .filter((p) => p.isReal)
+    .map((p) => {
+      const nearestPoi = p.nearbyPoiIds
+        .map((id) => getPoi(id))
+        .find(Boolean);
+      const km = nearestPoi
+        ? distanceKm(p.lat, p.lng, nearestPoi.lat, nearestPoi.lng)
+        : 2;
+      const mins = walkingMinutes(km);
+
+      return {
+        code: p.code,
+        name: p.name,
+        slug: p.slug,
+        photo: p.photos[0] ?? "",
+        photos: p.photos,
+        capacity: p.capacity,
+        bedrooms: p.bedrooms,
+        neighborhood: p.neighborhood,
+        buildingName: p.buildingName,
+        address: publicPropertyLocation(p.neighborhood, p.address),
+        amenities: p.amenities.slice(0, 6),
+        distanceKm: Math.round(km * 100) / 100,
+        walkingMinutes: mins,
+        airbnbUrl: p.airbnbUrl,
+        lat: p.lat,
+        lng: p.lng,
+        metroStations: p.metroStations,
+        rating: p.rating ?? 5,
+        reviewCount: p.reviewCount,
+        isSuperhost: true,
+        pitch: pitchFor(p, locale),
+      };
+    });
 }

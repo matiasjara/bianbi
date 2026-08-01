@@ -7,6 +7,7 @@ import { BianbiLogo } from "@/components/brand/BianbiLogo";
 
 const links = [
   { href: "/propiedades", label: "Propiedades" },
+  { href: "/eventos", label: "Eventos" },
   { href: "/demanda", label: "Demanda" },
   { href: "/campanas", label: "Campañas" },
   { href: "/base-datos", label: "Base de datos" },

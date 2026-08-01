@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   title: string;
@@ -15,7 +16,6 @@ type Props = {
   shareImageLabel?: string;
   downloadImageLabel?: string;
   sharingLabel?: string;
-  shareHint?: string;
   previewTitle?: string;
   previewCloseLabel?: string;
   previewLoadingLabel?: string;
@@ -78,6 +78,48 @@ function IconLink({ className }: { className?: string }) {
   );
 }
 
+function IconCheck({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M5 12.5 9.5 17 19 7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconSpinner({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="opacity-25"
+      />
+      <path
+        d="M12 3a9 9 0 0 1 9 9"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function isShareCancelled(err: unknown): boolean {
+  return (
+    (err instanceof DOMException || err instanceof Error) &&
+    err.name === "AbortError"
+  );
+}
+
 export function MicrositeShareBar({
   title,
   shareText,
@@ -91,7 +133,6 @@ export function MicrositeShareBar({
   shareImageLabel = "Compartir guía",
   downloadImageLabel = "Guardar imagen",
   sharingLabel = "Preparando…",
-  shareHint = "Se comparte una mini-infografía + el link",
   previewTitle = "Vista previa",
   previewCloseLabel = "Cerrar",
   previewLoadingLabel = "Generando imagen…",
@@ -99,12 +140,18 @@ export function MicrositeShareBar({
   const [pageUrl, setPageUrl] = useState(path);
   const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [cardBlobUrl, setCardBlobUrl] = useState<string | null>(null);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   const cardUrl = `/api/share-card/${encodeURIComponent(slug)}?lang=${locale}&format=story`;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setPageUrl(`${window.location.origin}${path}`);
@@ -166,30 +213,40 @@ export function MicrositeShareBar({
   }
 
   async function copyLink() {
-    await navigator.clipboard.writeText(pageUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1600);
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      setError("No pudimos copiar el link. Intenta de nuevo.");
+    }
   }
 
   async function shareFromPreview(file: File) {
     const text = `${shareText}\n${pageUrl}`;
-    const canFiles =
-      typeof navigator.canShare === "function" &&
-      navigator.canShare({ files: [file] });
 
-    if (canFiles) {
-      await navigator.share({
-        files: [file],
-        title,
-        text,
-        url: pageUrl,
-      });
-      return;
-    }
+    try {
+      const canFiles =
+        typeof navigator.canShare === "function" &&
+        navigator.canShare({ files: [file] });
 
-    if (navigator.share) {
-      await navigator.share({ title, text, url: pageUrl });
-      return;
+      if (canFiles) {
+        await navigator.share({
+          files: [file],
+          title,
+          text,
+          url: pageUrl,
+        });
+        return;
+      }
+
+      if (navigator.share) {
+        await navigator.share({ title, text, url: pageUrl });
+        return;
+      }
+    } catch (err) {
+      if (isShareCancelled(err)) return;
+      throw err;
     }
 
     const a = document.createElement("a");
@@ -218,7 +275,7 @@ export function MicrositeShareBar({
   }, [fetchCardFile]);
 
   async function downloadImage() {
-    setBusy(true);
+    setDownloading(true);
     setError(null);
     try {
       const { file } = await fetchCardFile();
@@ -230,7 +287,7 @@ export function MicrositeShareBar({
     } catch {
       setError("No pudimos descargar la imagen. Intenta de nuevo.");
     } finally {
-      setBusy(false);
+      setDownloading(false);
     }
   }
 
@@ -244,13 +301,17 @@ export function MicrositeShareBar({
     ? "rounded-2xl border border-[var(--ms-line)] bg-white/75 p-3 backdrop-blur"
     : "rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur";
   const muted = light ? "text-[var(--ms-muted)]" : "text-white/50";
-  const ink = light ? "text-[var(--ms-ink)]" : "text-white";
   const circle =
     light
       ? "inline-flex size-11 items-center justify-center rounded-full border border-[var(--ms-line)] bg-[var(--ms-paper)] text-[var(--ms-ink)] transition hover:border-[var(--ms-olive)] hover:text-[var(--ms-olive)] disabled:opacity-50"
       : "inline-flex size-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20 disabled:opacity-50";
   const primary =
     "inline-flex items-center gap-2 rounded-full bg-[var(--ms-olive,#7d8b4e)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60";
+  const circleCopied = copied
+    ? light
+      ? "inline-flex size-11 items-center justify-center rounded-full border-2 border-[var(--ms-olive)] bg-[var(--ms-olive)]/10 text-[var(--ms-olive)] transition"
+      : "inline-flex size-11 items-center justify-center rounded-full border-2 border-emerald-300/90 bg-emerald-400/15 text-emerald-200 transition"
+    : circle;
 
   return (
     <>
@@ -288,7 +349,6 @@ export function MicrositeShareBar({
             >
               {shareLabel}
             </p>
-            <p className={`mt-1 text-sm ${ink}`}>{shareHint}</p>
             {error ? (
               <p className="mt-2 text-sm text-[var(--ms-terracotta,#D96A4B)]">
                 {error}
@@ -296,6 +356,10 @@ export function MicrositeShareBar({
             ) : null}
 
             <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="sr-only" aria-live="polite">
+                {copied ? copiedLabel : downloading ? sharingLabel : ""}
+              </span>
+
               <button
                 type="button"
                 className={primary}
@@ -321,122 +385,161 @@ export function MicrositeShareBar({
                 type="button"
                 className={circle}
                 onClick={downloadImage}
-                disabled={busy}
-                aria-label={downloadImageLabel}
-                title={downloadImageLabel}
+                disabled={downloading || busy}
+                aria-label={downloading ? sharingLabel : downloadImageLabel}
+                title={downloading ? sharingLabel : downloadImageLabel}
               >
-                <IconDownload className="size-5" />
+                {downloading ? (
+                  <IconSpinner className="size-5 animate-spin" />
+                ) : (
+                  <IconDownload className="size-5" />
+                )}
               </button>
 
               <button
                 type="button"
-                className={circle}
+                className={circleCopied}
                 onClick={copyLink}
                 aria-label={copied ? copiedLabel : copyLabel}
                 title={copied ? copiedLabel : copyLabel}
               >
-                <IconLink className="size-5" />
+                {copied ? (
+                  <IconCheck className="size-5" />
+                ) : (
+                  <IconLink className="size-5" />
+                )}
               </button>
             </div>
+            {copied ? (
+              <p
+                className={`mt-2 text-xs font-semibold ${
+                  light ? "text-[var(--ms-olive)]" : "text-emerald-200"
+                }`}
+              >
+                {copiedLabel}
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
 
-      {previewOpen ? (
-        <div
-          className="fixed inset-0 z-[100] flex items-end justify-center p-4 sm:items-center"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="share-preview-title"
-        >
-          <button
-            type="button"
-            className="absolute inset-0 bg-[var(--ms-ink,#161A22)]/70 backdrop-blur-sm"
-            aria-label={previewCloseLabel}
-            onClick={() => setPreviewOpen(false)}
-          />
-
-          <div className="relative z-10 flex max-h-[min(92vh,900px)] w-full max-w-sm flex-col overflow-hidden rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-paper)] shadow-2xl sm:max-w-md">
-            <div className="flex shrink-0 items-center justify-between border-b border-[var(--ms-line)] px-4 py-3">
-              <p
-                id="share-preview-title"
-                className="text-sm font-semibold text-[var(--ms-ink)]"
-              >
-                {previewTitle}
-              </p>
+      {mounted && previewOpen
+        ? createPortal(
+            <div
+              className="ms-share-preview fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="share-preview-title"
+            >
               <button
                 type="button"
+                className="absolute inset-0 bg-[var(--brand-carbon)]/40 backdrop-blur-[3px]"
+                aria-label={previewCloseLabel}
                 onClick={() => setPreviewOpen(false)}
-                className="rounded-lg px-2 py-1 text-sm font-semibold text-[var(--ms-muted)] transition hover:bg-[var(--ms-line)]/30 hover:text-[var(--ms-ink)]"
-              >
-                {previewCloseLabel}
-              </button>
-            </div>
+              />
 
-            <div className="min-h-0 flex-1 overflow-y-auto bg-[var(--ms-mist,#cfc9c0)]/20 p-3 sm:p-4">
-              {loadingPreview && !cardBlobUrl ? (
-                <p className="py-16 text-center text-sm text-[var(--ms-muted)]">
-                  {previewLoadingLabel}
-                </p>
-              ) : cardBlobUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={cardBlobUrl}
-                  alt={title}
-                  className="mx-auto block h-auto w-full max-w-[min(100%,320px)] rounded-xl shadow-lg"
-                />
-              ) : (
-                <p className="py-16 text-center text-sm text-[var(--ms-terracotta)]">
-                  {error ?? previewLoadingLabel}
-                </p>
-              )}
-            </div>
+              <div className="relative z-10 flex w-full max-w-[min(100%,22rem)] flex-col overflow-hidden rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-paper)] shadow-2xl sm:max-w-sm">
+                <div className="flex shrink-0 items-center justify-between border-b border-[var(--ms-line)] bg-[var(--ms-paper)] px-4 py-3">
+                  <p
+                    id="share-preview-title"
+                    className="text-sm font-semibold text-[var(--ms-ink)]"
+                  >
+                    {previewTitle}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewOpen(false)}
+                    className="rounded-lg px-2 py-1 text-sm font-semibold text-[var(--ms-muted)] transition hover:bg-[var(--ms-line)]/30 hover:text-[var(--ms-ink)]"
+                  >
+                    {previewCloseLabel}
+                  </button>
+                </div>
 
-            <div className="flex shrink-0 flex-wrap gap-2 border-t border-[var(--ms-line)] p-4">
-              <button
-                type="button"
-                className={primary}
-                disabled={busy || !cardBlobUrl}
-                onClick={async () => {
-                  setBusy(true);
-                  try {
-                    const { file } = await fetchCardFile();
-                    await shareFromPreview(file);
-                  } catch {
-                    setError(
-                      "No pudimos compartir la mini-infografía. Intenta de nuevo.",
-                    );
-                  } finally {
-                    setBusy(false);
-                  }
-                }}
-              >
-                <IconShare className="size-4" />
-                {busy ? sharingLabel : shareImageLabel}
-              </button>
+                <div className="overflow-y-auto overscroll-contain bg-[var(--ms-panel)] px-3 py-4 sm:px-4">
+                  {loadingPreview && !cardBlobUrl ? (
+                    <div className="flex flex-col items-center justify-center gap-3 py-12">
+                      <IconSpinner className="size-8 animate-spin text-[var(--ms-olive)]" />
+                      <p className="text-sm text-[var(--ms-muted)]">
+                        {previewLoadingLabel}
+                      </p>
+                    </div>
+                  ) : cardBlobUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={cardBlobUrl}
+                      alt={title}
+                      className="mx-auto block max-h-[min(calc(100vh-15rem),520px)] w-auto max-w-full object-contain rounded-xl shadow-lg"
+                    />
+                  ) : (
+                    <p className="py-12 text-center text-sm text-[var(--ms-terracotta)]">
+                      {error ?? previewLoadingLabel}
+                    </p>
+                  )}
+                </div>
 
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--ms-line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--ms-ink)] transition hover:border-[var(--ms-olive)] disabled:opacity-50"
-                disabled={busy || !cardBlobUrl}
-                onClick={downloadImage}
-              >
-                <IconDownload className="size-4" />
-                {downloadImageLabel}
-              </button>
+                <div className="flex shrink-0 flex-col gap-2 border-t border-[var(--ms-line)] bg-[var(--ms-panel)] p-4">
+                  <button
+                    type="button"
+                    className={`${primary} w-full justify-center`}
+                    disabled={busy || !cardBlobUrl}
+                    onClick={async () => {
+                      setBusy(true);
+                      try {
+                        const { file } = await fetchCardFile();
+                        await shareFromPreview(file);
+                      } catch {
+                        /* sin mensaje: el usuario puede reintentar */
+                      } finally {
+                        setBusy(false);
+                      }
+                    }}
+                  >
+                    <IconShare className="size-4" />
+                    {busy ? sharingLabel : shareImageLabel}
+                  </button>
 
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--ms-line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--ms-ink)] transition hover:border-[var(--ms-olive)]"
-                onClick={copyLink}
-              >
-                <IconLink className="size-4" />
-                {copied ? copiedLabel : copyLabel}
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--ms-line)] bg-[var(--ms-paper)] px-3 py-2.5 text-sm font-semibold text-[var(--ms-ink)] transition hover:border-[var(--ms-olive)] disabled:opacity-50"
+                      disabled={downloading || busy || !cardBlobUrl}
+                      onClick={downloadImage}
+                    >
+                      {downloading ? (
+                        <IconSpinner className="size-4 shrink-0 animate-spin" />
+                      ) : (
+                        <IconDownload className="size-4 shrink-0" />
+                      )}
+                      <span className="truncate">
+                        {downloading ? sharingLabel : downloadImageLabel}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`inline-flex items-center justify-center gap-2 rounded-full border px-3 py-2.5 text-sm font-semibold transition ${
+                        copied
+                          ? "border-[var(--ms-olive)] bg-[var(--ms-olive)]/10 text-[var(--ms-olive)]"
+                          : "border-[var(--ms-line)] bg-[var(--ms-paper)] text-[var(--ms-ink)] hover:border-[var(--ms-olive)]"
+                      }`}
+                      onClick={copyLink}
+                    >
+                      {copied ? (
+                        <IconCheck className="size-4 shrink-0" />
+                      ) : (
+                        <IconLink className="size-4 shrink-0" />
+                      )}
+                      <span className="truncate">
+                        {copied ? copiedLabel : copyLabel}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

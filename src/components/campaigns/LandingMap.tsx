@@ -18,7 +18,7 @@ type Props = {
 
 function pinHtml(kind: MapMarker["kind"], label: string) {
   const bg = kind === "venue" ? "#222222" : "#FF5A5F";
-  const title = kind === "venue" ? "Evento" : "Depto";
+  const title = kind === "venue" ? "Evento" : "Alojamiento";
   return `<div style="display:flex;flex-direction:column;align-items:center;transform:translateY(-4px)">
     <div style="background:${bg};color:#fff;font:600 11px/1.2 system-ui,sans-serif;padding:6px 8px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.25)">${title}</div>
     <div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid ${bg}"></div>
@@ -66,7 +66,7 @@ export function LandingMap({ markers, className }: Props) {
         const popup =
           m.kind === "venue"
             ? `<strong>Evento</strong><br/>${m.label}`
-            : `<strong>Departamento</strong><br/>${m.label}`;
+            : `<strong>Alojamiento</strong><br/>${m.label}`;
         L.marker([m.lat, m.lng], { icon }).addTo(map).bindPopup(popup);
         bounds.extend([m.lat, m.lng]);
       }
@@ -94,7 +94,7 @@ export function LandingMap({ markers, className }: Props) {
       ref={containerRef}
       className={className ?? "h-80 w-full"}
       role="img"
-      aria-label="Mapa con evento y departamentos"
+      aria-label="Mapa con evento y alojamientos"
     />
   );
 }

@@ -184,6 +184,18 @@ body {
   z-index: 1;
 }
 
+/* Portal de vista previa (fuera de .ms-root) */
+.ms-share-preview {
+  --ms-ink: var(--brand-carbon);
+  --ms-muted: color-mix(in oklab, var(--brand-carbon) 55%, var(--brand-arena));
+  --ms-line: var(--brand-arena);
+  --ms-paper: var(--brand-crema);
+  --ms-panel: #faf7f1;
+  --ms-mist: var(--brand-arena);
+  --ms-olive: var(--brand-oliva);
+  --ms-terracotta: var(--brand-terracota);
+}
+
 /* Titulares / relatos — tipografía secundaria editorial */
 .ms-editorial {
   font-family: var(--font-editorial), Georgia, "Times New Roman", serif;

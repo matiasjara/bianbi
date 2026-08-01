@@ -12,7 +12,6 @@ type Ui = {
   shareImageLabel: string;
   downloadImageLabel: string;
   sharingLabel: string;
-  shareHint: string;
   previewTitle: string;
   previewCloseLabel: string;
   previewLoadingLabel: string;
@@ -68,7 +67,6 @@ const UI: Record<Locale, Ui> = {
     shareImageLabel: "Compartir guía",
     downloadImageLabel: "Guardar imagen",
     sharingLabel: "Preparando…",
-    shareHint: "Se comparte una mini-infografía + el link",
     previewTitle: "Vista previa",
     previewCloseLabel: "Cerrar",
     previewLoadingLabel: "Generando imagen…",
@@ -94,7 +92,7 @@ const UI: Record<Locale, Ui> = {
     kickerMap: "03 · Ubicación",
     titleMap: "Mapa del plan",
     mapBody: (venue) =>
-      `${venue} y departamentos cercanos para llegar sin estrés.`,
+      `${venue} y alojamientos cercanos para llegar sin estrés.`,
     kickerTips: "04 · Pro tips",
     titleTips: "Recomendaciones",
     kickerWeather: "05 · Ambiente",
@@ -106,7 +104,7 @@ const UI: Record<Locale, Ui> = {
     kickerStay: "08 · Reserva",
     titleStay: "Dónde alojar",
     stayBody: (venue) =>
-      `Departamentos cerca de ${venue}. Ordenados por cercanía. Reserva en Airbnb.`,
+      `Alojamientos cerca de ${venue}. Ordenados por cercanía. Reserva en Airbnb.`,
     stayUnitOption: (n) => `Unidad ${n}`,
     stayReviews: (n) => `${n} reseña${n === 1 ? "" : "s"}`,
     minWalk: "min",
@@ -125,7 +123,6 @@ const UI: Record<Locale, Ui> = {
     shareImageLabel: "Share guide",
     downloadImageLabel: "Save image",
     sharingLabel: "Preparing…",
-    shareHint: "Shares a mini-infographic + the link",
     previewTitle: "Preview",
     previewCloseLabel: "Close",
     previewLoadingLabel: "Generating image…",
@@ -182,7 +179,6 @@ const UI: Record<Locale, Ui> = {
     shareImageLabel: "Compartilhar guia",
     downloadImageLabel: "Salvar imagem",
     sharingLabel: "Preparando…",
-    shareHint: "Compartilha um mini-infográfico + o link",
     previewTitle: "Pré-visualização",
     previewCloseLabel: "Fechar",
     previewLoadingLabel: "Gerando imagem…",

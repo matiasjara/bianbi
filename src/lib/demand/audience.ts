@@ -232,7 +232,7 @@ function buildRationale(
 
   const primary = geoTargets[0];
   const stayOffer =
-    "En Santiago hay departamentos verificados cerca del recinto: llegar, descansar y caminar al partido/evento sin perder tiempo en traslados.";
+    "En Santiago hay alojamientos verificados cerca del recinto: llegar, descansar y caminar al partido/evento sin perder tiempo en traslados.";
 
   if (primary?.type === "country") {
     return {
@@ -287,9 +287,9 @@ function buildRationale(
 
   if (lead?.kind === "seasonality" || lead?.kind === "tourism_flow") {
     return {
-      rationale: `${title}: flujo estacional/turístico. Apuntar a orígenes típicos del flujo (p. ej. Brasil en temporada de nieve) con oferta de depto en Santiago.`,
+      rationale: `${title}: flujo estacional/turístico. Apuntar a orígenes típicos del flujo (p. ej. Brasil en temporada de nieve) con oferta de alojamiento en Santiago.`,
       stayOffer:
-        "Deptos reales en barrios bien conectados, pensados para estadías de varios días.",
+        "Alojamientos en barrios bien conectados, pensados para estadías de varios días.",
     };
   }
 

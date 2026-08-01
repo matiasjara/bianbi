@@ -3,9 +3,13 @@ import Link from "next/link";
 import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { BrandIcon } from "@/components/brand/BrandIcon";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
+import { HomeEventCalendar } from "@/components/home/HomeEventCalendar";
+import { HorizontalScrollRow } from "@/components/home/HorizontalScrollRow";
 import type { BrandIconName } from "@/lib/brand/icons";
 import { properties } from "@/lib/data/seed";
 import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
+import type { CalendarEvent } from "@/lib/demand/event-calendar";
+import { parseMonthParam } from "@/lib/demand/month-range";
 import { micrositePath } from "@/lib/demand/travel-brief";
 import {
   buildRotatingSequenceMap,
@@ -163,10 +167,36 @@ function GuideCard({
   );
 }
 
-export default async function HomePage() {
-  const packs = sortUpcoming(await loadAllCampaignPacks(28));
-  const photoSequence = buildRotatingSequenceMap(packs);
-  const featured = packs.slice(0, 6);
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ year?: string; month?: string }>;
+}) {
+  const params = await searchParams;
+  const { year, monthIndex } = parseMonthParam(params.year, params.month);
+
+  const [packs, monthPacks] = await Promise.all([
+    loadAllCampaignPacks(28),
+    loadAllCampaignPacks({ year, monthIndex, limit: 80 }),
+  ]);
+
+  const sortedPacks = sortUpcoming(packs);
+  const photoSequence = buildRotatingSequenceMap(sortedPacks);
+  const monthPhotoSequence = buildRotatingSequenceMap(monthPacks);
+
+  const calendarEvents: CalendarEvent[] = monthPacks
+    .filter((p) => p.microsite)
+    .map((p) => ({
+      slug: p.slug,
+      title: p.microsite!.guideTitle,
+      start: p.eventStartsOn,
+      end: p.eventEndsOn,
+      interestLabel: p.interestLabel,
+      venueName: p.venueName,
+      eventDates: p.eventDates,
+      coverUrl: coverFor(p, monthPhotoSequence),
+    }));
+  const featured = sortedPacks.slice(0, 6);
   const realProperties = properties.filter((p) => p.isReal && p.photos[0]);
   const stayPhotos = (
     ["prop-e801", "prop-z114", "prop-t112", "prop-z107"] as const
@@ -184,7 +214,7 @@ export default async function HomePage() {
 
   const categories = CATEGORIES.map((cat) => ({
     ...cat,
-    packs: packs.filter((p) => cat.interests.includes(p.interest)),
+    packs: sortedPacks.filter((p) => cat.interests.includes(p.interest)),
   })).filter((c) => c.packs.length > 0);
 
   const jsonLd = {
@@ -239,10 +269,10 @@ export default async function HomePage() {
             </p>
             <div className="ms-rise ms-rise-d3 mt-8 flex flex-wrap gap-3">
               <a
-                href="#destacadas"
+                href="#calendario"
                 className="inline-flex items-center rounded-lg bg-[var(--ms-ink)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-black"
               >
-                Ver guías
+                Ver calendario
               </a>
               <Link
                 href="/santiago"
@@ -286,6 +316,20 @@ export default async function HomePage() {
           </div>
         </div>
       </header>
+
+      {/* CALENDARIO */}
+      <section
+        id="calendario"
+        className="scroll-mt-8 border-b border-[var(--ms-line)]/70 px-5 py-8 md:py-10"
+      >
+        <div className="mx-auto max-w-6xl">
+          <HomeEventCalendar
+            year={year}
+            monthIndex={monthIndex}
+            events={calendarEvents}
+          />
+        </div>
+      </section>
 
       {/* CATEGORÍAS */}
       <section className="border-b border-[var(--ms-line)]/70 px-5 py-12 md:py-14">
@@ -360,7 +404,7 @@ export default async function HomePage() {
             <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((pack, i) => (
                 <GuideCard
-                  key={pack.slug}
+                  key={pack.campaignId}
                   pack={pack}
                   tilt={i % 2 === 0 ? "l" : "r"}
                   sequenceMap={photoSequence}
@@ -389,13 +433,16 @@ export default async function HomePage() {
                   {cat.packs.length}
                 </span>
               </div>
-              <div className="mt-7 flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <HorizontalScrollRow className="mt-7">
                 {cat.packs.slice(0, 8).map((pack) => (
-                  <div key={pack.slug} className="w-[260px] shrink-0 sm:w-[280px]">
+                  <div
+                    key={pack.campaignId}
+                    className="w-[260px] shrink-0 sm:w-[280px]"
+                  >
                     <GuideCard pack={pack} sequenceMap={photoSequence} />
                   </div>
                 ))}
-              </div>
+              </HorizontalScrollRow>
             </div>
           </section>
         ))}

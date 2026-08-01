@@ -2,6 +2,10 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { buildSeasonalitySignals } from "./seasonality";
 import { enrichSignalPotentials } from "./calendar";
+import {
+  applySignalAdmin,
+  loadSignalAdminState,
+} from "./signal-admin";
 import type { DemandSignal } from "./types";
 
 async function readJsonSafe<T>(file: string, fallback: T): Promise<T> {
@@ -59,7 +63,9 @@ export async function loadAllSignals(): Promise<{
   }
 
   // Recalcula potencial de eventos (BTS ≠ teatro chico) aunque el JSON sea viejo
-  const signals = enrichSignalPotentials([...byId.values()]);
+  const enriched = enrichSignalPotentials([...byId.values()]);
+  const admin = await loadSignalAdminState();
+  const signals = applySignalAdmin(enriched, admin);
   const sourceCounts: Record<string, number> = {};
   for (const s of signals) {
     sourceCounts[s.source] = (sourceCounts[s.source] ?? 0) + 1;
