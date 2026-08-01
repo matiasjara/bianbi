@@ -6,11 +6,19 @@ import { verifySessionToken } from "@/lib/auth/session";
 function isPublicPath(pathname: string): boolean {
   if (pathname === "/login") return true;
   if (pathname === "/c" || pathname.startsWith("/c/")) return true;
+  if (pathname === "/santiago") return true;
+  if (pathname === "/quedate") return true; // redirect abajo
   return false;
 }
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (pathname === "/quedate") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/santiago";
+    return NextResponse.redirect(url, 308);
+  }
 
   if (isPublicPath(pathname)) {
     if (pathname === "/login") {
@@ -44,7 +52,7 @@ export const config = {
   matcher: [
     /*
      * Todo excepto estáticos de Next y assets comunes.
-     * Landings /c/* y /login se dejan pasar en el handler.
+     * Públicos: /login, /c/*, /santiago.
      */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],

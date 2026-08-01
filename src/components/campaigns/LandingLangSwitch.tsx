@@ -1,14 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { LANG_COOKIE, LOCALE_LABELS, LOCALES, type Locale } from "@/lib/i18n/locale";
+import {
+  LANG_COOKIE,
+  LOCALE_LABELS,
+  LOCALES,
+  type Locale,
+} from "@/lib/i18n/locale";
 
 export function LandingLangSwitch({
-  slug,
   locale,
+  basePath,
 }: {
-  slug: string;
   locale: Locale;
+  /** Ruta pública, p.ej. `/c/mi-slug` o `/santiago` */
+  basePath: string;
 }) {
   return (
     <div
@@ -21,7 +27,7 @@ export function LandingLangSwitch({
         return (
           <Link
             key={code}
-            href={`/c/${slug}?lang=${code}`}
+            href={`${basePath}?lang=${code}`}
             hrefLang={code}
             prefetch={false}
             onClick={() => {

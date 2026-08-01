@@ -1,28 +1,29 @@
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
-import { notFound } from "next/navigation";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
-import { localizeLanding } from "@/lib/i18n/landing";
+import {
+  getCatalogAttractions,
+  getCatalogProperties,
+  getCatalogUi,
+  getCatalogWhyPoints,
+} from "@/lib/i18n/catalog";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
-import { loadCampaignPackBySlug } from "@/lib/demand/load-campaign-packs";
 
 export const dynamic = "force-dynamic";
 
 type Props = {
-  params: Promise<{ slug: string }>;
   searchParams: Promise<{ lang?: string }>;
 };
 
-/** Color de acento Airbnb (Rausch) — solo color, sin logo. */
 const AIRBNB_BTN =
   "inline-flex items-center justify-center rounded-lg bg-[#FF5A5F] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#E0484D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF5A5F]";
 
 const AIRBNB_BTN_LG =
   "inline-flex items-center justify-center rounded-lg bg-[#FF5A5F] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-[#E0484D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF5A5F]";
 
-async function resolveLandingLocale(searchLang?: string) {
+async function resolveCatalogLocale(searchLang?: string) {
   const hdrs = await headers();
   const jar = await cookies();
   return resolveLocale({
@@ -33,48 +34,38 @@ async function resolveLandingLocale(searchLang?: string) {
 }
 
 export async function generateMetadata({
-  params,
   searchParams,
 }: Props): Promise<Metadata> {
-  const { slug } = await params;
   const sp = await searchParams;
-  const pack = await loadCampaignPackBySlug(slug);
-  if (!pack) return { title: "Bianbi" };
-  const locale = await resolveLandingLocale(sp.lang);
-  const L = localizeLanding(pack, locale);
+  const locale = await resolveCatalogLocale(sp.lang);
+  const ui = getCatalogUi(locale);
   return {
-    title: L.headline,
-    description: L.subhead,
+    title: ui.metaTitle,
+    description: ui.metaDescription,
     alternates: {
       languages: {
-        es: `/c/${slug}?lang=es`,
-        en: `/c/${slug}?lang=en`,
-        pt: `/c/${slug}?lang=pt`,
+        es: "/santiago?lang=es",
+        en: "/santiago?lang=en",
+        pt: "/santiago?lang=pt",
       },
     },
   };
 }
 
-export default async function CampaignLandingPage({
-  params,
-  searchParams,
-}: Props) {
-  const { slug } = await params;
+export default async function CatalogStayPage({ searchParams }: Props) {
   const sp = await searchParams;
-  const pack = await loadCampaignPackBySlug(slug);
-  if (!pack) notFound();
-
-  const locale = await resolveLandingLocale(sp.lang);
-  const L = localizeLanding(pack, locale);
-  const { ui } = L;
-
-  const lead = L.properties[0];
+  const locale = await resolveCatalogLocale(sp.lang);
+  const ui = getCatalogUi(locale);
+  const why = getCatalogWhyPoints(locale);
+  const attractions = getCatalogAttractions(locale);
+  const units = getCatalogProperties(locale);
+  const lead = units[0];
 
   const propertyPins = new Map<
     string,
     { lat: number; lng: number; label: string; kind: "property" }
   >();
-  for (const p of L.properties) {
+  for (const p of units) {
     const key = `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`;
     if (!propertyPins.has(key)) {
       propertyPins.set(key, {
@@ -85,60 +76,36 @@ export default async function CampaignLandingPage({
       });
     }
   }
-  const mapMarkers = [
-    {
-      lat: pack.venueLat,
-      lng: pack.venueLng,
-      label: pack.venueName,
-      kind: "venue" as const,
-    },
-    ...propertyPins.values(),
-  ];
 
   return (
     <div lang={locale} className="min-h-screen bg-[#f7f4f0] text-[#222222]">
       <div
         className="relative min-h-[78vh] overflow-hidden"
         style={{
-          backgroundImage: lead?.photo
-            ? `linear-gradient(180deg, rgba(34,34,34,0.25) 0%, rgba(34,34,34,0.72) 55%, rgba(34,34,34,0.92) 100%), url(${lead.photo}?im_w=1440)`
+          backgroundImage: lead?.photos[0]
+            ? `linear-gradient(180deg, rgba(34,34,34,0.25) 0%, rgba(34,34,34,0.72) 55%, rgba(34,34,34,0.92) 100%), url(${lead.photos[0]}?im_w=1440)`
             : "linear-gradient(160deg, #2b2b2b, #111)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <LandingLangSwitch basePath={`/c/${slug}`} locale={locale} />
+        <LandingLangSwitch basePath="/santiago" locale={locale} />
         <div className="mx-auto flex min-h-[78vh] max-w-4xl flex-col justify-end px-5 pb-14 pt-24">
+          <p className="animate-rise mb-3 font-[family-name:var(--font-display)] text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
+            Bianbi
+          </p>
           <p className="animate-rise mb-3 text-xs font-medium uppercase tracking-[0.2em] text-white/75">
-            {pack.venueName} · {pack.eventDates}
+            {ui.eyebrow}
           </p>
           <h1 className="animate-rise max-w-3xl font-[family-name:var(--font-display)] text-4xl leading-[1.1] text-white md:text-5xl">
-            {L.headline}
+            {ui.headline}
           </h1>
           <p className="animate-rise-delay mt-4 max-w-2xl text-lg leading-relaxed text-white/90">
-            {L.subhead}
+            {ui.subhead}
           </p>
-
-          <p className="animate-rise-delay mt-5 max-w-2xl text-sm text-white/80">
-            {L.heroLine}
-          </p>
-
-          <div className="animate-rise-delay mt-8 flex flex-wrap gap-3">
-            {lead ? (
-              <a
-                href={lead.airbnbUrl}
-                target="_blank"
-                rel="noreferrer"
-                className={AIRBNB_BTN_LG}
-              >
-                {ui.ctaAirbnb}
-              </a>
-            ) : null}
-            <a
-              href="#deptos"
-              className="inline-flex items-center justify-center rounded-lg border border-white/55 bg-white/10 px-6 py-3.5 text-base font-medium text-white backdrop-blur-sm transition hover:bg-white/20"
-            >
-              {ui.ctaSeeUnits}
+          <div className="animate-rise-delay mt-8">
+            <a href="#deptos" className={AIRBNB_BTN_LG}>
+              {ui.ctaSee}
             </a>
           </div>
         </div>
@@ -150,11 +117,11 @@ export default async function CampaignLandingPage({
             {ui.whyTitle}
           </h2>
           <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-[#6a6a6a]">
-            {ui.whyBody(pack.venueName)}
+            {ui.whyBody}
           </p>
           <ol className="mt-8 space-y-5">
-            {L.trustPoints.map((point, i) => (
-              <li key={`${locale}-${i}`} className="flex gap-4">
+            {why.map((point, i) => (
+              <li key={`${locale}-why-${i}`} className="flex gap-4">
                 <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-[#222] text-xs font-semibold text-white">
                   {i + 1}
                 </span>
@@ -167,31 +134,55 @@ export default async function CampaignLandingPage({
         </div>
       </section>
 
+      <section className="border-b border-black/8 bg-[#f7f4f0]">
+        <div className="mx-auto max-w-4xl px-5 py-14">
+          <h2 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl">
+            {ui.attractionsTitle}
+          </h2>
+          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-[#6a6a6a]">
+            {ui.attractionsBody}
+          </p>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+            {attractions.map((a) => (
+              <li key={a.id} className="border-t border-black/10 pt-4">
+                <p className="font-[family-name:var(--font-display)] text-lg text-[#222]">
+                  {a.name}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-[#6a6a6a]">
+                  {a.blurb}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section id="deptos" className="mx-auto max-w-4xl px-5 py-14">
         <h2 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl">
           {ui.unitsTitle}
         </h2>
         <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-[#6a6a6a]">
-          {ui.unitsBody(pack.venueName)}
+          {ui.unitsBody}
         </p>
 
         <div className="mt-10 space-y-8">
-          {L.properties.map((prop, idx) => (
+          {units.map((prop) => (
             <article
-              key={prop.slug}
+              key={prop.id}
               className="overflow-hidden rounded-2xl border border-black/8 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] md:grid md:grid-cols-[320px_1fr]"
             >
               <PhotoStoryCarousel
-                photos={
-                  prop.photos.length ? prop.photos : [prop.photo].filter(Boolean)
-                }
+                photos={prop.photos}
                 alt={prop.name}
                 caption={prop.neighborhood}
                 className="h-72 w-full md:h-full md:min-h-[360px]"
               />
               <div className="flex flex-col p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6a6a6a]">
-                  {ui.option(idx + 1, prop.walkingMinutes, prop.distanceKm)}
+                  {prop.neighborhood}
+                  {prop.metroStations[0]
+                    ? ` · ${ui.metro} ${prop.metroStations[0]}`
+                    : ""}
                 </p>
                 <h3 className="mt-2 font-[family-name:var(--font-display)] text-xl leading-snug">
                   {prop.name}
@@ -199,6 +190,15 @@ export default async function CampaignLandingPage({
                 <p className="mt-2 text-sm leading-relaxed text-[#484848]">
                   {prop.pitchLocalized}
                 </p>
+
+                {prop.nearbyLabels.length > 0 ? (
+                  <p className="mt-3 text-sm text-[#6a6a6a]">
+                    <span className="font-medium text-[#222]">
+                      {ui.nearby}:
+                    </span>{" "}
+                    {prop.nearbyLabels.join(" · ")}
+                  </p>
+                ) : null}
 
                 <ul className="mt-4 grid gap-2 text-sm text-[#222] sm:grid-cols-2">
                   <li>
@@ -216,14 +216,7 @@ export default async function CampaignLandingPage({
                     {ui.bedsValue}
                   </li>
                   <li>
-                    <span className="text-[#6a6a6a]">
-                      {locale === "en"
-                        ? "Capacity"
-                        : locale === "pt"
-                          ? "Capacidade"
-                          : "Capacidad"}
-                      :
-                    </span>{" "}
+                    <span className="text-[#6a6a6a]">{ui.capacityLabel}:</span>{" "}
                     {ui.capacity(prop.capacity, prop.bedrooms)}
                   </li>
                   {prop.rating != null && prop.reviewCount != null ? (
@@ -272,20 +265,19 @@ export default async function CampaignLandingPage({
             {ui.mapTitle}
           </h2>
           <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-[#6a6a6a]">
-            {ui.mapBody(pack.venueName)}
+            {ui.mapBody}
           </p>
           <div className="mt-4 flex flex-wrap gap-4 text-xs text-[#6a6a6a]">
-            <span className="inline-flex items-center gap-2">
-              <span className="inline-block size-2.5 rounded-full bg-[#222]" />
-              {ui.mapEvent}
-            </span>
             <span className="inline-flex items-center gap-2">
               <span className="inline-block size-2.5 rounded-full bg-[#FF5A5F]" />
               {ui.mapUnit}
             </span>
           </div>
           <div className="mt-5 overflow-hidden rounded-2xl border border-black/8">
-            <LandingMap markers={mapMarkers} className="h-96 w-full" />
+            <LandingMap
+              markers={[...propertyPins.values()]}
+              className="h-96 w-full"
+            />
           </div>
         </div>
       </section>
@@ -296,16 +288,14 @@ export default async function CampaignLandingPage({
             {ui.closeTitle}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-[15px] leading-relaxed text-white/75">
-            {ui.closeBody(pack.eventDates, pack.venueName)}
+            {ui.closeBody}
           </p>
           {lead ? (
             <a
-              href={lead.airbnbUrl}
-              target="_blank"
-              rel="noreferrer"
+              href="#deptos"
               className={`${AIRBNB_BTN_LG} mt-8`}
             >
-              {ui.ctaGoAirbnb}
+              {ui.ctaSee}
             </a>
           ) : null}
         </div>
@@ -318,7 +308,7 @@ export default async function CampaignLandingPage({
         >
           BIANBI
         </p>
-        <p className="mt-6">{ui.footerStay(pack.eventDates)}</p>
+        <p className="mt-6">{ui.footerStay}</p>
         <p className="mx-auto mt-3 max-w-2xl">{ui.footerDisclaimer}</p>
       </footer>
     </div>

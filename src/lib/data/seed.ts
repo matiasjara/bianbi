@@ -54,9 +54,10 @@ const BUILDING_TOESCA = {
   address: "Toesca 112, Santiago, Región Metropolitana, Chile",
   metroStations: ["Toesca"],
   nearbyPoiIds: [
-    "poi-fantasilandia", // ~0.8 km
-    "poi-santa-lucia", // ~2.5 km
-    "poi-lastarria", // ~2.7 km
+    "poi-ohiggins",
+    "poi-club-hipico",
+    "poi-movistar",
+    "poi-fantasilandia",
   ],
   audiences: [
     "parejas",
@@ -246,7 +247,7 @@ export const properties: Property[] = [
     ],
     airbnbUrl: "https://www.airbnb.cl/rooms/1575446462764908645",
     description:
-      "Departamento moderno en Santiago Centro con cama matrimonial y sofá-cama (hasta 3 huéspedes), a minutos del Metro Toesca y cerca de Fantasilandia / Parque O'Higgins. Sin estacionamiento.",
+      "Departamento moderno en Santiago Centro con cama matrimonial y sofá-cama (hasta 3 huéspedes), a minutos del Metro Toesca y cerca de Parque O'Higgins, Club Hípico, Movistar Arena y Fantasilandia. Sin estacionamiento.",
     rating: 5.0,
     reviewCount: 9,
     isSuperhost: true,
@@ -332,6 +333,28 @@ export const pois: Poi[] = [
     influenceRadiusKm: 2,
     seasonality: "Vacaciones y fines de semana familiares",
     description: "Parque de diversiones en el Parque O'Higgins.",
+  },
+  {
+    id: "poi-ohiggins",
+    name: "Parque O'Higgins",
+    slug: "parque-ohiggins",
+    category: "atraccion",
+    lat: -33.4618,
+    lng: -70.6605,
+    influenceRadiusKm: 2,
+    seasonality: "Fines de semana, ferias y eventos al aire libre",
+    description: "Gran parque urbano con espacios verdes y eventos.",
+  },
+  {
+    id: "poi-club-hipico",
+    name: "Club Hípico",
+    slug: "club-hipico",
+    category: "venue",
+    lat: -33.4672,
+    lng: -70.6678,
+    influenceRadiusKm: 2,
+    seasonality: "Carreras y eventos",
+    description: "Histórico club hípico de Santiago.",
   },
 ];
 
