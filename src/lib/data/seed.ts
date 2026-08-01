@@ -12,9 +12,9 @@ const BUILDING_ITALIA = {
   metroStations: ["Irarrázaval"],
   nearbyPoiIds: [
     "poi-italia", // ~1.2 km
-    "poi-movistar", // ~1.9 km
     "poi-estadio", // ~2.0 km
     "poi-lastarria", // ~2.2 km
+    "poi-movistar", // ~3.0 km
     "poi-fantasilandia", // ~3.0 km
   ],
   audiences: [
@@ -35,8 +35,8 @@ const BUILDING_ESTADIO = {
   metroStations: ["Ñuñoa", "Estadio Nacional"],
   nearbyPoiIds: [
     "poi-estadio", // ~0.9 km
-    "poi-movistar", // ~1.2 km
     "poi-italia", // ~3.0 km
+    "poi-movistar", // ~4.8 km
   ],
   audiences: [
     "parejas",
@@ -54,9 +54,9 @@ const BUILDING_TOESCA = {
   address: "Toesca 112, Santiago, Región Metropolitana, Chile",
   metroStations: ["Toesca"],
   nearbyPoiIds: [
+    "poi-movistar", // ~1.1 km
     "poi-ohiggins",
     "poi-club-hipico",
-    "poi-movistar",
     "poi-fantasilandia",
   ],
   audiences: [
@@ -262,8 +262,9 @@ export const pois: Poi[] = [
     name: "Movistar Arena",
     slug: "movistar-arena",
     category: "venue",
-    lat: -33.4625,
-    lng: -70.611,
+    // Av. Beaucheff 1204 · Parque O'Higgins
+    lat: -33.46278,
+    lng: -70.66194,
     influenceRadiusKm: 3,
     seasonality: "Todo el año — peaks en conciertos",
     description: "Principal arena de conciertos y eventos masivos de Santiago.",

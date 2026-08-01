@@ -89,31 +89,53 @@ function resolveAnchorPoi(peak: DemandPeak, intentionSlug: string) {
     if (poi) return poi;
   }
 
-  const preferred =
-    fromSignals.find((id) => id === "poi-estadio") ||
-    fromSignals.find((id) => id === "poi-movistar") ||
-    fromSignals.find((id) => id === "poi-fantasilandia") ||
-    fromSignals[0];
+  // Orden por interés: no mezclar Estadio (fútbol) con Movistar (conciertos)
+  const preferredOrder =
+    peak.interest === "concierto"
+      ? ["poi-movistar", "poi-ohiggins", "poi-fantasilandia", "poi-estadio"]
+      : peak.interest === "partido_futbol"
+        ? ["poi-estadio", "poi-movistar", "poi-italia"]
+        : peak.interest === "deporte_competencia"
+          ? ["poi-estadio", "poi-movistar", "poi-italia"]
+          : [
+              "poi-movistar",
+              "poi-estadio",
+              "poi-fantasilandia",
+              "poi-ohiggins",
+              "poi-italia",
+              "poi-lastarria",
+            ];
 
-  if (preferred) {
-    const poi = getPoi(preferred);
-    if (poi) return poi;
+  for (const id of preferredOrder) {
+    if (fromSignals.includes(id) || intentionSlug.includes(id.replace("poi-", ""))) {
+      const poi = getPoi(id);
+      if (poi) return poi;
+    }
   }
+
+  const fromAny = fromSignals
+    .map((id) => getPoi(id))
+    .find((p): p is NonNullable<typeof p> => Boolean(p));
+  if (fromAny) return fromAny;
 
   if (intentionSlug.includes("estadio") || peak.interest === "partido_futbol") {
     const p = getPoi("poi-estadio");
     if (p) return p;
   }
-  if (intentionSlug.includes("movistar")) {
+  if (
+    intentionSlug.includes("movistar") ||
+    peak.interest === "concierto"
+  ) {
     const p = getPoi("poi-movistar");
     if (p) return p;
   }
 
-  // Nunca anclar nieve/turismo al estadio por defecto
   const fallback =
     peak.interest === "concierto"
       ? (getPoi("poi-movistar") ?? getPoi("poi-lastarria"))
-      : (getPoi("poi-lastarria") ?? getPoi("poi-estadio"));
+      : peak.interest === "partido_futbol"
+        ? (getPoi("poi-estadio") ?? getPoi("poi-lastarria"))
+        : (getPoi("poi-lastarria") ?? getPoi("poi-estadio"));
   if (!fallback) {
     throw new Error("No hay POIs en seed para anclar la campaña.");
   }
@@ -125,20 +147,23 @@ function pickProperties(
   poiLat: number,
   poiLng: number,
 ): CampaignPackProperty[] {
-  const pool =
-    codes.length > 0
-      ? codes
-          .map((c) => getPropertyByCode(c))
-          .filter((p): p is NonNullable<typeof p> => Boolean(p))
-      : allProperties.filter((p) => p.isReal);
+  // Siempre rankea todo el inventario real por distancia al venue;
+  // propertyCodes preferred solo actúa como boost, no como filtro exclusivo.
+  const preferred = new Set(
+    codes
+      .map((c) => getPropertyByCode(c)?.code)
+      .filter((c): c is string => Boolean(c)),
+  );
+  const pool = allProperties.filter((p) => p.isReal);
 
   const ranked = pool
     .map((p) => {
       const km = distanceKm(p.lat, p.lng, poiLat, poiLng);
       const mins = walkingMinutes(km);
-      return { p, km, mins };
+      const boost = preferred.has(p.code) ? -0.15 : 0; // leve preferencia
+      return { p, km, mins, sortKey: km + boost };
     })
-    .sort((a, b) => a.km - b.km)
+    .sort((a, b) => a.sortKey - b.sortKey || a.km - b.km)
     .slice(0, 3);
 
   return ranked.map(({ p, km, mins }) => {
