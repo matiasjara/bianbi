@@ -303,6 +303,18 @@ export const pois: Poi[] = [
     description: "Anticuarios, diseño, cafés y vida de barrio.",
   },
   {
+    id: "poi-santiago-hub",
+    name: "Santiago — base cordillera",
+    slug: "santiago-hub-nieve",
+    category: "barrio",
+    lat: -33.456,
+    lng: -70.648,
+    influenceRadiusKm: 6,
+    seasonality: "Jun–Ago — hub hacia centros de ski",
+    description:
+      "Zona de alojamiento en Santiago para viajeros que van a Valle Nevado, Farellones, Portillo y otros centros de nieve.",
+  },
+  {
     id: "poi-santa-lucia",
     name: "Cerro Santa Lucía",
     slug: "cerro-santa-lucia",

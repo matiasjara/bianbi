@@ -70,11 +70,12 @@ function resolveAnchorPoi(peak: DemandPeak, intentionSlug: string) {
 
   if (peak.interest === "nieve" || intentionSlug.includes("nieve")) {
     const hub =
-      fromSignals.find((id) => id === "poi-costanera") ||
-      fromSignals.find((id) => id === "poi-lastarria") ||
-      "poi-costanera";
-    const poi = getPoi(hub) ?? getPoi("poi-lastarria");
-    if (poi) return poi;
+      getPoi("poi-santiago-hub") ??
+      getPoi(
+        fromSignals.find((id) => id === "poi-italia" || id === "poi-lastarria") ??
+          "poi-italia",
+      );
+    if (hub) return hub;
   }
 
   if (
@@ -146,9 +147,9 @@ function pickProperties(
   codes: string[],
   poiLat: number,
   poiLng: number,
+  interest?: SuggestedCampaign["interest"],
 ): CampaignPackProperty[] {
-  // Siempre rankea todo el inventario real por distancia al venue;
-  // propertyCodes preferred solo actúa como boost, no como filtro exclusivo.
+  const isSnow = interest === "nieve";
   const preferred = new Set(
     codes
       .map((c) => getPropertyByCode(c)?.code)
@@ -160,23 +161,30 @@ function pickProperties(
     .map((p) => {
       const km = distanceKm(p.lat, p.lng, poiLat, poiLng);
       const mins = walkingMinutes(km);
-      const boost = preferred.has(p.code) ? -0.15 : 0; // leve preferencia
+      const boost = preferred.has(p.code) ? (isSnow ? -1.2 : -0.15) : 0;
       return { p, km, mins, sortKey: km + boost };
     })
-    .sort((a, b) => a.sortKey - b.sortKey || a.km - b.km)
-    .slice(0, 3);
+    .sort((a, b) => a.sortKey - b.sortKey || a.km - b.km);
 
   return ranked.map(({ p, km, mins }) => {
     const metro =
       p.metroStations.length > 0
         ? `Metro ${p.metroStations.slice(0, 2).join(" / ")}`
         : null;
-    const pitchParts = [
-      `${mins} min a pie del punto del evento`,
-      metro,
-      `${p.neighborhood}: barrio residencial y bien conectado en Santiago`,
-      p.isSuperhost ? "Anfitrión Superhost en Airbnb" : "Reserva directa en Airbnb",
-    ].filter(Boolean) as string[];
+    const pitchParts = isSnow
+      ? [
+          `Base en ${p.neighborhood}: duermes en Santiago y sales a la cordillera`,
+          metro,
+          `${p.neighborhood}: barrio residencial, metro cerca y bien conectado`,
+          p.isSuperhost ? "Anfitrión Superhost en Airbnb" : "Reserva directa en Airbnb",
+        ]
+      : [
+          `${mins} min a pie del punto del evento`,
+          metro,
+          `${p.neighborhood}: barrio residencial y bien conectado en Santiago`,
+          p.isSuperhost ? "Anfitrión Superhost en Airbnb" : "Reserva directa en Airbnb",
+        ];
+    const pitch = pitchParts.filter(Boolean) as string[];
 
     return {
       code: p.code,
@@ -187,6 +195,7 @@ function pickProperties(
       capacity: p.capacity,
       bedrooms: p.bedrooms,
       neighborhood: p.neighborhood,
+      buildingName: p.buildingName,
       address: p.address,
       amenities: [
         "Cama matrimonial",
@@ -205,7 +214,7 @@ function pickProperties(
       rating: p.rating,
       reviewCount: p.reviewCount,
       isSuperhost: p.isSuperhost,
-      pitch: pitchParts.join(" · "),
+      pitch: pitch.join(" · "),
     };
   });
 }
@@ -437,7 +446,12 @@ export function buildCampaignPack(
     : peak.rangeEnd;
   const eventDates = formatRange(eventStart, eventEnd);
   const poi = resolveAnchorPoi(peak, campaign.intentionSlug);
-  const props = pickProperties(campaign.propertyCodes, poi.lat, poi.lng).map(
+  const props = pickProperties(
+    campaign.propertyCodes,
+    poi.lat,
+    poi.lng,
+    campaign.interest,
+  ).map(
     (p) => ({
       ...p,
       airbnbUrl: withUtm(p.airbnbUrl, slugify(eventTitle), p.slug),

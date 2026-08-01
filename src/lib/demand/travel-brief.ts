@@ -133,32 +133,52 @@ function strategy(pack: PackCore): TravelBrief["strategy"] {
           ? `Quiere estar cerca de ${venue}, evitar traslados largos post-partido y dormir bien.`
           : `Quiere alojarse cerca de ${venue}, moverse fácil y no improvisar a último minuto.`;
 
-  const objections = [
-    "¿Es seguro el barrio de noche?",
-    "¿Queda muy lejos del venue?",
-    mins > 25
-      ? "¿Conviene taxi o se puede ir a pie / metro?"
-      : "¿Puedo volver caminando después del evento?",
-    "¿Hay check-in flexible si llego tarde?",
-    pack.properties.some((p) =>
-      p.amenities.some((a) => /estacionamiento/i.test(a)),
-    )
-      ? "¿Hay estacionamiento?"
-      : "¿Puedo moverme sin auto?",
-    "¿Qué pasa si cancelo?",
-  ];
+  const objections =
+    pack.interest === "nieve"
+      ? [
+          "¿Queda muy lejos de los centros de ski?",
+          "¿Cómo llego a Valle Nevado o Farellones desde el depto?",
+          "¿Conviene van, tour o auto propio?",
+          "¿Hay check-in flexible si llego tarde del aeropuerto?",
+          "¿Qué pasa si cancelo por mal clima en la cordillera?",
+        ]
+      : [
+          "¿Es seguro el barrio de noche?",
+          "¿Queda muy lejos del venue?",
+          mins > 25
+            ? "¿Conviene taxi o se puede ir a pie / metro?"
+            : "¿Puedo volver caminando después del evento?",
+          "¿Hay check-in flexible si llego tarde?",
+          pack.properties.some((p) =>
+            p.amenities.some((a) => /estacionamiento/i.test(a)),
+          )
+            ? "¿Hay estacionamiento?"
+            : "¿Puedo moverme sin auto?",
+          "¿Qué pasa si cancelo?",
+        ];
 
-  const trustProof = [
-    `Mapa con tiempo a pie (~${mins} min al venue)`,
-    "Fotos reales del departamento (no stock)",
-    pack.properties.some((p) => p.isSuperhost)
-      ? "Anfitrión Superhost en Airbnb"
-      : "Reserva protegida en Airbnb",
-    pack.properties.some((p) => p.rating != null)
-      ? "Reseñas reales visibles en el anuncio"
-      : "Pago y mensajería seguros en Airbnb",
-    "Metro cercano en barrios residenciales",
-  ];
+  const trustProof =
+    pack.interest === "nieve"
+      ? [
+          "Deptos hub en barrios bien conectados (Italia, Centro, Ñuñoa)",
+          "Fotos reales del departamento (no stock)",
+          pack.properties.some((p) => p.isSuperhost)
+            ? "Anfitrión Superhost en Airbnb"
+            : "Reserva protegida en Airbnb",
+          "Metro cerca para moverte en Santiago entre días de ski",
+          "Ideal para combinar noches en ciudad + salidas temprano a la cordillera",
+        ]
+      : [
+          `Mapa con tiempo a pie (~${mins} min al venue)`,
+          "Fotos reales del departamento (no stock)",
+          pack.properties.some((p) => p.isSuperhost)
+            ? "Anfitrión Superhost en Airbnb"
+            : "Reserva protegida en Airbnb",
+          pack.properties.some((p) => p.rating != null)
+            ? "Reseñas reales visibles en el anuncio"
+            : "Pago y mensajería seguros en Airbnb",
+          "Metro cercano en barrios residenciales",
+        ];
 
   const winningMessage =
     pack.interest === "concierto"
@@ -176,6 +196,41 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   const venue = pack.venueName;
   const metro = pack.properties[0]?.metroStations[0];
+  const hoods = [
+    ...new Set(pack.properties.map((p) => p.neighborhood)),
+  ].slice(0, 3);
+
+  if (pack.interest === "nieve") {
+    return [
+      {
+        q: "¿Dónde quedan los departamentos?",
+        a: `En barrios hub de Santiago${hoods.length ? ` (${hoods.join(", ")})` : ""}: bien conectados, metro cerca y cómodos para descansar entre días de ski.`,
+      },
+      {
+        q: "¿Cómo llego a los centros de ski?",
+        a: "Desde Santiago puedes contratar van/tour (Valle Nevado, Farellones/El Colorado, Portillo), usar transfer privado o auto con cadenas según el día. Sal early: la ruta puede demorar 1–2 h.",
+      },
+      {
+        q: "¿Por qué alojarme en Santiago y no en la montaña?",
+        a: "Santiago es hub de vuelos, restaurantes y logística: duermes mejor, tienes metro y reservas más flexibles. Ideal si combinas ski + ciudad.",
+      },
+      {
+        q: "¿Cómo llego desde el aeropuerto?",
+        a: metro
+          ? `Transfer o taxi/Uber al depto. Luego te mueves por Metro ${metro} y alrededores en los días sin ski.`
+          : "Transfer o taxi/Uber directo al departamento. Luego metro o rideshare en la ciudad.",
+      },
+      {
+        q: "¿Dónde reservo y pago?",
+        a: "Solo en Airbnb, en el link de cada departamento. Ahí está el pago protegido, la cancelación según política del anuncio y el chat con el anfitrión.",
+      },
+      {
+        q: "¿Bianbi es parte de Airbnb?",
+        a: "No. Bianbi te muestra opciones y la guía del viaje; la reserva y el pago son siempre en el anuncio oficial de Airbnb.",
+      },
+    ];
+  }
+
   return [
     {
       q: `¿Qué tan cerca quedan los departamentos de ${venue}?`,
@@ -208,6 +263,14 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
 
 function recommendations(pack: PackCore): string[] {
   const venue = pack.venueName;
+  if (pack.interest === "nieve") {
+    return [
+      "Usa Santiago como base: duermes bien y sales temprano a la cordillera.",
+      "Revisa el parte de nieve y el clima del valle el día anterior.",
+      "Reserva van o tour con anticipación en fines de semana de julio.",
+      "Metro y barrio seguro para las noches en la ciudad.",
+    ];
+  }
   const base = [
     `Llega con margen: calcula ~${pack.properties[0]?.walkingMinutes ?? 15} min a pie hasta ${venue}.`,
     "Guarda el pin del departamento y el del venue en tu mapa offline.",
@@ -227,13 +290,6 @@ function recommendations(pack: PackCore): string[] {
       "Evita manejar si piensas celebrar: deja el auto o usa rideshare.",
     ];
   }
-  if (pack.interest === "nieve") {
-    return [
-      "Usa Santiago como base: duermes bien y sales temprano a la cordillera.",
-      "Revisa el parte de nieve y el clima del valle el día anterior.",
-      "Metro y barrio seguro para las noches en la ciudad.",
-    ];
-  }
   return [
     ...base,
     "Combina el evento con un paseo por el barrio (cafés, plazas, miradores).",
@@ -245,6 +301,16 @@ function transport(pack: PackCore): string[] {
   const metros = [
     ...new Set(pack.properties.flatMap((p) => p.metroStations)),
   ];
+  if (pack.interest === "nieve") {
+    return [
+      metros.length
+        ? `En la ciudad: Metro ${metros.slice(0, 3).join(", ")} cerca de los deptos hub.`
+        : "Buena conexión a transporte público en Santiago.",
+      "A la cordillera: van/tour desde Santiago a Valle Nevado, Farellones o Portillo (reserva con anticipación).",
+      "Auto propio: revisa estado de la ruta, neblina y obligatoriedad de cadenas.",
+      "Aeropuerto SCL: transfer, taxi o Uber hasta el check-in en Santiago.",
+    ];
+  }
   return [
     metros.length
       ? `Metro cercano: ${metros.slice(0, 3).join(", ")}.`
@@ -256,11 +322,23 @@ function transport(pack: PackCore): string[] {
 }
 
 function eventSummary(pack: PackCore): string {
+  if (pack.interest === "nieve") {
+    return `Temporada de nieve en Chile (${pack.eventDates}). Santiago como base cómoda hacia Valle Nevado, Farellones y Portillo.`;
+  }
   return `${pack.eventTitle} en ${pack.venueName}. ${pack.eventDates}. Todo lo esencial para tu visita a Santiago.`;
 }
 
 function mustKnow(pack: PackCore): string[] {
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
+  if (pack.interest === "nieve") {
+    return [
+      `Temporada: ${pack.eventDates}.`,
+      "Santiago es tu base: duermes en la ciudad y sales a la cordillera.",
+      "Centros habituales: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h desde Santiago).",
+      "Revisa el parte de nieve y reserva van/tour con anticipación en fines de semana.",
+      "Guarda esta guía y compártela con quien va contigo.",
+    ];
+  }
   const tips = [
     `Fecha: ${pack.eventDates}.`,
     `Lugar: ${pack.venueName}, Santiago.`,
@@ -277,11 +355,6 @@ function mustKnow(pack: PackCore): string[] {
       "Revisa horarios de acceso al estadio y posibles cortes de calle.",
       "Si la hinchada es visitante, muévete en grupo por rutas iluminadas.",
     );
-  } else if (pack.interest === "nieve") {
-    tips.push(
-      "Santiago es tu base: duermes en la ciudad y sales temprano a la cordillera.",
-      "Revisa el parte de nieve el día anterior.",
-    );
   } else if (pack.interest === "deporte_competencia") {
     tips.push(
       "Confirma horarios de competencia y acreditaciones si vas como staff o familia.",
@@ -292,6 +365,14 @@ function mustKnow(pack: PackCore): string[] {
 }
 
 function news(pack: PackCore): string[] {
+  if (pack.interest === "nieve") {
+    return [
+      `Temporada de nieve ${pack.eventDates}: mayor flujo hacia centros de ski en la cordillera.`,
+      "Si aún no tienes alojamiento en Santiago, reserva pronto: julio y fines de semana se llenan.",
+      "Condiciones de nieve cambian rápido: confirma centros y caminos el mismo día.",
+      "Tips: base en ciudad + salida temprano + van/tour o auto con cadenas según el día.",
+    ];
+  }
   const items = [
     `${pack.eventTitle} se realiza en ${pack.venueName} (${pack.eventDates}).`,
     "Si aún no tienes alojamiento, reserva pronto: las fechas de evento se llenan cerca del venue.",
@@ -304,11 +385,6 @@ function news(pack: PackCore): string[] {
   if (pack.interest === "partido_futbol") {
     items.push(
       "Sigue a tu club y a la ANFP por posibles cambios de horario o sede.",
-    );
-  }
-  if (pack.interest === "nieve") {
-    items.push(
-      "Condiciones de nieve cambian rápido: confirma centros y caminos el mismo día.",
     );
   }
   items.push(
@@ -360,12 +436,21 @@ export function buildMicrosite(pack: PackCore): MicrositeContent {
     weather: climate,
     transport: transport(pack),
     faqs: faqs(pack),
-    seoTitle: `${title} · ${pack.venueName}`,
-    seoDescription: `${title}. Fechas, mapa, tips, clima, transporte, FAQ y alojamiento cerca de ${pack.venueName} en Santiago.`,
+    seoTitle:
+      pack.interest === "nieve"
+        ? `${title} · Santiago hub cordillera`
+        : `${title} · ${pack.venueName}`,
+    seoDescription:
+      pack.interest === "nieve"
+        ? `${title}. Fechas, tips, clima, traslados a centros de ski, FAQ y alojamiento hub en Santiago.`
+        : `${title}. Fechas, mapa, tips, clima, transporte, FAQ y alojamiento cerca de ${pack.venueName} en Santiago.`,
     properties: pack.properties,
     interest: pack.interest,
     interestLabel: pack.interestLabel,
-    shareText: `${title} — ${pack.eventDates} en ${pack.venueName}. Lo esencial para tu visita:`,
+    shareText:
+      pack.interest === "nieve"
+        ? `${title} — ${pack.eventDates}. Lo esencial para tu viaje a la nieve:`
+        : `${title} — ${pack.eventDates} en ${pack.venueName}. Lo esencial para tu visita:`,
   };
 }
 

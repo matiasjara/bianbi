@@ -175,6 +175,8 @@ export interface CampaignPackProperty {
   capacity: number;
   bedrooms: number;
   neighborhood: string;
+  /** Agrupa unidades en el mismo edificio (UI compacta). */
+  buildingName?: string;
   address: string;
   amenities: string[];
   distanceKm: number;

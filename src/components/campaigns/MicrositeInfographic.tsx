@@ -3,17 +3,15 @@ import { BrandIcon } from "@/components/brand/BrandIcon";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
-import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
+import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import type { BrandIconName } from "@/lib/brand/icons";
 import {
   mediaSrc,
   resolveGuideImages,
 } from "@/lib/demand/guide-images";
+import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
-
-const AIRBNB_BTN =
-  "inline-flex items-center justify-center rounded-lg bg-[var(--ms-airbnb)] px-5 py-3 text-sm font-semibold text-white transition hover:brightness-95";
 
 function IconBadge({ name }: { name: BrandIconName }) {
   return (
@@ -113,10 +111,10 @@ export function MicrositeInfographic({
       label: m.venueName,
       kind: "venue" as const,
     },
-    ...props.map((p) => ({
+    ...uniquePropertyLocations(props).map((p) => ({
       lat: p.lat,
       lng: p.lng,
-      label: p.neighborhood,
+      label: p.buildingName ?? p.neighborhood,
       kind: "property" as const,
     })),
   ];
@@ -163,6 +161,9 @@ export function MicrositeInfographic({
     downloadImageLabel: ui.downloadImageLabel,
     sharingLabel: ui.sharingLabel,
     shareHint: ui.shareHint,
+    previewTitle: ui.previewTitle,
+    previewCloseLabel: ui.previewCloseLabel,
+    previewLoadingLabel: ui.previewLoadingLabel,
   };
 
   return (
@@ -283,7 +284,10 @@ export function MicrositeInfographic({
             },
             {
               label: ui.where,
-              value: m.venueName,
+              value:
+                m.interest === "nieve"
+                  ? "Santiago — hub cordillera"
+                  : m.venueName,
               tone: "text-[var(--ms-terracotta)]",
               icon: "pin" as const,
             },
@@ -402,7 +406,9 @@ export function MicrositeInfographic({
             title={ui.titleMap}
           />
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--ms-muted)]">
-            {ui.mapBody(m.venueName)}
+            {m.interest === "nieve"
+              ? "Departamentos hub en Santiago para combinar ciudad y días de ski."
+              : ui.mapBody(m.venueName)}
           </p>
           <div className="ms-polaroid ms-tilt-l relative mt-6 max-w-3xl">
             <span className="ms-tape ms-tape-olive -top-2 left-10" />
@@ -510,75 +516,12 @@ export function MicrositeInfographic({
             title={ui.titleStay}
           />
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--ms-muted)]">
-            {ui.stayBody(m.venueName)}
+            {m.interest === "nieve"
+              ? "Deptos en barrios bien conectados. Reserva en Airbnb."
+              : ui.stayBody(m.venueName)}
           </p>
 
-          <div className="mt-10 grid gap-10 md:grid-cols-1">
-            {props.map((prop, idx) => (
-              <article
-                key={prop.slug}
-                className={`relative md:grid md:grid-cols-[280px_1fr] md:items-start md:gap-8 ${
-                  idx % 2 === 0 ? "" : "md:grid-cols-[1fr_280px]"
-                }`}
-              >
-                <div
-                  className={`ms-polaroid relative ${
-                    idx % 2 === 0 ? "ms-tilt-l md:order-1" : "ms-tilt-r md:order-2"
-                  }`}
-                >
-                  <span
-                    className={`ms-tape ${
-                      idx % 2 === 0 ? "ms-tape-coral" : "ms-tape-olive"
-                    } -top-2 left-8`}
-                  />
-                  <span className="absolute left-3 top-3 z-10 rounded-full bg-[var(--ms-ink)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
-                    #{idx + 1}
-                  </span>
-                  <PhotoStoryCarousel
-                    photos={
-                      prop.photos.length
-                        ? prop.photos
-                        : [prop.photo].filter(Boolean)
-                    }
-                    alt={prop.name}
-                    caption={prop.neighborhood}
-                    className="h-56 w-full md:h-64"
-                  />
-                </div>
-
-                <div
-                  className={`pt-2 ${idx % 2 === 0 ? "md:order-2" : "md:order-1"}`}
-                >
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ms-muted)]">
-                    <span className="inline-flex items-center gap-1 text-[var(--ms-olive)]">
-                      <BrandIcon name="pin" size={18} />
-                      {prop.walkingMinutes} {ui.minWalk}
-                    </span>
-                    <span aria-hidden>·</span>
-                    <span>{prop.distanceKm} km</span>
-                    <span aria-hidden>·</span>
-                    <span>{prop.neighborhood}</span>
-                  </div>
-                  <h3 className="ms-editorial mt-2 text-2xl leading-snug">
-                    {prop.name}
-                  </h3>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--ms-muted)]">
-                    {prop.pitchLocalized}
-                  </p>
-                  <div className="mt-5">
-                    <a
-                      href={prop.airbnbUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={AIRBNB_BTN}
-                    >
-                      {ui.ctaAirbnb}
-                    </a>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <MicrositeStayList properties={props} ui={ui} />
         </section>
       </div>
 

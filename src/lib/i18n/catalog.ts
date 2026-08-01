@@ -196,6 +196,11 @@ const POI_BLURB: Record<string, Record<Locale, string>> = {
     en: "Antiques, design and cafés",
     pt: "Antiguidades, design e cafés",
   },
+  "poi-santiago-hub": {
+    es: "Hub de alojamiento hacia centros de ski",
+    en: "Stay hub for ski resorts",
+    pt: "Base de hospedagem para ski",
+  },
   "poi-movistar": {
     es: "Conciertos y eventos masivos",
     en: "Concerts and big events",

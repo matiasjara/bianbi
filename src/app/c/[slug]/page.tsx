@@ -3,10 +3,12 @@ import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
-import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
+import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
+import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import { localizeLanding } from "@/lib/i18n/landing";
+import { getMicrositeUi } from "@/lib/i18n/microsite";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
 import { loadCampaignPackBySlug } from "@/lib/demand/load-campaign-packs";
 
@@ -18,9 +20,6 @@ type Props = {
 };
 
 /** Color de acento Airbnb (Rausch) — solo color, sin logo. */
-const AIRBNB_BTN =
-  "inline-flex items-center justify-center rounded-lg bg-[#FF5A5F] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#E0484D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF5A5F]";
-
 const AIRBNB_BTN_LG =
   "inline-flex items-center justify-center rounded-lg bg-[#FF5A5F] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-[#E0484D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF5A5F]";
 
@@ -71,22 +70,8 @@ export default async function CampaignLandingPage({
   const { ui } = L;
 
   const lead = L.properties[0];
+  const stayUi = getMicrositeUi(locale);
 
-  const propertyPins = new Map<
-    string,
-    { lat: number; lng: number; label: string; kind: "property" }
-  >();
-  for (const p of L.properties) {
-    const key = `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`;
-    if (!propertyPins.has(key)) {
-      propertyPins.set(key, {
-        lat: p.lat,
-        lng: p.lng,
-        label: p.neighborhood,
-        kind: "property",
-      });
-    }
-  }
   const mapMarkers = [
     {
       lat: pack.venueLat,
@@ -94,7 +79,12 @@ export default async function CampaignLandingPage({
       label: pack.venueName,
       kind: "venue" as const,
     },
-    ...propertyPins.values(),
+    ...uniquePropertyLocations(L.properties).map((p) => ({
+      lat: p.lat,
+      lng: p.lng,
+      label: p.buildingName ?? p.neighborhood,
+      kind: "property" as const,
+    })),
   ];
 
   return (
@@ -180,95 +170,17 @@ export default async function CampaignLandingPage({
           {ui.unitsBody(pack.venueName)}
         </p>
 
-        <div className="mt-10 space-y-8">
-          {L.properties.map((prop, idx) => (
-            <article
-              key={prop.slug}
-              className="overflow-hidden rounded-2xl border border-black/8 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] md:grid md:grid-cols-[320px_1fr]"
-            >
-              <PhotoStoryCarousel
-                photos={
-                  prop.photos.length ? prop.photos : [prop.photo].filter(Boolean)
-                }
-                alt={prop.name}
-                caption={prop.neighborhood}
-                className="h-72 w-full md:h-full md:min-h-[360px]"
-              />
-              <div className="flex flex-col p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6a6a6a]">
-                  {ui.option(idx + 1, prop.walkingMinutes, prop.distanceKm)}
-                </p>
-                <h3 className="mt-2 font-[family-name:var(--font-display)] text-xl leading-snug">
-                  {prop.name}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#484848]">
-                  {prop.pitchLocalized}
-                </p>
-
-                <ul className="mt-4 grid gap-2 text-sm text-[#222] sm:grid-cols-2">
-                  <li>
-                    <span className="text-[#6a6a6a]">{ui.barrio}:</span>{" "}
-                    {prop.neighborhood}
-                  </li>
-                  {prop.metroStations.length > 0 ? (
-                    <li>
-                      <span className="text-[#6a6a6a]">{ui.metro}:</span>{" "}
-                      {prop.metroStations.join(", ")}
-                    </li>
-                  ) : null}
-                  <li>
-                    <span className="text-[#6a6a6a]">{ui.beds}:</span>{" "}
-                    {ui.bedsValue}
-                  </li>
-                  <li>
-                    <span className="text-[#6a6a6a]">
-                      {locale === "en"
-                        ? "Capacity"
-                        : locale === "pt"
-                          ? "Capacidade"
-                          : "Capacidad"}
-                      :
-                    </span>{" "}
-                    {ui.capacity(prop.capacity, prop.bedrooms)}
-                  </li>
-                  {prop.rating != null && prop.reviewCount != null ? (
-                    <li>
-                      <span className="text-[#6a6a6a]">Airbnb:</span>{" "}
-                      {ui.airbnbRating(
-                        prop.rating.toFixed(1),
-                        prop.reviewCount,
-                        Boolean(prop.isSuperhost),
-                      )}
-                    </li>
-                  ) : null}
-                </ul>
-
-                <ul className="mt-4 flex flex-wrap gap-2 text-xs text-[#6a6a6a]">
-                  {prop.amenitiesLocalized.map((a) => (
-                    <li
-                      key={a}
-                      className="rounded-md bg-[#f7f4f0] px-2.5 py-1"
-                    >
-                      {a}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <a
-                    href={prop.airbnbUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={AIRBNB_BTN}
-                  >
-                    {ui.ctaBook}
-                  </a>
-                  <span className="text-xs text-[#6a6a6a]">{ui.paySafe}</span>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+        <MicrositeStayList
+          variant="landing"
+          properties={L.properties}
+          ui={{
+            minWalk: stayUi.minWalk,
+            ctaAirbnb: ui.ctaBook,
+            stayUnitOption: stayUi.stayUnitOption,
+            stayReviews: stayUi.stayReviews,
+          }}
+        />
+        <p className="mt-6 text-xs text-[#6a6a6a]">{ui.paySafe}</p>
       </section>
 
       <section id="mapa" className="border-t border-black/8 bg-white">

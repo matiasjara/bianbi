@@ -12,6 +12,9 @@ type Ui = {
   downloadImageLabel: string;
   sharingLabel: string;
   shareHint: string;
+  previewTitle: string;
+  previewCloseLabel: string;
+  previewLoadingLabel: string;
   snapshotKicker: string;
   snapshotTitle: string;
   when: string;
@@ -45,6 +48,8 @@ type Ui = {
   kickerStay: string;
   titleStay: string;
   stayBody: (venue: string) => string;
+  stayUnitOption: (n: number) => string;
+  stayReviews: (n: number) => string;
   minWalk: string;
   ctaAirbnb: string;
   footerShare: string;
@@ -63,6 +68,9 @@ const UI: Record<Locale, Ui> = {
     downloadImageLabel: "Guardar imagen",
     sharingLabel: "Preparando…",
     shareHint: "Se comparte una mini-infografía + el link",
+    previewTitle: "Vista previa",
+    previewCloseLabel: "Cerrar",
+    previewLoadingLabel: "Generando imagen…",
     snapshotKicker: "Snapshot",
     snapshotTitle: "Todo lo clave, de un vistazo",
     when: "Cuándo",
@@ -98,6 +106,8 @@ const UI: Record<Locale, Ui> = {
     titleStay: "Dónde alojar",
     stayBody: (venue) =>
       `Departamentos cerca de ${venue}. Ordenados por cercanía. Reserva en Airbnb.`,
+    stayUnitOption: (n) => `Unidad ${n}`,
+    stayReviews: (n) => `${n} reseña${n === 1 ? "" : "s"}`,
     minWalk: "min",
     ctaAirbnb: "Reservar en Airbnb",
     footerShare: "La guía concreta del evento. Compártela y llega preparado.",
@@ -115,6 +125,9 @@ const UI: Record<Locale, Ui> = {
     downloadImageLabel: "Save image",
     sharingLabel: "Preparing…",
     shareHint: "Shares a mini-infographic + the link",
+    previewTitle: "Preview",
+    previewCloseLabel: "Close",
+    previewLoadingLabel: "Generating image…",
     snapshotKicker: "Snapshot",
     snapshotTitle: "The essentials at a glance",
     when: "When",
@@ -150,6 +163,8 @@ const UI: Record<Locale, Ui> = {
     titleStay: "Where to stay",
     stayBody: (venue) =>
       `Apartments near ${venue}. Sorted by distance. Book on Airbnb.`,
+    stayUnitOption: (n) => `Unit ${n}`,
+    stayReviews: (n) => `${n} review${n === 1 ? "" : "s"}`,
     minWalk: "min",
     ctaAirbnb: "Book on Airbnb",
     footerShare: "The concrete event guide. Share it and arrive prepared.",
@@ -167,6 +182,9 @@ const UI: Record<Locale, Ui> = {
     downloadImageLabel: "Salvar imagem",
     sharingLabel: "Preparando…",
     shareHint: "Compartilha um mini-infográfico + o link",
+    previewTitle: "Pré-visualização",
+    previewCloseLabel: "Fechar",
+    previewLoadingLabel: "Gerando imagem…",
     snapshotKicker: "Snapshot",
     snapshotTitle: "O essencial de um olhar",
     when: "Quando",
@@ -202,6 +220,8 @@ const UI: Record<Locale, Ui> = {
     titleStay: "Onde ficar",
     stayBody: (venue) =>
       `Apartamentos perto de ${venue}. Ordenados por proximidade. Reserve no Airbnb.`,
+    stayUnitOption: (n) => `Unidade ${n}`,
+    stayReviews: (n) => `${n} avaliaç${n === 1 ? "ão" : "ões"}`,
     minWalk: "min",
     ctaAirbnb: "Reservar no Airbnb",
     footerShare: "O guia concreto do evento. Compartilhe e chegue preparado.",
@@ -342,6 +362,14 @@ function guideTitle(
 }
 
 function eventSummary(pack: CampaignPack, locale: Locale): string {
+  if (pack.interest === "nieve") {
+    if (locale === "en") {
+      return `Chile snow season (${pack.eventDates}). Santiago as a comfortable base for Valle Nevado, Farellones and Portillo.`;
+    }
+    if (locale === "pt") {
+      return `Temporada de neve no Chile (${pack.eventDates}). Santiago como base confortável para Valle Nevado, Farellones e Portillo.`;
+    }
+  }
   if (locale === "en") {
     return `${pack.eventTitle} at ${pack.venueName}. ${pack.eventDates}. Everything essential for your Santiago visit.`;
   }
@@ -354,6 +382,26 @@ function eventSummary(pack: CampaignPack, locale: Locale): string {
 function mustKnow(pack: CampaignPack, locale: Locale): string[] {
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   const venue = pack.venueName;
+  if (pack.interest === "nieve") {
+    if (locale === "en") {
+      return [
+        `Season: ${pack.eventDates}.`,
+        "Santiago is your base: sleep in the city and head to the mountains.",
+        "Common resorts: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h from Santiago).",
+        "Check the snow report and book van/tour ahead on winter weekends.",
+        "Save this guide and share it with whoever is coming with you.",
+      ];
+    }
+    if (locale === "pt") {
+      return [
+        `Temporada: ${pack.eventDates}.`,
+        "Santiago é sua base: durma na cidade e saia para a cordilheira.",
+        "Centros habituais: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h de Santiago).",
+        "Confira o boletim de neve e reserve van/tour com antecedência nos fins de semana.",
+        "Salve este guia e compartilhe com quem vai com você.",
+      ];
+    }
+  }
   if (locale === "en") {
     const tips = [
       `Date: ${pack.eventDates}.`,
@@ -418,6 +466,24 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
 }
 
 function news(pack: CampaignPack, locale: Locale): string[] {
+  if (pack.interest === "nieve") {
+    if (locale === "en") {
+      return [
+        `Snow season ${pack.eventDates}: stronger flow to mountain resorts.`,
+        "If you still need a place in Santiago, book soon — July and weekends fill up.",
+        "Snow conditions change fast: confirm resorts and roads the same day.",
+        "Tips: city base + early departure + van/tour or car with chains when required.",
+      ];
+    }
+    if (locale === "pt") {
+      return [
+        `Temporada de neve ${pack.eventDates}: maior fluxo para centros na cordilheira.`,
+        "Se ainda não tem hospedagem em Santiago, reserve cedo — julho e fins de semana esgotam.",
+        "Condições de neve mudam rápido: confirme centros e estradas no mesmo dia.",
+        "Dicas: base na cidade + saída cedo + van/tour ou carro com correntes se necessário.",
+      ];
+    }
+  }
   if (locale === "en") {
     const items = [
       `${pack.eventTitle} takes place at ${pack.venueName} (${pack.eventDates}).`,
@@ -547,6 +613,28 @@ function transport(pack: CampaignPack, locale: Locale): string[] {
   const metros = [
     ...new Set(pack.properties.flatMap((p) => p.metroStations)),
   ];
+  if (pack.interest === "nieve") {
+    if (locale === "en") {
+      return [
+        metros.length
+          ? `In the city: Metro ${metros.slice(0, 3).join(", ")} near hub apartments.`
+          : "Good connection to Santiago public transit.",
+        "To the mountains: van/tour from Santiago to Valle Nevado, Farellones or Portillo (book ahead).",
+        "Own car: check road status, fog and chain requirements.",
+        "SCL airport: transfer, taxi or Uber to your Santiago check-in.",
+      ];
+    }
+    if (locale === "pt") {
+      return [
+        metros.length
+          ? `Na cidade: Metrô ${metros.slice(0, 3).join(", ")} perto dos aptos hub.`
+          : "Boa conexão com transporte público de Santiago.",
+        "Para a cordilheira: van/tour de Santiago a Valle Nevado, Farellones ou Portillo (reserve antes).",
+        "Carro próprio: confira estado da estrada, neblina e correntes obrigatórias.",
+        "Aeroporto SCL: transfer, táxi ou Uber até o check-in em Santiago.",
+      ];
+    }
+  }
   if (locale === "en") {
     return [
       metros.length
@@ -577,6 +665,73 @@ function faqs(
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   const venue = pack.venueName;
   const metro = pack.properties[0]?.metroStations[0];
+  const hoods = [
+    ...new Set(pack.properties.map((p) => p.neighborhood)),
+  ].slice(0, 3);
+
+  if (pack.interest === "nieve") {
+    if (locale === "en") {
+      return [
+        {
+          q: "Where are the apartments?",
+          a: `In Santiago hub neighborhoods${hoods.length ? ` (${hoods.join(", ")})` : ""}: well connected, metro nearby, comfortable between ski days.`,
+        },
+        {
+          q: "How do I get to the ski resorts?",
+          a: "From Santiago you can book van/tour (Valle Nevado, Farellones/El Colorado, Portillo), private transfer or a car with chains when required. Leave early — the drive can take 1–2 h.",
+        },
+        {
+          q: "Why stay in Santiago instead of the mountain?",
+          a: "Santiago is the flight hub with restaurants and easier logistics: you sleep better, have metro, and more flexible bookings. Ideal if you mix ski + city.",
+        },
+        {
+          q: "How do I get from the airport?",
+          a: metro
+            ? `Transfer or taxi/Uber to the apartment. Then use Metro ${metro} on non-ski days.`
+            : "Transfer or taxi/Uber straight to the apartment. Then metro or rideshare in the city.",
+        },
+        {
+          q: "Where do I book and pay?",
+          a: "Only on Airbnb via each apartment link — protected payment, cancellation policy and host chat.",
+        },
+        {
+          q: "Is Bianbi part of Airbnb?",
+          a: "No. Bianbi shows options and the travel guide; booking and payment are always on the official Airbnb listing.",
+        },
+      ];
+    }
+    if (locale === "pt") {
+      return [
+        {
+          q: "Onde ficam os apartamentos?",
+          a: `Em bairros hub de Santiago${hoods.length ? ` (${hoods.join(", ")})` : ""}: bem conectados, metrô perto e confortáveis entre dias de ski.`,
+        },
+        {
+          q: "Como chego aos centros de ski?",
+          a: "De Santiago você pode contratar van/tour (Valle Nevado, Farellones/El Colorado, Portillo), transfer privado ou carro com correntes se necessário. Saia cedo — a viagem pode levar 1–2 h.",
+        },
+        {
+          q: "Por que me hospedar em Santiago e não na montanha?",
+          a: "Santiago é hub de voos, restaurantes e logística: você dorme melhor, tem metrô e reservas mais flexíveis. Ideal se combina ski + cidade.",
+        },
+        {
+          q: "Como chego do aeroporto?",
+          a: metro
+            ? `Transfer ou táxi/Uber até o apto. Depois use o Metrô ${metro} nos dias sem ski.`
+            : "Transfer ou táxi/Uber direto ao apartamento. Depois metrô ou rideshare na cidade.",
+        },
+        {
+          q: "Onde reservo e pago?",
+          a: "Só no Airbnb, no link de cada apartamento — pagamento protegido, cancelamento e chat com o anfitrião.",
+        },
+        {
+          q: "A Bianbi faz parte do Airbnb?",
+          a: "Não. A Bianbi mostra opções e o guia de viagem; reserva e pagamento são sempre no anúncio oficial do Airbnb.",
+        },
+      ];
+    }
+  }
+
   if (locale === "en") {
     return [
       {
@@ -709,19 +864,38 @@ export function localizeMicrosite(
     weather,
     transport: transport(pack, locale),
     faqs: faqs(pack, locale),
-    seoTitle: `${title} · ${pack.venueName}`,
+    seoTitle:
+      pack.interest === "nieve"
+        ? locale === "en"
+          ? `${title} · Santiago ski hub`
+          : locale === "pt"
+            ? `${title} · Hub ski Santiago`
+            : `${title} · Santiago hub cordillera`
+        : `${title} · ${pack.venueName}`,
     seoDescription:
-      locale === "en"
-        ? `${title}. Dates, map, tips, weather, transit, FAQ and stays near ${pack.venueName} in Santiago.`
-        : locale === "pt"
-          ? `${title}. Datas, mapa, dicas, clima, transporte, FAQ e hospedagem perto de ${pack.venueName} em Santiago.`
-          : pack.microsite.seoDescription,
+      pack.interest === "nieve"
+        ? locale === "en"
+          ? `${title}. Dates, tips, weather, transfers to ski resorts, FAQ and hub stays in Santiago.`
+          : locale === "pt"
+            ? `${title}. Datas, dicas, clima, traslados para ski, FAQ e hospedagem hub em Santiago.`
+            : pack.microsite.seoDescription
+        : locale === "en"
+          ? `${title}. Dates, map, tips, weather, transit, FAQ and stays near ${pack.venueName} in Santiago.`
+          : locale === "pt"
+            ? `${title}. Datas, mapa, dicas, clima, transporte, FAQ e hospedagem perto de ${pack.venueName} em Santiago.`
+            : pack.microsite.seoDescription,
     shareText:
-      locale === "en"
-        ? `${title} — ${pack.eventDates} at ${pack.venueName}. Essentials for your visit:`
-        : locale === "pt"
-          ? `${title} — ${pack.eventDates} em ${pack.venueName}. O essencial para sua visita:`
-          : pack.microsite.shareText,
+      pack.interest === "nieve"
+        ? locale === "en"
+          ? `${title} — ${pack.eventDates}. Essentials for your snow trip:`
+          : locale === "pt"
+            ? `${title} — ${pack.eventDates}. O essencial para sua viagem de neve:`
+            : pack.microsite.shareText
+        : locale === "en"
+          ? `${title} — ${pack.eventDates} at ${pack.venueName}. Essentials for your visit:`
+          : locale === "pt"
+            ? `${title} — ${pack.eventDates} em ${pack.venueName}. O essencial para sua visita:`
+            : pack.microsite.shareText,
   };
 
   return {

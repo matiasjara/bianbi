@@ -33,7 +33,7 @@ const RULES: SeasonRule[] = [
     monthEnd: 8,
     intensity: 7,
     audienceTags: ["turismo", "brasil", "nieve"],
-    poiIds: ["poi-costanera", "poi-lastarria"],
+    poiIds: ["poi-santiago-hub", "poi-italia", "poi-lastarria"],
     propertyCodesPreferred: ["E801", "E214", "T112"],
     kind: "tourism_flow",
   },
