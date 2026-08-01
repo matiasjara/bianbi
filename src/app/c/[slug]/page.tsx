@@ -286,16 +286,12 @@ export default async function CampaignLandingPage({ params }: Props) {
       </section>
 
       <footer className="bg-[#1a1a1a] px-5 py-10 text-center text-xs leading-relaxed text-white/45">
-        <div className="mx-auto flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/bianbi-logo.jpg"
-            alt="Bianbi — Hospédate donde viniste a estar"
-            width={160}
-            height={107}
-            className="h-auto w-[120px] rounded-md opacity-90 sm:w-[136px]"
-          />
-        </div>
+        <p
+          className="font-[family-name:var(--font-display)] text-[11px] font-semibold tracking-[0.28em] text-white/30"
+          aria-label="Bianbi"
+        >
+          BIANBI
+        </p>
         <p className="mt-6">
           Alojamiento independiente en Santiago · {pack.eventDates}
         </p>
