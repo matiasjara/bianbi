@@ -7,6 +7,8 @@ import {
   organizationsForCampaignInterest,
   outreachOrganizations,
 } from "@/lib/data/outreach";
+import { localizedAdCreatives } from "@/lib/i18n/landing";
+import { LOCALES } from "@/lib/i18n/locale";
 import type {
   AdCreativeVariant,
   AdPlatform,
@@ -137,35 +139,39 @@ function mailingTargetsFor(pack: PackForPlan): MailingTargetSuggestion[] {
 }
 
 function creativesFor(pack: PackForPlan): AdCreativeVariant[] {
-  const lead = pack.properties[0];
-  const photoA = lead?.photo ?? "";
-  const photoB = pack.properties[1]?.photo || lead?.photos?.[1] || photoA;
-  const mins = lead?.walkingMinutes ?? 15;
+  // ES / EN / PT — eliges en Meta/Google el idioma del anuncio
+  return LOCALES.flatMap((locale) =>
+    localizedAdCreatives(pack as CampaignPack, locale).map((c) => ({
+      id: c.id,
+      label: c.label,
+      imageUrl: c.imageUrl,
+      headline: c.headline,
+      primaryText: c.primaryText,
+      description: c.description,
+      cta: c.cta,
+    })),
+  );
+}
 
-  return [
-    {
-      id: `${pack.slug}-creative-a`,
-      label: "Variante A · depto",
-      imageUrl: photoA,
-      headline: pack.adHeadline.slice(0, 40),
-      primaryText: pack.adPrimaryText.slice(0, 125),
-      description: `A ~${mins} min · reserva en Airbnb`,
-      cta: "Más información",
-    },
-    {
-      id: `${pack.slug}-creative-b`,
-      label: "Variante B · cercanía",
-      imageUrl: photoB,
-      headline: `${pack.venueName} · ${mins} min`.slice(0, 40),
-      primaryText:
-        `${pack.eventTitle}. ${pack.eventDates}. Depto en barrio seguro, metro cerca.`.slice(
-          0,
-          125,
-        ),
-      description: "Santiago · Airbnb protegido",
-      cta: "Ver opciones",
-    },
-  ].filter((c) => Boolean(c.imageUrl));
+function preferredAdLocales(pack: PackForPlan): string[] {
+  const blob = [
+    pack.interest,
+    ...pack.audience.segments,
+    ...pack.audience.geoTargets.map((g) => `${g.label} ${g.area} ${g.origin ?? ""}`),
+  ]
+    .join(" ")
+    .toLowerCase();
+  const langs = new Set<string>(["español"]);
+  if (/brasil|brazil|portugu/.test(blob) || pack.interest === "nieve") {
+    langs.add("portugués");
+  }
+  if (/e\.?e\.?u\.?u|usa|united|ingl[eé]s|english|europa|uk|canada/.test(blob)) {
+    langs.add("inglés");
+  }
+  // Turistas mixtos: siempre ofrecer los 3 en el brief
+  langs.add("inglés");
+  langs.add("portugués");
+  return [...langs];
 }
 
 export function buildAdPublishPlan(pack: PackForPlan): AdPublishPlan {
@@ -185,6 +191,8 @@ export function buildAdPublishPlan(pack: PackForPlan): AdPublishPlan {
     ...new Set([pack.interestLabel, ...pack.audience.segments.slice(0, 4)]),
   ];
 
+  const adLangs = preferredAdLocales(pack);
+
   const metaTargetingNotes = [
     geos.length
       ? `Geo: ${geos.map((g) => g.label).join(", ")} + radio ciudades`
@@ -193,17 +201,19 @@ export function buildAdPublishPlan(pack: PackForPlan): AdPublishPlan {
     pack.playbook === "mailing_first"
       ? "Presupuesto ads bajo; prioriza mailing a clubes/federaciones"
       : "Advantage+ o intereses estrechos + lookalike cuando tengas tráfico",
-    "Edad 22–55 · idioma español",
+    `Edad 22–55 · idiomas: ${adLangs.join(", ")}`,
+    "Landing autotraduce por idioma del navegador (?lang=es|en|pt). En ads usa la creatividad del mismo idioma y URL con ?lang=",
   ];
 
   const googleTargetingNotes = [
     pack.playbook === "ads_heavy" || pack.interest === "concierto"
-      ? "Search: nombre del evento + “alojamiento Santiago” / “depto cerca”"
-      : "Search: deporte + “Santiago alojamiento” / sede del evento",
-    "PMax o Display con creatividades del pack (foto depto)",
+      ? "Search: nombre del evento + “alojamiento Santiago” / “apartment Santiago” / “apartamento Santiago”"
+      : "Search: deporte + “Santiago alojamiento” / “Santiago apartment” / sede del evento",
+    "PMax o Display con creatividades del pack (foto depto) en ES/EN/PT",
     geos[0]
       ? `Ubicación: ${geos[0].label} (+ exclusiones Santiago si el público es visitante)`
       : "Ubicación: Chile priorizando orígenes visitantes",
+    `Idioma de anuncio: ${adLangs.join(", ")} · final URL con ?lang= coincidente`,
   ];
 
   const checklist: AdPublishPlan["checklist"] = [
@@ -277,7 +287,7 @@ export function formatAdBriefText(
   return [
     `BRIEF LISTO PARA PUBLICAR — ${pack.eventTitle}`,
     `Interés: ${pack.interestLabel}`,
-    `Landing: ${landingUrl}`,
+    `Landing: ${landingUrl} (auto ES/EN/PT; ads → ?lang=es|en|pt)`,
     ``,
     `OBJETIVO: ${plan.objective}`,
     `FECHAS PAUTA: ${plan.flightStart} → ${plan.flightEnd} (${plan.expected.days} días)`,
