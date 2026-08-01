@@ -8,6 +8,7 @@ function isPublicPath(pathname: string): boolean {
   if (pathname === "/c" || pathname.startsWith("/c/")) return true;
   if (pathname === "/santiago") return true;
   if (pathname === "/quedate") return true; // redirect abajo
+  if (pathname === "/g" || pathname.startsWith("/g/")) return true;
   return false;
 }
 
@@ -52,7 +53,7 @@ export const config = {
   matcher: [
     /*
      * Todo excepto estáticos de Next y assets comunes.
-     * Públicos: /login, /c/*, /santiago.
+     * Públicos: /login, /c/*, /santiago, /g/* (micrositios).
      */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],

@@ -50,7 +50,10 @@ function confidenceFor(
   return "baja";
 }
 
-type PackForPlan = Omit<CampaignPack, "publishPlan">;
+type PackForPlan = Omit<
+  CampaignPack,
+  "publishPlan" | "travelBrief" | "microsite"
+>;
 
 function buildExpected(pack: PackForPlan, days: number): ExpectedAdResults {
   const daily = pack.dailyBudgetClp;

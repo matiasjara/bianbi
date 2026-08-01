@@ -26,9 +26,14 @@ export function CampaignPackCard({
   const [isApproved, setIsApproved] = useState(approved);
   const [copied, setCopied] = useState<string | null>(null);
   const landingPath = `/c/${pack.slug}`;
+  const guidePath = `/g/${pack.slug}`;
 
   function absoluteLandingUrl() {
     return `${window.location.origin}${landingPath}`;
+  }
+
+  function absoluteGuideUrl() {
+    return `${window.location.origin}${guidePath}`;
   }
 
   async function copy(label: string, text: string) {
@@ -111,6 +116,48 @@ export function CampaignPackCard({
           </span>
         </p>
       </div>
+
+      {pack.travelBrief ? (
+        <div className="mt-5 rounded-lg border border-[var(--line)] bg-[var(--panel-2)]/60 px-4 py-3">
+          <p className="text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
+            Travel Brief · guía de viaje
+          </p>
+          <p className="mt-1 text-sm font-medium">
+            {pack.microsite?.guideTitle ?? pack.eventTitle}
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+            {pack.travelBrief.strategy.winningMessage}
+          </p>
+          <p className="mt-2 text-xs text-[var(--muted)]">
+            {pack.travelBrief.persona.who}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a
+              href={guidePath}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-[var(--panel)]"
+            >
+              Abrir micrositio
+            </a>
+            <button
+              type="button"
+              onClick={() => copy("guía", absoluteGuideUrl())}
+              className="rounded-md border border-[var(--line)] px-3 py-1.5 text-xs text-[var(--ink)]"
+            >
+              {copied === "guía" ? "URL copiada" : "Copiar URL guía"}
+            </button>
+            <a
+              href={landingPath}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md border border-[var(--line)] px-3 py-1.5 text-xs text-[var(--ink)]"
+            >
+              Landing corta
+            </a>
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
         <div className="space-y-4">

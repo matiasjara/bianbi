@@ -234,6 +234,10 @@ export interface CampaignPack {
   attendanceMethod?: string;
   /** Plan de ads/mailing listo para decidir publicar (sin API aún). */
   publishPlan: AdPublishPlan;
+  /** Preguntas estratégicas respondidas antes de creatividades. */
+  travelBrief: TravelBrief;
+  /** Micrositio / guía pública SEO del evento. */
+  microsite: MicrositeContent;
 }
 
 export type DemandDimension = "mega" | "grande" | "media" | "chica";
@@ -295,6 +299,72 @@ export interface AdPublishPlan {
   mailingTargets: MailingTargetSuggestion[];
   checklist: Array<{ id: string; label: string; done: boolean }>;
   publishBlockedReason: string;
+}
+
+/**
+ * Travel Brief: respuestas estratégicas antes de crear landing/ads/micrositio.
+ * "Travel Brief" (EN) ≈ guía de viaje / brief del viajero (ES).
+ */
+export interface TravelBrief {
+  status: "draft" | "ready";
+  generatedAt: string;
+  persona: {
+    who: string;
+    origins: string[];
+    tripStyle: string;
+    budgetBand: string;
+    stayNights: string;
+  };
+  strategy: {
+    problem: string;
+    objections: string[];
+    trustProof: string[];
+    winningMessage: string;
+  };
+  checklistAnswered: {
+    who: boolean;
+    problem: boolean;
+    objections: boolean;
+    trustProof: boolean;
+    winningMessage: boolean;
+  };
+}
+
+export type MicrositeGuideKind =
+  | "concierto"
+  | "partido"
+  | "deporte"
+  | "nieve"
+  | "turismo"
+  | "evento";
+
+/** Micrositio público SEO por evento (guía / Travel Brief). */
+export interface MicrositeContent {
+  slug: string;
+  guideTitle: string;
+  guideKind: MicrositeGuideKind;
+  productLabel: string;
+  productLabelEs: string;
+  eventSummary: string;
+  eventTitle: string;
+  eventDates: string;
+  venueName: string;
+  venueLat: number;
+  venueLng: number;
+  agendaTips: string[];
+  recommendations: string[];
+  weather: { summary: string; tip: string };
+  transport: string[];
+  faqs: Array<{ q: string; a: string }>;
+  seoTitle: string;
+  seoDescription: string;
+  archived: boolean;
+  archiveNote: string;
+  properties: CampaignPackProperty[];
+  trustPoints: string[];
+  travelBrief: TravelBrief;
+  interest: CampaignInterest;
+  interestLabel: string;
 }
 
 export interface IngestManifest {

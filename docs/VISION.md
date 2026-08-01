@@ -24,7 +24,19 @@ Cada funcionalidad debe responder: ¿esto ayuda a conseguir más reservas?
 
 ## Arquitectura conceptual
 
-Departamento → POIs → Motivos de viaje → Eventos/estacionalidad → Intención → Landing → SEO/Ads → Reserva Airbnb
+Departamento → POIs → Motivos de viaje → Eventos/estacionalidad → Intención → **Travel Brief** → Micrositio/Guía + Landing → SEO/Ads → Reserva Airbnb
+
+### Travel Brief (guía de viaje)
+
+Antes de crear landing, ads o micrositio, el sistema responde:
+
+1. ¿Quién es esta persona?
+2. ¿Qué problema intenta resolver?
+3. ¿Qué objeciones puede tener?
+4. ¿Qué prueba genera confianza?
+5. ¿Cuál es el mejor mensaje?
+
+Luego genera el **micrositio** público (`/g/[slug]`): info del evento, mapa, tips, clima, transporte, FAQ y dónde alojar. Queda indexable/archivado para SEO.
 
 ## Núcleo de datos
 

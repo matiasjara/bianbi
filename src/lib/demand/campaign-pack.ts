@@ -6,6 +6,7 @@ import {
   properties as allProperties,
 } from "@/lib/data/seed";
 import { buildAdPublishPlan } from "./ad-brief";
+import { attachTravelBriefAndMicrosite } from "./travel-brief";
 import type { CampaignAudience } from "./types";
 import {
   sportCopyParts,
@@ -493,8 +494,9 @@ export function buildCampaignPack(
     attendanceMethod: peak.signals[0]?.attendanceMethod,
   };
 
+  const withBrief = attachTravelBriefAndMicrosite(base);
   return {
-    ...base,
+    ...withBrief,
     publishPlan: buildAdPublishPlan(base),
   };
 }
