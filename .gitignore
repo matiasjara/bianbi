@@ -29,6 +29,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+firebase-debug.log
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -47,7 +48,7 @@ data/ingested/campaigns-approved.json
 
 .vercel-deploy-payload.json
 
-# backup local de iconos sin normalizar
+# backup local de iconos sprite (no versionar)
 /public/brand/icons-raw/
 
 # videos editoriales pesados (local)

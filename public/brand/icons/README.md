@@ -1,21 +1,12 @@
-# Iconos Bianbi
+# Iconos UI
 
-Sprite original: `../icons-sprite.png`  
-Cortes individuales: `i000.png` … `i095.png` (128×128, fondo transparente).
-
-Los PNG están limpios y normalizados ópticamente:
-1. se descartan fragmentos de celdas vecinas del sprite
-2. el trazo principal ocupa ~82% del canvas
-
-Backup sin normalizar: `../icons-raw/` (local, no versionar).
-
-Usar en código:
+Los iconos de la interfaz usan **[Phosphor Icons](https://phosphoricons.com/)** (`@phosphor-icons/react`), peso `regular`.
 
 ```tsx
 import { BrandIcon } from "@/components/brand/BrandIcon";
 
 <BrandIcon name="music" size={48} />
-<BrandIcon name="i036" size={36} /> // por ID
+<BrandIcon name="bed" size={22} tone="onDark" />
 ```
 
-Catálogo semántico: `src/lib/brand/icons.ts`
+Catálogo de nombres: `src/lib/brand/icons.ts`

@@ -5,7 +5,7 @@
 - `logo-dark.png` — mismo wordmark en carbón (fondos crema)
 - `logo-white.png` — wordmark blanco
 - `iso.png` / `iso-light.png` — isotipo pin+ruta (también favicon)
-- `icons/` — sprite cortado (`i000`…`i095`)
+- `icons/` — documentación de iconos UI (Phosphor vía código)
 - `manual/` — páginas del manual de marca
 
 ## Tokens (código)
