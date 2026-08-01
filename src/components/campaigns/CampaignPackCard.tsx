@@ -117,19 +117,13 @@ export function CampaignPackCard({
         </p>
       </div>
 
-      {pack.travelBrief ? (
+      {pack.microsite ? (
         <div className="mt-5 rounded-lg border border-[var(--line)] bg-[var(--panel-2)]/60 px-4 py-3">
           <p className="text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
-            Travel Brief · guía de viaje
+            Micrositio
           </p>
           <p className="mt-1 text-sm font-medium">
-            {pack.microsite?.guideTitle ?? pack.eventTitle}
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-            {pack.travelBrief.strategy.winningMessage}
-          </p>
-          <p className="mt-2 text-xs text-[var(--muted)]">
-            {pack.travelBrief.persona.who}
+            {pack.microsite.guideTitle}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <a
@@ -138,14 +132,14 @@ export function CampaignPackCard({
               rel="noreferrer"
               className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-[var(--panel)]"
             >
-              Abrir micrositio
+              Abrir guía
             </a>
             <button
               type="button"
               onClick={() => copy("guía", absoluteGuideUrl())}
               className="rounded-md border border-[var(--line)] px-3 py-1.5 text-xs text-[var(--ink)]"
             >
-              {copied === "guía" ? "URL copiada" : "Copiar URL guía"}
+              {copied === "guía" ? "URL copiada" : "Copiar URL"}
             </button>
             <a
               href={landingPath}

@@ -256,7 +256,65 @@ function transport(pack: PackCore): string[] {
 }
 
 function eventSummary(pack: PackCore): string {
-  return `${pack.eventTitle} · ${pack.eventDates} · ${pack.venueName}. ${pack.interestLabel}. Estimamos demanda ${pack.demandDimension}${pack.estimatedOvernight ? ` (~${pack.estimatedOvernight} personas con chance de pernocta)` : ""}.`;
+  return `${pack.eventTitle} en ${pack.venueName}. ${pack.eventDates}. Todo lo esencial para tu visita a Santiago.`;
+}
+
+function mustKnow(pack: PackCore): string[] {
+  const mins = pack.properties[0]?.walkingMinutes ?? 15;
+  const tips = [
+    `Fecha: ${pack.eventDates}.`,
+    `Lugar: ${pack.venueName}, Santiago.`,
+    `Llega con tiempo: desde los deptos recomendados son ~${mins} min a pie.`,
+    "Guarda esta guía y compártela con quien va contigo.",
+  ];
+  if (pack.interest === "concierto") {
+    tips.push(
+      "Entra con margen: colas, control de acceso y merch suelen demorar.",
+      "Planifica la vuelta de noche: metro, rideshare o caminata corta según horario.",
+    );
+  } else if (pack.interest === "partido_futbol") {
+    tips.push(
+      "Revisa horarios de acceso al estadio y posibles cortes de calle.",
+      "Si la hinchada es visitante, muévete en grupo por rutas iluminadas.",
+    );
+  } else if (pack.interest === "nieve") {
+    tips.push(
+      "Santiago es tu base: duermes en la ciudad y sales temprano a la cordillera.",
+      "Revisa el parte de nieve el día anterior.",
+    );
+  } else if (pack.interest === "deporte_competencia") {
+    tips.push(
+      "Confirma horarios de competencia y acreditaciones si vas como staff o familia.",
+      "Descansa cerca del venue: el día es largo.",
+    );
+  }
+  return tips;
+}
+
+function news(pack: PackCore): string[] {
+  const items = [
+    `${pack.eventTitle} se realiza en ${pack.venueName} (${pack.eventDates}).`,
+    "Si aún no tienes alojamiento, reserva pronto: las fechas de evento se llenan cerca del venue.",
+  ];
+  if (pack.interest === "concierto") {
+    items.push(
+      "Revisa la app o el mail del ticket por cambios de puerta o horarios de apertura.",
+    );
+  }
+  if (pack.interest === "partido_futbol") {
+    items.push(
+      "Sigue a tu club y a la ANFP por posibles cambios de horario o sede.",
+    );
+  }
+  if (pack.interest === "nieve") {
+    items.push(
+      "Condiciones de nieve cambian rápido: confirma centros y caminos el mismo día.",
+    );
+  }
+  items.push(
+    "Tips locales: metro + barrio seguro + departamento full equipado para llegar y descansar.",
+  );
+  return items;
 }
 
 export function buildTravelBrief(pack: PackCore): TravelBrief {
@@ -278,45 +336,36 @@ export function buildTravelBrief(pack: PackCore): TravelBrief {
 }
 
 export function buildMicrosite(pack: PackCore): MicrositeContent {
-  const brief = buildTravelBrief(pack);
   const climate = monthClimate(pack.eventStartsOn);
   const kind = guideKind(pack.interest);
   const title = guideTitle(pack);
-  const slug = pack.slug; // misma clave que la landing /c — URL /g/{slug}
+  const slug = pack.slug;
+  const summary = eventSummary(pack);
 
   return {
     slug,
     guideTitle: title,
     guideKind: kind,
-    /** Nombre producto EN; en UI ES: "Guía de viaje" */
     productLabel: "Travel Brief",
-    productLabelEs: "Guía de viaje",
-    eventSummary: eventSummary(pack),
+    productLabelEs: "Guía del evento",
+    eventSummary: summary,
     eventTitle: pack.eventTitle,
     eventDates: pack.eventDates,
     venueName: pack.venueName,
     venueLat: pack.venueLat,
     venueLng: pack.venueLng,
-    agendaTips: [
-      `Fechas del evento: ${pack.eventDates}.`,
-      `Sede: ${pack.venueName}.`,
-      brief.persona.stayNights,
-      `Mensaje clave: ${brief.strategy.winningMessage}`,
-    ],
+    mustKnow: mustKnow(pack),
     recommendations: recommendations(pack),
+    news: news(pack),
     weather: climate,
     transport: transport(pack),
     faqs: faqs(pack),
-    seoTitle: `${title} | dónde alojarse cerca`,
-    seoDescription: `${title}. Mapa, transporte, clima, FAQ y departamentos cerca de ${pack.venueName} con reserva en Airbnb. Travel Brief Bianbi.`,
-    archived: false,
-    archiveNote:
-      "Esta guía queda publicada y optimizada para SEO aunque el evento ya haya pasado: sirve a viajeros que buscan información histórica y próximos viajes similares.",
+    seoTitle: `${title} · ${pack.venueName}`,
+    seoDescription: `${title}. Fechas, mapa, tips, clima, transporte, FAQ y alojamiento cerca de ${pack.venueName} en Santiago.`,
     properties: pack.properties,
-    trustPoints: pack.trustPoints,
-    travelBrief: brief,
     interest: pack.interest,
     interestLabel: pack.interestLabel,
+    shareText: `${title} — ${pack.eventDates} en ${pack.venueName}. Lo esencial para tu visita:`,
   };
 }
 

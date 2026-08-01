@@ -58,7 +58,7 @@ const UI: Record<Locale, Ui> = {
     paySafe: "Pago seguro · cancelación según política del anuncio",
     mapTitle: "Evento y departamentos en el mapa",
     mapBody: (venue) =>
-      `Pin negro = ${venue}. Pins coral = tus opciones de alojamiento. Así ves la distancia real antes de reservar.`,
+      `${venue} y tus opciones de alojamiento cerca.`,
     mapEvent: "Evento",
     mapUnit: "Departamento",
     closeTitle: "Reserva ahora y asegura tu estadía",
@@ -95,7 +95,7 @@ const UI: Record<Locale, Ui> = {
     paySafe: "Secure payment · cancellation per listing policy",
     mapTitle: "Event and apartments on the map",
     mapBody: (venue) =>
-      `Black pin = ${venue}. Coral pins = your stay options. See real distance before you book.`,
+      `${venue} and your nearby stay options.`,
     mapEvent: "Event",
     mapUnit: "Apartment",
     closeTitle: "Book now and lock in your stay",
@@ -132,7 +132,7 @@ const UI: Record<Locale, Ui> = {
     paySafe: "Pagamento seguro · cancelamento conforme o anúncio",
     mapTitle: "Evento e apartamentos no mapa",
     mapBody: (venue) =>
-      `Pin preto = ${venue}. Pins coral = suas opções de hospedagem. Veja a distância real antes de reservar.`,
+      `${venue} e suas opções de hospedagem por perto.`,
     mapEvent: "Evento",
     mapUnit: "Apartamento",
     closeTitle: "Reserve agora e garanta sua estadia",

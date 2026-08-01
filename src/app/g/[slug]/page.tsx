@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LandingMap } from "@/components/campaigns/LandingMap";
+import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
 import { PhotoStoryCarousel } from "@/components/campaigns/PhotoStoryCarousel";
 import { loadCampaignPackBySlug } from "@/lib/demand/load-campaign-packs";
 import { propertiesForMicrosite } from "@/lib/demand/travel-brief";
@@ -17,7 +17,7 @@ const AIRBNB_BTN =
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const pack = await loadCampaignPackBySlug(slug);
-  if (!pack?.microsite) return { title: "Guía de viaje · Bianbi" };
+  if (!pack?.microsite) return { title: "Guía · Bianbi" };
   const m = pack.microsite;
   return {
     title: m.seoTitle,
@@ -26,6 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: m.seoTitle,
       description: m.seoDescription,
       type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: m.seoTitle,
+      description: m.seoDescription,
     },
     alternates: { canonical: `/g/${slug}` },
     robots: { index: true, follow: true },
@@ -59,9 +64,7 @@ export default async function MicrositeGuidePage({ params }: Props) {
   if (!pack?.microsite) notFound();
 
   const m = pack.microsite;
-  const brief = m.travelBrief;
   const props = propertiesForMicrosite(m.properties);
-  const lead = props[0];
 
   const mapMarkers = [
     {
@@ -83,7 +86,7 @@ export default async function MicrositeGuidePage({ params }: Props) {
     "@type": "Article",
     headline: m.guideTitle,
     description: m.seoDescription,
-    datePublished: brief.generatedAt,
+    datePublished: pack.eventStartsOn,
     author: { "@type": "Organization", name: "Bianbi" },
     about: {
       "@type": "Event",
@@ -108,7 +111,7 @@ export default async function MicrositeGuidePage({ params }: Props) {
       <header className="border-b border-black/8 bg-[#1a1a1a] text-white">
         <div className="mx-auto max-w-3xl px-5 py-10 md:py-14">
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/45">
-            Bianbi · {m.productLabelEs}
+            Bianbi
           </p>
           <p className="mt-2 text-xs uppercase tracking-[0.16em] text-white/55">
             {m.interestLabel} · {m.eventDates}
@@ -119,14 +122,17 @@ export default async function MicrositeGuidePage({ params }: Props) {
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/75">
             {m.eventSummary}
           </p>
-          <p className="mt-3 text-sm text-white/55">
-            {m.productLabel} — lo que un viajero necesita saber antes de llegar.
-          </p>
+          <MicrositeShareBar
+            title={m.guideTitle}
+            shareText={m.shareText}
+            path={`/g/${slug}`}
+          />
           <nav className="mt-8 flex flex-wrap gap-2 text-xs">
             {[
-              ["evento", "Evento"],
+              ["must", "Lo esencial"],
+              ["novedades", "Novedades"],
               ["mapa", "Mapa"],
-              ["recomendaciones", "Tips"],
+              ["tips", "Tips"],
               ["clima", "Clima"],
               ["transporte", "Transporte"],
               ["faq", "FAQ"],
@@ -144,79 +150,44 @@ export default async function MicrositeGuidePage({ params }: Props) {
         </div>
       </header>
 
-      <Section id="evento" title="Información del evento">
+      <Section id="must" title="Lo esencial">
         <ul className="space-y-3 text-[15px] leading-relaxed text-[#484848]">
-          {m.agendaTips.map((tip) => (
+          {m.mustKnow.map((tip) => (
             <li key={tip} className="flex gap-3">
               <span className="mt-2 size-1.5 shrink-0 rounded-full bg-[#222]" />
               <span>{tip}</span>
             </li>
           ))}
         </ul>
-        <div className="mt-8 border-t border-black/8 pt-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6a6a6a]">
-            Travel Brief · viajero típico
-          </p>
-          <dl className="mt-4 space-y-3 text-sm">
-            <div>
-              <dt className="font-medium text-[#222]">¿Quién viene?</dt>
-              <dd className="mt-1 text-[#484848]">{brief.persona.who}</dd>
-            </div>
-            <div>
-              <dt className="font-medium text-[#222]">¿Desde dónde?</dt>
-              <dd className="mt-1 text-[#484848]">
-                {brief.persona.origins.join(" · ")}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-medium text-[#222]">¿Cuánto tiempo?</dt>
-              <dd className="mt-1 text-[#484848]">
-                {brief.persona.stayNights}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-medium text-[#222]">Presupuesto</dt>
-              <dd className="mt-1 text-[#484848]">
-                {brief.persona.budgetBand}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-medium text-[#222]">Problema que resuelve</dt>
-              <dd className="mt-1 text-[#484848]">
-                {brief.strategy.problem}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-medium text-[#222]">Mensaje que convence</dt>
-              <dd className="mt-1 text-[#484848]">
-                {brief.strategy.winningMessage}
-              </dd>
-            </div>
-          </dl>
-        </div>
       </Section>
 
-      <Section id="mapa" title="Mapa: evento y departamentos">
+      <Section id="novedades" title="Novedades">
+        <ul className="space-y-3 text-[15px] leading-relaxed text-[#484848]">
+          {m.news.map((item) => (
+            <li key={item} className="flex gap-3">
+              <span className="mt-2 size-1.5 shrink-0 rounded-full bg-[#FF5A5F]" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section id="mapa" title="Mapa">
         <p className="text-[15px] leading-relaxed text-[#6a6a6a]">
-          Pin negro = {m.venueName}. Pins coral = dónde puedes alojarte.
+          {m.venueName} y opciones para quedarte cerca.
         </p>
         <div className="mt-5 overflow-hidden rounded-2xl border border-black/8">
           <LandingMap markers={mapMarkers} className="h-96 w-full" />
         </div>
       </Section>
 
-      <Section id="recomendaciones" title="Recomendaciones">
+      <Section id="tips" title="Tips y recomendaciones">
         <ul className="space-y-3 text-[15px] leading-relaxed text-[#484848]">
           {m.recommendations.map((r) => (
             <li key={r} className="flex gap-3">
               <span className="mt-2 size-1.5 shrink-0 rounded-full bg-[#FF5A5F]" />
               <span>{r}</span>
             </li>
-          ))}
-        </ul>
-        <ul className="mt-8 space-y-2 text-sm text-[#6a6a6a]">
-          {m.trustPoints.map((t) => (
-            <li key={t}>· {t}</li>
           ))}
         </ul>
       </Section>
@@ -252,16 +223,6 @@ export default async function MicrositeGuidePage({ params }: Props) {
             </div>
           ))}
         </div>
-        <div className="mt-8 border-t border-black/8 pt-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6a6a6a]">
-            Objeciones típicas
-          </p>
-          <ul className="mt-3 space-y-2 text-sm text-[#484848]">
-            {brief.strategy.objections.map((o) => (
-              <li key={o}>· {o}</li>
-            ))}
-          </ul>
-        </div>
       </Section>
 
       <section id="alojar" className="border-t border-black/8 bg-[#f7f4f0]">
@@ -270,7 +231,7 @@ export default async function MicrositeGuidePage({ params }: Props) {
             Dónde alojar
           </h2>
           <p className="mt-2 text-[15px] leading-relaxed text-[#6a6a6a]">
-            Departamentos cerca de {m.venueName}. Reserva directa en Airbnb.
+            Departamentos cerca de {m.venueName}. Reserva en Airbnb.
           </p>
           <div className="mt-8 space-y-8">
             {props.map((prop, idx) => (
@@ -313,18 +274,6 @@ export default async function MicrositeGuidePage({ params }: Props) {
               </article>
             ))}
           </div>
-          {lead ? (
-            <p className="mt-8 text-center text-sm text-[#6a6a6a]">
-              También puedes ver la{" "}
-              <Link
-                href={`/c/${slug}`}
-                className="font-medium text-[#222] underline underline-offset-2"
-              >
-                landing corta del evento
-              </Link>
-              .
-            </p>
-          ) : null}
         </div>
       </section>
 
@@ -332,8 +281,14 @@ export default async function MicrositeGuidePage({ params }: Props) {
         <p className="font-[family-name:var(--font-display)] text-[11px] font-semibold tracking-[0.28em] text-white/30">
           BIANBI
         </p>
-        <p className="mx-auto mt-4 max-w-2xl">{m.archiveNote}</p>
-        <p className="mx-auto mt-3 max-w-2xl">
+        <div className="mx-auto mt-5 flex justify-center">
+          <MicrositeShareBar
+            title={m.guideTitle}
+            shareText={m.shareText}
+            path={`/g/${slug}`}
+          />
+        </div>
+        <p className="mx-auto mt-6 max-w-2xl">
           Este sitio no es parte de Airbnb ni está afiliado a Airbnb, Inc. La
           reserva y el pago se hacen en el anuncio oficial.
         </p>

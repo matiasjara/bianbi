@@ -267,12 +267,6 @@ export default async function CatalogStayPage({ searchParams }: Props) {
           <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-[#6a6a6a]">
             {ui.mapBody}
           </p>
-          <div className="mt-4 flex flex-wrap gap-4 text-xs text-[#6a6a6a]">
-            <span className="inline-flex items-center gap-2">
-              <span className="inline-block size-2.5 rounded-full bg-[#FF5A5F]" />
-              {ui.mapUnit}
-            </span>
-          </div>
           <div className="mt-5 overflow-hidden rounded-2xl border border-black/8">
             <LandingMap
               markers={[...propertyPins.values()]}

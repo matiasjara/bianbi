@@ -351,20 +351,19 @@ export interface MicrositeContent {
   venueName: string;
   venueLat: number;
   venueLng: number;
-  agendaTips: string[];
+  /** Lo esencial del evento (must-know) */
+  mustKnow: string[];
   recommendations: string[];
+  news: string[];
   weather: { summary: string; tip: string };
   transport: string[];
   faqs: Array<{ q: string; a: string }>;
   seoTitle: string;
   seoDescription: string;
-  archived: boolean;
-  archiveNote: string;
   properties: CampaignPackProperty[];
-  trustPoints: string[];
-  travelBrief: TravelBrief;
   interest: CampaignInterest;
   interestLabel: string;
+  shareText: string;
 }
 
 export interface IngestManifest {

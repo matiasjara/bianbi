@@ -67,8 +67,7 @@ const UI: Record<Locale, CatalogUi> = {
     ctaBook: "Reservar en Airbnb",
     paySafe: "Pago seguro · cancelación según política del anuncio",
     mapTitle: "Dónde están",
-    mapBody:
-      "Pins coral = departamentos. Así ves la ubicación en Santiago antes de reservar.",
+    mapBody: "Ubicación de los departamentos en Santiago.",
     mapUnit: "Departamento",
     closeTitle: "Elige tu base en Santiago",
     closeBody:
@@ -109,8 +108,7 @@ const UI: Record<Locale, CatalogUi> = {
     ctaBook: "Book on Airbnb",
     paySafe: "Secure payment · cancellation per listing policy",
     mapTitle: "Where they are",
-    mapBody:
-      "Coral pins = apartments. See the Santiago location before you book.",
+    mapBody: "Where the apartments are in Santiago.",
     mapUnit: "Apartment",
     closeTitle: "Pick your base in Santiago",
     closeBody:
@@ -151,8 +149,7 @@ const UI: Record<Locale, CatalogUi> = {
     ctaBook: "Reservar no Airbnb",
     paySafe: "Pagamento seguro · cancelamento conforme o anúncio",
     mapTitle: "Onde ficam",
-    mapBody:
-      "Pins coral = apartamentos. Veja a localização em Santiago antes de reservar.",
+    mapBody: "Localização dos apartamentos em Santiago.",
     mapUnit: "Apartamento",
     closeTitle: "Escolha sua base em Santiago",
     closeBody:
