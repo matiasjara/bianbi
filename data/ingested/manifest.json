@@ -1,0 +1,25 @@
+{
+  "ranAt": "2026-07-31T18:07:59.193Z",
+  "sources": [
+    {
+      "name": "nager_holidays_2026",
+      "ok": true,
+      "count": 17
+    },
+    {
+      "name": "nager_holidays_2027",
+      "ok": true,
+      "count": 17
+    },
+    {
+      "name": "seasonality_rules",
+      "ok": true,
+      "count": 22
+    },
+    {
+      "name": "events_file",
+      "ok": true,
+      "count": 255
+    }
+  ]
+}

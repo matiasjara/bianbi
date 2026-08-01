@@ -1,0 +1,446 @@
+[
+  {
+    "id": "season-nieve-br-2026",
+    "kind": "tourism_flow",
+    "source": "seasonality_rules",
+    "title": "Temporada de nieve — turismo brasileño (2026)",
+    "description": "Jun–Ago: flujo fuerte de brasileños hacia centros de ski (Valle Nevado, Farellones, Portillo). Santiago es hub de llegada/salida y noches puente.",
+    "startsOn": "2026-06-01",
+    "endsOn": "2026-08-31",
+    "intensity": 7,
+    "audienceTags": [
+      "turismo",
+      "brasil",
+      "nieve"
+    ],
+    "poiIds": [
+      "poi-costanera",
+      "poi-lastarria"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ]
+  },
+  {
+    "id": "season-vacaciones-invierno-2026",
+    "kind": "school_break",
+    "source": "seasonality_rules",
+    "title": "Vacaciones de invierno escolares (2026)",
+    "description": "Dos semanas típicas en julio: familias locales + turismo corto. Sube Fantasilandia y escapadas urbanas.",
+    "startsOn": "2026-07-11",
+    "endsOn": "2026-07-26",
+    "intensity": 6,
+    "audienceTags": [
+      "familias",
+      "turismo"
+    ],
+    "poiIds": [
+      "poi-fantasilandia"
+    ],
+    "propertyCodesPreferred": [
+      "T112",
+      "Z114",
+      "Z107"
+    ]
+  },
+  {
+    "id": "season-fiestas-patrias-2026",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Fiestas Patrias — puente nacional (2026)",
+    "description": "18–19 sep (+puente): máxima demanda doméstica. Fondas, viajes internos, noches caras.",
+    "startsOn": "2026-09-17",
+    "endsOn": "2026-09-21",
+    "intensity": 9,
+    "audienceTags": [
+      "turismo",
+      "familias",
+      "nacional"
+    ],
+    "poiIds": [
+      "poi-fantasilandia",
+      "poi-lastarria",
+      "poi-italia"
+    ]
+  },
+  {
+    "id": "season-verano-2026-a",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Verano Santiago — turismo + eventos (2026)",
+    "description": "Dic–Feb: hoteles llenos, festivales, visitas familiares. Buena base orgánica; conviene remarketing.",
+    "startsOn": "2026-12-01",
+    "endsOn": "2026-12-31",
+    "intensity": 6,
+    "audienceTags": [
+      "turismo",
+      "familias"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-italia",
+      "poi-costanera",
+      "poi-fantasilandia"
+    ]
+  },
+  {
+    "id": "season-verano-2027-b",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Verano Santiago — turismo + eventos (2027)",
+    "description": "Dic–Feb: hoteles llenos, festivales, visitas familiares. Buena base orgánica; conviene remarketing.",
+    "startsOn": "2027-01-01",
+    "endsOn": "2027-02-28",
+    "intensity": 6,
+    "audienceTags": [
+      "turismo",
+      "familias"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-italia",
+      "poi-costanera",
+      "poi-fantasilandia"
+    ]
+  },
+  {
+    "id": "season-ano-nuevo-2026",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Año Nuevo — llegada anticipada (2026)",
+    "description": "28 dic–2 ene: peak de llegadas internacionales y nacionales.",
+    "startsOn": "2026-12-28",
+    "endsOn": "2026-12-31",
+    "intensity": 8,
+    "audienceTags": [
+      "turismo"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ]
+  },
+  {
+    "id": "season-ano-nuevo-ene-2026",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Año Nuevo — salida / puente enero (2026)",
+    "description": "1–3 ene: extensión del peak de Año Nuevo.",
+    "startsOn": "2026-01-01",
+    "endsOn": "2026-01-03",
+    "intensity": 8,
+    "audienceTags": [
+      "turismo"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ]
+  },
+  {
+    "id": "season-semana-santa-2026",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Semana Santa — puente corto (2026)",
+    "description": "Jueves/viernes santo: escapadas urbanas y turismo doméstico (fechas exactas vienen de feriados).",
+    "startsOn": "2026-03-01",
+    "endsOn": "2026-04-30",
+    "intensity": 4,
+    "audienceTags": [
+      "turismo",
+      "familias"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-italia"
+    ]
+  },
+  {
+    "id": "season-congresos-otoño-2026",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Temporada de congresos / negocios (2026)",
+    "description": "Mar–May y Sep–Nov: mayor actividad de congresos y viajes corporativos en Santiago.",
+    "startsOn": "2026-03-01",
+    "endsOn": "2026-05-31",
+    "intensity": 4,
+    "audienceTags": [
+      "negocios",
+      "workation"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ]
+  },
+  {
+    "id": "season-congresos-primavera-2026",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Congresos primavera (2026)",
+    "description": "Sep–Nov: segunda ventana fuerte de viajes de negocios.",
+    "startsOn": "2026-09-01",
+    "endsOn": "2026-11-30",
+    "intensity": 4,
+    "audienceTags": [
+      "negocios",
+      "workation"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ]
+  },
+  {
+    "id": "season-halloween-festivales-2026",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Halloween / primavera eventos (2026)",
+    "description": "Fin de oct: fiestas, shows y turismo corto de fin de semana.",
+    "startsOn": "2026-10-25",
+    "endsOn": "2026-10-31",
+    "intensity": 5,
+    "audienceTags": [
+      "turismo",
+      "conciertos"
+    ],
+    "poiIds": [
+      "poi-movistar",
+      "poi-italia"
+    ]
+  },
+  {
+    "id": "season-nieve-br-2027",
+    "kind": "tourism_flow",
+    "source": "seasonality_rules",
+    "title": "Temporada de nieve — turismo brasileño (2027)",
+    "description": "Jun–Ago: flujo fuerte de brasileños hacia centros de ski (Valle Nevado, Farellones, Portillo). Santiago es hub de llegada/salida y noches puente.",
+    "startsOn": "2027-06-01",
+    "endsOn": "2027-08-31",
+    "intensity": 7,
+    "audienceTags": [
+      "turismo",
+      "brasil",
+      "nieve"
+    ],
+    "poiIds": [
+      "poi-costanera",
+      "poi-lastarria"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ]
+  },
+  {
+    "id": "season-vacaciones-invierno-2027",
+    "kind": "school_break",
+    "source": "seasonality_rules",
+    "title": "Vacaciones de invierno escolares (2027)",
+    "description": "Dos semanas típicas en julio: familias locales + turismo corto. Sube Fantasilandia y escapadas urbanas.",
+    "startsOn": "2027-07-11",
+    "endsOn": "2027-07-26",
+    "intensity": 6,
+    "audienceTags": [
+      "familias",
+      "turismo"
+    ],
+    "poiIds": [
+      "poi-fantasilandia"
+    ],
+    "propertyCodesPreferred": [
+      "T112",
+      "Z114",
+      "Z107"
+    ]
+  },
+  {
+    "id": "season-fiestas-patrias-2027",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Fiestas Patrias — puente nacional (2027)",
+    "description": "18–19 sep (+puente): máxima demanda doméstica. Fondas, viajes internos, noches caras.",
+    "startsOn": "2027-09-17",
+    "endsOn": "2027-09-21",
+    "intensity": 9,
+    "audienceTags": [
+      "turismo",
+      "familias",
+      "nacional"
+    ],
+    "poiIds": [
+      "poi-fantasilandia",
+      "poi-lastarria",
+      "poi-italia"
+    ]
+  },
+  {
+    "id": "season-verano-2027-a",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Verano Santiago — turismo + eventos (2027)",
+    "description": "Dic–Feb: hoteles llenos, festivales, visitas familiares. Buena base orgánica; conviene remarketing.",
+    "startsOn": "2027-12-01",
+    "endsOn": "2027-12-31",
+    "intensity": 6,
+    "audienceTags": [
+      "turismo",
+      "familias"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-italia",
+      "poi-costanera",
+      "poi-fantasilandia"
+    ]
+  },
+  {
+    "id": "season-verano-2028-b",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Verano Santiago — turismo + eventos (2028)",
+    "description": "Dic–Feb: hoteles llenos, festivales, visitas familiares. Buena base orgánica; conviene remarketing.",
+    "startsOn": "2028-01-01",
+    "endsOn": "2028-02-29",
+    "intensity": 6,
+    "audienceTags": [
+      "turismo",
+      "familias"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-italia",
+      "poi-costanera",
+      "poi-fantasilandia"
+    ]
+  },
+  {
+    "id": "season-ano-nuevo-2027",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Año Nuevo — llegada anticipada (2027)",
+    "description": "28 dic–2 ene: peak de llegadas internacionales y nacionales.",
+    "startsOn": "2027-12-28",
+    "endsOn": "2027-12-31",
+    "intensity": 8,
+    "audienceTags": [
+      "turismo"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ]
+  },
+  {
+    "id": "season-ano-nuevo-ene-2027",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Año Nuevo — salida / puente enero (2027)",
+    "description": "1–3 ene: extensión del peak de Año Nuevo.",
+    "startsOn": "2027-01-01",
+    "endsOn": "2027-01-03",
+    "intensity": 8,
+    "audienceTags": [
+      "turismo"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ]
+  },
+  {
+    "id": "season-semana-santa-2027",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Semana Santa — puente corto (2027)",
+    "description": "Jueves/viernes santo: escapadas urbanas y turismo doméstico (fechas exactas vienen de feriados).",
+    "startsOn": "2027-03-01",
+    "endsOn": "2027-04-30",
+    "intensity": 4,
+    "audienceTags": [
+      "turismo",
+      "familias"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-italia"
+    ]
+  },
+  {
+    "id": "season-congresos-otoño-2027",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Temporada de congresos / negocios (2027)",
+    "description": "Mar–May y Sep–Nov: mayor actividad de congresos y viajes corporativos en Santiago.",
+    "startsOn": "2027-03-01",
+    "endsOn": "2027-05-31",
+    "intensity": 4,
+    "audienceTags": [
+      "negocios",
+      "workation"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ]
+  },
+  {
+    "id": "season-congresos-primavera-2027",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Congresos primavera (2027)",
+    "description": "Sep–Nov: segunda ventana fuerte de viajes de negocios.",
+    "startsOn": "2027-09-01",
+    "endsOn": "2027-11-30",
+    "intensity": 4,
+    "audienceTags": [
+      "negocios",
+      "workation"
+    ],
+    "poiIds": [
+      "poi-lastarria",
+      "poi-costanera"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ]
+  },
+  {
+    "id": "season-halloween-festivales-2027",
+    "kind": "seasonality",
+    "source": "seasonality_rules",
+    "title": "Halloween / primavera eventos (2027)",
+    "description": "Fin de oct: fiestas, shows y turismo corto de fin de semana.",
+    "startsOn": "2027-10-25",
+    "endsOn": "2027-10-31",
+    "intensity": 5,
+    "audienceTags": [
+      "turismo",
+      "conciertos"
+    ],
+    "poiIds": [
+      "poi-movistar",
+      "poi-italia"
+    ]
+  }
+]

@@ -1,0 +1,2812 @@
+[
+  {
+    "id": "org-club-atletico-santiago",
+    "name": "Club Atlético Santiago",
+    "orgType": "club",
+    "sport": "Atletismo",
+    "region": "Metropolitana",
+    "emails": [
+      "secretaria@clubatleticosantiago.cl"
+    ],
+    "phones": [
+      "(562) 2732 1393"
+    ],
+    "address": "Domínica 83, Recoleta – Santiago",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://clubatleticosantiago.cl/torneos/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-regional-atl-tica-arica-y-",
+    "name": "Asociación Deportiva Regional Atlética Arica y Parinacota",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Arica y Parinacota",
+    "emails": [
+      "atletismoarica@gmail.com"
+    ],
+    "phones": [
+      "+56 9 9888 3945"
+    ],
+    "address": "Camino Espinoza N° 2154, Población San Martín, Arica",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-atl-tica-regional-de-tarapac",
+    "name": "Asociación Atlética Regional de Tarapacá",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Tarapacá",
+    "emails": [
+      "aatarapaca@gmail.com",
+      "valeriaalonsosoto@gmail.com"
+    ],
+    "phones": [
+      "+56 9 7589 9425"
+    ],
+    "address": "Av. Costanera N° 3524, Casa 48, Iquique",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-atl-tica-regi-n-de-antofagasta",
+    "name": "Asociación Atlética Región de Antofagasta",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Antofagasta",
+    "emails": [
+      "asoc.regionalatleticaantof@gmail.com"
+    ],
+    "phones": [
+      "+56 9 7730 7611"
+    ],
+    "address": "Antonio Toro N° 1461, Antofagasta",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-regional-atl-tica-de-ataca",
+    "name": "Asociación Deportiva Regional Atlética de Atacama Mario Ruiz Dettoni",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Atacama",
+    "emails": [
+      "asociacionatleticaatacama@gmail.com"
+    ],
+    "phones": [
+      "+56 9 9150 8899"
+    ],
+    "address": "Rafael Zorraindo N° 115, Copiapó",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-atl-tica-iv-regi-n",
+    "name": "Asociación Deportiva Atlética IV Región",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Coquimbo",
+    "emails": [
+      "asociacionatleticacuartaregion@gmail.com",
+      "danizacarpatios1968@gmail.com"
+    ],
+    "phones": [
+      "+56 9 4027 1892"
+    ],
+    "address": null,
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-atl-tica-regi-n-de-valpara-so",
+    "name": "Asociación Atlética Región de Valparaíso",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Valparaíso",
+    "emails": [
+      "vanessa_goyo_30@hotmail.com"
+    ],
+    "phones": [
+      "+56 9 9378 1843"
+    ],
+    "address": null,
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-atl-tica-regi-n-metropolitana",
+    "name": "Asociación Atlética Región Metropolitana",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Metropolitana",
+    "emails": [
+      "contacto@aarm.cl"
+    ],
+    "phones": [
+      "+56 9 3053 6989"
+    ],
+    "address": "Omar Herrera N° 1546, casa 77, Puente Alto",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-regional-atl-tica-sexta-re",
+    "name": "Asociación Deportiva Regional Atlética Sexta Región",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "O’Higgins",
+    "emails": [
+      "luregonreyez@gmail.com"
+    ],
+    "phones": [
+      "+56 9 9458 0121"
+    ],
+    "address": "Villa Los Maitenes, Pasaje Los Tilos N° 936, San Fernando",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-atl-tica-regi-n-del-maule",
+    "name": "Asociación Atlética Región del Maule",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Maule",
+    "emails": [
+      "joseandradem@gmail.com"
+    ],
+    "phones": [
+      "+56 9 8923 0472"
+    ],
+    "address": "Villa Claudio Arrau, Pasaje Isla Gilbert N° 1990, Curicó",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-regional-atl-tica-del-biob",
+    "name": "Asociación Deportiva Regional Atlética del Biobío",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Biobío",
+    "emails": [
+      "asoc.reg.atleticabiobio@gmail.com"
+    ],
+    "phones": [
+      "+56 9 7218 0714"
+    ],
+    "address": "Av. Campos de Bellavista N° 575, Condominio Aylén, casa 30, Concepción",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-regional-de-atletismo-nove",
+    "name": "Asociación Deportiva Regional de Atletismo Novena Región",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Araucanía",
+    "emails": [
+      "adraraucania2023@gmail.com"
+    ],
+    "phones": [
+      "+56 9 8752 1491"
+    ],
+    "address": "General Carrera N° 350, Departamento 1202, Temuco",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-atl-tica-d-cima-regi-n",
+    "name": "Asociación Deportiva Atlética Décima Región",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Los Lagos",
+    "emails": [
+      "eepuyao@bc.cl"
+    ],
+    "phones": [
+      "+56 9 9228 8574"
+    ],
+    "address": "Los Boldos N° 1374 Francke, Osorno",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-regional-atl-tica-de-los-r",
+    "name": "Asociación Deportiva Regional Atlética de Los Ríos",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Los Ríos",
+    "emails": [
+      "matias.pendola@gmail.com"
+    ],
+    "phones": [
+      "+56 9 6237 5819"
+    ],
+    "address": "Arauco N° 159, oficina 302, Valdivia",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-deportiva-regional-de-atletismo-de-m",
+    "name": "Asociación Deportiva Regional de Atletismo de Magallanes",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Magallanes",
+    "emails": [
+      "a.d.r.a.m.xii@gmail.com"
+    ],
+    "phones": [
+      "+56 9 8976 1214"
+    ],
+    "address": "Las Torcazas N° 32, Población Aves Australes, Punta Arenas",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-atletismo-asociaci-n-atl-tica-regional-de-uble",
+    "name": "Asociación Atlética Regional de Ñuble",
+    "orgType": "asociacion",
+    "sport": "Atletismo",
+    "region": "Ñuble",
+    "emails": [
+      "asociacionatleticanuble@gmail.com",
+      "roan_munoz@outlook.com"
+    ],
+    "phones": [
+      "+56 9 6731 8064"
+    ],
+    "address": "Itahue N° 1152, Chillán",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-rugby-asociaci-n-deportiva-regional-rugby-del-maule",
+    "name": "Asociación Deportiva Regional Rugby del Maule",
+    "orgType": "asociacion",
+    "sport": "Rugby",
+    "region": "Maule",
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [
+      "+56 9 8850 294"
+    ],
+    "address": "1 Sur 690, oficina 1203",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-rugby-asociaci-n-deportiva-regional-de-rugby-del-sur",
+    "name": "Asociación Deportiva Regional de Rugby del Sur",
+    "orgType": "asociacion",
+    "sport": "Rugby",
+    "region": "Sur",
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [
+      "+56 9 7769 0779"
+    ],
+    "address": "Borde del Lago Norte 331, Lomas del Lago",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-rugby-federaci-n-de-rugby-de-chile",
+    "name": "Federación de Rugby de Chile",
+    "orgType": "federacion",
+    "sport": "Rugby",
+    "region": "Nacional",
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org",
+      "presidente@chilerugby.cl"
+    ],
+    "phones": [
+      "+56 9 9359 6276"
+    ],
+    "address": "Av. Larraín 11095",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://chile.rugby/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-b-squetbol-federaci-n-deportiva-nacional-de-b-squetbol-de",
+    "name": "Federación Deportiva Nacional de Básquetbol de Chile FDN",
+    "orgType": "federacion",
+    "sport": "Básquetbol",
+    "region": "Nacional",
+    "emails": [
+      "febachile@gmail.com",
+      "k.heerwagen@febachile.cl",
+      "prensa@febachile.cl",
+      "Asociaciones.feba@gmail.com"
+    ],
+    "phones": [
+      "+56 9 2272 7551"
+    ],
+    "address": "Ramón Cruz 1176, oficina 511",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://www.febachile.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-hockey-c-sped-old-gabs-hockey",
+    "name": "Old Gabs Hockey",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": "Metropolitana",
+    "emails": [
+      "oldgabshockey@gmail.com"
+    ],
+    "phones": [
+      "+56 9 5609 0781"
+    ],
+    "address": null,
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-hockey-c-sped-club-deportivo-alem-n-concepci-n",
+    "name": "Club Deportivo Alemán Concepción",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": "Biobío",
+    "emails": [
+      "secretaria@deportivoaleman.cl"
+    ],
+    "phones": [
+      "41 2465 5950"
+    ],
+    "address": "Concepción",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-hockey-c-sped-halcones-hockey-antofagasta",
+    "name": "Halcones Hockey Antofagasta",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": "Antofagasta",
+    "emails": [
+      "hhalcones@gmail.com"
+    ],
+    "phones": [
+      "+56 9 9889 6100"
+    ],
+    "address": "Antofagasta",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-hockey-c-sped-hockey-panteras-antofagasta",
+    "name": "Hockey Panteras Antofagasta",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": "Antofagasta",
+    "emails": [
+      "presidente@panterashockey.cl"
+    ],
+    "phones": [
+      "+56 9 9162 8250"
+    ],
+    "address": "Antofagasta",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-karate-asociaci-n-deportiva-regional-goju-ryu-seigokan-ka",
+    "name": "Asociación Deportiva Regional Goju Ryu Seigokan Karate Do Kyokai",
+    "orgType": "asociacion",
+    "sport": "Karate",
+    "region": null,
+    "emails": [
+      "contactofdnkaratechile@gmail.com",
+      "gerenciafdnkaratechile@gmail.com"
+    ],
+    "phones": [
+      "+56 9 9501 8973"
+    ],
+    "address": "Pasaje 2 N° 5797",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tenis-federaci-n-de-tenis",
+    "name": "Federación de Tenis",
+    "orgType": "federacion",
+    "sport": "Tenis",
+    "region": "Nacional",
+    "emails": [
+      "federacion@federaciondetenisdechile.cl"
+    ],
+    "phones": [
+      "+56 2 2073 242 / +56 2 2072 311"
+    ],
+    "address": "Cerro Colorado 4661, Las Condes",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tenis-federaci-n-deportiva-nacional-de-tenis-de-chile-fdn",
+    "name": "Federación Deportiva Nacional de Tenis de Chile FDN",
+    "orgType": "federacion",
+    "sport": "Tenis",
+    "region": "Nacional",
+    "emails": [
+      "federacion@federaciondetenisdechile.cl"
+    ],
+    "phones": [
+      "+56 2 2633 124"
+    ],
+    "address": "Cerro Colorado N° 4661",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://www.federaciondetenisdechile.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tenis-asociaci-n-deportiva-regional-tenis-del-maule",
+    "name": "Asociación Deportiva Regional Tenis del Maule",
+    "orgType": "asociacion",
+    "sport": "Tenis",
+    "region": "Maule",
+    "emails": [
+      "deporte@estadioespanoltalca.cl"
+    ],
+    "phones": [
+      "+56 71 223 4192"
+    ],
+    "address": "5 Poniente 4 Norte s/n",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tenis-asociaci-n-regional-de-tenis-del-biob-o",
+    "name": "Asociación Regional de Tenis del Biobío",
+    "orgType": "asociacion",
+    "sport": "Tenis",
+    "region": "Biobío",
+    "emails": [
+      "asociacion.tenis@gmail.com"
+    ],
+    "phones": [
+      "+56 9 7757 9714"
+    ],
+    "address": "Calle 3 N° 1932, oficina D",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tenis-de-mesa-federaci-n-de-tenis-de-mesa",
+    "name": "Federación de Tenis de Mesa",
+    "orgType": "federacion",
+    "sport": "Tenis de mesa",
+    "region": "Nacional",
+    "emails": [
+      "info@fechiteme.cl",
+      "secretaria@fechiteme.cl"
+    ],
+    "phones": [
+      "22760748 / 22729010"
+    ],
+    "address": "Ramón Cruz 1176, Ñuñoa",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-surf-federaci-n-de-surf",
+    "name": "Federación de Surf",
+    "orgType": "federacion",
+    "sport": "Surf",
+    "region": "Nacional",
+    "emails": [
+      "presidente@fechsurf.cl",
+      "secretaria@fechsurf.cl",
+      "gerente@fecsurf.cl"
+    ],
+    "phones": [
+      "+56 9 9332 9403"
+    ],
+    "address": "Ramón Cruz 1176, Ñuñoa",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-billar-federaci-n-de-billar",
+    "name": "Federación de Billar",
+    "orgType": "federacion",
+    "sport": "Billar",
+    "region": "Nacional",
+    "emails": [
+      "arojas@adolforojasycia.cl"
+    ],
+    "phones": [
+      "5622437082"
+    ],
+    "address": "Huérfanos 1044, oficina 74, Santiago",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-bridge-federaci-n-de-bridge",
+    "name": "Federación de Bridge",
+    "orgType": "federacion",
+    "sport": "Bridge",
+    "region": "Nacional",
+    "emails": [
+      "fedchibridge@hotmail.com"
+    ],
+    "phones": [
+      "22064030"
+    ],
+    "address": "Av. San Josemaría Escrivá de Balaguer 5428, Vitacura",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-deportes-acu-ticos-asociaci-n-deportiva-regional-de-depor",
+    "name": "Asociación Deportiva Regional de Deportes Acuáticos",
+    "orgType": "asociacion",
+    "sport": "Deportes acuáticos",
+    "region": "Valparaíso",
+    "emails": [
+      "administracion@fechida.cl",
+      "info@fechida.cl"
+    ],
+    "phones": [
+      "+56 9 7338 5278"
+    ],
+    "address": "Manuel Antonio Matta 195, Viña del Mar",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://fechida.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-deportes-acu-ticos-asociaci-n-deportiva-regional-deportes",
+    "name": "Asociación Deportiva Regional Deportes Acuáticos Los Lagos",
+    "orgType": "asociacion",
+    "sport": "Deportes acuáticos",
+    "region": "Los Lagos",
+    "emails": [
+      "administracion@fechida.cl",
+      "info@fechida.cl",
+      "presidencia@fechida.cl"
+    ],
+    "phones": [
+      "+56 9 6893 238"
+    ],
+    "address": "Esmeralda 247A, Castro",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://fechida.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-deportes-acuaticos-aguas-claras",
+    "name": "Asociación Deportiva Regional de Deportes Acuáticos Aguas Claras",
+    "orgType": "asociacion",
+    "sport": "Deportes acuáticos",
+    "region": "Metropolitana",
+    "emails": [
+      "administracion@fechida.cl",
+      "info@fechida.cl",
+      "presidencia@fechida.cl"
+    ],
+    "phones": [
+      "+56 9 9294 5095"
+    ],
+    "address": "Av. Recoleta 797, Recoleta",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://fechida.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-deportes-acu-ticos-asociaci-n-deportiva-regional-sur-poni",
+    "name": "Asociación Deportiva Regional Sur Poniente",
+    "orgType": "asociacion",
+    "sport": "Deportes acuáticos",
+    "region": "Metropolitana",
+    "emails": [
+      "administracion@fechida.cl",
+      "info@fechida.cl",
+      "presidencia@fechida.cl"
+    ],
+    "phones": [
+      "+56 9 4229 5711"
+    ],
+    "address": "Av. La Marina 2500, Pedro Aguirre Cerda",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://fechida.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-deportes-acu-ticos-asociaci-n-deportiva-regional-h2o-polo",
+    "name": "Asociación Deportiva Regional H2O Polo Natación",
+    "orgType": "asociacion",
+    "sport": "Deportes acuáticos",
+    "region": "Metropolitana",
+    "emails": [
+      "administracion@fechida.cl",
+      "info@fechida.cl",
+      "presidencia@fechida.cl"
+    ],
+    "phones": [
+      "+56 9 8819 0675"
+    ],
+    "address": "Esmeralda 5555, San Miguel",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://fechida.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-caza-y-pesca-asociaci-n-de-caza-pesca-y-tiro-al-vuelo-cua",
+    "name": "Asociación de Caza, Pesca y Tiro al Vuelo Cuarta Región",
+    "orgType": "asociacion",
+    "sport": "Caza y pesca",
+    "region": "Coquimbo",
+    "emails": [
+      "hflores08@hotmail.com"
+    ],
+    "phones": [
+      "+56 9 8997 9631"
+    ],
+    "address": null,
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-caza-y-pesca-asociaci-n-de-pesca-y-caza-y-lanzamiento-de-",
+    "name": "Asociación de Pesca y Caza y Lanzamiento de Valparaíso",
+    "orgType": "asociacion",
+    "sport": "Caza y pesca",
+    "region": "Valparaíso",
+    "emails": [
+      "rodriguez.julian.15@gmail.com"
+    ],
+    "phones": [
+      "+56 9 4294 3679"
+    ],
+    "address": null,
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-caza-y-pesca-asociaci-n-de-caza-y-pesca-linares",
+    "name": "Asociación de Caza y Pesca Linares",
+    "orgType": "asociacion",
+    "sport": "Caza y pesca",
+    "region": "Maule",
+    "emails": [
+      "edgardomm@gmail.com"
+    ],
+    "phones": [
+      "+56 9 3211 3499"
+    ],
+    "address": null,
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-judo-club-deportivo-kosai-valdivia",
+    "name": "Club Deportivo Kosai Valdivia",
+    "orgType": "club",
+    "sport": "Judo",
+    "region": "Los Ríos",
+    "emails": [
+      "judokosai@gmail.com"
+    ],
+    "phones": [
+      "+56 9 7430 7517"
+    ],
+    "address": "Valdivia",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-judo-seishin-judo-la-uni-n",
+    "name": "Seishin Judo La Unión",
+    "orgType": "club",
+    "sport": "Judo",
+    "region": "Los Ríos",
+    "emails": [
+      "seishinjudo.launion@gmail.com"
+    ],
+    "phones": [
+      "+56 9 3783 2484"
+    ],
+    "address": "La Unión",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-judo-judo-colchagua",
+    "name": "Judo Colchagua",
+    "orgType": "club",
+    "sport": "Judo",
+    "region": "O’Higgins",
+    "emails": [
+      "judocolchagua@gmail.com"
+    ],
+    "phones": [
+      "+56 2 2207 3242",
+      "+56 2 2207 2311"
+    ],
+    "address": "Colchagua",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-judo-club-de-judo-concepci-n",
+    "name": "Club de Judo Concepción",
+    "orgType": "club",
+    "sport": "Judo",
+    "region": "Biobío",
+    "emails": [
+      "luisretamalsono@gmail.com"
+    ],
+    "phones": [
+      "+56 9 7335 3291"
+    ],
+    "address": "Concepción",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-squash-club-llacol-n-concepci-n",
+    "name": "Club Llacolén Concepción",
+    "orgType": "club",
+    "sport": "Squash",
+    "region": "Biobío",
+    "emails": [
+      "rodrigo@valverde.cl"
+    ],
+    "phones": [],
+    "address": "Concepción",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-squash-club-deportivo-concepci-n",
+    "name": "Club Deportivo Concepción",
+    "orgType": "club",
+    "sport": "Squash",
+    "region": "Biobío",
+    "emails": [
+      "robin@deportivoconcepcion.cl"
+    ],
+    "phones": [],
+    "address": "Concepción",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-squash-club-alquimia-squash-biob-o",
+    "name": "Club Alquimia Squash Biobío",
+    "orgType": "club",
+    "sport": "Squash",
+    "region": "Biobío",
+    "emails": [
+      "jessicanatacha@gmail.com"
+    ],
+    "phones": [],
+    "address": "Biobío",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-squash-club-squash-sur-concepci-n",
+    "name": "Club Squash Sur Concepción",
+    "orgType": "club",
+    "sport": "Squash",
+    "region": "Biobío",
+    "emails": [
+      "luislacroixu@gmail.com"
+    ],
+    "phones": [],
+    "address": "Concepción",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tiro-al-vuelo-club-de-tiro-al-vuelo-uble",
+    "name": "Club de Tiro al Vuelo Ñuble",
+    "orgType": "club",
+    "sport": "Tiro al vuelo",
+    "region": "Ñuble",
+    "emails": [
+      "rafael.72rivas@gmail.com"
+    ],
+    "phones": [
+      "+56 9 9883 6405"
+    ],
+    "address": "Ñuble",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tiro-al-vuelo-club-de-tiro-llanquihue",
+    "name": "Club de Tiro Llanquihue",
+    "orgType": "club",
+    "sport": "Tiro al vuelo",
+    "region": "Los Lagos",
+    "emails": [
+      "clubdetirollanquihue@gmail.com"
+    ],
+    "phones": [
+      "+56 9 8439 5147"
+    ],
+    "address": "Llanquihue",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-tiro-al-vuelo-club-de-tiro-al-vuelo-y-tiro-al-blanco-arau",
+    "name": "Club de Tiro al Vuelo y Tiro al Blanco Araucanía",
+    "orgType": "club",
+    "sport": "Tiro al vuelo",
+    "region": "Araucanía",
+    "emails": [
+      "sergio_reuque@hotmail.com"
+    ],
+    "phones": [
+      "+56 9 5901 1078"
+    ],
+    "address": "Araucanía",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-ski-monta-a-club-de-esqu-de-chill-n",
+    "name": "Club de Esquí de Chillán",
+    "orgType": "club",
+    "sport": "Ski / montaña",
+    "region": "Ñuble",
+    "emails": [
+      "clubesquidechillan@gmail.com"
+    ],
+    "phones": [],
+    "address": "Chillán",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-ski-monta-a-club-andino-escolar-coyhaique",
+    "name": "Club Andino Escolar Coyhaique",
+    "orgType": "club",
+    "sport": "Ski / montaña",
+    "region": "Aysén",
+    "emails": [
+      "cae.coyhaique@gmail.com"
+    ],
+    "phones": [],
+    "address": "Coyhaique",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-f-tbol-federaci-n-de-f-tbol",
+    "name": "Federación de Fútbol",
+    "orgType": "federacion",
+    "sport": "Fútbol",
+    "region": "Nacional",
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [
+      "228101815"
+    ],
+    "address": "Av. Quilín 5635, Peñalolén",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-b-squetbol-asociaci-n-regional-de-b-squetbol-del-maule-ar",
+    "name": "Asociación Regional de Básquetbol del Maule / ARBA Maule",
+    "orgType": "asociacion",
+    "sport": "Básquetbol",
+    "region": "Maule",
+    "emails": [
+      "arbamaule2021@gmail.com"
+    ],
+    "phones": [
+      "+56 9 5748 2694"
+    ],
+    "address": "Competencias regionales Maule",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-hockey-c-sped-federaci-n-chilena-de-hockey-sobre-c-sped",
+    "name": "Federación Chilena de Hockey sobre Césped",
+    "orgType": "federacion",
+    "sport": "Hockey césped",
+    "region": "Nacional",
+    "emails": [
+      "contact@chilehockey.cl"
+    ],
+    "phones": [],
+    "address": "Organiza competencias por regiones / zonas",
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/clubs",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-karate-artes-marciales-asociaci-n-deportiva-regional-de-a",
+    "name": "Asociación Deportiva Regional de Artes Marciales Maule",
+    "orgType": "asociacion",
+    "sport": "Karate / artes marciales",
+    "region": "Maule",
+    "emails": [
+      "contactofdnkaratechile@gmail.com",
+      "gerenciafdnkaratechile@gmail.com"
+    ],
+    "phones": [],
+    "address": "Vinculada a Karate Chile FDN",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-tabla_asociaciones-ski-monta-a-club-andino-osorno",
+    "name": "Club Andino Osorno",
+    "orgType": "club",
+    "sport": "Ski / montaña",
+    "region": "Los Lagos",
+    "emails": [
+      "fedeski@fedeskichile.cl"
+    ],
+    "phones": [],
+    "address": "Osorno",
+    "source": "tabla_asociaciones",
+    "sourceUrl": "https://ind.cl/altorendimiento/guia-de-federaciones-y-clubes-deportivos/atletismo-2/",
+    "website": "https://fedeskichile.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-8499275",
+    "name": "C.D.Hockey Linares",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": null,
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/8499275",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9039805",
+    "name": "Antofagasta International School",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": "Antofagasta",
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9039805",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9502367",
+    "name": "All Brads Club",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": null,
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9502367",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9749947",
+    "name": "BRAVAS",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": null,
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9749947",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9796544",
+    "name": "Black Queen Hockey Club",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": null,
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9796544",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9798791",
+    "name": "Blue Drag Club",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": "Valparaíso",
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9798791",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9799998",
+    "name": "All Dreams",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": null,
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9799998",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9800082",
+    "name": "All Hawks Aconcagua",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": null,
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9800082",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9910634",
+    "name": "BOGS",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": null,
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9910634",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-fehoch-9911945",
+    "name": "ARRIEROS DE ACONCAGUA",
+    "orgType": "club",
+    "sport": "Hockey césped",
+    "region": "Valparaíso",
+    "emails": [
+      "secretaria@fehoch.cl",
+      "gerencia@fehoch.cl",
+      "presidente@fehoch.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "fehoch",
+    "sourceUrl": "https://atn.fehoch.cl/es/club/9911945",
+    "website": "https://chilehockey.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-583",
+    "name": "FEDERACION CHILENA DE NAVEGACION A VELA",
+    "orgType": "federacion",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "info@fedevela.cl",
+      "presidente@fedevela.cl",
+      "gerencia@fedevela.cl"
+    ],
+    "phones": [
+      "+5622724073"
+    ],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/583",
+    "website": "https://www.fedevela.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7864",
+    "name": "ASOCIACION DE RUGBY DE CONCEPCION",
+    "orgType": "asociacion",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [
+      "+56 9 9223 5720"
+    ],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7864",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7871",
+    "name": "ASOCIACION DE RUGBY LA SERENA",
+    "orgType": "asociacion",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7871",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-463",
+    "name": "ASOCIACIÓN DEPORTIVA KARATE WADO CHILE",
+    "orgType": "asociacion",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contactofdnkaratechile@gmail.com",
+      "gerenciafdnkaratechile@gmail.com"
+    ],
+    "phones": [
+      "+5622774875"
+    ],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/463",
+    "website": "https://fedkaratechile.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-308",
+    "name": "ASOCIACION DEPORTIVA LOCAL DE BASQUETBOL",
+    "orgType": "asociacion",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "febachile@gmail.com",
+      "Asociaciones.feba@gmail.com"
+    ],
+    "phones": [
+      "+56935768951"
+    ],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/308",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-627",
+    "name": "ASOCIACION REGIONAL METROPOLITANA HALTER",
+    "orgType": "asociacion",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "info@fechipe.cl",
+      "administracion@fechipe.cl"
+    ],
+    "phones": [
+      "+56994178058"
+    ],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/627",
+    "website": "https://fechipe.cl/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7823",
+    "name": "AGRUPACION SOCIAL CULTURAL Y DEPORTIVA A",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7823",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7780",
+    "name": "BLACKTREILES FA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7780",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7653",
+    "name": "BMX RACE LA SERENA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7653",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7958",
+    "name": "BOCHAS CLUB UNION CONSTITUCION",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fechibo@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7958",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7873",
+    "name": "CARNEROS RUGBY CLUB",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7873",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7835",
+    "name": "CENTRO DEPORTIVO MI CLUB LA REINA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7835",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7891",
+    "name": "CLUB ATLETICO NACIONAL",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedachi@fedachi.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7891",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7669",
+    "name": "CLUB BICICROSS CHILLAN",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7669",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7717",
+    "name": "CLUB BICICROSS CONCEPCION",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7717",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7744",
+    "name": "CLUB BMX ALL BLACK CHILE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7744",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7706",
+    "name": "CLUB CICLISMO ZONA 7",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7706",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7718",
+    "name": "CLUB CICLISTA ANDINO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7718",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-6193",
+    "name": "CLUB DE AJEDREZ EL CARMEN",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contacto@fadech.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/6193",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7959",
+    "name": "CLUB DE BOCHAS LOS PUMAS DEL BOSQUE FREI",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fechibo@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7959",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7722",
+    "name": "CLUB DE CICLISMO Y TRAIL RUNNING NOTHOFA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7722",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7907",
+    "name": "CLUB DE GIMNASIA ESPERANZAS OLIMPICAS",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fenagichi@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7907",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7912",
+    "name": "CLUB DE GIMNASIA RITMICA COLODEP",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fenagichi@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7912",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-280",
+    "name": "CLUB DE JUDO IRIGOYEN CONCEPCION",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "presidencia@fejuchile.cl",
+      "geoffroy@fejuchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/280",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-285",
+    "name": "CLUB DE JUDO PUDETO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "presidencia@fejuchile.cl",
+      "geoffroy@fejuchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/285",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-431",
+    "name": "CLUB DE KAYAK WAMPU",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedcanotaje@canotajechile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/431",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7934",
+    "name": "CLUB DE PELOTA VASCA CHIGUAYANTE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@pelotavasca.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7934",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7855",
+    "name": "CLUB DE RUGBY DE ANTOFAGASTA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7855",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7870",
+    "name": "CLUB DE RUGBY LOS TRONCOS DE CONCEPCION",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7870",
+    "website": "https://chile.rugby/",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-4774",
+    "name": "CLUB DE RUGBY OLD GERGEL",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/4774",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7869",
+    "name": "CLUB DE RUGBY TOROS BIO BIO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7869",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7831",
+    "name": "CLUB DE TENIS DE MESA RECREATIVO WINNER",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "info@fechiteme.cl",
+      "secretaria@fechiteme.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7831",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7772",
+    "name": "CLUB DEPORTIVO ALIANZA X FUTBOL AMERICAN",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7772",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7804",
+    "name": "CLUB DEPORTIVO AMIGOS DEL TENIS DE MESA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "info@fechiteme.cl",
+      "secretaria@fechiteme.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7804",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7858",
+    "name": "CLUB DEPORTIVO ARUA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7858",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7909",
+    "name": "CLUB DEPORTIVO ATTENEA VILLARICA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fenagichi@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7909",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7956",
+    "name": "CLUB DEPORTIVO BOCHAS LOS ASES DE PUCON",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fechibo@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7956",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7960",
+    "name": "CLUB DEPORTIVO BOCHAS QUILPUE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fechibo@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7960",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7774",
+    "name": "CLUB DEPORTIVO BULLDOGS FOOTBALL",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7774",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7966",
+    "name": "CLUB DEPORTIVO CASA D ITALIA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "deportes@stadioitaliano.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7966",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-260",
+    "name": "CLUB DEPORTIVO COLEGIO MONTESSORI",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/260",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7701",
+    "name": "CLUB DEPORTIVO COSTA NORTE IV REGION",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7701",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7859",
+    "name": "CLUB DEPORTIVO COYOTES RUGBY CLUB",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7859",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-4783",
+    "name": "CLUB DEPORTIVO DE AJEDREZ ALFIL DE IQUIQ",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contacto@fadech.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/4783",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7685",
+    "name": "CLUB DEPORTIVO DE BICICROSS SAN BERNARDO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7685",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7957",
+    "name": "CLUB DEPORTIVO DE BOCHAS DE VICTORIA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fechibo@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7957",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-497",
+    "name": "CLUB DEPORTIVO DE KARATE WADO SANTIAGO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contactofdnkaratechile@gmail.com",
+      "gerenciafdnkaratechile@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/497",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-619",
+    "name": "CLUB DEPORTIVO DESPERTANDO AL DRAGON",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contactofdnkaratechile@gmail.com",
+      "gerenciafdnkaratechile@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/619",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-373",
+    "name": "CLUB DEPORTIVO ESCUELA E-403 SAN JAVIER",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/373",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7935",
+    "name": "CLUB DEPORTIVO EUZKO ETXEA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@pelotavasca.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7935",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-42",
+    "name": "CLUB DEPORTIVO FENIX IQUIQUE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/42",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7809",
+    "name": "CLUB DEPORTIVO GALVARINO VERAGUA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7809",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7908",
+    "name": "CLUB DEPORTIVO GIMNASIA RITMICA ANTOFAGA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fenagichi@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7908",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7894",
+    "name": "CLUB DEPORTIVO GYMNASTICS",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fenagichi@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7894",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7777",
+    "name": "CLUB DEPORTIVO HUSARES FUTBOL AMERICANO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7777",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7893",
+    "name": "CLUB DEPORTIVO JENNIFFER MORENO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedachi@fedachi.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7893",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7821",
+    "name": "CLUB DEPORTIVO LIBERTADOR BERNARDO O´HIG",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7821",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7830",
+    "name": "CLUB DEPORTIVO LICEO DE CURICO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7830",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7955",
+    "name": "CLUB DEPORTIVO LOS BOCHINCHES",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7955",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7905",
+    "name": "CLUB DEPORTIVO MANQUEHUE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7905",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7688",
+    "name": "CLUB DEPORTIVO MTB V COSTA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7688",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-284",
+    "name": "CLUB DEPORTIVO MY GARDEN",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/284",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7903",
+    "name": "CLUB DEPORTIVO NACIONAL DE GIMNASIA VIÑA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fenagichi@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7903",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7887",
+    "name": "CLUB DEPORTIVO NAWEL RC",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7887",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7885",
+    "name": "CLUB DEPORTIVO OLD HUEMULES",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7885",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7862",
+    "name": "CLUB DEPORTIVO OLD LIONS RUGBY CLUB",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7862",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7895",
+    "name": "CLUB DEPORTIVO OLIMPIA DE IQUIQUE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedachi@fedachi.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7895",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7665",
+    "name": "CLUB DEPORTIVO PSR LA PINTANA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7665",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7776",
+    "name": "CLUB DEPORTIVO PUENTE ALTO FERROVIARIOS",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7776",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-546",
+    "name": "CLUB DEPORTIVO REGIONAL KARATE KENSHO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contactofdnkaratechile@gmail.com",
+      "gerenciafdnkaratechile@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/546",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7888",
+    "name": "CLUB DEPORTIVO RUGBY LOS TRAUKOS",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7888",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7872",
+    "name": "CLUB DEPORTIVO SAN BARTOLOME",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7872",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7875",
+    "name": "CLUB DEPORTIVO SOCIAL CULTURAL Y JUVENIL",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7875",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7773",
+    "name": "CLUB DEPORTIVO SOCIAL Y CULTURAL BLINDAD",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7773",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7967",
+    "name": "CLUB DEPORTIVO SOCIEDAD ITALO TRENTINO L",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "deportes@stadioitaliano.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7967",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7878",
+    "name": "CLUB DEPORTIVO SPARTACUS ANTOFAGASTA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7878",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7962",
+    "name": "CLUB DEPORTIVO SPORTING BOCHAS",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fechibo@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7962",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7664",
+    "name": "CLUB DEPORTIVO TEAM VIÑA RIDE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7664",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7819",
+    "name": "CLUB DEPORTIVO TENIS DE MESA CHILLAN VIE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "info@fechiteme.cl",
+      "secretaria@fechiteme.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7819",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7892",
+    "name": "CLUB DEPORTIVO TOMAS GONZALEZ",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedachi@fedachi.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7892",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7704",
+    "name": "CLUB DEPORTIVO TRI SPORT BUIN",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7704",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7906",
+    "name": "CLUB DEPORTIVO UNIVERSIDAD CATOLICA DEL",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "febachile@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7906",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7779",
+    "name": "CLUB DEPORTIVO WEICHAFES FA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7779",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7714",
+    "name": "CLUB DEPORTIVO WIND",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7714",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7876",
+    "name": "CLUB ESPARTACUS PEÑALOLEN",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7876",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7775",
+    "name": "CLUB FELINOS DE LA FLORIDA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7775",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-44",
+    "name": "CLUB KIAN SEREN",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/44",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7672",
+    "name": "CLUB SAN ANTONIO BICICROSS",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7672",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7737",
+    "name": "CLUB SOCIAL CULTURAL Y DEPORTIVO SB BIKE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7737",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7963",
+    "name": "CLUB SOCIAL ITALO CHILENO DE LIMACHE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "deportes@stadioitaliano.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7963",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7702",
+    "name": "CLUB SOCIAL Y CULTURAL BMX",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7702",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7968",
+    "name": "CLUB SOCIAL Y DEPORTIVO BOCHAS IQUIQUE",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fechibo@gmail.com"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7968",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7954",
+    "name": "CLUB STADIO ITALIANO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "deportes@stadioitaliano.cl",
+      "info@stadioitaliano.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7954",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7834",
+    "name": "CLUB TENIS DE MESA LA REINA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "info@fechiteme.cl",
+      "secretaria@fechiteme.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7834",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7844",
+    "name": "CLUB TENIS DE MESA STIGA",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "info@fechiteme.cl",
+      "secretaria@fechiteme.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7844",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7761",
+    "name": "CLUB TIGER SPORT CICLISMO DE LA COMUNA D",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7761",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7778",
+    "name": "CLUB VOLCANOS FUTBOL AMERICANO",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "federacion@fdnfa.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7778",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7964",
+    "name": "CORPORACION CLUB DEPORTIVO SOCIEDAD SPOR",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "deportes@stadioitaliano.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7964",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7673",
+    "name": "EL BOSQUE MTB",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "fedenacich@gmail.com",
+      "gerente@fdnciclismochile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7673",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7843",
+    "name": "ESCUELA DE FUTBOL LOLOL",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7843",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-4761",
+    "name": "JOBS CLUB DEPORTIVO CULTURAL Y SOCIAL",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "ffch@anfpchile.cl"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/4761",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7886",
+    "name": "RUGBY CLUB LOS LOBOS",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7886",
+    "mailingReady": true
+  },
+  {
+    "id": "org-registro_fdn-7884",
+    "name": "SEMINARIO RUGBY CLUB",
+    "orgType": "club",
+    "sport": null,
+    "region": null,
+    "emails": [
+      "institucional@chilerugby.org",
+      "contacto@chilerugby.org"
+    ],
+    "phones": [],
+    "address": null,
+    "source": "registro_fdn",
+    "sourceUrl": "https://registrofdn.cl/organizaciones/7884",
+    "mailingReady": true
+  }
+]

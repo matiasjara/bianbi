@@ -1,0 +1,55 @@
+{
+  "ranAt": "2026-07-31T18:07:58.210Z",
+  "sources": [
+    {
+      "name": "tocador",
+      "ok": true,
+      "count": 50
+    },
+    {
+      "name": "campeonato_chileno",
+      "ok": true,
+      "count": 75
+    },
+    {
+      "name": "ind_cl",
+      "ok": true,
+      "count": 4
+    },
+    {
+      "name": "club_atletico_santiago",
+      "ok": true,
+      "count": 6
+    },
+    {
+      "name": "fedachi",
+      "ok": true,
+      "count": 8
+    },
+    {
+      "name": "fehoch_tournaments",
+      "ok": true,
+      "count": 30
+    },
+    {
+      "name": "fevochi",
+      "ok": true,
+      "count": 3
+    },
+    {
+      "name": "ticketmaster_cl",
+      "ok": true,
+      "count": 20
+    },
+    {
+      "name": "puntoticket",
+      "ok": true,
+      "count": 63
+    },
+    {
+      "name": "passline",
+      "ok": true,
+      "count": 0
+    }
+  ]
+}

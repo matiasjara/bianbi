@@ -1,0 +1,656 @@
+{
+  "ranAt": "2026-07-31T18:06:23.012Z",
+  "method": "RSS federaciones/IND + búsquedas DuckDuckGo HTML con queries de demanda regional→Santiago",
+  "counts": {
+    "total": 32,
+    "promote_sport": 19,
+    "review": 5,
+    "ignore_likely": 8
+  },
+  "catalogWatch": [
+    {
+      "id": "passline",
+      "name": "Passline",
+      "status": "watch",
+      "url": "https://www.passline.com/"
+    },
+    {
+      "id": "lnb_chile",
+      "name": "LNB Chile (básquetbol)",
+      "status": "candidate",
+      "url": "https://lnbchile.com/"
+    },
+    {
+      "id": "sivoley",
+      "name": "SIVOLEY (competencias FEVOCHI)",
+      "status": "candidate",
+      "url": "https://sivoley.cl/"
+    },
+    {
+      "id": "registro_fdn",
+      "name": "Registro FDN",
+      "status": "watch",
+      "url": "https://registrofdn.cl/organizaciones"
+    },
+    {
+      "id": "febachi",
+      "name": "FEBACHI / básquet federado",
+      "status": "candidate",
+      "url": "https://www.chilebasket.cl/"
+    },
+    {
+      "id": "chilehockey_news",
+      "name": "Chile Hockey / FEHOCH noticias",
+      "status": "candidate",
+      "url": "https://atn.fehoch.cl/es/posts"
+    },
+    {
+      "id": "coch_teamchile",
+      "name": "COCH / Team Chile",
+      "status": "candidate",
+      "url": "https://www.coch.cl/"
+    },
+    {
+      "id": "estadio_nacional_agenda",
+      "name": "Parque Estadio Nacional — agenda recintos",
+      "status": "candidate",
+      "url": "https://www.parqueestadionacional.cl/"
+    },
+    {
+      "id": "mindep_ind_rss",
+      "name": "MinDep / IND noticias (RSS)",
+      "status": "watch",
+      "url": "https://ind.cl/feed/"
+    },
+    {
+      "id": "instagram_federaciones",
+      "name": "Instagram / RRSS federaciones",
+      "status": "candidate",
+      "url": "https://www.instagram.com/"
+    },
+    {
+      "id": "google_alerts_deportes",
+      "name": "Google Alerts / búsqueda web",
+      "status": "candidate",
+      "url": "https://www.google.com/alerts"
+    }
+  ],
+  "errors": [],
+  "candidates": [
+    {
+      "id": "disc-web-duckduckgo-instagram",
+      "title": "Instagram",
+      "summary": "42 likes, 0 comments - indchile on July 29, 2026 : &quot;Ya está confirmado. El Torneo Interescolar de Atletismo 2026 se disputará los días 23, 24 y 25 de octubre en el Coliseo Central y el Centro de Entrenamiento de Atletismo Mario Recordón del Parque Estadio Nacional . La competencia se realizará con el mismo estánda",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.instagram.com%2Fp%2FDbZbTpwuDAc%2F&amp;rut=8d0785e04d4a7c01cdd0af8b034d0ac4b2d164fad08005e235055a58a582c5e7",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:21.665Z",
+      "startsOn": "2026-10-25",
+      "santiagoHint": true,
+      "disciplineGuess": "atletismo",
+      "keywordsMatched": [
+        "estadio",
+        "ind",
+        "estadio nacional",
+        "interescolar",
+        "atletismo",
+        "mario recordón",
+        "parque estadio nacional",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-ind-presentan-a-zuri-la-mascota-oficial-del-mundial-femenino-de-vo",
+      "title": "Presentan a Zuri, la mascota oficial del Mundial Femenino de Vóleibol",
+      "summary": "Con una ceremonia realizada en el Polideportivo de Ñuñoa, fue presentada oficialmente Zuri, la mascota del Campeonato Mundial Femenino de Vóleibol Sub 17 Chile 2026, certamen que se disputará en nuestro país entre el 6 y el 16 de agosto [&#8230;] La entrada Presentan a Zuri, la mascota oficial del Mundial Femenino de V",
+      "url": "https://ind.cl/noticias/presentan-a-zuri-la-mascota-oficial-del-mundial-femenino-de-voleibol/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.623Z",
+      "startsOn": "2026-08-16",
+      "santiagoHint": true,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "ind",
+        "mundial"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-fevochi-chile-ya-tiene-rivales-definidos-los-grupos-del-mundial-u1",
+      "title": "CHILE YA TIENE RIVALES: DEFINIDOS LOS GRUPOS DEL MUNDIAL U17 FEMENINO 2026",
+      "summary": "La ilusión mundialista ya toma forma. Este martes se realizó el sorteo oficial del Campeonato Mundial Femenino U17 Chile 2026, instancia que definió los grupos del certamen planetario y el camino que deberá enfrentar la selección nacional en su histórica participación como anfitriona. La ceremonia se desarrolló desde e",
+      "url": "https://www.fevochi.cl/2026/03/19/chile-ya-tiene-rivales-definidos-los-grupos-del-mundial-u17-femenino-2026/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.689Z",
+      "startsOn": "2026-08-16",
+      "santiagoHint": true,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "fevochi",
+        "voleibol",
+        "mundial u17",
+        "parque estadio nacional",
+        "mundial",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-ind-chile-inicia-su-camino-a-los-juegos-parasuramericanos-valledup",
+      "title": "Chile inicia su camino a los Juegos Parasuramericanos Valledupar 2026",
+      "summary": "Santiago, 18 de junio de 2026.- En el Centro de Entrenamiento Paralímpico del Parque Estadio Nacional, la ministra del Deporte, Natalia Duco, la directora nacional (s) del IND, Lorena Castillo, y el presidente del Comité Paralímpico de Chile, Sebastián Villavicencio, [&#8230;] La entrada Chile inicia su camino a los Ju",
+      "url": "https://ind.cl/noticias/team-parachile-inicia-su-camino-a-los-juegos-parasuramericanos-valledupar-2026/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.623Z",
+      "startsOn": "2026-06-18",
+      "santiagoHint": true,
+      "disciplineGuess": "multisport",
+      "keywordsMatched": [
+        "estadio",
+        "ind",
+        "estadio nacional",
+        "juegos",
+        "parque estadio nacional",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-medallistas-y-promesas-del-atletismo-nacional-participa",
+      "title": "Medallistas y promesas del atletismo nacional participarán en el ...",
+      "summary": "Los próximos 8, 9 y 10 de mayo, el Estadio Nacional en Santiago se convertirá en el epicentro del deporte escolar chileno. Organizado por el Club Atlético Santiago y auspiciado por Soprole, el Interescolar de Atletismo Preparatorio Mario Correa Letelier e Ilse Barends Heck Soprole contará con la participación de 4.123 ",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Finfogate.cl%2F2026%2F05%2Fmedallistas%2Dy%2Dpromesas%2Ddel%2Datletismo%2Dnacional%2Dparticipar%2Dn%2Den%2Del%2Dinterescolar%2Dde%2Datletismo%2Dpreparatorio%2Dmario%2Dcorrea%2Dletelier%2De%2Dilse%2Dbarends%2Dheck%2Dsoprole%2F&amp;rut=c97ce4685f7b4caf10eee5314cc7a90f3bceb8cba4d685a9b3c75f157514d495",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:21.665Z",
+      "startsOn": "2026-05-10",
+      "santiagoHint": true,
+      "disciplineGuess": "atletismo",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "interescolar",
+        "atletismo",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-fevochi-todo-listo-para-el-sorteo-del-mundial-u17-femenino-el-cami",
+      "title": "TODO LISTO PARA EL SORTEO DEL MUNDIAL U17 FEMENINO: EL CAMINO A CHILE 2026 COMIENZA EN SUIZA",
+      "summary": "La cuenta regresiva ya comenzó. Este 18 de marzo, la ciudad de Lausana será el epicentro del vóleibol mundial con la realización del Sorteo Oficial del Campeonato Mundial Femenino U17 Chile 2026, instancia clave que definirá el destino de las 24 selecciones participantes. El torneo, que se disputará entre el 6 y el 16 ",
+      "url": "https://www.fevochi.cl/2026/03/18/todo-listo-para-el-sorteo-del-mundial-u17-femenino-el-camino-a-chile-2026-comienza-en-suiza/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.689Z",
+      "startsOn": "2026-03-18",
+      "santiagoHint": true,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "mundial u17",
+        "mundial",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-ind-mas-inclusion-nueva-alianza-rumbo-a-los-juegos-mundiales-2027",
+      "title": "Más inclusión: nueva alianza rumbo a los Juegos Mundiales 2027",
+      "summary": "En un importante paso hacia los Juegos Mundiales de Olimpiadas Especiales Santiago 2027, el Comité Olímpico de Chile y Olimpiadas Especiales Chile firmaron una alianza estratégica destinada a fortalecer el trabajo conjunto de ambas organizaciones y ampliar las oportunidades de [&#8230;] La entrada Más inclusión: nueva ",
+      "url": "https://ind.cl/noticias/mas-inclusion-nueva-alianza-rumbo-a-los-juegos-mundiales-2027/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.623Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "multisport",
+      "keywordsMatched": [
+        "ind",
+        "juegos",
+        "mundial",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-ind-la-roja-femenina-se-prepara-para-hacer-historia-en-el-estadio-",
+      "title": "La Roja Femenina se prepara para hacer historia en el Estadio Nacional",
+      "summary": "La ministra del Deporte, Natalia Duco, junto a la directora nacional (s) del Instituto Nacional de Deportes, Lorena Castillo, visitaron este miércoles el complejo Juan Pinto Durán para acompañar a la Selección Chilena Femenina en uno de los momentos más [&#8230;] La entrada La Roja Femenina se prepara para hacer histor",
+      "url": "https://ind.cl/noticias/la-roja-femenina-se-prepara-para-hacer-historia-en-el-estadio-nacional/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.624Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "multisport",
+      "keywordsMatched": [
+        "estadio",
+        "ind",
+        "estadio nacional"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-ind-se-inicia-la-cuenta-regresiva-para-el-mundial-de-voleibol-feme",
+      "title": "Se inicia la cuenta regresiva para el Mundial de Vóleibol Femenino Sub-17",
+      "summary": "La emoción del deporte de alto rendimiento se tomó el centro de Santiago. En una actividad llena de energía y cercanía con la ciudadanía, se dio el puntapié inicial a la cuenta regresiva para el Mundial de Vóleibol Femenino Sub-17, [&#8230;] La entrada Se inicia la cuenta regresiva para el Mundial de Vóleibol Femenino ",
+      "url": "https://ind.cl/noticias/se-inicia-la-cuenta-regresiva-para-el-mundial-de-voleibol-femenino-sub-17/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.624Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "ind",
+        "mundial",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-atletismo-descubre-grandes-ofertas",
+      "title": "Atletismo - Descubre grandes ofertas",
+      "summary": "Encuentra increíbles artículos de todo el mundo en eBay. Ahorra con las ofertas que eBay tiene para ti · query: interescolar atletismo Estadio Nacional Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fduckduckgo.com%2Fy.js%3Fad_domain%3Debay.com%26ad_provider%3Dbingv7aa%26ad_type%3Dtxad%26click_metadata%3DpwgVMcthmFa8cdpcOYvFxIjZFUCpKbhNG8iPMVGIJQyQMrDNSI3pE2BpmKNF7lOtkNU2gWu6U34bfdEOjs%252DyomN8YdeN8dHiRsgjOO_BnZsR%252DXUA360hhkoKWfXdneuIEc%252DsZUiEM9Srd__uI%252D4zo1XZ59wubnYceiSLBEuPg1k._m8p7fzt6ThAy2QtsJ00cQ%26rut%3Dabd830e113f3c6995236ab8e17e5f1387d53580a556e3949bdb0128253cb81f4%26u3%3Dhttps%253A%252F%252Fwww.bing.com%252Faclick%253Fld%253De8h_OBhylcvAKJp6_BxALvSDVUCUy3_qfHtaFa0QRBdo4PF2rcnw2h2T0Z16Ork9SnJBLlI_W6AEOGXIiB8cDKZ_y8MO3EmaJEVm%252DVXHMxPJ4is6QTnXo9H5TP0NJ2ufQsuZAF4MacYLK4NXWBD2H_68kQxhq25mXlaDYJXwUq9okoehkmn23sdjZfpaWLAcEPYji_QSNeZkX3egpQNQsZd2kImF0%2526u%253DaHR0cHMlM2ElMmYlMmZ3d3cuZWJheS5jb20lMmZzY2glMmZpLmh0bWwlM2Zfbmt3JTNkYXRsZXRpc21vJTI2bm9yb3ZlciUzZDElMjZta2V2dCUzZDElMjZta3JpZCUzZDIxNTY5LTE3NTA3MS05MDIyNTMtMyUyNm1rY2lkJTNkMiUyNm1rc2NpZCUzZDEwMiUyNmtleXdvcmQlM2RhdGxldGlzbW8lMjZjcmxwJTNkXyUyNk1UX0lEJTNkJTI2Z2VvX2lkJTNkJTI2cmxzYXRhcmdldCUzZGt3ZC03NjYyMjY5MDExMDU3OCUzYWxvYy0zOCUyNmFkcG9zJTNkJTI2ZGV2aWNlJTNkYyUyNm1rdHlwZSUzZCUyNmxvYyUzZDE0Nzk0MiUyNnBvaSUzZDIyODI1OCUyNmFiY0lkJTNkJTI2Y21wZ24lM2Q0ODY3Njk0MjUlMjZzaXRlbG5rJTNkJTI2YWRncm91cGlkJTNkMTIyNTk1NjYyODgyNDY0MSUyNm5ldHdvcmslM2RzJTI2bWF0Y2h0eXBlJTNkcCUyNm1zY2xraWQlM2Q5MTU3MjM0MzUxOGQxZDcyM2RmYTQ5MmZiNTkwYTFkNQ%2526rlid%253D91572343518d1d723dfa492fb590a1d5%26vqd%3D4%2D32796280375093458971249379263117720618%26iurl%3D%257B1%257DIG%253DCEDA9AB46C494AD4AAEADCF277812498%2526CID%253D0F699C1FC8D5620336498BB8C99F639B%2526ID%253DDevEx%252C5037.1&amp;rut=93678ede91da45c6015247be4e0e7c969f5402d9eb6612f3483e25a5817c00d1",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:21.665Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "atletismo",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "interescolar",
+        "atletismo",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-club-atletico-santiago-confirmo-todos-sus-torneos-para-",
+      "title": "Club Atlético Santiago confirmó todos sus torneos para sus torneos ...",
+      "summary": "Finalmente, octubre será el mes más esperado: el Interescolar Final de Santiago , programado para el 16, 17 y 18, donde se definirá a los campeones nacionales y se vivirán las jornadas más intensas del atletismo escolar y cerrar la temporada del 2026 . · query: interescolar atletismo Estadio Nacional Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fdeporteescolarsoprole.cl%2Fclub%2Datletico%2Dsantiago%2Dconfirmo%2Dtodos%2Dsus%2Dtorneos%2Dpara%2Dsus%2Dtorneos%2Dsoprole%2D2026%2F&amp;rut=600777f5247a024ee42b3d3a520eff36f97222a322be2997aae404978e518b9c",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:21.665Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "atletismo",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "interescolar",
+        "atletismo",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-gobierno-reprograma-tradicional-torneo-de-atletismo-en-",
+      "title": "Gobierno reprograma tradicional torneo de atletismo en Estadio Nacional",
+      "summary": "El tradicional Torneo Interescolar de Atletismo que organiza el Club Atlético Santiago hace más de 90 años sufrió una tercera reprogramación por parte del Gobierno en el Estadio Nacional . · query: interescolar atletismo Estadio Nacional Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.biobiochile.cl%2Fnoticias%2Fdeportes%2Fmas%2Ddeportes%2F2026%2F07%2F24%2Fpor%2Dconciertos%2Dgobierno%2Dreprograma%2Dpor%2D3era%2Dvez%2Dtradicional%2Dtorneo%2Dde%2Datletismo%2Den%2Destadio%2Dnacional.shtml&amp;rut=27d68775e3041c5aa6b943e058ea4978bbc61e02a38360b4af43aaccb49dcb89",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:21.665Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "atletismo",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "interescolar",
+        "atletismo",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-torneos-club-atletico-santiago",
+      "title": "Torneos | Club Atlético Santiago",
+      "summary": "Bases Atletismo Interescolar Preparatorio 2026 Comunicado Nº1 (reunión informativa de barras) Comunicado Nº2 (listado actualizado de inscripciones por colegio) Comunicado Nº3 (información de acceso al Estadio Nacional ) Comunicado Nº4 (reprogramación garrocha varones infantil) Comunicado Nº5 (asignación de camarines pa",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fclubatleticosantiago.cl%2Ftorneos%2F&amp;rut=96648d9c4b4af457c55adb76cf88c124833b701902537dd3d45b8cae8291a456",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:21.665Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "atletismo",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "interescolar",
+        "atletismo",
+        "santiago",
+        "bases",
+        "inscripciones"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-hockey-2026-boletos-2026-boletos-para-un-solo-juego",
+      "title": "Hockey 2026 | Boletos 2026 - Boletos Para Un Sólo Juego",
+      "summary": "Boletos Salen A La Venta Hoy, Adquiere Tu Boleto Ya. Internacional Boletos Para El 2026 . Compara Precios En La Mayor Plataforma De Compraventa De Boletos Alrededor Del Mundo · query: torneo nacional hockey césped Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fduckduckgo.com%2Fy.js%3Fad_domain%3Dviagogo.com%26ad_provider%3Dbingv7aa%26ad_type%3Dtxad%26click_metadata%3DBfOEdFBELZhYWAH0BX1cRQg4hMJDHOCEOFFOxHesEAQZ2uTvOqt8mb0e0uTvZqoH4JwIC2LIcTapi5qwPJU3uqAedNJwoaK19IerOL8CYAjvOFJ94Adkskfr6UE%252D2ZTb1sVQNHtrUvqOWxyllM37pkd2TW6X2WOEdxXbLdmDxOY.TPE6t3oVL2Hux7AXGtgOXQ%26rut%3Dc376fe70b3fbbbe2c4e612005d4c75e23399fa7963d4e5010a7da783879869b8%26u3%3Dhttps%253A%252F%252Fwww.bing.com%252Faclick%253Fld%253De8DeMlTHIyrofEbKz6%252Dnx_ijVUCUz8MemFJbDxP6wQ9XR65LNgi6qk3KzmCsd0tV1ragz688fqOe02g6QpvMNq_WYZ8UwhjSGSb2SDWqGNfi1yRafcdnJGl__ZldF67eJZ3goT39RcwQCZxkSzeY1iphWkZsoNR1WDK%252DLGwQbJF8qkbNhrxh7XUyV4NsavS%252Dr9X4xblEgyAXbSHVALbW16vJ7BbaA%2526u%253DaHR0cHMlM2ElMmYlMmZ3d3cudmlhZ29nby5jb20lMmZ3dyUyZlNwb3J0cy1UaWNrZXRzJTJmSG9ja2V5JTNmTENJRCUzZDIwNTglMjYlM2QlMjZQQ0lEJTNkUFNST1dCSU5IT01FNDU3NzM4MTUzRTYzQyUyNnBzJTNkJTI2cHNfcCUzZDElMjZwc19jJTNkNjYzMTM5NDY3JTI2cHNfYWclM2QxMzMxNTExMDU2MTkzODczJTI2cHNfdGclM2Rrd2QtODMyMjA2MjI5Nzk5MDAlMjZwc19hZCUzZDgzMjE5NzMxNTUxMDk0JTI2cHNfbiUzZHMlMjZwc19kJTNkYyUyNmdjbGlkJTNkMjdhY2FlOGI5YTZiMTZkMWIxYzZjNGU3N2U3NWMyNzUlMjZtc2Nsa2lkJTNkMjdhY2FlOGI5YTZiMTZkMWIxYzZjNGU3N2U3NWMyNzU%2526rlid%253D27acae8b9a6b16d1b1c6c4e77e75c275%26vqd%3D4%2D268787507149228780457547071302432234978%26iurl%3D%257B1%257DIG%253D201B37AD69EF48929375A747E64CB980%2526CID%253D0CFB17E8D24E6FFE0313004FD3426EA8%2526ID%253DDevEx%252C5037.1&amp;rut=9e0088c75dfcfb98a2e9b00c6c0d8e4d8c4d660f1c2b7819d9d2f0a1e888342e",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:22.512Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "hockey",
+      "keywordsMatched": [
+        "hockey césped",
+        "torneo nacional",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-hockey-cesped-en-santiago-fechas-rivales-y-entradas-par",
+      "title": "Hockey césped en Santiago: fechas, rivales y entradas para las ...",
+      "summary": "Las selecciones chilenas masculina y femenina disputarán en el Parque Estadio Nacional un torneo clave que entregará cupos directos al Mundial 2026 . Revisa las fechas, rivales y valores de las entradas para acompañar a Las Diablas y Los Diablos en su camino a la cita planetaria. · query: torneo nacional hockey césped ",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.t13.cl%2Fnoticia%2Fdeportes13%2Fhockey%2Dcesped%2Dsantiago%2Dfechas%2Drivales%2Dentradas%2Dpara%2Dlas%2Dqualifiers%2Drumbo%2Dmundial&amp;rut=62730f02065a643534ef0b814d7aef10646c44a54bae99678c31b9f41c66bfef",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:22.512Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "hockey",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "hockey césped",
+        "torneo nacional",
+        "diablas",
+        "diablos",
+        "parque estadio nacional",
+        "mundial"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-federacion-chilena-hockey-sobre-cesped",
+      "title": "Federación Chilena Hockey Sobre Césped",
+      "summary": "Torneos , competiciones y ligas de Federación Chilena Hockey Sobre Césped . Inscripciones, resultados y toda la información. · query: torneo nacional hockey césped Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fatn.fehoch.cl%2Fes%2F&amp;rut=244b805086d1a3f2b925b1da4beaa928fd1a4e50639ce6ddc66931eae515e2a2",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:22.512Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "hockey",
+      "keywordsMatched": [
+        "hockey césped",
+        "torneo nacional",
+        "santiago",
+        "inscripciones"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-pdf-federacion-chilena-hockey-sobre-cesped-calendario-2",
+      "title": "PDF Federación Chilena Hockey Sobre Césped - Calendario 2026 - Torneo Nacional",
+      "summary": "Federación Chilena Hockey Sobre Césped - Calendario 2026 - Torneo Nacional VAR 1°A-B DAM 1° A-B-C-INT Men D.A Men D.B Men V.A. Men D.C VAR 1°A-B DAM 1° A-B-C-INT Men D.A Men · query: torneo nacional hockey césped Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fligup%2Dv2.s3.amazonaws.com%2Foldredshockey%2Ffiles%2F55852_calendario_fehoch_2026_v2_1_.pdf&amp;rut=bbe0811c6bd709c8a5e2f5eb878703b73d540a33a53347246d1036ceb3504aac",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:22.513Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "hockey",
+      "keywordsMatched": [
+        "hockey césped",
+        "torneo nacional",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-fih-world-cup-qualifiers-chile-2026-fih-hockey",
+      "title": "FIH World Cup Qualifiers Chile 2026 - fih.hockey",
+      "summary": "Match 19 Sun, 08 Mar 2026 Women&#x27;s Centro Deportivo de Hockey Césped , Estadio Nacional , Santiago Japan 0 (1) · query: torneo nacional hockey césped Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.fih.hockey%2Fevents%2Fworld%2Dcup%2Dqualifiers%2Dchile%2D2026%2Fschedule%2Dfixtures%2Dresults&amp;rut=34bdfc198286d21f5f55eefe2dd5b2c50303d653634f2d664eaff7e5fc9cfd08",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:22.513Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "hockey",
+      "keywordsMatched": [
+        "estadio",
+        "estadio nacional",
+        "hockey césped",
+        "torneo nacional",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-web-duckduckgo-calendario-federacion-chilena-hockey-sobre-cesped",
+      "title": "Calendario | Federación Chilena Hockey Sobre Césped",
+      "summary": "Detalles de Calendario de Federación Chilena Hockey Sobre Césped . Conoce todas sus clasificaciones y resultados así como los calendarios. · query: torneo nacional hockey césped Santiago 2026",
+      "url": "//duckduckgo.com/l/?uddg=https%3A%2F%2Fatn.fehoch.cl%2Fes%2Fcalendar&amp;rut=2f8eb3aaef69a74c1877e0983c7b620da732e8f2dcd8d504d6b28f8928857e6f",
+      "sourceFeed": "web:duckduckgo",
+      "detectedAt": "2026-07-31T18:06:22.513Z",
+      "startsOn": null,
+      "santiagoHint": true,
+      "disciplineGuess": "hockey",
+      "keywordsMatched": [
+        "hockey césped",
+        "torneo nacional",
+        "santiago"
+      ],
+      "action": "promote_sport"
+    },
+    {
+      "id": "disc-rss-ind-inscripciones-abiertas-para-la-10-corrida-familiar-nocturna-de",
+      "title": "Inscripciones abiertas para la 10° Corrida Familiar Nocturna de Magallanes",
+      "summary": "Este sábado 25 de julio volveremos a encontrarnos en la 10° Corrida Familiar Nocturna, una de las actividades deportivas más esperadas de la Región de Magallanes. Una jornada para compartir en familia y llenar las calles de entusiasmo en una [&#8230;] La entrada Inscripciones abiertas para la 10° Corrida Familiar Noctu",
+      "url": "https://ind.cl/noticias/inscripciones-abiertas-para-la-10-corrida-familiar-nocturna-de-magallanes/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.623Z",
+      "startsOn": "2026-07-25",
+      "santiagoHint": false,
+      "disciplineGuess": "multisport",
+      "keywordsMatched": [
+        "ind",
+        "inscripciones"
+      ],
+      "action": "review"
+    },
+    {
+      "id": "disc-rss-ind-jde-2026-anuncian-alianza-con-el-team-chile-y-nueva-embajadora",
+      "title": "JDE 2026: anuncian alianza con el Team Chile y nueva embajadora",
+      "summary": "La Serena, 11 de junio de 2026.- La Ministra del Deporte, Natalia Duco y la Directora Nacional (s) del Instituto Nacional de Deportes, Lorena Castillo encabezaron en La Serena el lanzamiento oficial de los Juegos Deportivos Escolares 2026, el torneo [&#8230;] La entrada JDE 2026: anuncian alianza con el Team Chile y nu",
+      "url": "https://ind.cl/noticias/juegos-deportivos-escolares-2026-anuncian-alianza-con-el-team-chile-y-anuncian-nueva-embajadora/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.623Z",
+      "startsOn": "2026-06-11",
+      "santiagoHint": false,
+      "disciplineGuess": "multisport",
+      "keywordsMatched": [
+        "ind",
+        "team chile",
+        "juegos"
+      ],
+      "action": "review"
+    },
+    {
+      "id": "disc-rss-ind-historica-convocatoria-en-la-corrida-nocturna-de-magallanes",
+      "title": "Histórica convocatoria en la Corrida Nocturna de Magallanes",
+      "summary": "Con 8 mil personas, la costanera del Estrecho de Magallanes fue escenario este sábado de la 10ª Corrida Nocturna Familiar, una de las actividades deportivas recreativas más emblemáticas de la Región de Magallanes y de la Antártica Chilena. La iniciativa, [&#8230;] La entrada Histórica convocatoria en la Corrida Nocturn",
+      "url": "https://ind.cl/noticias/historica-convocatoria-en-la-corrida-nocturna-de-magallanes/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.622Z",
+      "startsOn": null,
+      "santiagoHint": false,
+      "disciplineGuess": "multisport",
+      "keywordsMatched": [
+        "ind"
+      ],
+      "action": "review"
+    },
+    {
+      "id": "disc-rss-ind-seleccion-continua-su-preparacion-para-el-mundial-de-voleibol-",
+      "title": "Selección continúa su preparación para el Mundial de Vóleibol Chile 2026",
+      "summary": "Selección continúa su preparación para el Mundial de Vóleibol que se disputará en Chile La Selección Chilena Femenina Sub 17 de vóleibol sigue avanzando en su preparación para el Campeonato Mundial de la categoría, que se desarrollará en nuestro país [&#8230;] La entrada Selección continúa su preparación para el Mundia",
+      "url": "https://ind.cl/noticias/seleccion-continua-su-preparacion-para-el-mundial-de-voleibol-que-se-disputara-en-chile/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.623Z",
+      "startsOn": null,
+      "santiagoHint": false,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "ind",
+        "mundial"
+      ],
+      "action": "review"
+    },
+    {
+      "id": "disc-rss-fevochi-seleccion-femenina-adulta-confirma-su-nomina-2026-con-fuer",
+      "title": "SELECCIÓN FEMENINA ADULTA CONFIRMA SU NÓMINA 2026 CON FUERTE PRESENCIA INTERNACIONAL",
+      "summary": "La Federación de Voleibol de Chile oficializó la nómina de la Selección Chilena Femenina Adulta que afrontará los principales desafíos de la temporada 2026, consolidando un proceso que combina experiencia, renovación y proyección internacional. El listado refleja el crecimiento sostenido del vóleibol nacional en el alt",
+      "url": "https://www.fevochi.cl/2026/03/16/seleccion-femenina-adulta-confirma-su-nomina-2026-con-fuerte-presencia-internacional/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.689Z",
+      "startsOn": null,
+      "santiagoHint": false,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "ind",
+        "fevochi",
+        "voleibol"
+      ],
+      "action": "review"
+    },
+    {
+      "id": "disc-rss-fevochi-fevochi-abre-inscripciones-para-el-curso-de-mini-voley-que",
+      "title": "FEVOCHI ABRE INSCRIPCIONES PARA EL CURSO DE MINI VÓLEY QUE SE REALIZARÁ EN JULIO DE 2026",
+      "summary": "La Federación de Voleibol de Chile (FEVOCHI) anunció la apertura oficial de las inscripciones para una nueva edición del Curso de Mini Vóley 2026, una instancia de formación dirigida a entrenadores, profesores, monitores y todas las personas interesadas en fortalecer sus conocimientos sobre la enseñanza del vóleibol en",
+      "url": "https://www.fevochi.cl/2026/07/03/fevochi-abre-inscripciones-para-el-curso-de-mini-voley-que-se-realizara-en-julio-de-2026/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.686Z",
+      "startsOn": "2026-07-19",
+      "santiagoHint": false,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "voleibol",
+        "inscripciones"
+      ],
+      "action": "ignore_likely"
+    },
+    {
+      "id": "disc-rss-fevochi-fevochi-abre-inscripciones-para-el-curso-nacional-de-entre",
+      "title": "FEVOCHI ABRE INSCRIPCIONES PARA EL CURSO NACIONAL DE ENTRENADORES NIVEL 2 2026",
+      "summary": "Del 22 al 27 de junio de 2026 se realizará una nueva edición del&#160;Curso Nacional de Entrenadores Nivel 2, una instancia clave para quienes buscan seguir profesionalizándose en el mundo del vóleibol chileno. Organizado por la&#160;Federación de Vóleibol de Chile (Fevochi), el curso estará a cargo del&#160;Staff Técn",
+      "url": "https://www.fevochi.cl/2026/06/16/fevochi-abre-inscripciones-para-el-curso-nacional-de-entrenadores-nivel-2-2026/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.686Z",
+      "startsOn": "2026-06-27",
+      "santiagoHint": true,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "voleibol",
+        "inscripciones"
+      ],
+      "action": "ignore_likely"
+    },
+    {
+      "id": "disc-rss-fevochi-fevochi-abre-inscripciones-para-el-curso-de-mini-voley-que",
+      "title": "FEVOCHI ABRE INSCRIPCIONES PARA EL CURSO DE MINI VÓLEY QUE SE REALIZARÁ EN MAYO DE 2026",
+      "summary": "La Federación de Voleibol de Chile continúa impulsando el desarrollo del vóleibol formativo y anunció oficialmente la apertura de inscripciones para una nueva edición del Curso de Mini Vóley 2026, instancia orientada a entrenadores, profesores, monitores y personas interesadas en perfeccionarse en la enseñanza del vóle",
+      "url": "https://www.fevochi.cl/2026/05/13/fevochi-abre-inscripciones-para-el-curso-de-mini-voley-que-se-realizara-en-mayo-de-2026/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.686Z",
+      "startsOn": "2026-05-31",
+      "santiagoHint": false,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "voleibol",
+        "bases",
+        "inscripciones"
+      ],
+      "action": "ignore_likely"
+    },
+    {
+      "id": "disc-rss-fevochi-fevochi-abre-inscripciones-para-nueva-edicion-del-curso-na",
+      "title": "FEVOCHI ABRE INSCRIPCIONES PARA NUEVA EDICIÓN DEL CURSO NACIONAL DE MINI VÓLEY 2026",
+      "summary": "La Federación de Voleibol de Chile anunció la apertura de inscripciones para una nueva edición del Curso Nacional de Mini Vóley, una instancia formativa orientada a entrenadores, profesores y personas interesadas en iniciarse en la enseñanza del vóleibol infantil. La capacitación se llevará a cabo entre el 30 de abril ",
+      "url": "https://www.fevochi.cl/2026/04/17/fevochi-abre-inscripciones-para-nueva-edicion-del-curso-nacional-de-mini-voley-2026/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.687Z",
+      "startsOn": "2026-05-03",
+      "santiagoHint": false,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "voleibol",
+        "inscripciones"
+      ],
+      "action": "ignore_likely"
+    },
+    {
+      "id": "disc-rss-fevochi-inscribete-en-el-curso-de-arbitro-regional-8211-nacional-d",
+      "title": "¡INSCRÍBETE EN EL CURSO DE ÁRBITRO REGIONAL &#8211; NACIONAL DE VOLEIBOL!",
+      "summary": "Abril trae una gran oportunidad para todos los apasionados del voleibol. La Federación de Voleibol de Chile (Fevochi) abre las inscripciones para el curso de Árbitro Regional–Nacional, que se realizará entre el 24 y el 26 de abril de 2026. Esta instancia formativa está dirigida a quienes buscan avanzar en el mundo del ",
+      "url": "https://www.fevochi.cl/2026/04/08/inscribete-en-el-curso-de-arbitro-regional-nacional-de-voleibol/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.689Z",
+      "startsOn": "2026-04-26",
+      "santiagoHint": false,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "voleibol",
+        "inscripciones"
+      ],
+      "action": "ignore_likely"
+    },
+    {
+      "id": "disc-rss-fevochi-nueva-edicion-del-curso-nacional-nivel-1-se-realizara-en-a",
+      "title": "NUEVA EDICIÓN DEL CURSO NACIONAL NIVEL 1 SE REALIZARÁ EN ABRIL",
+      "summary": "La Federación de Vóleibol de Chile (Fevochi) continúa fortaleciendo el desarrollo técnico del país y anuncia una nueva edición del Curso Nacional de Entrenadores Nivel 1, que se llevará a cabo entre el 8 y el 11 de abril de 2026. Esta instancia formativa está dirigida a entrenadores y entrenadoras que buscan avanzar en",
+      "url": "https://www.fevochi.cl/2026/03/26/nueva-edicion-del-curso-nacional-nivel-1-se-realizara-en-abril/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.689Z",
+      "startsOn": "2026-04-11",
+      "santiagoHint": true,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "voleibol",
+        "inscripciones"
+      ],
+      "action": "ignore_likely"
+    },
+    {
+      "id": "disc-rss-ind-ind-fortalece-la-preparacion-internacional-de-deportistas-con-",
+      "title": "IND fortalece la preparación internacional de deportistas con curso de inglés",
+      "summary": "La iniciativa entrega herramientas comunicacionales para apoyar el desarrollo integral y la proyección internacional de atletas de alto rendimiento. Autoridades del Instituto Nacional de Deportes compartieron con beneficiarios del Curso de Inglés para Deportistas de Alto Rendimiento en el Estadio [&#8230;] La entrada I",
+      "url": "https://ind.cl/noticias/ind-fortalece-la-preparacion-internacional-de-deportistas-con-curso-de-ingles/",
+      "sourceFeed": "rss:ind",
+      "detectedAt": "2026-07-31T18:06:18.622Z",
+      "startsOn": null,
+      "santiagoHint": false,
+      "disciplineGuess": "multisport",
+      "keywordsMatched": [
+        "estadio",
+        "ind"
+      ],
+      "action": "ignore_likely"
+    },
+    {
+      "id": "disc-rss-fevochi-aconcagua-avanza-unido-en-la-organizacion-del-mundial-u17-",
+      "title": "ACONCAGUA AVANZA UNIDO EN LA ORGANIZACIÓN DEL MUNDIAL U17 FEMENINO CHILE 2026",
+      "summary": "El Campeonato Mundial Femenino U17 Chile 2026 continúa tomando forma en el Valle de Aconcagua, con importantes avances en materia organizativa y de coordinación interinstitucional. Este lunes, autoridades locales y representantes del vóleibol nacional sostuvieron una reunión clave en la ciudad de San Felipe, instancia ",
+      "url": "https://www.fevochi.cl/2026/04/17/aconcagua-avanza-unido-en-la-organizacion-del-mundial-u17-femenino-chile-2026/",
+      "sourceFeed": "rss:fevochi",
+      "detectedAt": "2026-07-31T18:06:20.688Z",
+      "startsOn": null,
+      "santiagoHint": false,
+      "disciplineGuess": "voleibol",
+      "keywordsMatched": [
+        "fevochi",
+        "voleibol",
+        "mundial u17",
+        "mundial"
+      ],
+      "action": "ignore_likely"
+    }
+  ]
+}
