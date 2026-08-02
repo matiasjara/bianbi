@@ -40,7 +40,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const sp = await searchParams;
   const pack = await loadCampaignPackBySlug(slug);
-  if (!pack) return { title: "Bianbi" };
+  if (!pack) return { title: "Crambie" };
   const locale = await resolveLandingLocale(sp.lang);
   const L = localizeLanding(pack, locale);
   return {

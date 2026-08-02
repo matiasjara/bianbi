@@ -204,8 +204,8 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
         a: "Solo en Airbnb, en el link de cada alojamiento. Ahí está el pago protegido, la cancelación según política del anuncio y el chat con el anfitrión.",
       },
       {
-        q: "¿Bianbi es parte de Airbnb?",
-        a: "No. Bianbi te muestra opciones y la guía del viaje; la reserva y el pago son siempre en el anuncio oficial de Airbnb.",
+        q: "¿Crambie es parte de Airbnb?",
+        a: "No. Crambie te muestra opciones y la guía del viaje; la reserva y el pago son siempre en el anuncio oficial de Airbnb.",
       },
     ];
   }
@@ -234,8 +234,8 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
       a: "Solo en Airbnb, en el link de cada alojamiento. Ahí está el pago protegido, la cancelación según política del anuncio y el chat con el anfitrión.",
     },
     {
-      q: "¿Bianbi es parte de Airbnb?",
-      a: "No. Bianbi te muestra opciones y la guía del evento; la reserva y el pago son siempre en el anuncio oficial de Airbnb.",
+      q: "¿Crambie es parte de Airbnb?",
+      a: "No. Crambie te muestra opciones y la guía del evento; la reserva y el pago son siempre en el anuncio oficial de Airbnb.",
     },
   ];
 }

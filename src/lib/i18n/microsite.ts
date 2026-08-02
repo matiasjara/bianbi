@@ -631,8 +631,8 @@ function faqs(
           a: "Only on Airbnb via each apartment link — protected payment, cancellation policy and host chat.",
         },
         {
-          q: "Is Bianbi part of Airbnb?",
-          a: "No. Bianbi shows options and the travel guide; booking and payment are always on the official Airbnb listing.",
+          q: "Is Crambie part of Airbnb?",
+          a: "No. Crambie shows options and the travel guide; booking and payment are always on the official Airbnb listing.",
         },
       ];
     }
@@ -661,8 +661,8 @@ function faqs(
           a: "Só no Airbnb, no link de cada apartamento — pagamento protegido, cancelamento e chat com o anfitrião.",
         },
         {
-          q: "A Bianbi faz parte do Airbnb?",
-          a: "Não. A Bianbi mostra opções e o guia de viagem; reserva e pagamento são sempre no anúncio oficial do Airbnb.",
+          q: "A Crambie faz parte do Airbnb?",
+          a: "Não. A Crambie mostra opções e o guia de viagem; reserva e pagamento são sempre no anúncio oficial do Airbnb.",
         },
       ];
     }
@@ -693,8 +693,8 @@ function faqs(
         a: "Only on Airbnb, via each apartment link. That's where protected payment, cancellation policy and host chat live.",
       },
       {
-        q: "Is Bianbi part of Airbnb?",
-        a: "No. Bianbi shows options and the event guide; booking and payment are always on the official Airbnb listing.",
+        q: "Is Crambie part of Airbnb?",
+        a: "No. Crambie shows options and the event guide; booking and payment are always on the official Airbnb listing.",
       },
     ];
   }
@@ -723,8 +723,8 @@ function faqs(
         a: "Só no Airbnb, no link de cada apartamento. Lá estão o pagamento protegido, o cancelamento conforme a política do anúncio e o chat com o anfitrião.",
       },
       {
-        q: "A Bianbi faz parte do Airbnb?",
-        a: "Não. A Bianbi mostra opções e o guia do evento; a reserva e o pagamento são sempre no anúncio oficial do Airbnb.",
+        q: "A Crambie faz parte do Airbnb?",
+        a: "Não. A Crambie mostra opções e o guia do evento; a reserva e o pagamento são sempre no anúncio oficial do Airbnb.",
       },
     ];
   }

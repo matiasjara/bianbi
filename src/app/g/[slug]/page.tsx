@@ -34,7 +34,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const sp = await searchParams;
   const pack = await loadCampaignPackBySlug(slug);
-  if (!pack?.microsite) return { title: "Guía · Bianbi" };
+  if (!pack?.microsite) return { title: "Guía · Crambie" };
   const locale = await resolveMicrositeLocale(sp.lang);
   const L = localizeMicrosite(pack, locale);
   const m = L.content;
@@ -91,7 +91,7 @@ export default async function MicrositeGuidePage({
     headline: m.guideTitle,
     description: m.seoDescription,
     datePublished: pack.eventStartsOn,
-    author: { "@type": "Organization", name: "Bianbi" },
+    author: { "@type": "Organization", name: "Crambie" },
     about: {
       "@type": "Event",
       name: m.eventTitle,

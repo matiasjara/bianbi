@@ -2,7 +2,9 @@ import type { MetadataRoute } from "next";
 import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
 import { micrositePath } from "@/lib/demand/travel-brief";
 
-const SITE = "https://bianbi.cl";
+import { SITE_URL } from "@/lib/site/url";
+
+const SITE = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const today = new Date().toISOString().slice(0, 10);

@@ -5,6 +5,7 @@ import { ImageResponse } from "next/og";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 import type { Locale } from "@/lib/i18n/locale";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
+import { SITE_HOST } from "@/lib/site/url";
 
 export const SHARE_STORY = { width: 1080, height: 1920 } as const;
 export const SHARE_OG = { width: 1200, height: 630 } as const;
@@ -631,7 +632,7 @@ export async function renderShareCard(
   const isStory = opts.format === "story";
   const logoSrc = await logoDataUri();
   const fonts = await getFonts();
-  const pageLabel = "bianbi.cl";
+  const pageLabel = SITE_HOST;
   const storyMapHeight = 920;
   const eventLine = truncate(
     m.interest === "nieve"
@@ -708,7 +709,7 @@ export async function renderShareCard(
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logoSrc}
-                alt="Bianbi"
+                alt="Crambie"
                 width={260}
                 height={52}
                 style={{ objectFit: "contain" }}
@@ -863,7 +864,7 @@ export async function renderShareCard(
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logoSrc}
-                alt="Bianbi"
+                alt="Crambie"
                 width={200}
                 height={40}
                 style={{ objectFit: "contain", objectPosition: "left" }}

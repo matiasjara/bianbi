@@ -22,7 +22,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
           required
           autoFocus
           className="w-full rounded-lg border border-[var(--line)] bg-[var(--panel)] px-3.5 py-2.5 text-[var(--ink)] outline-none ring-[var(--accent)] focus:ring-2"
-          placeholder="Tu acceso a Bianbi"
+          placeholder="Tu acceso a Crambie"
         />
       </label>
 

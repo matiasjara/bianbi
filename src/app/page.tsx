@@ -11,6 +11,7 @@ import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
 import type { CalendarEvent } from "@/lib/demand/event-calendar";
 import { parseMonthParam } from "@/lib/demand/month-range";
 import { micrositePath } from "@/lib/demand/travel-brief";
+import { SITE_URL } from "@/lib/site/url";
 import {
   buildRotatingSequenceMap,
   categoryCover,
@@ -23,13 +24,13 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Bianbi — Guías de eventos y alojamiento en Santiago",
+    absolute: "Crambie — Guías de eventos y alojamiento en Santiago",
   },
   description:
     "Guías concretas de conciertos, partidos y eventos en Santiago: fechas, mapa, tips, transporte y dónde alojarte cerca. Actualizadas constantemente.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Bianbi — Guías de eventos y alojamiento en Santiago",
+    title: "Crambie — Guías de eventos y alojamiento en Santiago",
     description:
       "Lo esencial de cada evento en Santiago: fechas, venue, tips y alojamiento cerca. Guías que se actualizan con la cartelera.",
     type: "website",
@@ -220,8 +221,8 @@ export default async function HomePage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Bianbi",
-    url: "https://bianbi.cl/",
+    name: "Crambie",
+    url: `${SITE_URL}/`,
     description:
       "Guías de eventos en Santiago y alojamiento cerca del venue.",
   };
@@ -233,7 +234,7 @@ export default async function HomePage({
     itemListElement: featured.map((p, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `https://bianbi.cl${micrositePath(p.slug)}`,
+      url: `${SITE_URL}${micrositePath(p.slug)}`,
       name: p.microsite.guideTitle,
     })),
   };

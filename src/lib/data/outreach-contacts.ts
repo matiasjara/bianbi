@@ -10,7 +10,7 @@ import type { OutreachOrganization, OutreachSource } from "@/lib/types";
 export const outreachSources: OutreachSource[] = [
   {
     id: "manual_outreach",
-    name: "Curaduría Bianbi",
+    name: "Curaduría Crambie",
     url: "/base-datos",
   },
 ];

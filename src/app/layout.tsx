@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope, Syne } from "next/font/google";
+import { SITE_URL } from "@/lib/site/url";
 import "./globals.css";
 
 /** Tipografía principal — geométrica (logo, nav, datos) */
@@ -24,12 +25,12 @@ const body = Manrope({
 
 export const metadata: Metadata = {
   title: {
-    default: "Bianbi — Guías de eventos y alojamiento en Santiago",
-    template: "%s · Bianbi",
+    default: "Crambie — Guías de eventos y alojamiento en Santiago",
+    template: "%s · Crambie",
   },
   description:
     "Guías concretas de conciertos, partidos y eventos en Santiago: fechas, tips, transporte y dónde alojarte cerca.",
-  metadataBase: new URL("https://bianbi.cl"),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({

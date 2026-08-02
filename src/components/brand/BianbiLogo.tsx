@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BRAND } from "@/lib/brand/tokens";
 
 type Props = {
   /** logo = wordmark completo; mark = isotipo pin */
@@ -17,8 +16,8 @@ type Props = {
 
 const ASSETS = {
   logo: {
-    onLight: { src: "/brand/logo-dark.png", w: 830, h: 135 },
-    onDark: { src: "/brand/logo.png", w: 830, h: 135 },
+    onLight: { src: "/brand/logo-dark.png", w: 1024, h: 682 },
+    onDark: { src: "/brand/logo.png", w: 1024, h: 682 },
   },
   mark: {
     onLight: { src: "/brand/iso.png", w: 377, h: 377 },
@@ -27,7 +26,7 @@ const ASSETS = {
 } as const;
 
 /**
- * Logo Bianbi según manual:
+ * Logo Crambie según manual:
  * - no rotar / no distorsionar
  * - ancho mínimo digital 120px (versión logo)
  * - fondo limpio (crema o carbón sólido)
@@ -40,22 +39,20 @@ export function BianbiLogo({
   priority = false,
 }: Props) {
   const asset = ASSETS[variant][tone];
-  const minW =
-    variant === "logo" ? BRAND.logo.minWidthPx : Math.round(BRAND.logo.minWidthPx * 0.45);
 
   const img = (
     <Image
       src={asset.src}
-      alt="Bianbi"
+      alt="Crambie"
       width={asset.w}
       height={asset.h}
       priority={priority}
       className={`h-auto w-auto max-w-full object-contain object-left ${className}`}
       style={{
-        minWidth: minW,
         width: "auto",
         height: "auto",
-        maxHeight: variant === "logo" ? "3.25rem" : "2.5rem",
+        maxHeight: variant === "logo" ? "2.75rem" : "2.5rem",
+        maxWidth: variant === "logo" ? "11rem" : "2.5rem",
       }}
     />
   );
@@ -67,7 +64,7 @@ export function BianbiLogo({
   }
 
   return (
-    <Link href={href} className={wrapClass} aria-label="Bianbi">
+    <Link href={href} className={wrapClass} aria-label="Crambie">
       {img}
     </Link>
   );

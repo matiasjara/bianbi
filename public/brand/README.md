@@ -1,4 +1,4 @@
-# Marca Bianbi
+# Marca Crambie
 
 ## Assets
 - `logo.png` — wordmark real (versión para fondos oscuros)

@@ -183,7 +183,7 @@ export function MicrositeShareBar({
     if (!blob.type.startsWith("image/")) {
       throw new Error("Respuesta inválida del servidor");
     }
-    const file = new File([blob], `bianbi-${slug}.png`, { type: "image/png" });
+    const file = new File([blob], `crambie-${slug}.png`, { type: "image/png" });
     return { blob, file };
   }, [cardUrl, slug]);
 
