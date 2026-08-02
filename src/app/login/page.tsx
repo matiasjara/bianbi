@@ -26,7 +26,9 @@ export default async function LoginPage({
         className="pointer-events-none absolute inset-0 grid-fade opacity-40"
       />
       <div className="relative w-full max-w-md animate-[rise-in_0.5s_ease-out]">
-        <BianbiLogo variant="logo" href="/" tone="onLight" size="lg" priority />
+        <div className="flex justify-center">
+          <BianbiLogo variant="logo" href="/" tone="onLight" size="lg" priority />
+        </div>
         <div className="surface mt-8 rounded-2xl p-6 shadow-sm">
           <LoginForm nextPath={nextPath} />
         </div>
