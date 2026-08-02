@@ -109,7 +109,7 @@ export default async function CatalogStayPage({ searchParams }: Props) {
 
         <div className="relative mx-auto grid max-w-5xl items-center gap-10 px-5 pb-14 pt-12 md:grid-cols-[1.05fr_0.95fr] md:pb-16 md:pt-14">
           <div className="relative z-10">
-            <BianbiLogo variant="logo" href="/" />
+            <BianbiLogo variant="logo" href="/" tone="onLight" />
             <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
               {ui.eyebrow}
             </p>

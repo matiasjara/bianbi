@@ -1,11 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CRAMBIE_LOGO } from "@/lib/brand/logos";
 
 type Props = {
   /** logo = wordmark completo; mark = isotipo pin */
   variant?: "logo" | "mark";
   href?: string | null;
   className?: string;
+  /** sm = nav; md = default; lg = hero / portada */
+  size?: "sm" | "md" | "lg";
   /**
    * onLight — fondos crema / claros
    * onDark — fondos carbón / oscuros sólidos (footer)
@@ -14,11 +17,14 @@ type Props = {
   priority?: boolean;
 };
 
+const LOGO_SIZE_CLASS = {
+  sm: "max-h-10 max-w-[14rem]",
+  md: "max-h-[3.75rem] max-w-[22rem]",
+  lg: "max-h-20 max-w-[28rem]",
+} as const;
+
 const ASSETS = {
-  logo: {
-    onLight: { src: "/brand/logo-dark.png", w: 1024, h: 682 },
-    onDark: { src: "/brand/logo.png", w: 1024, h: 682 },
-  },
+  logo: CRAMBIE_LOGO,
   mark: {
     onLight: { src: "/brand/iso.png", w: 377, h: 377 },
     onDark: { src: "/brand/iso-light.png", w: 377, h: 377 },
@@ -35,10 +41,13 @@ export function BianbiLogo({
   variant = "logo",
   href = "/",
   className = "",
+  size = "md",
   tone = "onLight",
   priority = false,
 }: Props) {
   const asset = ASSETS[variant][tone];
+  const sizeClass =
+    variant === "logo" ? LOGO_SIZE_CLASS[size] : "max-h-10 max-w-10";
 
   const img = (
     <Image
@@ -47,13 +56,7 @@ export function BianbiLogo({
       width={asset.w}
       height={asset.h}
       priority={priority}
-      className={`h-auto w-auto max-w-full object-contain object-left ${className}`}
-      style={{
-        width: "auto",
-        height: "auto",
-        maxHeight: variant === "logo" ? "2.75rem" : "2.5rem",
-        maxWidth: variant === "logo" ? "11rem" : "2.5rem",
-      }}
+      className={`h-auto w-auto object-contain object-left ${sizeClass} ${className}`}
     />
   );
 

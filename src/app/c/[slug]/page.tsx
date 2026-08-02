@@ -102,7 +102,7 @@ export default async function CampaignLandingPage({
         <LandingLangSwitch basePath={`/c/${slug}`} locale={locale} />
         <div className="mx-auto flex min-h-[78vh] max-w-4xl flex-col justify-end px-5 pb-14 pt-24">
           <div className="animate-rise mb-4 inline-flex rounded-xl bg-[var(--brand-crema,#F4F0E8)]/95 shadow-sm">
-            <BianbiLogo variant="logo" href="/" />
+            <BianbiLogo variant="logo" href="/" tone="onLight" />
           </div>
           <p className="animate-rise mb-3 text-xs font-medium uppercase tracking-[0.2em] text-white/75">
             {pack.venueName} · {pack.eventDates}

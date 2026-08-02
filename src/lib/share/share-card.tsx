@@ -5,6 +5,7 @@ import { ImageResponse } from "next/og";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 import type { Locale } from "@/lib/i18n/locale";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
+import { CRAMBIE_LOGO } from "@/lib/brand/logos";
 import { SITE_HOST } from "@/lib/site/url";
 
 export const SHARE_STORY = { width: 1080, height: 1920 } as const;
@@ -66,7 +67,7 @@ function getFonts() {
 
 async function logoDataUri() {
   const file = await readFile(
-    path.join(process.cwd(), "public/brand/logo-dark.png"),
+    path.join(process.cwd(), CRAMBIE_LOGO.onLight.path),
   );
   return `data:image/png;base64,${file.toString("base64")}`;
 }

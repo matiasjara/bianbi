@@ -183,7 +183,7 @@ export function MicrositeInfographic({
         <div className="relative mx-auto grid max-w-5xl gap-8 px-5 pb-12 pt-12 md:grid-cols-[1.15fr_0.85fr] md:items-end md:pb-16 md:pt-16">
           <div>
             <div className="ms-rise flex flex-wrap items-center gap-3 pr-28">
-              <BianbiLogo href={`/?lang=${locale}`} variant="logo" />
+              <BianbiLogo href={`/?lang=${locale}`} variant="logo" tone="onLight" />
               <span className="font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--ms-muted)]">
                 {ui.productLabel}
               </span>

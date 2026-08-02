@@ -260,7 +260,7 @@ export default async function HomePage({
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 pb-12 pt-14 md:grid-cols-[1.05fr_0.95fr] md:min-h-[78vh] md:pb-16 md:pt-16">
           <div className="relative z-10">
             <div className="ms-rise">
-              <BianbiLogo variant="logo" href={null} priority />
+              <BianbiLogo variant="logo" href={null} tone="onLight" size="lg" priority />
             </div>
             <h1 className="ms-rise ms-rise-d1 ms-editorial mt-8 max-w-md text-2xl leading-tight md:text-[2.6rem]">
               Guías que inspiran viajes con sentido
