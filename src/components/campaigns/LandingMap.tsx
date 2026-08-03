@@ -17,8 +17,10 @@ export type { MapMarker };
 type Props = {
   markers: MapMarker[];
   className?: string;
-  /** Suma niveles de zoom tras encuadrar marcadores (p. ej. 2 ≈ dos clics en +). */
+  /** Suma niveles de zoom tras encuadrar marcadores (admite 0.5, p. ej. 1.5). */
   initialZoomBoost?: number;
+  /** Padding relativo extra al calcular el encuadre (default 0.22). */
+  fitBoundsPad?: number;
 };
 
 function escapeHtml(text: string) {
@@ -152,7 +154,12 @@ function popupOptions(marker: MapMarker) {
   return { direction: "top" as const, offset: [0, -4] as [number, number] };
 }
 
-export function LandingMap({ markers, className, initialZoomBoost = 0 }: Props) {
+export function LandingMap({
+  markers,
+  className,
+  initialZoomBoost = 0,
+  fitBoundsPad = 0.22,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
 
@@ -169,9 +176,11 @@ export function LandingMap({ markers, className, initialZoomBoost = 0 }: Props) 
         mapRef.current = null;
       }
 
+      const fractionalZoom = initialZoomBoost % 1 !== 0;
       const map = L.map(containerRef.current, {
         scrollWheelZoom: false,
         attributionControl: true,
+        ...(fractionalZoom ? { zoomSnap: 0.5, zoomDelta: 0.5 } : {}),
       });
       mapRef.current = map;
 
@@ -203,11 +212,16 @@ export function LandingMap({ markers, className, initialZoomBoost = 0 }: Props) 
       if (placed.length === 1) {
         map.setView([placed[0].lat, placed[0].lng], 15 + initialZoomBoost);
       } else {
-        map.fitBounds(bounds.pad(0.18));
-        if (initialZoomBoost > 0) {
-          map.setZoom(
-            Math.min(map.getZoom() + initialZoomBoost, map.getMaxZoom()),
+        const padded = bounds.pad(fitBoundsPad);
+        map.fitBounds(padded, { padding: [56, 56] });
+        if (initialZoomBoost !== 0) {
+          const targetZoom = Math.min(
+            map.getZoom() + initialZoomBoost,
+            map.getMaxZoom(),
           );
+          const center = padded.getCenter();
+          map.setView(center, targetZoom);
+          map.panInsideBounds(padded.pad(0.06), { animate: false });
         }
       }
     }
@@ -221,7 +235,7 @@ export function LandingMap({ markers, className, initialZoomBoost = 0 }: Props) 
         mapRef.current = null;
       }
     };
-  }, [markers, initialZoomBoost]);
+  }, [markers, initialZoomBoost, fitBoundsPad]);
 
   return (
     <div
