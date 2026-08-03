@@ -255,7 +255,7 @@ export default async function CatalogStayPage({ searchParams }: Props) {
             <LandingMap
               markers={mapMarkers}
               className="h-96 w-full"
-              initialZoomBoost={1}
+              initialZoomBoost={2}
             />
           </div>
         </div>
