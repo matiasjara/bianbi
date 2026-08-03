@@ -31,6 +31,15 @@ export const metadata: Metadata = {
   description:
     "Guías concretas de conciertos, partidos y eventos en Santiago: fechas, tips, transporte y dónde alojarte cerca.",
   metadataBase: new URL(SITE_URL),
+  applicationName: "Crambie",
+  appleWebApp: {
+    capable: true,
+    title: "Crambie",
+    statusBarStyle: "default",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export default function RootLayout({
