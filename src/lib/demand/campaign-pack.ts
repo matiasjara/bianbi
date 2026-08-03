@@ -18,7 +18,14 @@ import {
 } from "./event-title";
 import { publicEventDescription } from "./public-event-description";
 import { attachTravelBriefAndMicrosite } from "./travel-brief";
-import { getEventCopyOverride } from "./microsite-event-overrides";
+import {
+  getEventCopyOverride,
+  isMundialU17VolleyballTitle,
+} from "./microsite-event-overrides";
+import {
+  guerrerasLocationHighlights,
+  propertyStadiumProximity,
+} from "./venue-proximity-copy";
 import { resolveSignalCity } from "./cities";
 import type { CampaignAudience, CityId } from "./types";
 import {
@@ -371,6 +378,31 @@ function buildCopy(input: {
     );
     if (override?.headline) headline = override.headline;
     if (override?.subhead) subhead = override.subhead;
+    if (override?.headline && /guerreras/i.test(override.headline)) {
+      const stayLine =
+        nearestMins <= 10
+          ? `Quédate a pasos del ${venueName}: barrio seguro, metro cerca y reserva directa en Airbnb.`
+          : `Buena ubicación con fácil acceso al ${venueName}: barrio seguro, metro cerca y reserva directa en Airbnb.`;
+      return {
+        headline,
+        subhead,
+        mailingSubject: `[Santiago] Mundial Guerreras: alojamiento para delegaciones, staff y familias · ${eventDates}`,
+        mailingBody: [
+          `Hola,`,
+          ``,
+          `Chile organiza su primer Mundial de vóleibol (${eventDates}). Llegan delegaciones, staff, familias e hinchada de regiones.`,
+          stayLine,
+          audience.stayOffer,
+          ``,
+          `{{LANDING_URL}}`,
+        ].join("\n"),
+        adHeadline:
+          nearestMins <= 10
+            ? `Guerreras · a pasos del Nacional`
+            : `Guerreras · fácil acceso al Nacional`,
+        adPrimaryText: `Mundial en casa. ${nearestMins <= 10 ? "A pasos" : "Fácil acceso"} del Estadio: delegaciones, staff y familias. ${eventDates}. Metro + Airbnb.`,
+      };
+    }
     return {
       headline,
       subhead,
@@ -506,12 +538,26 @@ export function buildCampaignPack(
     audience: campaign.audience,
     leadSignal: lead,
   });
-  const trustPoints = buildTrustPoints({
-    venueName: poi.name,
-    nearestMins,
-    properties: props,
-    interest: campaign.interest,
-  });
+  const copyOverride = getEventCopyOverride(
+    {
+      eventTitle,
+      eventDates,
+      eventStartsOn: eventStart,
+      eventEndsOn: eventEnd,
+      venueName: poi.name,
+      properties: props,
+    },
+    "es",
+    { nearestMins },
+  );
+  const trustPoints =
+    copyOverride?.trustPoints ??
+    buildTrustPoints({
+      venueName: poi.name,
+      nearestMins,
+      properties: props,
+      interest: campaign.interest,
+    });
 
   // Fecha estable en el slug: mes para flujos largos (nieve), día del evento para el resto.
   // Evita que /c/... se rompa al regenerar packs con otra ventana (hoy vs mes de campañas).
@@ -540,6 +586,33 @@ export function buildCampaignPack(
     eventEndsOn: eventEnd,
   });
 
+  const guerreras = isMundialU17VolleyballTitle(eventTitle);
+  const packProperties = guerreras
+    ? props.map((p) => {
+        const metro =
+          p.metroStations.length > 0
+            ? `Metro ${p.metroStations.slice(0, 2).join(" / ")}`
+            : null;
+        return {
+          ...p,
+          pitch: [
+            propertyStadiumProximity(p.walkingMinutes, "es"),
+            metro,
+            `${p.neighborhood}: barrio seguro y bien conectado en Santiago`,
+            "Anfitrión Superhost en Airbnb",
+          ]
+            .filter(Boolean)
+            .join(" · "),
+          locationHighlights: guerrerasLocationHighlights(
+            p.walkingMinutes,
+            p.metroStations,
+            p.neighborhood,
+            "es",
+          ),
+        };
+      })
+    : props;
+
   const base = {
     slug,
     city: packCity,
@@ -560,11 +633,11 @@ export function buildCampaignPack(
     mapEmbedUrl: osmEmbedUrl(poi.lat, poi.lng),
     mapLinkUrl: osmLinkMulti([
       { lat: poi.lat, lng: poi.lng },
-      ...props.map((p) => ({ lat: p.lat, lng: p.lng })),
+      ...packProperties.map((p) => ({ lat: p.lat, lng: p.lng })),
     ]),
     ...copy,
     trustPoints,
-    properties: props,
+    properties: packProperties,
     windowStart: campaign.windowStart,
     windowEnd: campaign.windowEnd,
     dailyBudgetClp: campaign.dailyBudgetClp,

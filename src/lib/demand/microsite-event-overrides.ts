@@ -1,9 +1,14 @@
 /**
  * Copy editorial por evento — overrides cuando el template genérico queda corto.
+ * Fuentes: FEVOCHI, Chile es Tuyo, El Vacanudo, RedGol.
  */
 import { formatDateRangeHuman, formatDateRangeLongEs } from "./dates";
 import type { Locale } from "@/lib/i18n/locale";
 import type { MicrositeCopyInput } from "./microsite-event-copy";
+import {
+  guerrerasHeadlineProximity,
+  stayNearStadiumPhrase,
+} from "./venue-proximity-copy";
 
 export type EventCopyOverride = {
   shortTitle?: string;
@@ -13,6 +18,7 @@ export type EventCopyOverride = {
   subhead?: string;
   mustKnow?: string[];
   news?: string[];
+  trustPoints?: string[];
 };
 
 /** Campos mínimos para decidir / armar overrides editoriales. */
@@ -32,10 +38,14 @@ function t(locale: Locale, es: string, en: string, pt: string): string {
   return es;
 }
 
-function isMundialU17Volleyball(pack: EventCopyOverrideInput): boolean {
+export function isMundialU17VolleyballTitle(title: string): boolean {
   return /mundial.*u17.*voleibol|voleibol.*u17.*mundial|mundial femenino u17/i.test(
-    pack.eventTitle,
+    title,
   );
+}
+
+function isMundialU17Volleyball(pack: EventCopyOverrideInput): boolean {
+  return isMundialU17VolleyballTitle(pack.eventTitle);
 }
 
 function displayDates(pack: EventCopyOverrideInput, locale: Locale): string {
@@ -52,103 +62,134 @@ function mundialU17VolleyballOverride(
   nearestMinsOverride?: number,
 ): EventCopyOverride {
   const dates = displayDates(pack, locale);
+  const datesLong = formatDateRangeLongEs(
+    pack.eventStartsOn,
+    pack.eventEndsOn,
+  );
   const mins =
     nearestMinsOverride ?? pack.properties[0]?.walkingMinutes ?? 15;
-  const venue = pack.venueName;
+  const stayNear = stayNearStadiumPhrase(mins, locale, "Estadio Nacional");
 
   return {
     shortTitle: t(
       locale,
-      "Mundial Sub-17 de vóleibol",
-      "U17 Women's Volleyball World Championship",
-      "Mundial Sub-17 de vôlei",
+      "Mundial de las Guerreras Sub-17",
+      "U17 Women's World Championship — Chile's Guerreras",
+      "Mundial das Guerreiras Sub-17",
     ),
-    headline: t(
-      locale,
-      `El Mundial Sub-17 de vóleibol en Santiago — a ${mins} min del ${venue}`,
-      `U17 Volleyball World Championship in Santiago — ${mins} min from ${venue}`,
-      `Mundial Sub-17 de vôlei em Santiago — a ${mins} min do ${venue}`,
-    ),
+    headline: guerrerasHeadlineProximity(mins, locale),
     subhead: t(
       locale,
-      `${dates}. Chile recibe a 24 selecciones en el Parque Estadio Nacional.\n\nAlojamientos a ~${mins} min del recinto, pensados para familias, staff y delegaciones que viajan. Metro cerca, barrio seguro y reserva directa en Airbnb.`,
-      `${dates}. Chile hosts 24 national teams at Parque Estadio Nacional.\n\nStays ~${mins} min from the venue — for families, staff and traveling delegations. Metro nearby, safe neighborhood, book direct on Airbnb.`,
-      `${dates}. O Chile recebe 24 seleções no Parque Estadio Nacional.\n\nAcomodações a ~${mins} min do ginásio, para famílias, staff e delegações. Metrô perto, bairro seguro e reserva direta no Airbnb.`,
+      `${dates}. Por primera vez Chile organiza un Mundial de vóleibol. Las Guerreras Sub-17 son de todo el país: 9 de 14 jugadoras vienen de regiones.\n\n${stayNear}. Pensado para delegaciones, staff, familias e hinchada: metro, barrio seguro y reserva directa en Airbnb.`,
+      `${dates}. For the first time, Chile hosts a volleyball World Championship. The U17 Guerreras represent the whole country — 9 of 14 players are from outside Santiago.\n\n${stayNear}. Built for delegations, staff, families and fans: metro, safe neighborhood, book direct on Airbnb.`,
+      `${dates}. Pela primeira vez o Chile organiza um Mundial de vôlei. As Guerreiras Sub-17 são de todo o país: 9 de 14 jogadoras vêm de outras regiões.\n\n${stayNear}. Pensado para delegações, staff, famílias e torcida: metrô, bairro seguro e reserva direta no Airbnb.`,
     ),
     eventSummary: t(
       locale,
-      `Del ${formatDateRangeLongEs(pack.eventStartsOn, pack.eventEndsOn)}, Santiago es sede del Mundial Femenino Sub-17 de la FIVB. Todo lo esencial para llegar, moverte y dormir cerca del Estadio Nacional.`,
-      `From ${dates}, Santiago hosts the FIVB U17 Women's World Championship. Everything you need to get there, get around and stay near the venue.`,
-      `De ${dates}, Santiago sedia o Mundial Feminino Sub-17 da FIVB. Tudo para chegar, circular e dormir perto do Estadio Nacional.`,
+      `Del ${datesLong}, Chile escribe historia con el Mundial Femenino Sub-17 FIVB. 24 selecciones, tres sedes. Guía para delegaciones, staff, familias e hinchada: llegar, entradas y dormir cerca del Parque Estadio Nacional.`,
+      `From ${dates}, Chile makes history hosting the FIVB U17 Women's World Championship. 24 teams, three venues. Guide for delegations, staff, families and fans: getting there, tickets and staying near Parque Estadio Nacional.`,
+      `De ${dates}, o Chile escreve história com o Mundial Feminino Sub-17 da FIVB. 24 seleções, três sedes. Guia para delegações, staff, famílias e torcida: chegar, ingressos e dormir perto do Parque Estadio Nacional.`,
     ),
     eventDescription: t(
       locale,
-      `Chile organiza el Campeonato Mundial Femenino Sub-17 de la FIVB: once días de competencia con fase de grupos y finales en el Parque Estadio Nacional (Ñuñoa), además de partidos en la región de Aconcagua.\n\nSi vienes a apoyar a tu selección, acompañar al equipo o colaborar en el torneo, aquí tienes lo esencial para planificar transporte, entradas y alojamiento.`,
-      `Chile hosts the FIVB U17 Women's World Championship: eleven days of competition with group stages and finals at Parque Estadio Nacional (Ñuñoa), plus matches in the Aconcagua region.\n\nWhether you're supporting your team, traveling with staff or visiting as family, here's what you need for transport, tickets and where to stay.`,
-      `O Chile organiza o Mundial Feminino Sub-17 da FIVB: onze dias de competição com fase de grupos e finais no Parque Estadio Nacional (Ñuñoa), além de jogos na região de Aconcagua.\n\nSe você vem torcer, acompanhar a equipe ou trabalhar no torneio, aqui está o essencial para transporte, ingressos e hospedagem.`,
+      `Es el Mundial más importante que ha tenido el vóleibol chileno: del ${datesLong}, Chile organiza por primera vez un Campeonato Mundial Femenino Sub-17 de la FIVB. 24 selecciones de los cinco continentes. Las Guerreras debutan el jueves 6 de agosto a las 20:00 ante República Checa en el Gimnasio de Deportes Colectivos del Parque Estadio Nacional.\n\nLa nómina del DT Raúl Pereira es un espejo del país: 9 de 14 jugadoras vienen de Punta Arenas, Concepción, Quillota, Concón, Los Ángeles, Valparaíso, Pichilemu y Linares. A Santiago llegan delegaciones internacionales, staff técnico, familias y hinchada de regiones.\n\nSedes: Parque Estadio Nacional en Ñuñoa (grupos desde el 6; cuartos 14, semis 15, final 16 — oro 19:00); San Felipe y Los Andes en el Valle del Aconcagua. Grupo A: Chile, Turquía, Egipto, EE.UU., Tailandia y República Checa. Entradas desde $3.800 en Ticketpro. Aquí te ayudamos a quedarte cerca del recinto para competir, trabajar o alentar.`,
+      `This is the biggest moment in Chilean volleyball history: from ${dates}, Chile hosts its first FIVB U17 Women's World Championship. 24 teams from five continents. The Guerreras open Thursday 6 Aug at 20:00 vs Czechia at the Collective Sports Gym, Parque Estadio Nacional.\n\nCoach Raúl Pereira's squad mirrors the country: 9 of 14 players come from Punta Arenas, Concepción, Quillota, Concón, Los Ángeles, Valparaíso, Pichilemu and Linares. International delegations, coaching staff, families and regional fans are coming to Santiago.\n\nVenues: Parque Estadio Nacional in Ñuñoa (groups from the 6th; quarters 14, semis 15, final 16 — gold 19:00); San Felipe and Los Andes in Aconcagua Valley. Group A: Chile, Türkiye, Egypt, USA, Thailand and Czechia. Tickets from CLP $3,800 via Ticketpro. We'll help you stay close to the venue — whether you're competing, working the event or cheering.`,
+      `É o momento mais importante do vôlei chileno: de ${dates}, o Chile organiza pela primeira vez um Mundial Feminino Sub-17 da FIVB. 24 seleções dos cinco continentes. As Guerreiras estreiam na quinta 6 de agosto às 20h contra a Tchéquia no Ginásio de Esportes Coletivos do Parque Estadio Nacional.\n\nA lista do técnico Raúl Pereira espelha o país: 9 de 14 jogadoras vêm de Punta Arenas, Concepción, Quillota, Concón, Los Ángeles, Valparaíso, Pichilemu e Linares. Chegam a Santiago delegações internacionais, staff técnico, famílias e torcida de regiões.\n\nSedes: Parque Estadio Nacional em Ñuñoa (grupos a partir do dia 6; quartas 14, semis 15, final 16 — ouro 19h); San Felipe e Los Andes no Vale do Aconcagua. Grupo A: Chile, Turquia, Egito, EUA, Tailândia e Tchéquia. Ingressos a partir de $3.800 no Ticketpro. Ajudamos você a ficar perto do recinto para competir, trabalhar ou torcer.`,
     ),
     mustKnow: [
       t(
         locale,
-        `${dates} · Parque Estadio Nacional, Ñuñoa.`,
-        `${dates} · Parque Estadio Nacional, Ñuñoa.`,
-        `${dates} · Parque Estadio Nacional, Ñuñoa.`,
+        "Hito histórico: primer Mundial de vóleibol que Chile organiza. Las Guerreras debutan el 6 ago a las 20:00 vs República Checa en Ñuñoa.",
+        "Historic first: Chile's first volleyball World Cup as host. The Guerreras open 6 Aug at 20:00 vs Czechia in Ñuñoa.",
+        "Marco histórico: primeiro Mundial de vôlei que o Chile organiza. As Guerreiras estreiam em 6 ago às 20h vs Tchéquia em Ñuñoa.",
       ),
       t(
         locale,
-        "24 selecciones y público internacional: conviene reservar alojamiento con semanas de anticipación.",
-        "24 national teams and international visitors — book accommodation well ahead.",
-        "24 seleções e público internacional: reserve hospedagem com antecedência.",
+        "Selección de todo Chile: 9 de 14 jugadoras de regiones (Punta Arenas, Concepción, Quillota, Concón, Los Ángeles, Valparaíso, Pichilemu, Linares).",
+        "A squad from all of Chile: 9 of 14 players from regions (Punta Arenas, Concepción, Quillota, Concón, Los Ángeles, Valparaíso, Pichilemu, Linares).",
+        "Seleção de todo o Chile: 9 de 14 jogadoras de regiões (Punta Arenas, Concepción, Quillota, Concón, Los Ángeles, Valparaíso, Pichilemu, Linares).",
       ),
       t(
         locale,
-        "Metro Irarrázaval o Ñuble suelen ser los más cómodos para llegar al recinto.",
-        "Irarrázaval or Ñuble metro stations are usually best for reaching the venue.",
-        "Metrô Irarrázaval ou Ñuble costumam ser os mais práticos para chegar ao ginásio.",
+        "Si vienes con delegación, staff o a alentar: llega un día antes y reserva cerca del Parque Estadio Nacional.",
+        "Coming with a delegation, staff or to cheer: arrive a day early and stay near Parque Estadio Nacional.",
+        "Se você vem com delegação, staff ou para torcer: chegue um dia antes e fique perto do Parque Estadio Nacional.",
       ),
       t(
         locale,
-        "Entradas y horarios oficiales en fevochi.cl — Crambie no vende tickets.",
-        "Official tickets and schedules at fevochi.cl — Crambie does not sell tickets.",
-        "Ingressos e horários oficiais em fevochi.cl — a Crambie não vende ingressos.",
+        "Tres sedes: Santiago, San Felipe y Los Andes. Fase decisiva en Ñuñoa (cuartos 14, semis 15, final 16 — oro 19:00).",
+        "Three venues: Santiago, San Felipe and Los Andes. Knockouts in Ñuñoa (quarters 14, semis 15, final 16 — gold 19:00).",
+        "Três sedes: Santiago, San Felipe e Los Andes. Fase decisiva em Ñuñoa (quartas 14, semis 15, final 16 — ouro 19h).",
       ),
       t(
         locale,
-        "El torneo dura 11 días: considera llegar un día antes y quedarte hasta la final.",
-        "The tournament runs 11 days — consider arriving a day early and staying through the final.",
-        "O torneio dura 11 dias — considere chegar um dia antes e ficar até a final.",
+        "Entradas desde $3.800 solo en Ticketpro. Crambie no vende tickets: te ayuda con la estadía cerca del recinto.",
+        "Tickets from CLP $3,800 only via Ticketpro. Crambie doesn't sell tickets — we help with stays near the venue.",
+        "Ingressos a partir de $3.800 só no Ticketpro. A Crambie não vende ingressos: ajuda com a estadia perto do recinto.",
       ),
       t(
         locale,
-        `Alojamientos destacados a ~${mins} min caminando del recinto.`,
-        `Featured stays ~${mins} min walk from the venue.`,
-        `Acomodações em destaque a ~${mins} min a pé do ginásio.`,
+        `${stayNear} · metro Irarrázaval o Ñuble para moverte sin auto.`,
+        `${stayNear} · Irarrázaval or Ñuble metro to get around without a car.`,
+        `${stayNear} · metrô Irarrázaval ou Ñuble para circular sem carro.`,
       ),
     ],
     news: [
       t(
         locale,
-        `Santiago recibe el Mundial Femenino Sub-17 de vóleibol del ${dates}.`,
-        `Santiago hosts the U17 Women's Volleyball World Championship, ${dates}.`,
-        `Santiago recebe o Mundial Feminino Sub-17 de vôlei de ${dates}.`,
+        "Las Guerreras ya tienen nómina: Chile se prepara para su Mundial en casa.",
+        "The Guerreras squad is set: Chile is ready for its home World Championship.",
+        "As Guerreiras já têm lista: o Chile se prepara para o Mundial em casa.",
       ),
       t(
         locale,
-        "Alta demanda de alojamiento: delegaciones, familias y staff desde Chile y el extranjero.",
-        "High accommodation demand from delegations, families and staff from Chile and abroad.",
-        "Alta demanda de hospedagem: delegações, famílias e staff do Chile e do exterior.",
+        "24 delegaciones en Chile: sedes en Ñuñoa, San Felipe y Los Andes para el staff y las selecciones.",
+        "24 delegations in Chile: venues in Ñuñoa, San Felipe and Los Andes for staff and teams.",
+        "24 delegações no Chile: sedes em Ñuñoa, San Felipe e Los Andes para staff e seleções.",
       ),
       t(
         locale,
-        "Fase de grupos y finales en Parque Estadio Nacional; revisa sedes auxiliares en Aconcagua.",
-        "Group stage and finals at Parque Estadio Nacional; check auxiliary venues in Aconcagua.",
-        "Fase de grupos e finais no Parque Estadio Nacional; confira sedes auxiliares em Aconcagua.",
+        "Grupo A de alto nivel: Chile vs Turquía, Egipto, EE.UU., Tailandia y República Checa.",
+        "Tough Group A: Chile vs Türkiye, Egypt, USA, Thailand and Czechia.",
+        "Grupo A de alto nível: Chile vs Turquia, Egito, EUA, Tailândia e Tchéquia.",
       ),
       t(
         locale,
-        "Barrios recomendados cerca del recinto: Ñuñoa, Barrio Italia y Santiago Centro.",
-        "Recommended neighborhoods near the venue: Ñuñoa, Barrio Italia and downtown Santiago.",
-        "Bairros recomendados perto do ginásio: Ñuñoa, Barrio Italia e Santiago Centro.",
+        "Ñuñoa, Barrio Italia o Centro: base cómoda para delegaciones, staff y quienes vienen a apoyar.",
+        "Ñuñoa, Barrio Italia or downtown: a solid base for delegations, staff and those coming to support.",
+        "Ñuñoa, Barrio Italia ou Centro: base confortável para delegações, staff e quem vem apoiar.",
+      ),
+    ],
+    trustPoints: [
+      t(
+        locale,
+        `${stayNear}: llegas al recinto sin apuro y vuelves a dormir cerca`,
+        `${stayNear}: get to the venue without the rush and sleep nearby`,
+        `${stayNear}: chegue ao recinto sem pressa e durma perto`,
+      ),
+      t(
+        locale,
+        "Pensado para delegaciones, staff, familias e hinchada de regiones",
+        "Built for delegations, staff, families and regional fans",
+        "Pensado para delegações, staff, famílias e torcida de regiões",
+      ),
+      t(
+        locale,
+        "Ñuñoa: barrio residencial, seguro y con metro Irarrázaval / Ñuble a mano",
+        "Ñuñoa: residential, safe neighborhood with Irarrázaval / Ñuble metro nearby",
+        "Ñuñoa: bairro residencial, seguro e com metrô Irarrázaval / Ñuble à mão",
+      ),
+      t(
+        locale,
+        "Arriendas directo en Airbnb: pago protegido, mensajería y reseñas reales",
+        "Book direct on Airbnb: protected payment, messaging and real reviews",
+        "Alugue direto no Airbnb: pagamento protegido, mensagens e avaliações reais",
+      ),
+      t(
+        locale,
+        "Check-in autónomo y alojamiento completo: base cómoda entre partidos, turnos y jornadas largas",
+        "Self check-in and a full apartment: a comfortable base between matches, shifts and long days",
+        "Check-in autônomo e apartamento completo: base confortável entre jogos, turnos e jornadas longas",
       ),
     ],
   };

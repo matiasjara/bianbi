@@ -25,10 +25,10 @@ const CURATED: Array<{
   {
     title: "Mundial Femenino U17 de Voleibol Chile 2026",
     description:
-      "Campeonato Mundial Femenino Sub-17 FIVB en Chile (6–16 ago 2026). Fase de grupos y finales en Parque Estadio Nacional (Ñuñoa), con partidos también en Aconcagua.",
+      "Hito histórico: Chile organiza por primera vez un Mundial de vóleibol. Campeonato Mundial Femenino Sub-17 FIVB (6–16 ago 2026). Las Guerreras: 9 de 14 jugadoras de regiones. Debut 6 ago 20:00 vs República Checa. 24 selecciones. Sedes: Parque Estadio Nacional (Ñuñoa), San Felipe y Los Andes. Entradas Ticketpro desde $3.800.",
     startsOn: "2026-08-06",
     endsOn: "2026-08-16",
-    url: "https://www.fevochi.cl/",
+    url: "https://chileestuyo.cl/eventos/mundial-femenino-u17-de-voleibol-chile-2026/",
   },
 ];
 

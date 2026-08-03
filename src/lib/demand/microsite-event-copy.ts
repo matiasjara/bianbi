@@ -81,6 +81,7 @@ function extractTicketingSource(
 ): string | null {
   const d = `${description} ${eventUrl ?? ""}`.toLowerCase();
   if (/punto\s*ticket|puntoticket/.test(d)) return "PuntoTicket";
+  if (/ticketpro/.test(d)) return "Ticketpro";
   if (/ticketplus/.test(d)) return "TicketPlus";
   if (/passline/.test(d)) return "Passline";
   if (/ticketmaster/.test(d)) return "Ticketmaster";

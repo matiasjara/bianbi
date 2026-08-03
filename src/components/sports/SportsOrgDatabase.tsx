@@ -25,6 +25,69 @@ const SOURCE_LABEL: Record<OutreachOrganization["source"], string> = {
 
 const MAILING_ORG_TYPES = new Set(["federacion", "asociacion", "club"]);
 
+const ORG_NAME_RE =
+  /\b(federaci[oó]n|asociaci[oó]n|club|uni[oó]n|liga|empresa|productora|agencia|instituto|corporaci[oó]n|fundaci[oó]n|centro|municipalidad)\b/i;
+
+function csvEscape(value: string): string {
+  if (/[",\n\r]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+  return value;
+}
+
+/** Parte el nombre en nombre / apellidos para import CRM. */
+function splitContactName(name: string): { nombre: string; apellidos: string } {
+  const clean = name.replace(/\s+/g, " ").trim();
+  if (!clean) return { nombre: "", apellidos: "" };
+
+  // Organizaciones: todo en nombre, apellidos vacío.
+  if (ORG_NAME_RE.test(clean) || clean.includes("(")) {
+    return { nombre: clean, apellidos: "" };
+  }
+
+  const parts = clean.split(" ");
+  if (parts.length === 1) return { nombre: parts[0]!, apellidos: "" };
+  return {
+    nombre: parts[0]!,
+    apellidos: parts.slice(1).join(" "),
+  };
+}
+
+type ContactCopyRow = {
+  contactId: string;
+  email: string;
+  nombre: string;
+  apellidos: string;
+};
+
+function contactsFromOrgs(orgs: OutreachOrganization[]): ContactCopyRow[] {
+  const rows: ContactCopyRow[] = [];
+  const seen = new Set<string>();
+
+  for (const org of orgs) {
+    const { nombre, apellidos } = splitContactName(org.name);
+    const emails = [...new Set(org.emails.map((e) => e.trim()).filter(Boolean))];
+    emails.forEach((email, index) => {
+      const key = email.toLowerCase();
+      if (seen.has(key)) return;
+      seen.add(key);
+      const contactId =
+        emails.length === 1 ? org.id : `${org.id}-${index + 1}`;
+      rows.push({ contactId, email, nombre, apellidos });
+    });
+  }
+
+  return rows;
+}
+
+function formatContactsCsv(rows: ContactCopyRow[]): string {
+  const header = "contact_id,email,nombre,apellidos";
+  const body = rows.map((r) =>
+    [r.contactId, r.email, r.nombre, r.apellidos].map(csvEscape).join(","),
+  );
+  return [header, ...body].join("\n");
+}
+
 export function OutreachDatabase({
   organizations,
   sources,
@@ -131,22 +194,15 @@ export function OutreachDatabase({
   }, [filtered]);
 
   const mailingCount = organizations.filter((o) => o.mailingReady).length;
-  const emailPool = useMemo(() => {
-    const emails = new Set<string>();
-    for (const o of filtered) {
-      for (const e of o.emails) emails.add(e.toLowerCase());
-    }
-    return Array.from(emails).sort();
-  }, [filtered]);
-
-  const selectedEmails = useMemo(() => {
-    const emails = new Set<string>();
-    for (const o of filtered) {
-      if (!selected.has(o.id)) continue;
-      for (const e of o.emails) emails.add(e);
-    }
-    return Array.from(emails);
-  }, [filtered, selected]);
+  const filteredContacts = useMemo(
+    () => contactsFromOrgs(filtered),
+    [filtered],
+  );
+  const selectedContacts = useMemo(
+    () =>
+      contactsFromOrgs(filtered.filter((o) => selected.has(o.id))),
+    [filtered, selected],
+  );
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -180,9 +236,9 @@ export function OutreachDatabase({
     );
   }
 
-  async function copyEmails(list: string[]) {
-    if (list.length === 0) return;
-    await navigator.clipboard.writeText(list.join(", "));
+  async function copyContacts(rows: ContactCopyRow[]) {
+    if (rows.length === 0) return;
+    await navigator.clipboard.writeText(formatContactsCsv(rows));
   }
 
   return (
@@ -197,12 +253,12 @@ export function OutreachDatabase({
         <Metric
           label="Filtrados"
           value={String(filtered.length)}
-          hint={`${emailPool.length} correos únicos`}
+          hint={`${filteredContacts.length} contactos con correo`}
         />
         <Metric
           label="Seleccionados"
           value={String(selected.size)}
-          hint={`${selectedEmails.length} correos`}
+          hint={`${selectedContacts.length} contactos`}
         />
       </div>
 
@@ -354,16 +410,16 @@ export function OutreachDatabase({
           </button>
           <button
             type="button"
-            onClick={() => void copyEmails(selectedEmails)}
-            disabled={selectedEmails.length === 0}
+            onClick={() => void copyContacts(selectedContacts)}
+            disabled={selectedContacts.length === 0}
             className="rounded-md border border-[var(--line)] px-3 py-1.5 text-sm disabled:opacity-40"
           >
-            Copiar correos seleccionados
+            Copiar contactos seleccionados
           </button>
           <button
             type="button"
-            onClick={() => void copyEmails(emailPool)}
-            disabled={emailPool.length === 0}
+            onClick={() => void copyContacts(filteredContacts)}
+            disabled={filteredContacts.length === 0}
             className="rounded-md border border-[var(--line)] px-3 py-1.5 text-sm disabled:opacity-40"
           >
             Copiar todos los filtrados

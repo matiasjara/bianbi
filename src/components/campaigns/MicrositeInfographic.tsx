@@ -10,12 +10,58 @@ import {
   mediaSrc,
   resolveGuideImages,
 } from "@/lib/demand/guide-images";
+import { isMundialU17VolleyballTitle } from "@/lib/demand/microsite-event-overrides";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import {
   formatVenueMetroSnapshot,
   nearestMetroStations,
 } from "@/lib/demand/venue-metro";
+import { staySnapshotLine } from "@/lib/demand/venue-proximity-copy";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
+import type { Locale } from "@/lib/i18n/locale";
+
+function guerrerasGuideUi(locale: Locale) {
+  if (locale === "en") {
+    return {
+      badge: "Historic · Chile 2026",
+      title: "Cheer on the Guerreras",
+      subtitle:
+        "Chile's first volleyball World Championship at home — for delegations, staff, families and fans",
+      stats: [
+        { value: "24", label: "Teams" },
+        { value: "9/14", label: "From regions" },
+        { value: "20:00", label: "Debut Aug 6" },
+      ],
+      snapshotTitle: "Why this World Cup matters",
+    };
+  }
+  if (locale === "pt") {
+    return {
+      badge: "Histórico · Chile 2026",
+      title: "Apoie as Guerreiras",
+      subtitle:
+        "O primeiro Mundial de vôlei do Chile em casa — para delegações, staff, famílias e torcida",
+      stats: [
+        { value: "24", label: "Seleções" },
+        { value: "9/14", label: "De regiões" },
+        { value: "20:00", label: "Estreia 6 ago" },
+      ],
+      snapshotTitle: "Por que este Mundial importa",
+    };
+  }
+  return {
+    badge: "Histórico · Chile 2026",
+    title: "Apoya a las Guerreras",
+    subtitle:
+      "El primer Mundial de vóleibol de Chile, en casa — para delegaciones, staff, familias e hinchada",
+    stats: [
+      { value: "24", label: "Selecciones" },
+      { value: "9/14", label: "De regiones" },
+      { value: "20:00", label: "Debut 6 ago" },
+    ],
+    snapshotTitle: "Por qué este Mundial importa",
+  };
+}
 
 function IconBadge({ name }: { name: BrandIconName }) {
   return (
@@ -107,6 +153,8 @@ export function MicrositeInfographic({
   photoSequenceIndex?: number;
 }) {
   const { ui, content: m, properties: props, locale } = L;
+  const isGuerreras = isMundialU17VolleyballTitle(m.eventTitle);
+  const guerreras = isGuerreras ? guerrerasGuideUi(locale) : null;
 
   const venueMetros =
     m.interest === "concierto"
@@ -165,7 +213,7 @@ export function MicrositeInfographic({
   ] as const;
 
   const shareProps = {
-    title: m.eventTitle,
+    title: isGuerreras && guerreras ? guerreras.title : m.eventTitle,
     shareText: m.shareText,
     path: `/g/${slug}`,
     slug,
@@ -188,197 +236,362 @@ export function MicrositeInfographic({
 
   return (
     <div lang={locale} className="ms-root min-h-screen overflow-x-hidden pb-24 md:pb-0">
-      <header className="relative border-b border-[var(--ms-line)]/80">
-        <LandingLangSwitch
-          basePath={`/g/${slug}`}
-          locale={locale}
-          theme="light"
-        />
+      {isGuerreras && guerreras && heroPhoto ? (
+        <header className="relative overflow-hidden">
+          <LandingLangSwitch
+            basePath={`/g/${slug}`}
+            locale={locale}
+            theme="dark"
+          />
+          <div
+            className="relative flex min-h-[92svh] flex-col justify-end"
+            style={{
+              backgroundImage: `linear-gradient(180deg, rgba(22,26,34,0.25) 0%, rgba(22,26,34,0.55) 45%, rgba(22,26,34,0.96) 100%), url(${mediaSrc(heroPhoto, 1440)})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center 30%",
+            }}
+          >
+            <div className="mx-auto w-full max-w-5xl px-4 pb-10 pt-20 sm:px-5 sm:pb-12">
+              <div className="ms-rise flex items-center gap-3 pr-20">
+                <BianbiLogo
+                  href={`/?lang=${locale}`}
+                  variant="logo"
+                  tone="onDark"
+                  size="sm"
+                />
+              </div>
 
-        <div
-          className="ms-stroke right-[-4rem] top-8 h-28 w-[18rem] -rotate-6 bg-[var(--ms-teal)]/25 md:right-8 md:w-[22rem]"
-          aria-hidden
-        />
-        <DoodleStars className="pointer-events-none absolute right-6 top-10 hidden w-28 text-[var(--ms-olive)]/50 md:block" />
+              <p className="ms-rise ms-rise-d1 mt-8 inline-flex rounded-md bg-[var(--ms-terracotta)] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white sm:text-xs">
+                {guerreras.badge}
+              </p>
 
-        <div className="relative mx-auto grid max-w-5xl min-w-0 gap-6 px-4 pb-10 pt-14 sm:gap-8 sm:px-5 sm:pb-12 sm:pt-12 md:grid-cols-[1.15fr_0.85fr] md:items-end md:pb-16 md:pt-16">
-          <div className="min-w-0">
-            <div className="ms-rise flex flex-wrap items-center gap-2 pr-[5.5rem] sm:gap-3 sm:pr-28">
-              <BianbiLogo
-                href={`/?lang=${locale}`}
-                variant="logo"
-                tone="onLight"
-                size="sm"
-              />
-              <span className="font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--ms-muted)]">
-                {ui.productLabel}
-              </span>
+              <h1 className="ms-rise ms-rise-d1 ms-editorial mt-4 max-w-[16ch] text-[2.65rem] leading-[0.98] tracking-[-0.02em] text-white sm:text-5xl md:max-w-none md:text-6xl lg:text-7xl">
+                {guerreras.title}
+              </h1>
+
+              <p className="ms-rise ms-rise-d2 mt-4 max-w-xl text-lg font-semibold leading-snug text-white/90 sm:text-xl md:text-2xl">
+                {guerreras.subtitle}
+              </p>
+
+              <p className="ms-rise ms-rise-d2 mt-3 text-base font-bold tracking-wide text-[var(--ms-gold)] sm:text-lg">
+                {m.eventDates}
+                <span className="mx-2 text-white/40">·</span>
+                <span className="text-white/85">{m.venueName}</span>
+              </p>
+
+              <div className="ms-rise ms-rise-d3 mt-8 grid grid-cols-3 gap-2 sm:gap-3">
+                {guerreras.stats.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-2xl border border-white/15 bg-white/10 px-2 py-3 text-center backdrop-blur-sm sm:px-3 sm:py-4"
+                  >
+                    <p className="ms-editorial text-[1.75rem] leading-none text-[var(--ms-gold)] sm:text-4xl md:text-5xl">
+                      {stat.value}
+                    </p>
+                    <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white/75 sm:text-xs">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ms-rise ms-rise-d3 mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a
+                  href="#compartir"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--ms-olive)] px-5 py-3.5 text-base font-bold text-white transition hover:brightness-110"
+                >
+                  <BrandIcon name="megaphone" size={24} tone="onDark" />
+                  {ui.ctaShare}
+                </a>
+                <a
+                  href="#alojar"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 text-base font-bold text-[var(--ms-ink)] transition hover:bg-white/90"
+                >
+                  <BrandIcon name="bed" size={24} />
+                  {ui.ctaStay}
+                </a>
+                <a
+                  href="#must"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/35 bg-white/10 px-5 py-3.5 text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
+                >
+                  {ui.ctaEssentials}
+                </a>
+              </div>
             </div>
+          </div>
+        </header>
+      ) : (
+        <header className="relative border-b border-[var(--ms-line)]/80">
+          <LandingLangSwitch
+            basePath={`/g/${slug}`}
+            locale={locale}
+            theme="light"
+          />
 
-            <p className="ms-rise ms-rise-d1 mt-5 font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-terracotta)] sm:mt-7 sm:text-xs">
-              {ui.productLabel} · {m.interestLabel}
-            </p>
+          <div
+            className="ms-stroke right-[-4rem] top-8 h-28 w-[18rem] -rotate-6 bg-[var(--ms-teal)]/25 md:right-8 md:w-[22rem]"
+            aria-hidden
+          />
+          <DoodleStars className="pointer-events-none absolute right-6 top-10 hidden w-28 text-[var(--ms-olive)]/50 md:block" />
 
-            <h1 className="ms-rise ms-rise-d1 ms-editorial mt-2 max-w-xl text-[1.65rem] leading-[1.12] sm:mt-3 sm:text-[2.15rem] md:text-5xl">
-              {m.eventTitle}
-            </h1>
+          <div className="relative mx-auto grid max-w-5xl min-w-0 gap-6 px-4 pb-10 pt-14 sm:gap-8 sm:px-5 sm:pb-12 sm:pt-12 md:grid-cols-[1.15fr_0.85fr] md:items-end md:pb-16 md:pt-16">
+            <div className="min-w-0">
+              <div className="ms-rise flex flex-wrap items-center gap-2 pr-[5.5rem] sm:gap-3 sm:pr-28">
+                <BianbiLogo
+                  href={`/?lang=${locale}`}
+                  variant="logo"
+                  tone="onLight"
+                  size="sm"
+                />
+                <span className="font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--ms-muted)]">
+                  {ui.productLabel}
+                </span>
+              </div>
 
-            <p className="ms-rise ms-rise-d2 mt-2 text-sm font-medium text-[var(--ms-ink)]/80 sm:mt-3">
-              <span className="block sm:inline">{m.eventDates}</span>
-              <span className="hidden sm:inline"> · </span>
-              <span className="mt-0.5 block sm:mt-0 sm:inline">{m.venueName}</span>
-            </p>
+              <p className="ms-rise ms-rise-d1 mt-5 font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-terracotta)] sm:mt-7 sm:text-xs">
+                {ui.productLabel} · {m.interestLabel}
+              </p>
 
-            <p className="ms-rise ms-rise-d2 mt-4 max-w-md text-[15px] leading-relaxed text-[var(--ms-muted)]">
-              {m.eventSummary}
-            </p>
+              <h1 className="ms-rise ms-rise-d1 ms-editorial mt-2 max-w-xl text-[1.65rem] leading-[1.12] sm:mt-3 sm:text-[2.15rem] md:text-5xl">
+                {m.eventTitle}
+              </h1>
 
-            {m.eventDescription ? (
-              <div className="ms-rise ms-rise-d3 mt-6 max-w-xl rounded-2xl border border-[var(--ms-line)]/90 bg-white/55 px-5 py-4">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
-                  {ui.kickerAbout}
-                </p>
-                <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
-                  {m.eventDescription.split("\n\n").map((paragraph) => (
-                    <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-                  ))}
+              <p className="ms-rise ms-rise-d2 mt-2 text-sm font-medium text-[var(--ms-ink)]/80 sm:mt-3">
+                <span className="block sm:inline">{m.eventDates}</span>
+                <span className="hidden sm:inline"> · </span>
+                <span className="mt-0.5 block sm:mt-0 sm:inline">{m.venueName}</span>
+              </p>
+
+              <p className="ms-rise ms-rise-d2 mt-4 max-w-md text-[15px] leading-relaxed text-[var(--ms-muted)]">
+                {m.eventSummary}
+              </p>
+
+              {m.eventDescription ? (
+                <div className="ms-rise ms-rise-d3 mt-6 max-w-xl rounded-2xl border border-[var(--ms-line)]/90 bg-white/55 px-5 py-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
+                    {ui.kickerAbout}
+                  </p>
+                  <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
+                    {m.eventDescription.split("\n\n").map((paragraph) => (
+                      <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
 
-            <div className="ms-rise ms-rise-d3 mt-5 flex flex-col gap-2 sm:mt-7 sm:flex-row sm:flex-wrap">
-              <a
-                href="#compartir"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--ms-olive)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
-              >
-                <BrandIcon name="megaphone" size={22} tone="onDark" />
-                {ui.ctaShare}
-              </a>
-              <a
-                href="#alojar"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--ms-ink)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black"
-              >
-                <BrandIcon name="bed" size={22} tone="onDark" />
-                {ui.ctaStay}
-              </a>
-              <a
-                href="#must"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--ms-ink)]/15 bg-white/70 px-4 py-2.5 text-sm font-semibold text-[var(--ms-ink)] transition hover:bg-white"
-              >
-                {ui.ctaEssentials}
-              </a>
+              <div className="ms-rise ms-rise-d3 mt-5 flex flex-col gap-2 sm:mt-7 sm:flex-row sm:flex-wrap">
+                <a
+                  href="#compartir"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--ms-olive)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
+                >
+                  <BrandIcon name="megaphone" size={22} tone="onDark" />
+                  {ui.ctaShare}
+                </a>
+                <a
+                  href="#alojar"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--ms-ink)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black"
+                >
+                  <BrandIcon name="bed" size={22} tone="onDark" />
+                  {ui.ctaStay}
+                </a>
+                <a
+                  href="#must"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--ms-ink)]/15 bg-white/70 px-4 py-2.5 text-sm font-semibold text-[var(--ms-ink)] transition hover:bg-white"
+                >
+                  {ui.ctaEssentials}
+                </a>
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full min-w-0 max-w-[min(100%,15rem)] sm:max-w-xs md:mx-0 md:max-w-sm md:justify-self-end">
+              {heroPhoto ? (
+                <div className="ms-polaroid ms-tilt-r relative overflow-hidden">
+                  <span className="ms-tape ms-tape-coral -top-2 left-4 sm:left-6" />
+                  <span className="ms-tape ms-tape-olive -top-1 right-6 sm:right-8" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={mediaSrc(heroPhoto, 720)}
+                    alt={m.venueName}
+                    className="aspect-[3/4] w-full max-w-full object-cover sm:aspect-[4/5]"
+                  />
+                  <p className="mt-2 px-1 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ms-muted)]">
+                    {editorial.cover
+                      ? m.venueName
+                      : nearest
+                        ? `${nearest.neighborhood} · ${nearest.walkingMinutes} ${ui.minWalk}`
+                        : m.venueName}
+                  </p>
+                </div>
+              ) : null}
+
+              {sidePhoto && sidePhoto !== heroPhoto ? (
+                <div className="ms-polaroid ms-tilt-l absolute -bottom-6 -left-2 hidden w-28 md:-bottom-8 md:-left-10 md:block md:w-40">
+                  <span className="ms-tape ms-tape-terracotta -top-2 left-8" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={mediaSrc(sidePhoto, 480)}
+                    alt=""
+                    className="aspect-square w-full object-cover"
+                  />
+                </div>
+              ) : null}
             </div>
           </div>
 
-          <div className="relative mx-auto w-full min-w-0 max-w-[min(100%,15rem)] sm:max-w-xs md:mx-0 md:max-w-sm md:justify-self-end">
-            {heroPhoto ? (
-              <div className="ms-polaroid ms-tilt-r relative overflow-hidden">
-                <span className="ms-tape ms-tape-coral -top-2 left-4 sm:left-6" />
-                <span className="ms-tape ms-tape-olive -top-1 right-6 sm:right-8" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={mediaSrc(heroPhoto, 720)}
-                  alt={m.venueName}
-                  className="aspect-[3/4] w-full max-w-full object-cover sm:aspect-[4/5]"
-                />
-                <p className="mt-2 px-1 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ms-muted)]">
-                  {editorial.cover
-                    ? m.venueName
-                    : nearest
-                      ? `${nearest.neighborhood} · ${nearest.walkingMinutes} ${ui.minWalk}`
-                      : m.venueName}
-                </p>
-              </div>
-            ) : null}
-
-            {sidePhoto && sidePhoto !== heroPhoto ? (
-              <div className="ms-polaroid ms-tilt-l absolute -bottom-6 -left-2 hidden w-28 md:-bottom-8 md:-left-10 md:block md:w-40">
-                <span className="ms-tape ms-tape-terracotta -top-2 left-8" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={mediaSrc(sidePhoto, 480)}
-                  alt=""
-                  className="aspect-square w-full object-cover"
-                />
-              </div>
-            ) : null}
-          </div>
-        </div>
-
-        <DoodlePath className="relative mx-auto mt-2 hidden h-10 w-full max-w-5xl px-5 opacity-80 sm:block" />
-      </header>
+          <DoodlePath className="relative mx-auto mt-2 hidden h-10 w-full max-w-5xl px-5 opacity-80 sm:block" />
+        </header>
+      )}
 
       {/* Snapshot con números grandes */}
       <section className="relative mx-auto max-w-5xl min-w-0 px-4 py-10 sm:px-5 sm:py-12 md:py-14">
         <div className="mb-8 max-w-lg">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--ms-muted)] sm:text-xs">
             {ui.snapshotKicker}
           </p>
-          <h2 className="ms-editorial mt-1 text-xl sm:text-2xl md:text-3xl">
-            {ui.snapshotTitle}
+          <h2 className="ms-editorial mt-1 text-2xl leading-tight sm:text-3xl md:text-4xl">
+            {guerreras?.snapshotTitle ?? ui.snapshotTitle}
           </h2>
         </div>
 
+        {isGuerreras && m.eventDescription ? (
+          <div className="mb-8 max-w-2xl space-y-4 text-base leading-relaxed text-[var(--ms-ink)]/90 sm:text-lg">
+            {m.eventDescription.split("\n\n").map((paragraph) => (
+              <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+            ))}
+          </div>
+        ) : null}
+
+        {isGuerreras && editorial.support[0] ? (
+          <div className="mb-10 overflow-hidden rounded-2xl border border-[var(--ms-line)] bg-white shadow-sm">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={mediaSrc(editorial.support[0], 1080)}
+              alt={
+                locale === "en"
+                  ? "U17 World Championship groups A–D"
+                  : locale === "pt"
+                    ? "Grupos A–D do Mundial Sub-17"
+                    : "Grupos A–D del Mundial Sub-17"
+              }
+              className="w-full object-cover object-top"
+            />
+            <p className="px-4 py-3 text-sm font-semibold text-[var(--ms-muted)] sm:px-5 sm:text-base">
+              {locale === "en"
+                ? "Official groups: Chile opens in Group A vs Türkiye, Egypt, USA, Thailand and Czechia."
+                : locale === "pt"
+                  ? "Grupos oficiais: o Chile abre no Grupo A contra Turquia, Egito, EUA, Tailândia e Tchéquia."
+                  : "Grupos oficiales: Chile abre en el Grupo A ante Turquía, Egipto, EE.UU., Tailandia y República Checa."}
+            </p>
+          </div>
+        ) : null}
+
         <div className="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-          {[
-            {
-              label: ui.when,
-              value: m.eventDates,
-              tone: "text-[var(--ms-olive)]",
-              icon: "calendar" as const,
-            },
-            {
-              label: ui.where,
-              value:
-                m.interest === "nieve"
-                  ? "Santiago — hub cordillera"
-                  : m.venueName,
-              sub:
-                m.interest === "concierto" && venueMetros.length
-                  ? formatVenueMetroSnapshot(venueMetros, locale)
-                  : undefined,
-              tone: "text-[var(--ms-terracotta)]",
-              icon: "pin" as const,
-            },
-            {
-              label: ui.weather,
-              value: m.weather.summary.replace(/^[^:]+:\s*/, "").slice(0, 42),
-              tone: "text-[var(--ms-gold)]",
-              icon: "sunrise" as const,
-            },
-            {
-              label: ui.nearest,
-              value: nearest
-                ? `${nearest.walkingMinutes} ${ui.minWalk}`
-                : ui.nearbyOptions,
-              sub: nearest?.neighborhood,
-              tone: "text-[var(--ms-ink)]",
-              icon: "bed" as const,
-            },
-          ].map((item, i) => (
+          {(isGuerreras
+            ? [
+                {
+                  label: ui.when,
+                  value: m.eventDates,
+                  tone: "text-[var(--ms-olive)]",
+                  icon: "calendar" as const,
+                },
+                {
+                  label: ui.where,
+                  value: "Ñuñoa · San Felipe · Los Andes",
+                  sub: m.venueName,
+                  tone: "text-[var(--ms-terracotta)]",
+                  icon: "pin" as const,
+                },
+                {
+                  label: locale === "en" ? "Squad" : locale === "pt" ? "Lista" : "Nómina",
+                  value: "9/14 regiones",
+                  sub:
+                    locale === "en"
+                      ? "Guerreras from across Chile"
+                      : locale === "pt"
+                        ? "Guerreiras de todo o Chile"
+                        : "Guerreras de todo Chile",
+                  tone: "text-[var(--ms-gold)]",
+                  icon: "star" as const,
+                },
+                {
+                  label: ui.nearest,
+                  value: nearest
+                    ? staySnapshotLine(
+                        nearest.walkingMinutes,
+                        nearest.neighborhood,
+                        locale,
+                      )
+                    : staySnapshotLine(8, "Ñuñoa", locale),
+                  sub:
+                    locale === "en"
+                      ? "Easy access to the stadium"
+                      : locale === "pt"
+                        ? "Fácil acesso ao estádio"
+                        : "Fácil acceso al Estadio",
+                  tone: "text-[var(--ms-ink)]",
+                  icon: "bed" as const,
+                },
+              ]
+            : [
+                {
+                  label: ui.when,
+                  value: m.eventDates,
+                  tone: "text-[var(--ms-olive)]",
+                  icon: "calendar" as const,
+                },
+                {
+                  label: ui.where,
+                  value:
+                    m.interest === "nieve"
+                      ? "Santiago — hub cordillera"
+                      : m.venueName,
+                  sub:
+                    m.interest === "concierto" && venueMetros.length
+                      ? formatVenueMetroSnapshot(venueMetros, locale)
+                      : undefined,
+                  tone: "text-[var(--ms-terracotta)]",
+                  icon: "pin" as const,
+                },
+                {
+                  label: ui.weather,
+                  value: m.weather.summary.replace(/^[^:]+:\s*/, "").slice(0, 42),
+                  tone: "text-[var(--ms-gold)]",
+                  icon: "sunrise" as const,
+                },
+                {
+                  label: ui.nearest,
+                  value: nearest
+                    ? `${nearest.walkingMinutes} ${ui.minWalk}`
+                    : ui.nearbyOptions,
+                  sub: nearest?.neighborhood,
+                  tone: "text-[var(--ms-ink)]",
+                  icon: "bed" as const,
+                },
+              ]
+          ).map((item, i) => (
             <div
               key={item.label}
-              className={`ms-node relative min-w-0 rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-panel)]/90 px-3.5 py-4 sm:px-4 sm:py-5 ${
+              className={`ms-node relative min-w-0 rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-panel)]/90 px-4 py-5 sm:px-5 sm:py-6 ${
                 i % 2 === 0 ? "md:-rotate-1" : "md:rotate-1"
               }`}
             >
-              <BrandIcon name={item.icon} size={28} />
-              <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-muted)] sm:mt-3">
+              <BrandIcon name={item.icon} size={32} />
+              <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--ms-muted)]">
                 {item.label}
               </p>
               <p
-                className={`ms-editorial mt-1 break-words text-lg leading-snug sm:text-2xl sm:leading-tight ${item.tone}`}
+                className={`ms-editorial mt-1.5 break-words text-2xl leading-snug sm:text-[1.75rem] sm:leading-tight ${item.tone}`}
               >
                 {item.value}
               </p>
               {"sub" in item && item.sub ? (
-                <p className="mt-1 text-xs text-[var(--ms-muted)]">{item.sub}</p>
+                <p className="mt-1.5 text-sm text-[var(--ms-muted)]">{item.sub}</p>
               ) : null}
             </div>
           ))}
         </div>
 
-        <nav className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-medium text-[var(--ms-muted)]">
+        <nav className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold text-[var(--ms-muted)]">
           {nav.map(([id, label], i) => (
             <span key={id} className="inline-flex items-center gap-3">
               {i > 0 ? (
@@ -428,11 +641,17 @@ export function MicrositeInfographic({
           />
           <ol className="ms-rail mt-8 space-y-0">
             {m.mustKnow.map((tip, i) => (
-              <li key={tip} className="relative flex gap-4 py-3.5">
-                <span className="ms-editorial relative z-10 mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--ms-ink)] bg-[var(--ms-paper)] text-sm font-bold">
+              <li key={tip} className="relative flex gap-4 py-4 sm:gap-5">
+                <span className="ms-editorial relative z-10 mt-0.5 flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-[var(--ms-ink)] bg-[var(--ms-paper)] text-sm font-bold sm:size-12 sm:text-base">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <p className="pt-2 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
+                <p
+                  className={`pt-1.5 leading-snug text-[var(--ms-ink)]/90 ${
+                    isGuerreras
+                      ? "text-lg font-semibold sm:text-xl"
+                      : "text-[15px] leading-relaxed"
+                  }`}
+                >
                   {tip}
                 </p>
               </li>

@@ -4,7 +4,14 @@ import {
   buildMicrositeEventCopy,
   type MicrositeCopyInput,
 } from "@/lib/demand/microsite-event-copy";
-import { getEventCopyOverride } from "@/lib/demand/microsite-event-overrides";
+import {
+  getEventCopyOverride,
+  isMundialU17VolleyballTitle,
+} from "@/lib/demand/microsite-event-overrides";
+import {
+  guerrerasLocationHighlights,
+  propertyStadiumProximity,
+} from "@/lib/demand/venue-proximity-copy";
 import {
   publicEventDescriptionEn,
   publicEventDescriptionPt,
@@ -422,6 +429,7 @@ function faqs(
 function localizePitch(
   prop: CampaignPack["properties"][number],
   locale: Locale,
+  eventTitle?: string,
 ): string {
   const metro =
     prop.metroStations.length > 0
@@ -429,6 +437,31 @@ function localizePitch(
         ? `Metrô ${prop.metroStations.slice(0, 2).join(" / ")}`
         : `Metro ${prop.metroStations.slice(0, 2).join(" / ")}`
       : null;
+
+  if (eventTitle && isMundialU17VolleyballTitle(eventTitle)) {
+    return [
+      propertyStadiumProximity(prop.walkingMinutes, locale),
+      metro,
+      locale === "en"
+        ? `${prop.neighborhood}: safe, well-connected Santiago neighborhood`
+        : locale === "pt"
+          ? `${prop.neighborhood}: bairro seguro e bem conectado em Santiago`
+          : `${prop.neighborhood}: barrio seguro y bien conectado en Santiago`,
+      prop.isSuperhost
+        ? locale === "en"
+          ? "Airbnb Superhost"
+          : locale === "pt"
+            ? "Anfitrião Superhost no Airbnb"
+            : "Anfitrión Superhost en Airbnb"
+        : locale === "en"
+          ? "Book direct on Airbnb"
+          : locale === "pt"
+            ? "Reserva direta no Airbnb"
+            : "Reserva directa en Airbnb",
+    ]
+      .filter(Boolean)
+      .join(" · ");
+  }
 
   if (locale === "en") {
     return [
@@ -510,8 +543,13 @@ export function localizeMicrosite(
           : locale === "pt"
             ? `${summary} Mapa, dicas, clima, transporte, FAQ e hospedagem perto de ${pack.venueName} em Santiago.`
             : `${summary} Mapa, transporte, clima, FAQ y alojamiento cerca de ${pack.venueName}.`,
-    shareText:
-      pack.interest === "nieve"
+    shareText: isMundialU17VolleyballTitle(pack.eventTitle)
+      ? locale === "en"
+        ? `Guerreras World Cup in Chile (${pack.eventDates}). Essentials for delegations, staff, families and fans — stay near the court:`
+        : locale === "pt"
+          ? `Mundial das Guerreiras no Chile (${pack.eventDates}). O essencial para delegações, staff, famílias e torcida — fique perto da quadra:`
+          : `Mundial de las Guerreras en Chile (${pack.eventDates}). Lo esencial para delegaciones, staff, familias e hinchada — quédate cerca de la cancha:`
+      : pack.interest === "nieve"
         ? locale === "en"
           ? `${title} — ${pack.eventDates}. Essentials for your snow trip:`
           : locale === "pt"
@@ -524,6 +562,8 @@ export function localizeMicrosite(
             : pack.microsite.shareText,
   };
 
+  const guerreras = isMundialU17VolleyballTitle(pack.eventTitle);
+
   return {
     locale,
     ui,
@@ -531,7 +571,15 @@ export function localizeMicrosite(
     properties: pack.microsite.properties.map((p) => ({
       ...p,
       amenities: p.amenities.filter((a) => !/mascota/i.test(a)),
-      pitchLocalized: localizePitch(p, locale),
+      pitchLocalized: localizePitch(p, locale, pack.eventTitle),
+      locationHighlights: guerreras
+        ? guerrerasLocationHighlights(
+            p.walkingMinutes,
+            p.metroStations,
+            p.neighborhood,
+            locale,
+          )
+        : p.locationHighlights,
     })),
   };
 }

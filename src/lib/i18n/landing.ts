@@ -1,5 +1,28 @@
 import type { CampaignPack, CampaignPackProperty } from "@/lib/demand/types";
+import {
+  getEventCopyOverride,
+  isMundialU17VolleyballTitle,
+} from "@/lib/demand/microsite-event-overrides";
+import {
+  guerrerasLocationHighlights,
+  propertyStadiumProximity,
+} from "@/lib/demand/venue-proximity-copy";
 import type { Locale } from "@/lib/i18n/locale";
+
+function eventOverride(pack: CampaignPack, locale: Locale) {
+  return getEventCopyOverride(
+    {
+      eventTitle: pack.eventTitle,
+      eventDates: pack.eventDates,
+      eventStartsOn: pack.eventStartsOn,
+      eventEndsOn: pack.eventEndsOn,
+      venueName: pack.venueName,
+      properties: pack.properties,
+    },
+    locale,
+    { nearestMins: pack.properties[0]?.walkingMinutes },
+  );
+}
 
 type Ui = {
   metaFallback: string;
@@ -185,6 +208,9 @@ function placeHook(locale: Locale): string {
 }
 
 function localizeHeadline(pack: CampaignPack, locale: Locale): string {
+  const override = eventOverride(pack, locale);
+  if (override?.headline) return override.headline;
+
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   const venue = pack.venueName;
   const title = pack.eventTitle;
@@ -211,6 +237,9 @@ function localizeHeadline(pack: CampaignPack, locale: Locale): string {
 }
 
 function localizeSubhead(pack: CampaignPack, locale: Locale): string {
+  const override = eventOverride(pack, locale);
+  if (override?.subhead) return override.subhead;
+
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   const venue = pack.venueName;
   const dates = pack.eventDates;
@@ -232,6 +261,9 @@ function localizeSubhead(pack: CampaignPack, locale: Locale): string {
 }
 
 function localizeTrust(pack: CampaignPack, locale: Locale): string[] {
+  const override = eventOverride(pack, locale);
+  if (override?.trustPoints) return override.trustPoints;
+
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   const venue = pack.venueName;
   const metros = [
@@ -268,9 +300,44 @@ function localizeTrust(pack: CampaignPack, locale: Locale): string[] {
   return pack.trustPoints;
 }
 
+function withGuerrerasUi(ui: Ui, locale: Locale, venue: string): Ui {
+  if (locale === "en") {
+    return {
+      ...ui,
+      whyTitle: "A base near the court for the whole World Cup",
+      whyBody: () =>
+        `Chile's Guerreras are writing history at home. Staying near ${venue} works for delegations, staff, families and fans: you get to the gym on time and sleep nearby after long days.`,
+      closeTitle: "Book your base near the venue",
+      closeBody: (dates) =>
+        `Dates around ${dates} fill up fast near ${venue} — teams, staff, families and clubs are traveling for the World Cup. Book on Airbnb to lock in your stay.`,
+    };
+  }
+  if (locale === "pt") {
+    return {
+      ...ui,
+      whyTitle: "Uma base perto da quadra para todo o Mundial",
+      whyBody: () =>
+        `As Guerreiras do Chile escrevem história em casa. Ficar perto de ${venue} serve para delegações, staff, famílias e torcida: você chega a tempo e dorme perto depois de jornadas longas.`,
+      closeTitle: "Reserve sua base perto do recinto",
+      closeBody: (dates) =>
+        `As datas de ${dates} enchem rápido perto de ${venue} — seleções, staff, famílias e clubes viajam pelo Mundial. Reserve no Airbnb e garanta a estadia.`,
+    };
+  }
+  return {
+    ...ui,
+    whyTitle: "Base cerca de la cancha para todo el Mundial",
+    whyBody: () =>
+      `Las Guerreras escriben historia en casa. Quedarte cerca de ${venue} sirve para delegaciones, staff, familias e hinchada: llegas a tiempo al recinto y duermes cerca después de jornadas largas.`,
+    closeTitle: "Reserva tu base cerca del recinto",
+    closeBody: (dates) =>
+      `Las fechas de ${dates} se llenan rápido cerca de ${venue}: selecciones, staff, familias y clubes viajan por el Mundial. Arriendas en Airbnb y aseguras tu estadía.`,
+  };
+}
+
 function localizePitch(
   prop: CampaignPackProperty,
   locale: Locale,
+  eventTitle?: string,
 ): string {
   const metro =
     prop.metroStations.length > 0
@@ -280,6 +347,31 @@ function localizePitch(
           ? `Metrô ${prop.metroStations.slice(0, 2).join(" / ")}`
           : `Metro ${prop.metroStations.slice(0, 2).join(" / ")}`
       : null;
+
+  if (eventTitle && isMundialU17VolleyballTitle(eventTitle)) {
+    return [
+      propertyStadiumProximity(prop.walkingMinutes, locale),
+      metro,
+      locale === "en"
+        ? `${prop.neighborhood}: safe, well-connected Santiago neighborhood`
+        : locale === "pt"
+          ? `${prop.neighborhood}: bairro seguro e bem conectado em Santiago`
+          : `${prop.neighborhood}: barrio seguro y bien conectado en Santiago`,
+      prop.isSuperhost
+        ? locale === "en"
+          ? "Airbnb Superhost"
+          : locale === "pt"
+            ? "Anfitrião Superhost no Airbnb"
+            : "Anfitrión Superhost en Airbnb"
+        : locale === "en"
+          ? "Book direct on Airbnb"
+          : locale === "pt"
+            ? "Reserva direta no Airbnb"
+            : "Reserva directa en Airbnb",
+    ]
+      .filter(Boolean)
+      .join(" · ");
+  }
 
   const parts =
     locale === "en"
@@ -309,15 +401,34 @@ function localizePitch(
 function localizeAdCopy(pack: CampaignPack, locale: Locale) {
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   const venue = pack.venueName;
+  const guerreras = isMundialU17VolleyballTitle(pack.eventTitle);
+  const nearLabel =
+    mins <= 10
+      ? locale === "en"
+        ? "steps away"
+        : locale === "pt"
+          ? "a passos"
+          : "a pasos"
+      : locale === "en"
+        ? "easy access"
+        : locale === "pt"
+          ? "fácil acesso"
+          : "fácil acceso";
+
   if (locale === "en") {
     return {
-      headline: `${pack.eventTitle} · ${mins} min`.slice(0, 40),
+      headline: (guerreras
+        ? `Guerreras · ${nearLabel}`
+        : `${pack.eventTitle} · ${mins} min`
+      ).slice(0, 40),
       primaryText:
         `Apartment in Santiago near ${venue}. Metro + safe area + Airbnb. ${pack.eventDates}.`.slice(
           0,
           125,
         ),
-      description: `~${mins} min · book on Airbnb`,
+      description: guerreras
+        ? `${nearLabel} · book on Airbnb`
+        : `~${mins} min · book on Airbnb`,
       cta: "Learn more",
       ctaB: "See options",
       descB: "Santiago · protected Airbnb",
@@ -330,13 +441,18 @@ function localizeAdCopy(pack: CampaignPack, locale: Locale) {
   }
   if (locale === "pt") {
     return {
-      headline: `${pack.eventTitle} · ${mins} min`.slice(0, 40),
+      headline: (guerreras
+        ? `Guerreiras · ${nearLabel}`
+        : `${pack.eventTitle} · ${mins} min`
+      ).slice(0, 40),
       primaryText:
         `Apto em Santiago perto de ${venue}. Metrô + bairro seguro + Airbnb. ${pack.eventDates}.`.slice(
           0,
           125,
         ),
-      description: `~${mins} min · reserve no Airbnb`,
+      description: guerreras
+        ? `${nearLabel} · reserve no Airbnb`
+        : `~${mins} min · reserve no Airbnb`,
       cta: "Saiba mais",
       ctaB: "Ver opções",
       descB: "Santiago · Airbnb protegido",
@@ -350,7 +466,9 @@ function localizeAdCopy(pack: CampaignPack, locale: Locale) {
   return {
     headline: pack.adHeadline.slice(0, 40),
     primaryText: pack.adPrimaryText.slice(0, 125),
-    description: `A ~${mins} min · reserva en Airbnb`,
+    description: guerreras
+      ? `${nearLabel} · reserva en Airbnb`
+      : `A ~${mins} min · reserva en Airbnb`,
     cta: "Más información",
     ctaB: "Ver opciones",
     descB: "Santiago · Airbnb protegido",
@@ -382,7 +500,12 @@ export function localizeLanding(
   pack: CampaignPack,
   locale: Locale,
 ): LocalizedLanding {
-  const ui = UI[locale];
+  const override = eventOverride(pack, locale);
+  const baseUi = UI[locale];
+  const ui =
+    override && /guerreras|guerreiras/i.test(override.headline ?? "")
+      ? withGuerrerasUi(baseUi, locale, pack.venueName)
+      : baseUi;
   const metros = [
     ...new Set(pack.properties.flatMap((p) => p.metroStations)),
   ];
@@ -396,6 +519,8 @@ export function localizeLanding(
           : `Metro ${metros.slice(0, 2).join(" / ")} · `
       : "";
 
+  const guerreras = isMundialU17VolleyballTitle(pack.eventTitle);
+
   return {
     locale,
     ui,
@@ -405,7 +530,15 @@ export function localizeLanding(
     heroLine: `${metroBit}${barrioLead} · ${ui.heroMetroSafe}`,
     properties: pack.properties.map((p) => ({
       ...p,
-      pitchLocalized: localizePitch(p, locale),
+      pitchLocalized: localizePitch(p, locale, pack.eventTitle),
+      locationHighlights: guerreras
+        ? guerrerasLocationHighlights(
+            p.walkingMinutes,
+            p.metroStations,
+            p.neighborhood,
+            locale,
+          )
+        : p.locationHighlights,
       amenitiesLocalized: p.amenities.map((a) => tAmenity(a, locale)),
     })),
   };

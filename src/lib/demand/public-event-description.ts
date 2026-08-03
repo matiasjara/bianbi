@@ -170,7 +170,7 @@ function composeAttendeeDescription(input: {
   const when = datePhrase(eventDates, multiDay);
 
   if (/mundial.*u17.*voleibol|voleibol.*u17.*mundial/i.test(eventTitle)) {
-    return `Chile organiza el Campeonato Mundial Femenino Sub-17 de la FIVB (${when}): fase de grupos y finales en el Parque Estadio Nacional (Ñuñoa), con partidos también en la región de Aconcagua. Si vienes a apoyar a tu selección, acompañar al equipo o colaborar en el torneo, revisa entradas y horarios en fevochi.cl y planifica alojamiento cerca del recinto.`;
+    return `Es histórico: Chile organiza por primera vez un Mundial de vóleibol (${when}). Las Guerreras Sub-17 son de todo el país — 9 de 14 jugadoras vienen de regiones — y debutan el 6 ago a las 20:00 vs República Checa en el Parque Estadio Nacional. 24 selecciones en Santiago, San Felipe y Los Andes. Entradas Ticketpro desde $3.800. Ideal para delegaciones, staff, familias e hinchada que necesitan quedarse cerca.`;
   }
 
   const snippets = signal?.description
