@@ -1,5 +1,6 @@
 import type { CampaignInterest, CampaignPack, MicrositeContent } from "@/lib/demand/types";
 import { climateForCampaign } from "@/lib/demand/climate-copy";
+import { cleanPublicEventTitle } from "@/lib/demand/guide-eligibility";
 import {
   formatVenueMetroMustKnow,
   formatVenueMetroTransport,
@@ -294,7 +295,7 @@ function guideTitle(
   pack: CampaignPack,
   locale: Locale,
 ): string {
-  const t = pack.eventTitle;
+  const t = cleanPublicEventTitle(pack.eventTitle);
   const interest = pack.interest;
   if (locale === "en") {
     if (interest === "concierto") return `Concert guide: ${t}`;
@@ -330,49 +331,43 @@ function guideTitle(
 function eventSummary(pack: CampaignPack, locale: Locale): string {
   if (pack.interest === "nieve") {
     if (locale === "en") {
-      return `Chile snow season (${pack.eventDates}). Santiago as a comfortable base for Valle Nevado, Farellones and Portillo.`;
+      return "Santiago as a comfortable base for Valle Nevado, Farellones and Portillo.";
     }
     if (locale === "pt") {
-      return `Temporada de neve no Chile (${pack.eventDates}). Santiago como base confortável para Valle Nevado, Farellones e Portillo.`;
+      return "Santiago como base confortável para Valle Nevado, Farellones e Portillo.";
     }
   }
   if (locale === "en") {
-    return `${pack.eventTitle} at ${pack.venueName}. ${pack.eventDates}. Everything essential for your Santiago visit.`;
+    return `Everything for ${pack.venueName}: transport, weather and where to stay in Santiago.`;
   }
   if (locale === "pt") {
-    return `${pack.eventTitle} em ${pack.venueName}. ${pack.eventDates}. Tudo o essencial para sua visita a Santiago.`;
+    return `O essencial para ${pack.venueName}: transporte, clima e onde ficar em Santiago.`;
   }
   return pack.microsite.eventSummary;
 }
 
 function mustKnow(pack: CampaignPack, locale: Locale): string[] {
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
-  const venue = pack.venueName;
   if (pack.interest === "nieve") {
     if (locale === "en") {
       return [
-        `Season: ${pack.eventDates}.`,
         "Santiago is your base: sleep in the city and head to the mountains.",
-        "Common resorts: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h from Santiago).",
+        "Common resorts: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h).",
         "Check the snow report and book van/tour ahead on winter weekends.",
-        "Save this guide and share it with whoever is coming with you.",
+        "Send this to your group before booking stays or transfers.",
       ];
     }
     if (locale === "pt") {
       return [
-        `Temporada: ${pack.eventDates}.`,
         "Santiago é sua base: durma na cidade e saia para a cordilheira.",
-        "Centros habituais: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h de Santiago).",
+        "Centros habituais: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h).",
         "Confira o boletim de neve e reserve van/tour com antecedência nos fins de semana.",
-        "Salve este guia e compartilhe com quem vai com você.",
+        "Mande para seu grupo antes de reservar hospedagem ou traslado.",
       ];
     }
   }
   if (locale === "en") {
-    const tips = [
-      `Date: ${pack.eventDates}.`,
-      `Venue: ${venue}, Santiago.`,
-    ];
+    const tips: string[] = [];
     if (pack.interest === "concierto") {
       const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
       if (venueMetros.length) {
@@ -380,8 +375,8 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
       }
     }
     tips.push(
-      `Arrive early: recommended stays are ~${mins} min away.`,
-      "Save this guide and share it with whoever is coming with you.",
+      `Arrive early: recommended stays are ~${mins} min from the venue.`,
+      "Send this to your group before the trip — map, weather and tips in one link.",
     );
     if (pack.interest === "concierto") {
       tips.push(
@@ -393,11 +388,6 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
         "Check stadium access times and possible street closures.",
         "If you're visiting fans, move in a group on well-lit routes.",
       );
-    } else if (pack.interest === "nieve") {
-      tips.push(
-        "Santiago is your base: sleep in the city and leave early for the mountains.",
-        "Check the snow report the day before.",
-      );
     } else if (pack.interest === "deporte_competencia") {
       tips.push(
         "Confirm competition times and credentials if you're staff or family.",
@@ -407,10 +397,7 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
     return tips;
   }
   if (locale === "pt") {
-    const tips = [
-      `Data: ${pack.eventDates}.`,
-      `Local: ${venue}, Santiago.`,
-    ];
+    const tips: string[] = [];
     if (pack.interest === "concierto") {
       const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
       if (venueMetros.length) {
@@ -418,8 +405,8 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
       }
     }
     tips.push(
-      `Chegue com antecedência: os aptos recomendados ficam a ~${mins} min.`,
-      "Salve este guia e compartilhe com quem vai com você.",
+      `Chegue com antecedência: aptos recomendados a ~${mins} min do venue.`,
+      "Mande para seu grupo antes da viagem — mapa, clima e dicas em um link.",
     );
     if (pack.interest === "concierto") {
       tips.push(
@@ -430,11 +417,6 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
       tips.push(
         "Confira horários de acesso ao estádio e possíveis cortes de rua.",
         "Se for torcida visitante, ande em grupo por rotas iluminadas.",
-      );
-    } else if (pack.interest === "nieve") {
-      tips.push(
-        "Santiago é sua base: durma na cidade e saia cedo para a cordilheira.",
-        "Confira o boletim de neve no dia anterior.",
       );
     } else if (pack.interest === "deporte_competencia") {
       tips.push(

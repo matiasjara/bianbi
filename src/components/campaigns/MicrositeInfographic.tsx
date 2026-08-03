@@ -165,7 +165,7 @@ export function MicrositeInfographic({
   ] as const;
 
   const shareProps = {
-    title: m.guideTitle,
+    title: m.eventTitle,
     shareText: m.shareText,
     path: `/g/${slug}`,
     slug,
@@ -211,12 +211,16 @@ export function MicrositeInfographic({
             </div>
 
             <p className="ms-rise ms-rise-d1 mt-7 font-[family-name:var(--font-display)] text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ms-terracotta)]">
-              {m.interestLabel} · {m.eventDates}
+              {ui.productLabel} · {m.interestLabel}
             </p>
 
             <h1 className="ms-rise ms-rise-d1 ms-editorial mt-3 max-w-xl text-[2.15rem] leading-[1.1] md:text-5xl">
-              {m.guideTitle}
+              {m.eventTitle}
             </h1>
+
+            <p className="ms-rise ms-rise-d2 mt-3 text-sm font-medium text-[var(--ms-ink)]/80">
+              {m.eventDates} · {m.venueName}
+            </p>
 
             <p className="ms-rise ms-rise-d2 mt-4 max-w-md text-[15px] leading-relaxed text-[var(--ms-muted)]">
               {m.eventSummary}
@@ -599,7 +603,7 @@ export function MicrositeInfographic({
         locale={locale}
         path={`/g/${slug}`}
         shareText={m.shareText}
-        title={m.guideTitle}
+        title={m.eventTitle}
         whatsAppLabel={ui.whatsAppLabel}
         shareImageLabel={ui.stickyShareLabel}
         sharingLabel={ui.sharingLabel}

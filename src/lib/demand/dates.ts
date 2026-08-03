@@ -1,0 +1,200 @@
+import type { DemandSignal } from "./types";
+
+/** Formato estándar de visualización en Crambie. */
+export const DISPLAY_DATE_FORMAT = "dd-mm-yyyy";
+
+const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+const MONTHS_ES: Record<string, string> = {
+  enero: "01",
+  febrero: "02",
+  marzo: "03",
+  abril: "04",
+  mayo: "05",
+  junio: "06",
+  julio: "07",
+  agosto: "08",
+  septiembre: "09",
+  setiembre: "09",
+  octubre: "10",
+  noviembre: "11",
+  diciembre: "12",
+  ene: "01",
+  feb: "02",
+  mar: "03",
+  abr: "04",
+  may: "05",
+  jun: "06",
+  jul: "07",
+  ago: "08",
+  sep: "09",
+  oct: "10",
+  nov: "11",
+  dic: "12",
+};
+
+const WEEKDAYS_ES = [
+  "domingo",
+  "lunes",
+  "martes",
+  "miércoles",
+  "jueves",
+  "viernes",
+  "sábado",
+] as const;
+
+export function isIsoDate(value: string): boolean {
+  if (!ISO_DATE.test(value)) return false;
+  return !Number.isNaN(Date.parse(`${value}T12:00:00Z`));
+}
+
+/** ISO yyyy-mm-dd → dd-mm-yyyy */
+export function formatDateCL(iso: string): string {
+  const m = iso.match(ISO_DATE);
+  if (!m) return iso;
+  return `${m[3]}-${m[2]}-${m[1]}`;
+}
+
+/** Rango en dd-mm-yyyy (o dd-mm-yyyy – dd-mm-yyyy). */
+export function formatDateRangeCL(start: string, end?: string | null): string {
+  if (!isIsoDate(start)) return start;
+  const safeEnd = end && isIsoDate(end) ? end : start;
+  if (safeEnd === start) return formatDateCL(start);
+  return `${formatDateCL(start)} – ${formatDateCL(safeEnd)}`;
+}
+
+/** Encabezado de día en calendario: «sábado 14-08-2026». */
+export function formatDayHeadingCL(iso: string): string {
+  if (!isIsoDate(iso)) return iso;
+  const weekday = WEEKDAYS_ES[new Date(`${iso}T12:00:00`).getDay()];
+  return `${weekday} ${formatDateCL(iso)}`;
+}
+
+export function parseLooseDate(
+  raw: string,
+  fallbackYear: number,
+): string | null {
+  const esFull = raw.match(
+    /(\d{1,2})(?:\s*,\s*\d{1,2})*(?:\s*y\s*\d{1,2})?\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(\d{4})/i,
+  );
+  if (esFull) {
+    return `${esFull[3]}-${MONTHS_ES[esFull[2].toLowerCase()]}-${esFull[1].padStart(2, "0")}`;
+  }
+
+  const esNoYear = raw.match(
+    /(\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\b/i,
+  );
+  if (esNoYear) {
+    return `${fallbackYear}-${MONTHS_ES[esNoYear[2].toLowerCase()]}-${esNoYear[1].padStart(2, "0")}`;
+  }
+
+  const iso = raw.match(/(\d{4}-\d{2}-\d{2})/);
+  if (iso) return iso[1];
+
+  const dmy = raw.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
+  if (dmy) {
+    const day = dmy[1].padStart(2, "0");
+    const month = dmy[2].padStart(2, "0");
+    const year = dmy[3].length === 2 ? `20${dmy[3]}` : dmy[3];
+    return `${year}-${month}-${day}`;
+  }
+
+  const slug = raw.match(
+    /\b(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)[a-z]*-(\d{4})\b/i,
+  );
+  if (slug) {
+    const month = MONTHS_ES[slug[1].toLowerCase().slice(0, 3)];
+    return `${slug[2]}-${month}-15`;
+  }
+
+  return null;
+}
+
+const SPANISH_DATE_NO_DE =
+  /\b(\d{1,2})\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(\d{4})\b/gi;
+
+const SPANISH_DATE =
+  /\b(\d{1,2})(?:\s*,\s*\d{1,2})*(?:\s*y\s*\d{1,2})?\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(\d{4})\b/gi;
+
+const SPANISH_RANGE =
+  /\b(\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\s+(\d{4})\s*[-–]\s*(\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\s+(\d{4})\b/gi;
+
+function isoFromSpanish(day: string, month: string, year: string) {
+  const m = MONTHS_ES[month.toLowerCase()];
+  if (!m) return null;
+  return `${year}-${m}-${day.padStart(2, "0")}`;
+}
+
+/** Normaliza fechas sueltas dentro de un texto libre. */
+export function standardizeDatesInText(
+  text: string,
+  fallbackYear = new Date().getFullYear(),
+): string {
+  let out = text.replace(SPANISH_RANGE, (_match, d1, m1, y1, d2, m2, y2) => {
+    const start = isoFromSpanish(d1, m1, y1);
+    const end = isoFromSpanish(d2, m2, y2);
+    if (!start || !end) return _match;
+    return formatDateRangeCL(start, end);
+  });
+
+  out = out.replace(SPANISH_DATE, (match) => {
+    const iso = parseLooseDate(match, fallbackYear);
+    return iso ? formatDateCL(iso) : match;
+  });
+
+  out = out.replace(SPANISH_DATE_NO_DE, (match) => {
+    const iso = parseLooseDate(match, fallbackYear);
+    return iso ? formatDateCL(iso) : match;
+  });
+
+  out = out.replace(/\b(\d{1,2})[\/](\d{1,2})[\/](\d{4})\b/g, (match) => {
+    const iso = parseLooseDate(match, fallbackYear);
+    return iso ? formatDateCL(iso) : match;
+  });
+
+  out = out.replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, (match) =>
+    isIsoDate(match) ? formatDateCL(match) : match,
+  );
+
+  return out.replace(/\s{2,}/g, " ").trim();
+}
+
+export function normalizeSignalDescription(
+  description: string,
+  startsOn: string,
+  endsOn: string,
+): string {
+  const canonical = formatDateRangeCL(startsOn, endsOn);
+  let text = standardizeDatesInText(description);
+
+  if (!text.includes(canonical)) {
+    text = text.replace(/\.\s*Fecha:.*$/i, "").trim();
+    text = text.replace(/\.\s*\d{2}-\d{2}-\d{4}.*$/i, "").trim();
+    text = `${text.replace(/\.$/, "")}. Fecha: ${canonical}.`;
+  }
+
+  return text;
+}
+
+export function normalizeSignal<T extends DemandSignal>(signal: T): T {
+  if (!isIsoDate(signal.startsOn)) return signal;
+
+  const endsOn =
+    isIsoDate(signal.endsOn) && signal.endsOn >= signal.startsOn
+      ? signal.endsOn
+      : signal.startsOn;
+
+  return {
+    ...signal,
+    endsOn,
+    description: normalizeSignalDescription(
+      signal.description,
+      signal.startsOn,
+      endsOn,
+    ),
+  };
+}
+
+export function normalizeSignals<T extends DemandSignal>(signals: T[]): T[] {
+  return signals.map((s) => normalizeSignal(s));
+}

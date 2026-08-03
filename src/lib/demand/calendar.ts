@@ -7,7 +7,6 @@ import {
   parseISO,
   startOfWeek,
 } from "date-fns";
-import { es } from "date-fns/locale";
 import {
   aggregatePeakAttendance,
   applyAttendanceToSignal,
@@ -15,6 +14,12 @@ import {
   formatPeople,
 } from "./attendance";
 import { deriveAudienceFromSignals } from "./audience";
+import {
+  groupedHockeyTitle,
+  isHockeySignal,
+  spanSignalDates,
+} from "./hockey-group";
+import { formatDateCL } from "./dates";
 import {
   campaignGroupKey,
   classifyInterest,
@@ -138,7 +143,7 @@ export function buildDemandTimeline(
     return {
       date,
       weekday,
-      label: format(day, "d MMM", { locale: es }),
+      label: formatDateCL(date),
       score,
       eventScore,
       seasonalityScore,
@@ -208,8 +213,8 @@ export function detectWeekendPeaks(
       score,
       title:
         lead != null
-          ? `FDS ${format(parseISO(anchor), "d MMM", { locale: es })} — ${lead.title}`
-          : `FDS ${format(parseISO(anchor), "d MMM", { locale: es })}`,
+          ? `FDS ${formatDateCL(anchor)} — ${lead.title}`
+          : `FDS ${formatDateCL(anchor)}`,
       drivers,
       signals,
       propertyCodes,
@@ -272,25 +277,39 @@ export function detectCampaignOpportunities(
     const clipped = clipSignalToRange(lead, rangeStart, rangeEnd);
     if (!clipped) continue;
 
+    const span =
+      ranked.length > 1
+        ? spanSignalDates(ranked, rangeStart, rangeEnd)
+        : null;
+
     // Para flujos largos (nieve), la ventana es el mes/rango pedido
     const opStart =
       interest === "nieve" || interest === "turismo_general"
         ? rangeStart
-        : clipped.startsOn;
+        : (span?.startsOn ?? clipped.startsOn);
     const opEnd =
       interest === "nieve" || interest === "turismo_general"
         ? rangeEnd
-        : clipped.endsOn;
+        : (span?.endsOn ?? clipped.endsOn);
 
     const crowd = aggregatePeakAttendance(ranked);
-    const drivers = ranked.slice(0, 3).map((s) => {
-      const pot = s.potentialScore ?? eventWeight(s);
-      const crowdLine =
-        s.estimatedAttendance != null && s.estimatedOvernight != null
-          ? ` · ${formatAttendanceShort(s.estimatedAttendance, s.estimatedOvernight)}`
-          : "";
-      return `${s.title} (${pot}${crowdLine})`;
-    });
+    const drivers =
+      isHockeySignal(lead) && ranked.length > 1
+        ? ranked.slice(0, 6).map((s) => {
+            const pot = s.potentialScore ?? eventWeight(s);
+            const cat = s.title
+              .replace(/^Hockey c[eé]sped\s*[·\-]\s*/i, "")
+              .trim();
+            return `${cat} (${pot})`;
+          })
+        : ranked.slice(0, 3).map((s) => {
+            const pot = s.potentialScore ?? eventWeight(s);
+            const crowdLine =
+              s.estimatedAttendance != null && s.estimatedOvernight != null
+                ? ` · ${formatAttendanceShort(s.estimatedAttendance, s.estimatedOvernight)}`
+                : "";
+            return `${s.title} (${pot}${crowdLine})`;
+          });
 
     const propertyCodes = [
       ...new Set(ranked.flatMap((s) => s.propertyCodesPreferred ?? [])),
@@ -302,7 +321,9 @@ export function detectCampaignOpportunities(
         ? `${label} — hub Santiago`
         : interest === "vacaciones_familias" || interest === "feriado_puente"
           ? lead.title
-          : lead.title;
+          : isHockeySignal(lead) && ranked.length > 1
+            ? groupedHockeyTitle(ranked)
+            : lead.title;
 
     peaks.push({
       id: `opp-${groupKey}`,

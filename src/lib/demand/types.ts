@@ -29,6 +29,9 @@ export type SignalSource =
 
 export type CampaignPlaybook = "ads_heavy" | "mailing_first" | "hybrid";
 
+/** Ciudad donde ocurre el evento / guía. */
+export type CityId = "santiago" | "concepcion";
+
 export type CampaignInterest =
   | "nieve"
   | "concierto"
@@ -92,6 +95,8 @@ export interface DemandSignal {
   attendanceMethod?: string;
   attendanceConfidence?: "alta" | "media" | "baja";
   venueCapacity?: number;
+  /** Ciudad sede del evento (inferida o explícita). */
+  city?: CityId;
   poiIds: string[];
   audienceTags: string[];
   propertyCodesPreferred?: string[];
@@ -196,6 +201,8 @@ export interface CampaignPackProperty {
 
 export interface CampaignPack {
   slug: string;
+  /** Ciudad de la guía (sede del evento). */
+  city: CityId;
   campaignId: string;
   peakId: string;
   playbook: CampaignPlaybook;

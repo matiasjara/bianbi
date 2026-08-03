@@ -86,7 +86,7 @@ export const NEARBY_VENUES: NearbyVenue[] = [
 ];
 
 const EXCLUDE_VENUE =
-  /gran arena monticello|bicentenario la florida|estadio bicentenario|metropolitan santiago|teatro mori|nescaf[eé] de las artes|teatro oriente|san gin[eé]s|cenco florida|estadio la portada|estadio nicol[aá]s chahu[aá]n|teatro zoco|lo barnechea|las condes|claro arena|san bernardo|vi[nñ]a del mar|la serena|concepci[oó]n|valdivia|valpara[ií]so|antofagasta|temuco|iquique|blondie santiago centro/i;
+  /gran arena monticello|bicentenario la florida|estadio bicentenario|metropolitan santiago|teatro mori|nescaf[eé] de las artes|teatro oriente|san gin[eé]s|cenco florida|estadio la portada|estadio nicol[aá]s chahu[aá]n|teatro zoco|lo barnechea|claro arena|san bernardo|vi[nñ]a del mar|la serena|valpara[ií]so|antofagasta|temuco|iquique|blondie santiago centro|teatro municipal de valpara[ií]so|teatro universidad de concepci[oó]n|municipal de vi[nñ]a|mostazal|monticello/i;
 
 export function matchNearbyVenue(text: string): NearbyVenue | null {
   if (EXCLUDE_VENUE.test(text)) return null;

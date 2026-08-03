@@ -1,8 +1,27 @@
 /**
- * Títulos legibles y vendedores para eventos deportivos.
- * Evita "2026 Clausura - Intermedia Damas A Torneo Nacional" sin deporte.
+ * Títulos legibles para eventos: demanda interna y guías públicas.
+ * Evita venue/fechas/CTA de ticketing en el H1.
  */
 import type { DemandSignal, SignalSource } from "./types";
+
+const MONTHS_ES =
+  "enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre";
+
+const VENUE_PREFIX =
+  /^(?:teatro|c[uú]pula|la c[uú]pula|parque|estadio|arena|movistar|aut[oó]dromo|centro|club)\b/i;
+
+const VENUE_SUFFIX =
+  /\s+(?:parque o'?higgins|estadio bicentenario(?:\s+la\s+florida)?|movistar arena|estadio nacional|santiago centro|lo barnechea|la florida)\s*(?:comprar(?:\s+tickets?)?)?\s*$/i;
+
+const DATE_SINGLE = new RegExp(
+  `\\s+\\d{1,2}\\s+de\\s+(?:${MONTHS_ES})(?:\\s+de)?\\s+\\d{4}`,
+  "gi",
+);
+
+const DATE_MULTI = new RegExp(
+  `\\s+\\d{1,2}(?:\\s*,\\s*\\d{1,2})*(?:\\s+y\\s+\\d{1,2})?\\s+de\\s+(?:${MONTHS_ES})(?:\\s+de)?\\s+\\d{4}`,
+  "gi",
+);
 
 const SOURCE_SPORT: Partial<Record<SignalSource, string>> = {
   fehoch_tournaments: "Hockey césped",
@@ -11,6 +30,116 @@ const SOURCE_SPORT: Partial<Record<SignalSource, string>> = {
   club_atletico_santiago: "Atletismo",
   campeonato_chileno: "Fútbol",
 };
+
+function collapseWhitespace(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function stripAudienceAndCta(text: string): string {
+  return collapseWhitespace(
+    text
+      .replace(/\s*\(\s*visita desde regiones\s*\)\s*/gi, " ")
+      .replace(/\bvisita desde regiones\b/gi, " ")
+      .replace(/\bcomprar(?:\s+tickets?)?\b/gi, " ")
+      .replace(/\bentradas?\s+a\s+la\s+venta\b/gi, " "),
+  );
+}
+
+function stripVenuePrefix(text: string): string {
+  const slash = text.indexOf(" / ");
+  if (slash === -1) return text;
+  const prefix = text.slice(0, slash).trim();
+  if (VENUE_PREFIX.test(prefix) || /\s-\s[\p{L}\s'.]+$/u.test(prefix)) {
+    return text.slice(slash + 3).trim();
+  }
+  return text;
+}
+
+function stripDates(text: string): string {
+  let t = text;
+  let prev = "";
+  while (t !== prev) {
+    prev = t;
+    t = collapseWhitespace(
+      t
+        .replace(DATE_MULTI, " ")
+        .replace(DATE_SINGLE, " ")
+        .replace(
+          /\s*-\s*\d{1,2}\s+de\s+(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)[^.]*$/gi,
+          "",
+        ),
+    );
+  }
+
+  if (!/\b(?:tour|temporada|festival|lollapalooza)\s+20\d{2}\s*$/i.test(t)) {
+    t = t.replace(/\s+20\d{2}\s*$/i, "");
+  }
+  return t.trim();
+}
+
+function stripVenueSuffix(text: string): string {
+  return collapseWhitespace(text.replace(VENUE_SUFFIX, " "));
+}
+
+function stripGenreNoise(text: string): string {
+  return collapseWhitespace(
+    text
+      .replace(/^rock alternativo\s+/i, "")
+      .replace(/^rock chileno\s+/i, "")
+      .replace(/^música\s+(?=temporada)/i, "")
+      .replace(/^charlas\s+/i, "")
+      .replace(/^fiesta\s+/i, "")
+      .replace(/\s+-\s+en vivo\s*$/i, "")
+      .replace(/\s+en vivo\s*$/i, "")
+      .replace(/\s+-\s+en lanzamiento\s+en vivo\s*/i, " "),
+  );
+}
+
+function dedupeAdjacentWords(text: string): string {
+  return text.replace(/\b(\w+)\s+\1\b/gi, "$1");
+}
+
+function stripWorkshopMeta(text: string): string {
+  if (!/^(taller|ciclo|temporada)\b/i.test(text)) return text;
+  return text.replace(/\s+-\s+dirigido por\s+.+$/i, "").trim();
+}
+
+function stripSeasonalRuleNoise(text: string): string {
+  return collapseWhitespace(
+    text
+      .replace(/\s*\(20\d{2}\)\s*$/i, "")
+      .replace(/\s*[-–—]\s*puente (corto|nacional)\s*$/i, "")
+      .replace(/\s*[-–—]\s*turismo \+ eventos\s*$/i, "")
+      .replace(/\s*\/\s*negocios\s*$/i, ""),
+  );
+}
+
+function trimPublicLength(text: string, max = 88): string {
+  if (text.length <= max) return text;
+  const cut = text.lastIndexOf(" - ", max);
+  if (cut >= 36) return `${text.slice(0, cut).trim()}…`;
+  return `${text.slice(0, max - 1).trim()}…`;
+}
+
+/** Título corto para guías públicas, cards y señales ingestadas. */
+export function normalizePublicEventTitle(raw: string): string {
+  let t = collapseWhitespace(raw);
+  if (!t) return raw.trim();
+
+  t = stripAudienceAndCta(t);
+  t = stripVenuePrefix(t);
+  t = stripDates(t);
+  t = stripVenueSuffix(t);
+  t = stripAudienceAndCta(t);
+  t = stripGenreNoise(t);
+  t = dedupeAdjacentWords(t);
+  t = stripWorkshopMeta(t);
+  t = stripSeasonalRuleNoise(t);
+  t = t.replace(/\s*[-–—/]\s*$/g, "").trim();
+
+  if (!t) return collapseWhitespace(raw);
+  return trimPublicLength(t);
+}
 
 function normalize(s: string) {
   return s
@@ -85,26 +214,27 @@ function alreadyHasSport(title: string, sport: string): boolean {
 
 /** Título para demanda / listados: siempre con deporte visible. */
 export function polishEventTitle(signal: DemandSignal): string {
+  const baseTitle = normalizePublicEventTitle(signal.title);
+
   if (signal.source === "campeonato_chileno") {
     const sport = "Fútbol";
-    const detail = cleanSportDetail(signal.title);
-    if (alreadyHasSport(detail, sport) || alreadyHasSport(signal.title, sport)) {
+    const detail = cleanSportDetail(baseTitle);
+    if (alreadyHasSport(detail, sport)) {
       return detail.slice(0, 140);
     }
     return `${sport} · ${detail}`.slice(0, 140);
   }
 
-  if (signal.kind !== "sport") return signal.title;
+  if (signal.kind !== "sport") {
+    return baseTitle.slice(0, 140);
+  }
 
   const sport = sportLabelForSignal(signal);
-  if (!sport) return signal.title;
+  if (!sport) return baseTitle.slice(0, 140);
 
-  const detail = cleanSportDetail(signal.title);
-  if (alreadyHasSport(detail, sport) || alreadyHasSport(signal.title, sport)) {
-    // Si el crudo ya tenía el deporte, igual limpiamos año/ruido
-    const cleaned = cleanSportDetail(signal.title);
-    if (alreadyHasSport(cleaned, sport)) return cleaned.slice(0, 140);
-    return `${sport} · ${cleaned}`.slice(0, 140);
+  const detail = cleanSportDetail(baseTitle);
+  if (alreadyHasSport(detail, sport)) {
+    return detail.slice(0, 140);
   }
 
   return `${sport} · ${detail}`.slice(0, 140);
@@ -122,8 +252,8 @@ export function sportCopyParts(signal: DemandSignal | undefined): {
   const sport = sportLabelForSignal(signal);
   const displayTitle = polishEventTitle(signal);
   const detail = sport
-    ? cleanSportDetail(signal.title)
-    : signal.title.trim();
+    ? cleanSportDetail(normalizePublicEventTitle(signal.title))
+    : normalizePublicEventTitle(signal.title);
   return { sport, detail, displayTitle };
 }
 

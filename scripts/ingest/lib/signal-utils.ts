@@ -1,5 +1,13 @@
-import type { DemandSignal } from "../../../src/lib/demand/types";
+import type { DemandSignal, CityId } from "../../../src/lib/demand/types";
+import { inferEventCity } from "../../../src/lib/demand/cities";
+import { normalizePublicEventTitle } from "../../../src/lib/demand/event-title";
+import {
+  normalizeSignal,
+  parseLooseDate,
+} from "../../../src/lib/demand/dates";
 import { scoreEventPotential } from "../../../src/lib/demand/potential";
+
+export { parseLooseDate };
 
 export function slugify(s: string) {
   return s
@@ -73,88 +81,7 @@ export function guessPropertyCodes(poiIds: string[], text = ""): string[] {
 }
 
 export function isSantiagoRelevant(text: string): boolean {
-  const t = text.toLowerCase();
-  const exclude =
-    /antofagasta|concepci[oó]n|valpara[ií]so|vi[nñ]a del mar|la serena|temuco|puerto montt|iquique|rancagua|talca|punta arenas|copiap[oó]|arica|chill[aá]n|osorno/;
-  if (
-    exclude.test(t) &&
-    !/santiago|movistar|ñu[nñ]oa|nunoa|nacional|o'?higgins|mapocho|caupolic/.test(
-      t,
-    )
-  ) {
-    return false;
-  }
-  return /santiago|chile|movistar|estadio|arena|ñu[nñ]oa|nunoa|o'?higgins|mapocho|caupolic|metropolitan|coliseo|bicentenario|providencia|las condes|maip[uú]|la florida|macul|san miguel|estacion central/.test(
-    t,
-  );
-}
-
-const MONTHS_ES: Record<string, string> = {
-  enero: "01",
-  febrero: "02",
-  marzo: "03",
-  abril: "04",
-  mayo: "05",
-  junio: "06",
-  julio: "07",
-  agosto: "08",
-  septiembre: "09",
-  setiembre: "09",
-  octubre: "10",
-  noviembre: "11",
-  diciembre: "12",
-  ene: "01",
-  feb: "02",
-  mar: "03",
-  abr: "04",
-  may: "05",
-  jun: "06",
-  jul: "07",
-  ago: "08",
-  sep: "09",
-  oct: "10",
-  nov: "11",
-  dic: "12",
-};
-
-export function parseLooseDate(
-  raw: string,
-  fallbackYear: number,
-): string | null {
-  const esFull = raw.match(
-    /(\d{1,2})(?:\s*,\s*\d{1,2})*(?:\s*y\s*\d{1,2})?\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(\d{4})/i,
-  );
-  if (esFull) {
-    return `${esFull[3]}-${MONTHS_ES[esFull[2].toLowerCase()]}-${esFull[1].padStart(2, "0")}`;
-  }
-
-  const esNoYear = raw.match(
-    /(\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\b/i,
-  );
-  if (esNoYear) {
-    return `${fallbackYear}-${MONTHS_ES[esNoYear[2].toLowerCase()]}-${esNoYear[1].padStart(2, "0")}`;
-  }
-
-  const iso = raw.match(/(\d{4}-\d{2}-\d{2})/);
-  if (iso) return iso[1];
-
-  const dmy = raw.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
-  if (dmy) {
-    const day = dmy[1].padStart(2, "0");
-    const month = dmy[2].padStart(2, "0");
-    const year = dmy[3].length === 2 ? `20${dmy[3]}` : dmy[3];
-    return `${year}-${month}-${day}`;
-  }
-
-  const slug = raw.match(
-    /\b(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)[a-z]*-(\d{4})\b/i,
-  );
-  if (slug) {
-    const month = MONTHS_ES[slug[1].toLowerCase().slice(0, 3)];
-    return `${slug[2]}-${month}-15`;
-  }
-
-  return null;
+  return inferEventCity(text) === "santiago";
 }
 
 export function toSignal(input: {
@@ -165,16 +92,23 @@ export function toSignal(input: {
   url?: string;
   intensity?: number;
   textForPoi?: string;
+  city?: CityId;
 }): DemandSignal {
   const blob = `${input.title} ${input.textForPoi ?? ""} ${input.description ?? ""}`;
-  const poiIds = guessPoi(blob);
+  const city = input.city ?? inferEventCity(blob);
+  const poiIds =
+    city === "santiago"
+      ? guessPoi(blob).length
+        ? guessPoi(blob)
+        : ["poi-movistar"]
+      : [];
   const potential = scoreEventPotential(input.title, blob);
 
-  return {
+  const base: DemandSignal = {
     id: `${input.source}-${slugify(`${input.title}-${input.date}`)}`,
     kind: "event",
     source: input.source,
-    title: input.title.slice(0, 140),
+    title: normalizePublicEventTitle(input.title).slice(0, 140),
     description:
       input.description ??
       `Evento detectado desde ${input.source}. Verificar fecha/venue.`,
@@ -185,11 +119,18 @@ export function toSignal(input: {
     potentialTier: potential.tier,
     potentialFactors: potential.factors,
     audienceTags: ["eventos", "conciertos"],
-    poiIds: poiIds.length ? poiIds : ["poi-movistar"],
-    propertyCodesPreferred: guessPropertyCodes(poiIds, blob),
+    poiIds,
+    propertyCodesPreferred:
+      city === "santiago" ? guessPropertyCodes(poiIds, blob) : [],
     url: input.url,
     scrapedAt: new Date().toISOString(),
   };
+
+  if (city === "santiago" || city === "concepcion") {
+    base.city = city;
+  }
+
+  return normalizeSignal(base);
 }
 
 export type SourceResult = {

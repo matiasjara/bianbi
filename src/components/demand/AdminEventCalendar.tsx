@@ -16,6 +16,7 @@ import {
   defaultPlanningMonth,
   monthRange,
 } from "@/lib/demand/month-range";
+import { formatDayHeadingCL } from "@/lib/demand/dates";
 import { StatusPill } from "@/components/ui";
 
 type Props = {
@@ -488,14 +489,7 @@ export function AdminEventCalendar({
             {selectedDay && dayEvents.length > 0 ? (
               <>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
-                  {new Date(`${selectedDay}T12:00:00`).toLocaleDateString(
-                    "es-CL",
-                    {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                    },
-                  )}
+                  {formatDayHeadingCL(selectedDay)}
                   {dayEvents.length > 1
                     ? ` · ${dayEvents.length} eventos`
                     : ""}

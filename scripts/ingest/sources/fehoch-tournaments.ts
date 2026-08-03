@@ -81,15 +81,9 @@ function toSignal(row: Row, dates: string[]): DemandSignal | null {
   if (dates.length === 0) return null;
   const startsOn = dates[0];
   const endsOn = dates[dates.length - 1];
-  // Ventanas > 45 días: usar solo primeros 3 días como “arranque” + tag temporada
-  let end = endsOn;
   const startMs = Date.parse(startsOn);
   const endMs = Date.parse(endsOn);
   const days = (endMs - startMs) / 86400000;
-  if (days > 45) {
-    const capped = new Date(startMs + 3 * 86400000);
-    end = capped.toISOString().slice(0, 10);
-  }
 
   const title = formatFehochTitle(row.name);
   const blob = `${title} hockey césped fehoch estadio nacional`;
@@ -101,9 +95,9 @@ function toSignal(row: Row, dates: string[]): DemandSignal | null {
     kind: "sport",
     source: "fehoch_tournaments",
     title,
-    description: `Hockey césped FEHOCH · ${startsOn} → ${endsOn}${days > 45 ? " (señal de arranque; temporada larga)" : ""}. Sedes típicas Parque Estadio Nacional. Mailing a clubes/federación.`,
+    description: `Hockey césped FEHOCH · ${startsOn} → ${endsOn}${days > 45 ? " (temporada larga)" : ""}. Sedes típicas Parque Estadio Nacional. Mailing a clubes/federación.`,
     startsOn,
-    endsOn: end,
+    endsOn,
     intensity: potential.intensity,
     potentialScore: potential.score,
     potentialTier: potential.tier,

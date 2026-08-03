@@ -7,6 +7,7 @@ import {
   type DemandSourceEntry,
 } from "@/lib/demand/source-catalog";
 import { loadDiscovery } from "@/lib/demand/load-discovery";
+import { formatDateCL } from "@/lib/demand/dates";
 import { readRobotsStatus } from "@/lib/demand/robots-status";
 
 export const metadata = { title: "Fuentes" };
@@ -163,7 +164,9 @@ export default async function FuentesPage() {
                     <StatusPill tone="good">promover</StatusPill>
                     <StatusPill>{c.disciplineGuess}</StatusPill>
                     {c.startsOn ? (
-                      <StatusPill tone="accent">{c.startsOn}</StatusPill>
+                      <StatusPill tone="accent">
+                        {formatDateCL(c.startsOn)}
+                      </StatusPill>
                     ) : null}
                     <StatusPill>{c.sourceFeed}</StatusPill>
                   </div>

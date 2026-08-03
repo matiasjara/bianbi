@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { BrandIcon } from "@/components/brand/BrandIcon";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
+import { HomeCitySelector } from "@/components/home/HomeCitySelector";
 import { HomeEventCalendar } from "@/components/home/HomeEventCalendar";
 import { HorizontalScrollRow } from "@/components/home/HorizontalScrollRow";
 import type { BrandIconName } from "@/lib/brand/icons";
 import { properties } from "@/lib/data/seed";
 import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
+import { cityLabel, parseCityParam } from "@/lib/demand/cities";
 import type { CalendarEvent } from "@/lib/demand/event-calendar";
 import { parseMonthParam } from "@/lib/demand/month-range";
 import { micrositePath } from "@/lib/demand/travel-brief";
@@ -171,14 +174,15 @@ function GuideCard({
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ year?: string; month?: string }>;
+  searchParams: Promise<{ year?: string; month?: string; city?: string }>;
 }) {
   const params = await searchParams;
+  const city = parseCityParam(params.city);
   const { year, monthIndex } = parseMonthParam(params.year, params.month);
 
   const [packs, monthPacks] = await Promise.all([
-    loadAllCampaignPacks(28),
-    loadAllCampaignPacks({ year, monthIndex, limit: 80 }),
+    loadAllCampaignPacks({ limit: 28, city }),
+    loadAllCampaignPacks({ year, monthIndex, limit: 80, city }),
   ]);
 
   const sortedPacks = sortUpcoming(packs);
@@ -227,10 +231,11 @@ export default async function HomePage({
       "Guías de eventos en Santiago y alojamiento cerca del venue.",
   };
 
+  const cityName = cityLabel(city);
   const listLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Próximas guías de eventos en Santiago",
+    name: `Próximas guías de eventos en ${cityName}`,
     itemListElement: featured.map((p, i) => ({
       "@type": "ListItem",
       position: i + 1,
@@ -262,11 +267,25 @@ export default async function HomePage({
             <div className="ms-rise">
               <BianbiLogo variant="logo" href={null} tone="onLight" size="lg" priority />
             </div>
+            <div className="ms-rise ms-rise-d1 mt-6">
+              <Suspense
+                fallback={
+                  <div className="h-10 w-48 animate-pulse rounded-lg bg-[var(--ms-line)]/40" />
+                }
+              >
+                <HomeCitySelector
+                  city={city}
+                  year={year}
+                  monthIndex={monthIndex}
+                />
+              </Suspense>
+            </div>
             <h1 className="ms-rise ms-rise-d1 ms-editorial mt-8 max-w-md text-2xl leading-tight md:text-[2.6rem]">
               Guías que inspiran viajes con sentido
             </h1>
             <p className="ms-rise ms-rise-d2 mt-3 max-w-sm text-[15px] leading-relaxed text-[var(--ms-muted)]">
-              Santiago, evento a evento: lo esencial y dónde quedarte cerca.
+              {cityName}, evento a evento: lo esencial y dónde quedarte cerca
+              del venue.
             </p>
             <div className="ms-rise ms-rise-d3 mt-8 flex flex-wrap gap-3">
               <a
@@ -325,6 +344,7 @@ export default async function HomePage({
       >
         <div className="mx-auto max-w-6xl">
           <HomeEventCalendar
+            city={city}
             year={year}
             monthIndex={monthIndex}
             events={calendarEvents}
@@ -395,11 +415,23 @@ export default async function HomePage({
 
           {featured.length === 0 ? (
             <p className="mt-10 text-sm text-[var(--ms-muted)]">
-              Pronto hay nuevas guías. Mientras, mira{" "}
-              <Link href="/santiago" className="underline underline-offset-4">
-                alojamientos en Santiago
-              </Link>
-              .
+              {city === "concepcion" ? (
+                <>
+                  Pronto habrá guías de eventos en Concepción. Por ahora explora{" "}
+                  <Link href="/" className="underline underline-offset-4">
+                    Santiago
+                  </Link>
+                  .
+                </>
+              ) : (
+                <>
+                  Pronto hay nuevas guías. Mientras, mira{" "}
+                  <Link href="/santiago" className="underline underline-offset-4">
+                    alojamientos en Santiago
+                  </Link>
+                  .
+                </>
+              )}
             </p>
           ) : (
             <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

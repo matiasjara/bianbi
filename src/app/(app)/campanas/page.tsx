@@ -24,7 +24,7 @@ export default async function CampanasPage({
 
   const [{ ingestedAt }, packs, approved, metrics] = await Promise.all([
     loadAllSignals(),
-    loadAllCampaignPacks({ year, monthIndex, limit: 16 }),
+    loadAllCampaignPacks({ year, monthIndex, limit: 16, includeGeneric: true }),
     loadApprovedCampaigns(),
     loadAllCampaignMetrics(),
   ]);

@@ -17,7 +17,7 @@ export const SHARE_OG = { width: 1200, height: 630 } as const;
 
 const PAPER = "#F4F0E8";
 const PANEL = "#FAF7F2";
-const LINE = "#E8E2D8";
+const LINE = "#D9D4CA";
 const INK = "#161A22";
 const MUTED = "#6B675F";
 const OLIVE = "#7B8B3E";
@@ -27,13 +27,8 @@ const MUSTARD = "#E1B53A";
 const CORAL = "#EF7A82";
 const MAP_PARK = "#C5D4A8";
 const MAP_ROAD = "#E8C89A";
-const ROCK_BLUE = "#2B59FF";
-const ROCK_PURPLE = "#7B3FE4";
-const ROCK_PINK = "#FF3864";
-const ROCK_GOLD = "#FFB020";
-const ROCK_INK = "#12151C";
 
-const TIP_BANNERS = [ROCK_BLUE, ROCK_PURPLE, ROCK_PINK, ROCK_GOLD] as const;
+const BRAND_ACCENTS = [OLIVE, TERRACOTTA, TEAL] as const;
 
 const FLEX = { display: "flex" } as const;
 
@@ -155,8 +150,17 @@ function IconBed({ size = 28 }: { size?: number }) {
 }
 
 const GRID_BG = `url("data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><path d="M28 0H0V28" fill="none" stroke="#E8E2D8" stroke-width="0.65" opacity="0.55"/></svg>',
+  '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><path d="M28 0H0V28" fill="none" stroke="#D9D4CA" stroke-width="0.55" opacity="0.45"/></svg>',
 )}")`;
+
+function shareHeadline(m: LocalizedMicrosite["content"]) {
+  return (m.eventTitle || m.guideTitle)
+    .replace(/^Guía del (?:concierto|partido|evento):\s*/i, "")
+    .replace(/^Guia do (?:show|jogo|evento):\s*/i, "")
+    .replace(/^(?:Concert|Match|Event|Travel) guide:\s*/i, "")
+    .replace(/^Guía:\s*/i, "")
+    .trim();
+}
 
 function SnapshotCard({
   label,
@@ -519,14 +523,12 @@ function StoryFactStrip({
   label,
   value,
   sub,
-  bg,
-  fg = "#FFFFFF",
+  accent,
 }: {
   label: string;
   value: string;
   sub?: string;
-  bg: string;
-  fg?: string;
+  accent: string;
 }) {
   return (
     <div
@@ -534,23 +536,23 @@ function StoryFactStrip({
         ...FLEX,
         flexDirection: "column",
         width: "100%",
-        padding: "22px 28px",
-        backgroundColor: bg,
-        borderRadius: 20,
-        border: `3px solid ${ROCK_INK}`,
-        boxShadow: "6px 6px 0 rgba(18,21,28,0.92)",
+        padding: "20px 24px",
+        backgroundColor: "#FFFFFF",
+        borderRadius: 18,
+        border: `1.5px solid ${LINE}`,
+        borderLeft: `5px solid ${accent}`,
+        boxShadow: "0 8px 24px rgba(22,26,34,0.06)",
       }}
     >
       <div
         style={{
           ...FLEX,
-          fontSize: 18,
+          fontSize: 11,
           fontFamily: "Manrope",
           fontWeight: 700,
-          letterSpacing: "0.16em",
+          letterSpacing: "0.18em",
           textTransform: "uppercase",
-          color: fg,
-          opacity: 0.88,
+          color: MUTED,
         }}
       >
         {label}
@@ -559,11 +561,11 @@ function StoryFactStrip({
         style={{
           ...FLEX,
           marginTop: 8,
-          fontSize: 36,
+          fontSize: 30,
           fontFamily: "Fraunces",
           fontWeight: 700,
-          lineHeight: 1.08,
-          color: fg,
+          lineHeight: 1.12,
+          color: INK,
         }}
       >
         {value}
@@ -573,12 +575,11 @@ function StoryFactStrip({
           style={{
             ...FLEX,
             marginTop: 6,
-            fontSize: 24,
+            fontSize: 20,
             fontFamily: "Manrope",
             fontWeight: 600,
-            lineHeight: 1.25,
-            color: fg,
-            opacity: 0.92,
+            lineHeight: 1.3,
+            color: MUTED,
           }}
         >
           {sub}
@@ -589,31 +590,31 @@ function StoryFactStrip({
 }
 
 function StoryTipBanner({ index, text }: { index: number; text: string }) {
-  const bg = TIP_BANNERS[index % TIP_BANNERS.length]!;
+  const accent = BRAND_ACCENTS[index % BRAND_ACCENTS.length]!;
   return (
     <div
       style={{
         ...FLEX,
         flexDirection: "row",
         alignItems: "flex-start",
-        gap: 18,
+        gap: 16,
         width: "100%",
-        padding: "22px 26px",
-        backgroundColor: bg,
-        borderRadius: 18,
-        border: `3px solid ${ROCK_INK}`,
-        boxShadow: "5px 5px 0 rgba(18,21,28,0.9)",
+        padding: "18px 22px",
+        backgroundColor: "#FFFFFF",
+        borderRadius: 16,
+        border: `1.5px solid ${LINE}`,
+        boxShadow: "0 6px 18px rgba(22,26,34,0.05)",
       }}
     >
       <div
         style={{
           ...FLEX,
-          width: 44,
-          height: 44,
+          width: 40,
+          height: 40,
           borderRadius: 999,
-          backgroundColor: ROCK_INK,
-          color: "#FFFFFF",
-          fontSize: 24,
+          border: `2px solid ${accent}`,
+          color: accent,
+          fontSize: 18,
           fontFamily: "Manrope",
           fontWeight: 700,
           alignItems: "center",
@@ -626,11 +627,11 @@ function StoryTipBanner({ index, text }: { index: number; text: string }) {
       <div
         style={{
           ...FLEX,
-          fontSize: 28,
+          fontSize: 24,
           fontFamily: "Manrope",
-          fontWeight: 700,
-          lineHeight: 1.28,
-          color: "#FFFFFF",
+          fontWeight: 600,
+          lineHeight: 1.35,
+          color: INK,
           flex: 1,
         }}
       >
@@ -782,6 +783,9 @@ export async function renderShareCard(
     isStory ? 44 : 36,
   );
 
+  const headline = shareHeadline(m);
+  const heroMeta = `${truncate(m.eventDates, 28)} · ${truncate(whereLabel(m), 28)}`;
+
   return new ImageResponse(
     (
       <div
@@ -839,40 +843,40 @@ export async function renderShareCard(
               position: "relative",
             }}
           >
-            {/* Hero poster */}
+            {/* Hero editorial */}
             <div
               style={{
                 ...FLEX,
                 flexDirection: "column",
                 alignItems: "center",
                 width: "100%",
-                padding: "44px 48px 36px",
-                backgroundColor: ROCK_INK,
+                padding: "48px 52px 40px",
+                backgroundColor: INK,
                 backgroundImage:
-                  "linear-gradient(135deg, rgba(43,89,255,0.35) 0%, rgba(18,21,28,0) 55%), linear-gradient(225deg, rgba(255,56,100,0.28) 0%, rgba(18,21,28,0) 50%)",
+                  "linear-gradient(155deg, rgba(217,106,75,0.24) 0%, rgba(22,26,34,0) 48%), linear-gradient(225deg, rgba(123,139,62,0.2) 0%, rgba(22,26,34,0) 52%)",
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logoSrc}
                 alt="Crambie"
-                width={240}
-                height={48}
+                width={220}
+                height={44}
                 style={{ objectFit: "contain" }}
               />
               <div
                 style={{
                   ...FLEX,
-                  marginTop: 16,
-                  backgroundColor: ROCK_PINK,
+                  marginTop: 18,
+                  backgroundColor: "rgba(244,240,232,0.12)",
                   color: "#FFFFFF",
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: 700,
-                  letterSpacing: "0.12em",
+                  letterSpacing: "0.16em",
                   textTransform: "uppercase",
-                  padding: "12px 24px",
+                  padding: "10px 20px",
                   borderRadius: 999,
-                  border: `2px solid #FFFFFF`,
+                  border: `1.5px solid rgba(244,240,232,0.35)`,
                 }}
               >
                 {truncate(m.interestLabel, 18)}
@@ -880,8 +884,8 @@ export async function renderShareCard(
               <div
                 style={{
                   ...FLEX,
-                  marginTop: 24,
-                  fontSize: 52,
+                  marginTop: 22,
+                  fontSize: 54,
                   fontFamily: "Fraunces",
                   fontWeight: 700,
                   lineHeight: 1.06,
@@ -890,20 +894,19 @@ export async function renderShareCard(
                   maxWidth: 920,
                 }}
               >
-                {truncate(m.guideTitle, 52)}
+                {truncate(headline, 56)}
               </div>
               <div
                 style={{
                   ...FLEX,
-                  marginTop: 14,
-                  fontSize: 28,
-                  fontWeight: 700,
-                  color: "#FFFFFF",
+                  marginTop: 16,
+                  fontSize: 24,
+                  fontWeight: 600,
+                  color: "rgba(244,240,232,0.88)",
                   textAlign: "center",
-                  opacity: 0.92,
                 }}
               >
-                {truncate(m.eventDates, 32)}
+                {heroMeta}
               </div>
             </div>
 
@@ -917,31 +920,43 @@ export async function renderShareCard(
                 backgroundColor: PAPER,
               }}
             >
-              <StoryFactStrip
-                label={ui.when}
-                value={truncate(m.eventDates, 28)}
-                bg={ROCK_BLUE}
-              />
-              <StoryFactStrip
-                label={ui.where}
-                value={truncate(whereLabel(m), 24)}
-                sub={
-                  m.interest === "concierto" && venueMetros.length
-                    ? formatVenueMetroSnapshot(venueMetros, L.locale)
-                    : undefined
-                }
-                bg={ROCK_PURPLE}
-              />
-              <StoryFactStrip
-                label={ui.weather}
-                value={truncate(
-                  m.weather.summary.replace(/^[^:]+:\s*/, ""),
-                  36,
-                )}
-                sub={truncate(m.weather.tip, 48)}
-                bg={ROCK_GOLD}
-                fg={ROCK_INK}
-              />
+              <div
+                style={{
+                  ...FLEX,
+                  flexDirection: "row",
+                  gap: 12,
+                  width: "100%",
+                  alignItems: "stretch",
+                }}
+              >
+                <StoryFactStrip
+                  label={ui.weather}
+                  value={truncate(
+                    m.weather.summary.replace(/^[^:]+:\s*/, ""),
+                    28,
+                  )}
+                  sub={truncate(m.weather.tip, 42)}
+                  accent={MUSTARD}
+                />
+                <StoryFactStrip
+                  label={ui.nearest}
+                  value={
+                    nearest
+                      ? `${nearest.walkingMinutes} ${ui.minWalk}`
+                      : ui.nearbyOptions
+                  }
+                  sub={nearest?.neighborhood}
+                  accent={OLIVE}
+                />
+              </div>
+
+              {m.interest === "concierto" && venueMetros.length ? (
+                <StoryFactStrip
+                  label={ui.titleTransport}
+                  value={formatVenueMetroSnapshot(venueMetros, L.locale)}
+                  accent={TEAL}
+                />
+              ) : null}
 
               {m.mustKnow.length > 0 ? (
                 <div
@@ -950,24 +965,23 @@ export async function renderShareCard(
                     flexDirection: "column",
                     gap: 12,
                     width: "100%",
-                    marginTop: 6,
+                    marginTop: 4,
                   }}
                 >
                   <div
                     style={{
                       ...FLEX,
-                      fontSize: 32,
+                      fontSize: 28,
                       fontFamily: "Fraunces",
                       fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      color: ROCK_INK,
+                      letterSpacing: "0.04em",
+                      color: INK,
                     }}
                   >
                     {ui.titleMust}
                   </div>
                   {m.mustKnow.slice(0, 3).map((tip, i) => (
-                    <StoryTipBanner key={tip} index={i} text={truncate(tip, 72)} />
+                    <StoryTipBanner key={tip} index={i} text={truncate(tip, 78)} />
                   ))}
                 </div>
               ) : null}
@@ -978,10 +992,10 @@ export async function renderShareCard(
                   marginTop: 4,
                   width: "100%",
                   height: storyMapHeight,
-                  borderRadius: 22,
+                  borderRadius: 20,
                   overflow: "hidden",
-                  border: `3px solid ${ROCK_INK}`,
-                  boxShadow: "6px 6px 0 rgba(18,21,28,0.88)",
+                  border: `1.5px solid ${LINE}`,
+                  boxShadow: "0 10px 28px rgba(22,26,34,0.08)",
                 }}
               >
                 <ReferentialMap
@@ -1006,16 +1020,15 @@ export async function renderShareCard(
                 <div
                   style={{
                     ...FLEX,
-                    backgroundColor: MUSTARD,
-                    color: ROCK_INK,
-                    fontSize: 26,
+                    backgroundColor: OLIVE,
+                    color: "#FFFFFF",
+                    fontSize: 22,
                     fontWeight: 700,
-                    letterSpacing: "0.06em",
+                    letterSpacing: "0.05em",
                     textTransform: "uppercase",
-                    padding: "20px 40px",
+                    padding: "18px 36px",
                     borderRadius: 999,
-                    border: `3px solid ${ROCK_INK}`,
-                    boxShadow: "5px 5px 0 rgba(18,21,28,0.9)",
+                    boxShadow: "0 8px 24px rgba(22,26,34,0.12)",
                   }}
                 >
                   {ui.ctaStay}

@@ -170,11 +170,7 @@ function buildSignal(
 
   const signal = toSignal({
     source: "campeonato_chileno",
-    title: clasico
-      ? `Clásico · ${title}`
-      : regional
-        ? `${title} (visita desde regiones)`
-        : title,
+    title: clasico ? `Clásico · ${title}` : title,
     date: teams.date,
     url: `https://www.campeonatochileno.cl/match/${encodeURIComponent(rawSlug)}/`,
     textForPoi: `${blob} estadio nacional santiago`,

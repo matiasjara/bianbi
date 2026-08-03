@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-07-31T18:07:58.210Z",
+  "ranAt": "2026-08-03T03:41:09.455Z",
   "sources": [
     {
       "name": "tocador",
@@ -7,9 +7,14 @@
       "count": 50
     },
     {
+      "name": "ticketplus_cl",
+      "ok": true,
+      "count": 195
+    },
+    {
       "name": "campeonato_chileno",
       "ok": true,
-      "count": 75
+      "count": 32
     },
     {
       "name": "ind_cl",
@@ -39,12 +44,12 @@
     {
       "name": "ticketmaster_cl",
       "ok": true,
-      "count": 20
+      "count": 9
     },
     {
       "name": "puntoticket",
       "ok": true,
-      "count": 63
+      "count": 144
     },
     {
       "name": "passline",

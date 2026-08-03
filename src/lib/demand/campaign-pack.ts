@@ -1,23 +1,24 @@
-import { format, isValid, parseISO } from "date-fns";
-import { es } from "date-fns/locale";
 import {
   getPoi,
   getPropertyByCode,
   properties as allProperties,
 } from "@/lib/data/seed";
 import { buildAdPublishPlan } from "./ad-brief";
+import { formatDateRangeCL } from "./dates";
 import { publicPropertyLocation } from "./public-location";
 import {
   poiIdsForInterest,
   preferredPoiOrder,
 } from "./poi-relevance";
-import { attachTravelBriefAndMicrosite } from "./travel-brief";
-import type { CampaignAudience } from "./types";
 import {
+  normalizePublicEventTitle,
   sportCopyParts,
   sportLandingHeadline,
   sportLandingSubhead,
 } from "./event-title";
+import { attachTravelBriefAndMicrosite } from "./travel-brief";
+import { resolveSignalCity } from "./cities";
+import type { CampaignAudience, CityId } from "./types";
 import {
   distanceKm,
   osmEmbedUrl,
@@ -92,23 +93,8 @@ function ensureUniquePackSlugs(packs: CampaignPack[]): CampaignPack[] {
   });
 }
 
-function safeParseIso(value: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  const d = parseISO(value);
-  return isValid(d) ? d : null;
-}
-
 function formatRange(start: string, end: string): string {
-  const a = safeParseIso(start);
-  const b = safeParseIso(end) ?? a;
-  if (!a) return start === end ? start : `${start} – ${end}`;
-  if (!b || start === end || a.getTime() === b.getTime()) {
-    return format(a, "d 'de' MMMM yyyy", { locale: es });
-  }
-  if (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) {
-    return `${format(a, "d", { locale: es })}–${format(b, "d 'de' MMMM yyyy", { locale: es })}`;
-  }
-  return `${format(a, "d MMM", { locale: es })} – ${format(b, "d MMM yyyy", { locale: es })}`;
+  return formatDateRangeCL(start, end);
 }
 
 function withUtm(url: string, campaign: string, content: string): string {
@@ -465,28 +451,13 @@ export function buildCampaignPack(
   peak: DemandPeak,
 ): CampaignPack {
   const lead = peak.signals[0];
-  const eventTitle =
+  const rawTitle =
     peak.interest === "nieve"
       ? "Temporada de nieve — hub Santiago"
-      : (lead?.title ?? peak.title);
-  const rawStart =
-    peak.interest === "nieve" || peak.interest === "turismo_general"
-      ? peak.rangeStart
-      : (lead?.startsOn ?? peak.rangeStart);
-  const rawEnd =
-    peak.interest === "nieve" || peak.interest === "turismo_general"
-      ? peak.rangeEnd
-      : (lead?.endsOn ?? peak.rangeEnd);
-  const eventStart = safeParseIso(rawStart)
-    ? rawStart > peak.rangeStart
-      ? rawStart
-      : peak.rangeStart
-    : peak.rangeStart;
-  const eventEnd = safeParseIso(rawEnd)
-    ? rawEnd < peak.rangeEnd
-      ? rawEnd
-      : peak.rangeEnd
-    : peak.rangeEnd;
+      : (peak.title ?? lead?.title ?? "Evento en Santiago");
+  const eventTitle = normalizePublicEventTitle(rawTitle);
+  const eventStart = peak.rangeStart;
+  const eventEnd = peak.rangeEnd;
   const eventDates = formatRange(eventStart, eventEnd);
   const poi = resolveAnchorPoi(peak, campaign.intentionSlug);
   const props = pickProperties(
@@ -540,8 +511,12 @@ export function buildCampaignPack(
   );
   const utmCampaign = slugify(`${campaign.interest}-${eventTitle}`).slice(0, 60);
 
+  const packCity: CityId =
+    lead && resolveSignalCity(lead) === "concepcion" ? "concepcion" : "santiago";
+
   const base = {
     slug,
+    city: packCity,
     campaignId: campaign.id,
     peakId: peak.id,
     playbook: campaign.playbook,

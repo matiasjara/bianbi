@@ -3,6 +3,10 @@
  * Nieve ≠ concierto ≠ partido ≠ competencia federada.
  */
 import type { CampaignInterest, DemandSignal } from "./types";
+import {
+  hockeyCampaignGroupKey,
+  isHockeySignal,
+} from "./hockey-group";
 
 export type { CampaignInterest };
 
@@ -168,6 +172,8 @@ export function campaignGroupKey(
   }
 
   if (interest === "deporte_competencia") {
+    const hockeyKey = hockeyCampaignGroupKey(signal);
+    if (hockeyKey) return hockeyKey;
     return `comp:${signal.startsOn}:${slugPart(signal.title).slice(0, 40)}`;
   }
 
@@ -204,6 +210,10 @@ export function intentionSlugForInterest(
       return pair ? `futbol-${pair}` : "estadio-nacional";
     }
     case "deporte_competencia":
+      if (lead && isHockeySignal(lead)) {
+        const key = hockeyCampaignGroupKey(lead);
+        if (key) return key.replace(/:/g, "-");
+      }
       if (pois.includes("poi-estadio")) return "competencia-estadio";
       return `competencia-${slugPart(lead?.title ?? "santiago").slice(0, 28)}`;
     case "concierto":

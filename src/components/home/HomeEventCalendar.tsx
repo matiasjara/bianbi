@@ -14,19 +14,23 @@ import {
 } from "@/lib/demand/event-calendar";
 import { mediaSrc } from "@/lib/demand/guide-images";
 import { micrositePath } from "@/lib/demand/travel-brief";
+import type { CityId } from "@/lib/demand/types";
+import { cityCalendarHref } from "@/components/home/HomeCitySelector";
+import { formatDayHeadingCL } from "@/lib/demand/dates";
 import {
   MONTH_NAMES_ES,
   defaultPlanningMonth,
 } from "@/lib/demand/month-range";
 
 type Props = {
+  city: CityId;
   year: number;
   monthIndex: number;
   events: CalendarEvent[];
 };
 
-function monthHref(year: number, monthIndex: number) {
-  return `/?year=${year}&month=${monthIndex + 1}#calendario`;
+function monthHref(city: CityId, year: number, monthIndex: number) {
+  return cityCalendarHref(city, year, monthIndex);
 }
 
 function bandRadiusClass(role: RangeBandRole): string {
@@ -84,7 +88,7 @@ function EventMiniCard({ ev }: { ev: CalendarEvent }) {
   );
 }
 
-export function HomeEventCalendar({ year, monthIndex, events }: Props) {
+export function HomeEventCalendar({ city, year, monthIndex, events }: Props) {
   const router = useRouter();
   const today = isoToday();
 
@@ -114,7 +118,7 @@ export function HomeEventCalendar({ year, monthIndex, events }: Props) {
 
   function shiftMonth(delta: number) {
     const d = new Date(year, monthIndex + delta, 1);
-    router.push(monthHref(d.getFullYear(), d.getMonth()));
+    router.push(monthHref(city, d.getFullYear(), d.getMonth()));
   }
 
   const years = useMemo(() => {
@@ -147,7 +151,7 @@ export function HomeEventCalendar({ year, monthIndex, events }: Props) {
             className="rounded-md border border-[var(--ms-line)] bg-white/90 px-2 py-1.5 text-xs font-medium text-[var(--ms-ink)]"
             value={monthIndex}
             onChange={(e) => {
-              router.push(monthHref(year, Number(e.target.value)));
+              router.push(monthHref(city, year, Number(e.target.value)));
             }}
           >
             {MONTH_NAMES_ES.map((label, i) => (
@@ -160,7 +164,7 @@ export function HomeEventCalendar({ year, monthIndex, events }: Props) {
             className="rounded-md border border-[var(--ms-line)] bg-white/90 px-2 py-1.5 text-xs font-medium text-[var(--ms-ink)]"
             value={year}
             onChange={(e) => {
-              router.push(monthHref(Number(e.target.value), monthIndex));
+              router.push(monthHref(city, Number(e.target.value), monthIndex));
             }}
           >
             {years.map((y) => (
@@ -258,14 +262,7 @@ export function HomeEventCalendar({ year, monthIndex, events }: Props) {
           {selectedDay && dayEvents.length > 0 ? (
             <>
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--ms-muted)]">
-                {new Date(`${selectedDay}T12:00:00`).toLocaleDateString(
-                  "es-CL",
-                  {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                  },
-                )}
+                {formatDayHeadingCL(selectedDay)}
                 {dayEvents.length > 1
                   ? ` · ${dayEvents.length} guías`
                   : ""}

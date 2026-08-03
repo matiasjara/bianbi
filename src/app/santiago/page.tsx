@@ -252,7 +252,11 @@ export default async function CatalogStayPage({ searchParams }: Props) {
         <div className="mx-auto max-w-5xl">
           <SectionIntro kicker="Mapa" title={ui.mapTitle} body={ui.mapBody} />
           <div className="mt-5 overflow-hidden rounded-2xl border border-[var(--ms-line)] shadow-[0_8px_30px_rgba(22,26,34,0.06)]">
-            <LandingMap markers={mapMarkers} className="h-96 w-full" />
+            <LandingMap
+              markers={mapMarkers}
+              className="h-96 w-full"
+              initialZoomBoost={1}
+            />
           </div>
         </div>
       </section>

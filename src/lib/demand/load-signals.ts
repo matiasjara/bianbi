@@ -1,12 +1,14 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { buildSeasonalitySignals } from "./seasonality";
+import { enrichSignalCity, signalMatchesCity } from "./cities";
+import { normalizeSignal } from "./dates";
 import { enrichSignalPotentials } from "./calendar";
 import {
   applySignalAdmin,
   loadSignalAdminState,
 } from "./signal-admin";
-import type { DemandSignal } from "./types";
+import type { CityId, DemandSignal } from "./types";
 
 async function readJsonSafe<T>(file: string, fallback: T): Promise<T> {
   try {
@@ -28,7 +30,9 @@ function sanitizeSignalDates(s: DemandSignal): DemandSignal | null {
   return { ...s, endsOn: s.startsOn };
 }
 
-export async function loadAllSignals(): Promise<{
+export async function loadAllSignals(options?: {
+  city?: CityId;
+}): Promise<{
   signals: DemandSignal[];
   ingestedAt: string | null;
   sourceCounts: Record<string, number>;
@@ -57,15 +61,21 @@ export async function loadAllSignals(): Promise<{
   const byId = new Map<string, DemandSignal>();
   for (const raw of [...seasonality, ...feriados, ...events, ...fromFile]) {
     if (raw.source === "seed") continue;
-    const s = sanitizeSignalDates(raw);
-    if (!s) continue;
+    const sanitized = sanitizeSignalDates(raw);
+    if (!sanitized) continue;
+    const s = normalizeSignal(sanitized);
     byId.set(s.id, s);
   }
 
   // Recalcula potencial de eventos (BTS ≠ teatro chico) aunque el JSON sea viejo
-  const enriched = enrichSignalPotentials([...byId.values()]);
+  const enriched = enrichSignalPotentials([...byId.values()]).map(
+    enrichSignalCity,
+  );
   const admin = await loadSignalAdminState();
-  const signals = applySignalAdmin(enriched, admin);
+  let signals = applySignalAdmin(enriched, admin);
+  if (options?.city) {
+    signals = signals.filter((s) => signalMatchesCity(s, options.city!));
+  }
   const sourceCounts: Record<string, number> = {};
   for (const s of signals) {
     sourceCounts[s.source] = (sourceCounts[s.source] ?? 0) + 1;

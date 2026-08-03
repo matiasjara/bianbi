@@ -32,64 +32,66 @@ export const SANTIAGO_LANDMARKS = [
   },
 ] as const;
 
+/** Cuatro estaciones alineadas al inventario (Barrio Italia, Ñuble/Estadio, Toesca/Movistar). */
 export const SANTIAGO_METRO_STATIONS = [
-  {
-    id: "metro-nunoa",
-    label: "Metro Ñuñoa",
-    lat: -33.4569,
-    lng: -70.5973,
-  },
   {
     id: "metro-irarrazaval",
     label: "Metro Irarrázaval",
-    lat: -33.4444,
-    lng: -70.6282,
+    lat: -33.4535471,
+    lng: -70.6315175,
   },
   {
-    id: "metro-toesca",
-    label: "Metro Toesca",
-    lat: -33.4562,
-    lng: -70.6643,
+    id: "metro-nuble",
+    label: "Metro Ñuble",
+    lat: -33.4669688,
+    lng: -70.6366262,
   },
   {
     id: "metro-estadio-nacional",
     label: "Metro Estadio Nacional",
-    lat: -33.4662,
-    lng: -70.6088,
+    lat: -33.4609211,
+    lng: -70.6097813,
   },
   {
-    id: "metro-franklin",
-    label: "Metro Franklin",
-    lat: -33.4766,
-    lng: -70.6494,
-  },
-  {
-    id: "metro-moneda",
-    label: "Metro Moneda",
-    lat: -33.4442,
-    lng: -70.6506,
-  },
-  {
-    id: "metro-baquedano",
-    label: "Metro Baquedano",
-    lat: -33.4396,
-    lng: -70.6314,
-  },
-  {
-    id: "metro-universidad-de-chile",
-    label: "Metro Universidad de Chile",
-    lat: -33.4481,
-    lng: -70.6514,
-  },
-  {
-    id: "metro-republica",
-    label: "Metro República",
-    lat: -33.4317,
-    lng: -70.6386,
+    id: "metro-toesca",
+    label: "Metro Toesca",
+    lat: -33.4529423,
+    lng: -70.6611249,
   },
 ] as const;
 
 export const METRO_LOGO_SRC = "/brand/metro-santiago.png";
+export const ESTADIO_NACIONAL_ICON_SRC = "/brand/estadio-nacional.png";
+export const MOVISTAR_ARENA_ICON_SRC = "/brand/movistar-arena.png";
+
+export function isEstadioNacionalLabel(label: string): boolean {
+  return /estadio nacional/i.test(label) && !/^metro /i.test(label);
+}
+
+export function isMovistarArenaLabel(label: string): boolean {
+  return /movistar arena/i.test(label) && !/^metro /i.test(label);
+}
+
+export type CustomVenuePin = {
+  iconSrc: string;
+  displayLabel: string;
+};
+
+export function resolveCustomVenuePin(label: string): CustomVenuePin | null {
+  if (isEstadioNacionalLabel(label)) {
+    return {
+      iconSrc: ESTADIO_NACIONAL_ICON_SRC,
+      displayLabel: "Estadio Nacional",
+    };
+  }
+  if (isMovistarArenaLabel(label)) {
+    return {
+      iconSrc: MOVISTAR_ARENA_ICON_SRC,
+      displayLabel: "Movistar Arena",
+    };
+  }
+  return null;
+}
 
 export function santiagoCatalogMapMarkers() {
   return [

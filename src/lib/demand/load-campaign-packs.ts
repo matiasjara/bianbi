@@ -4,6 +4,9 @@ import {
   suggestCampaignsFromPeaks,
 } from "./calendar";
 import { buildCampaignPacks, findPackBySlug } from "./campaign-pack";
+import { parseCityParam } from "./cities";
+import type { CityId } from "./types";
+import { isPublishableGuidePeak } from "./guide-eligibility";
 import { loadAllSignals } from "./load-signals";
 import { monthRange } from "./month-range";
 import type { CampaignPack } from "./types";
@@ -15,6 +18,10 @@ export type LoadCampaignPacksOptions = {
   year?: number;
   /** Mes 0–11 (requiere year). */
   monthIndex?: number;
+  /** Incluye guías genéricas de estacionalidad (congresos, verano…). Default false. */
+  includeGeneric?: boolean;
+  /** Ciudad sede. Default Santiago. */
+  city?: CityId;
 };
 
 export async function loadAllCampaignPacks(
@@ -23,8 +30,10 @@ export async function loadAllCampaignPacks(
   const opts: LoadCampaignPacksOptions =
     typeof options === "number" ? { limit: options } : options;
   const limit = opts.limit ?? 16;
+  const includeGeneric = opts.includeGeneric ?? false;
+  const city = opts.city ?? "santiago";
 
-  const { signals } = await loadAllSignals();
+  const { signals } = await loadAllSignals({ city });
 
   let start: string;
   let end: string;
@@ -40,8 +49,11 @@ export async function loadAllCampaignPacks(
 
   // Una oportunidad = un interés (nieve, partido, concierto, competencia…)
   const opportunities = detectCampaignOpportunities(signals, start, end, 24);
-  const suggestions = suggestCampaignsFromPeaks(opportunities, limit);
-  return buildCampaignPacks(suggestions, opportunities);
+  const eligible = includeGeneric
+    ? opportunities
+    : opportunities.filter(isPublishableGuidePeak);
+  const suggestions = suggestCampaignsFromPeaks(eligible, limit);
+  return buildCampaignPacks(suggestions, eligible);
 }
 
 function monthsAroundSlug(slug: string): Array<{ year: number; monthIndex: number }> {
@@ -87,8 +99,9 @@ export async function loadCampaignPackBySlug(
   const start = format(addDays(new Date(), -60), "yyyy-MM-dd");
   const end = format(addDays(new Date(), 220), "yyyy-MM-dd");
   const opportunities = detectCampaignOpportunities(signals, start, end, 18);
-  const suggestions = suggestCampaignsFromPeaks(opportunities, 120);
+  const eligible = opportunities.filter(isPublishableGuidePeak);
+  const suggestions = suggestCampaignsFromPeaks(eligible, 120);
   return (
-    findPackBySlug(buildCampaignPacks(suggestions, opportunities), slug) ?? null
+    findPackBySlug(buildCampaignPacks(suggestions, eligible), slug) ?? null
   );
 }

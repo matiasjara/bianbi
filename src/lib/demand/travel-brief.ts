@@ -10,6 +10,7 @@ import type {
   MicrositeContent,
   TravelBrief,
 } from "./types";
+import { cleanPublicEventTitle } from "./guide-eligibility";
 import { climateForCampaign } from "./climate-copy";
 import {
   formatVenueMetroMustKnow,
@@ -35,21 +36,24 @@ function guideKind(interest: CampaignInterest): MicrositeContent["guideKind"] {
 }
 
 function guideTitle(pack: PackCore): string {
-  const kind = guideKind(pack.interest);
-  const t = pack.eventTitle;
-  switch (kind) {
+  const raw = cleanPublicEventTitle(pack.eventTitle);
+  switch (pack.interest) {
     case "concierto":
-      return `Guía para el concierto: ${t}`;
-    case "partido":
-      return `Guía para el partido: ${t}`;
-    case "deporte":
-      return `Guía de viaje: ${t}`;
+      return raw.startsWith("Guía") ? raw : `Guía del concierto: ${raw}`;
+    case "partido_futbol":
+      return raw.startsWith("Guía") ? raw : `Guía del partido: ${raw}`;
+    case "deporte_competencia":
+      return raw.startsWith("Guía") ? raw : `Guía: ${raw}`;
     case "nieve":
-      return `Guía de viaje nieve: Santiago como base`;
-    case "turismo":
-      return `Guía de viaje: ${t} en Santiago`;
+      return "Guía de nieve: Santiago como base hacia la cordillera";
+    case "feriado_puente":
+      return `Guía ${raw} en Santiago`;
+    case "vacaciones_familias":
+      return `Guía ${raw} en Santiago`;
+    case "turismo_general":
+      return `Guía ${raw} en Santiago`;
     default:
-      return `Travel Brief: ${t}`;
+      return `Guía ${raw} en Santiago`;
   }
 }
 
@@ -325,26 +329,22 @@ function transport(pack: PackCore): string[] {
 
 function eventSummary(pack: PackCore): string {
   if (pack.interest === "nieve") {
-    return `Temporada de nieve en Chile (${pack.eventDates}). Santiago como base cómoda hacia Valle Nevado, Farellones y Portillo.`;
+    return "Santiago como base cómoda hacia Valle Nevado, Farellones y Portillo.";
   }
-  return `${pack.eventTitle} en ${pack.venueName}. ${pack.eventDates}. Todo lo esencial para tu visita a Santiago.`;
+  return `Lo esencial para ${pack.venueName}: transporte, clima y dónde quedarte en Santiago.`;
 }
 
 function mustKnow(pack: PackCore): string[] {
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   if (pack.interest === "nieve") {
     return [
-      `Temporada: ${pack.eventDates}.`,
       "Santiago es tu base: duermes en la ciudad y sales a la cordillera.",
-      "Centros habituales: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h desde Santiago).",
+      "Centros habituales: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h).",
       "Revisa el parte de nieve y reserva van/tour con anticipación en fines de semana.",
-      "Guarda esta guía y compártela con quien va contigo.",
+      "Mándala a tu grupo antes de reservar alojamiento o traslado.",
     ];
   }
-  const tips = [
-    `Fecha: ${pack.eventDates}.`,
-    `Lugar: ${pack.venueName}, Santiago.`,
-  ];
+  const tips: string[] = [];
   if (pack.interest === "concierto") {
     const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
     if (venueMetros.length) {
@@ -352,8 +352,8 @@ function mustKnow(pack: PackCore): string[] {
     }
   }
   tips.push(
-    `Llega con tiempo: desde los alojamientos recomendados son ~${mins} min.`,
-    "Guarda esta guía y compártela con quien va contigo.",
+    `Llega con tiempo: alojamientos recomendados a ~${mins} min del venue.`,
+    "Mándala a tu grupo antes del viaje — mapa, clima y tips en un solo link.",
   );
   if (pack.interest === "concierto") {
     tips.push(
@@ -432,7 +432,7 @@ export function buildMicrosite(pack: PackCore): MicrositeContent {
     slug,
     guideTitle: title,
     guideKind: kind,
-    productLabel: "Travel Brief",
+    productLabel: "Event guide",
     productLabelEs: "Guía del evento",
     eventSummary: summary,
     eventTitle: pack.eventTitle,
@@ -459,8 +459,8 @@ export function buildMicrosite(pack: PackCore): MicrositeContent {
     interestLabel: pack.interestLabel,
     shareText:
       pack.interest === "nieve"
-        ? `🎿 ${title} — ${pack.eventDates}. Guía con tips, clima y dónde quedarte en Santiago:`
-        : `📍 ${title} — ${pack.eventDates} en ${pack.venueName}. Guía con mapa, tips y alojamiento:`,
+        ? `🎿 ${pack.eventTitle} · ${pack.eventDates}. Tips, clima y dónde quedarte en Santiago:`
+        : `📍 ${pack.eventTitle} · ${pack.venueName} (${pack.eventDates}). Mapa, tips y alojamiento:`,
   };
 }
 

@@ -1,4 +1,5 @@
 import { DEMAND_SOURCE_CATALOG } from "./source-catalog";
+import { formatDateRangeCL } from "./dates";
 import type { CalendarEvent } from "./event-calendar";
 import type { DemandSignal, SignalKind, SignalSource } from "./types";
 
@@ -59,24 +60,6 @@ export function kindLabel(kind: SignalKind): string {
   return KIND_LABELS[kind] ?? kind;
 }
 
-function formatRange(start: string, end: string): string {
-  if (start === end) {
-    return new Date(`${start}T12:00:00`).toLocaleDateString("es-CL", {
-      day: "numeric",
-      month: "short",
-    });
-  }
-  const a = new Date(`${start}T12:00:00`).toLocaleDateString("es-CL", {
-    day: "numeric",
-    month: "short",
-  });
-  const b = new Date(`${end}T12:00:00`).toLocaleDateString("es-CL", {
-    day: "numeric",
-    month: "short",
-  });
-  return `${a} – ${b}`;
-}
-
 export function signalsToAdminCalendarEvents(
   signals: DemandSignal[],
   overriddenIds: Set<string> = new Set(),
@@ -88,7 +71,7 @@ export function signalsToAdminCalendarEvents(
     start: s.startsOn,
     end: s.endsOn,
     interestLabel: kindLabel(s.kind),
-    eventDates: formatRange(s.startsOn, s.endsOn),
+    eventDates: formatDateRangeCL(s.startsOn, s.endsOn),
     kind: s.kind,
     source: s.source,
     sourceLabel: sourceLabel(s.source),
