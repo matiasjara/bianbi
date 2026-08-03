@@ -81,9 +81,15 @@ const CATEGORIES: Category[] = [
     icon: "luggage",
   },
   {
+    id: "congresos",
+    interests: ["congreso_feria"],
+    label: "Congresos / ferias",
+    icon: "megaphone",
+  },
+  {
     id: "otros",
     interests: ["otro_evento"],
-    label: "Otros",
+    label: "Teatro / cultura",
     icon: "camera",
   },
 ];
@@ -281,10 +287,10 @@ export default async function HomePage({
               </Suspense>
             </div>
             <h1 className="ms-rise ms-rise-d1 ms-editorial mt-8 max-w-md text-2xl leading-tight md:text-[2.6rem]">
-              Guías que inspiran viajes con sentido
+              Todo lo que necesitas para tu viaje
             </h1>
             <p className="ms-rise ms-rise-d2 mt-3 max-w-sm text-[15px] leading-relaxed text-[var(--ms-muted)]">
-              {cityName}, evento a evento: lo esencial y dónde quedarte cerca
+              {cityName}, evento a evento: guías esenciales y dónde quedarte cerca
               del venue.
             </p>
             <div className="ms-rise ms-rise-d3 mt-8 flex flex-wrap gap-3">
@@ -294,6 +300,12 @@ export default async function HomePage({
               >
                 Ver calendario
               </a>
+              <Link
+                href="/santiago/feriados"
+                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
+              >
+                Feriado en Santiago
+              </Link>
               <Link
                 href="/santiago"
                 className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"

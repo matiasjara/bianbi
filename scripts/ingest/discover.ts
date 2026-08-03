@@ -38,6 +38,9 @@ const SEARCH_QUERIES = [
   "campeonato voleibol Santiago Estadio Nacional 2026",
   "LNB Super 8 Santiago 2026",
   "torneo federado regiones Santiago 2026",
+  "congreso feria expo Santiago 2026",
+  "Espacio Riesco feria 2026",
+  "Metropolitan Santiago congreso 2026",
 ];
 
 const SPORT_HINTS: Array<{ re: RegExp; discipline: string }> = [
@@ -47,6 +50,7 @@ const SPORT_HINTS: Array<{ re: RegExp; discipline: string }> = [
   { re: /b[aá]squet|lnb|basket/i, discipline: "basquetbol" },
   { re: /tenis|copa davis|chile open/i, discipline: "tenis" },
   { re: /f[uú]tbol|anfp|campeonato chileno/i, discipline: "futbol" },
+  { re: /congreso|feria|expo\b|summit|mice|convencion/i, discipline: "mice" },
 ];
 
 function stripTags(s: string) {

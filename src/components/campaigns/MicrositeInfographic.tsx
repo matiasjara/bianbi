@@ -19,8 +19,8 @@ import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 
 function IconBadge({ name }: { name: BrandIconName }) {
   return (
-    <span className="inline-flex size-14 shrink-0 items-center justify-center rounded-2xl border border-[var(--ms-line)] bg-white/80">
-      <BrandIcon name={name} size={36} />
+    <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-[var(--ms-line)] bg-white/80 sm:size-14 sm:rounded-2xl">
+      <BrandIcon name={name} size={30} />
     </span>
   );
 }
@@ -44,7 +44,7 @@ function SectionHead({
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
           {kicker}
         </p>
-        <h2 className="ms-editorial mt-1 text-2xl leading-tight md:text-[1.85rem]">
+        <h2 className="ms-editorial mt-1 text-xl leading-tight sm:text-2xl md:text-[1.85rem]">
           {title}
         </h2>
       </div>
@@ -187,7 +187,7 @@ export function MicrositeInfographic({
   };
 
   return (
-    <div lang={locale} className="ms-root min-h-screen overflow-x-hidden">
+    <div lang={locale} className="ms-root min-h-screen overflow-x-hidden pb-24 md:pb-0">
       <header className="relative border-b border-[var(--ms-line)]/80">
         <LandingLangSwitch
           basePath={`/g/${slug}`}
@@ -201,69 +201,83 @@ export function MicrositeInfographic({
         />
         <DoodleStars className="pointer-events-none absolute right-6 top-10 hidden w-28 text-[var(--ms-olive)]/50 md:block" />
 
-        <div className="relative mx-auto grid max-w-5xl gap-8 px-5 pb-12 pt-12 md:grid-cols-[1.15fr_0.85fr] md:items-end md:pb-16 md:pt-16">
-          <div>
-            <div className="ms-rise flex flex-wrap items-center gap-3 pr-28">
-              <BianbiLogo href={`/?lang=${locale}`} variant="logo" tone="onLight" />
+        <div className="relative mx-auto grid max-w-5xl min-w-0 gap-6 px-4 pb-10 pt-14 sm:gap-8 sm:px-5 sm:pb-12 sm:pt-12 md:grid-cols-[1.15fr_0.85fr] md:items-end md:pb-16 md:pt-16">
+          <div className="min-w-0">
+            <div className="ms-rise flex flex-wrap items-center gap-2 pr-[5.5rem] sm:gap-3 sm:pr-28">
+              <BianbiLogo
+                href={`/?lang=${locale}`}
+                variant="logo"
+                tone="onLight"
+                size="sm"
+              />
               <span className="font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--ms-muted)]">
                 {ui.productLabel}
               </span>
             </div>
 
-            <p className="ms-rise ms-rise-d1 mt-7 font-[family-name:var(--font-display)] text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ms-terracotta)]">
+            <p className="ms-rise ms-rise-d1 mt-5 font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-terracotta)] sm:mt-7 sm:text-xs">
               {ui.productLabel} · {m.interestLabel}
             </p>
 
-            <h1 className="ms-rise ms-rise-d1 ms-editorial mt-3 max-w-xl text-[2.15rem] leading-[1.1] md:text-5xl">
+            <h1 className="ms-rise ms-rise-d1 ms-editorial mt-2 max-w-xl text-[1.65rem] leading-[1.12] sm:mt-3 sm:text-[2.15rem] md:text-5xl">
               {m.eventTitle}
             </h1>
 
-            <p className="ms-rise ms-rise-d2 mt-3 text-sm font-medium text-[var(--ms-ink)]/80">
-              {m.eventDates} · {m.venueName}
+            <p className="ms-rise ms-rise-d2 mt-2 text-sm font-medium text-[var(--ms-ink)]/80 sm:mt-3">
+              <span className="block sm:inline">{m.eventDates}</span>
+              <span className="hidden sm:inline"> · </span>
+              <span className="mt-0.5 block sm:mt-0 sm:inline">{m.venueName}</span>
             </p>
 
             <p className="ms-rise ms-rise-d2 mt-4 max-w-md text-[15px] leading-relaxed text-[var(--ms-muted)]">
               {m.eventSummary}
             </p>
 
-            <div className="ms-rise ms-rise-d3 mt-7 flex flex-wrap gap-2">
+            {m.eventDescription ? (
+              <div className="ms-rise ms-rise-d3 mt-6 max-w-xl rounded-2xl border border-[var(--ms-line)]/90 bg-white/55 px-5 py-4">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
+                  {ui.kickerAbout}
+                </p>
+                <p className="mt-2 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
+                  {m.eventDescription}
+                </p>
+              </div>
+            ) : null}
+
+            <div className="ms-rise ms-rise-d3 mt-5 flex flex-col gap-2 sm:mt-7 sm:flex-row sm:flex-wrap">
               <a
                 href="#compartir"
-                className="inline-flex items-center gap-2 rounded-lg bg-[var(--ms-olive)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--ms-olive)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
               >
                 <BrandIcon name="megaphone" size={22} tone="onDark" />
                 {ui.ctaShare}
               </a>
               <a
                 href="#alojar"
-                className="inline-flex items-center gap-2 rounded-lg bg-[var(--ms-ink)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--ms-ink)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black"
               >
                 <BrandIcon name="bed" size={22} tone="onDark" />
                 {ui.ctaStay}
               </a>
               <a
                 href="#must"
-                className="inline-flex items-center gap-2 rounded-lg border border-[var(--ms-ink)]/15 bg-white/70 px-4 py-2.5 text-sm font-semibold text-[var(--ms-ink)] transition hover:bg-white"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--ms-ink)]/15 bg-white/70 px-4 py-2.5 text-sm font-semibold text-[var(--ms-ink)] transition hover:bg-white"
               >
                 {ui.ctaEssentials}
               </a>
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-sm md:mx-0 md:justify-self-end">
-            <div
-              className="ms-stroke -left-6 top-10 h-24 w-24 rounded-full bg-[var(--ms-pink)]/25"
-              aria-hidden
-            />
+          <div className="relative mx-auto w-full min-w-0 max-w-[min(100%,15rem)] sm:max-w-xs md:mx-0 md:max-w-sm md:justify-self-end">
             {heroPhoto ? (
-              <div className="ms-polaroid ms-tilt-r relative">
-                <span className="ms-tape ms-tape-coral -top-2 left-6" />
-                <span className="ms-tape ms-tape-olive -top-1 right-8" />
+              <div className="ms-polaroid ms-tilt-r relative overflow-hidden">
+                <span className="ms-tape ms-tape-coral -top-2 left-4 sm:left-6" />
+                <span className="ms-tape ms-tape-olive -top-1 right-6 sm:right-8" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={mediaSrc(heroPhoto, 720)}
                   alt={m.venueName}
-                  className="aspect-[4/5] w-full object-cover"
+                  className="aspect-[3/4] w-full max-w-full object-cover sm:aspect-[4/5]"
                 />
                 <p className="mt-2 px-1 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ms-muted)]">
                   {editorial.cover
@@ -276,7 +290,7 @@ export function MicrositeInfographic({
             ) : null}
 
             {sidePhoto && sidePhoto !== heroPhoto ? (
-              <div className="ms-polaroid ms-tilt-l absolute -bottom-8 -left-4 hidden w-36 sm:block md:-left-10 md:w-40">
+              <div className="ms-polaroid ms-tilt-l absolute -bottom-6 -left-2 hidden w-28 md:-bottom-8 md:-left-10 md:block md:w-40">
                 <span className="ms-tape ms-tape-terracotta -top-2 left-8" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -289,21 +303,21 @@ export function MicrositeInfographic({
           </div>
         </div>
 
-        <DoodlePath className="relative mx-auto mt-4 block h-10 w-full max-w-5xl px-5 opacity-80" />
+        <DoodlePath className="relative mx-auto mt-2 hidden h-10 w-full max-w-5xl px-5 opacity-80 sm:block" />
       </header>
 
       {/* Snapshot con números grandes */}
-      <section className="relative mx-auto max-w-5xl px-5 py-12 md:py-14">
+      <section className="relative mx-auto max-w-5xl min-w-0 px-4 py-10 sm:px-5 sm:py-12 md:py-14">
         <div className="mb-8 max-w-lg">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
             {ui.snapshotKicker}
           </p>
-          <h2 className="ms-editorial mt-1 text-2xl md:text-3xl">
+          <h2 className="ms-editorial mt-1 text-xl sm:text-2xl md:text-3xl">
             {ui.snapshotTitle}
           </h2>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
           {[
             {
               label: ui.when,
@@ -342,16 +356,16 @@ export function MicrositeInfographic({
           ].map((item, i) => (
             <div
               key={item.label}
-              className={`ms-node relative rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-panel)]/90 px-4 py-5 ${
+              className={`ms-node relative min-w-0 rounded-2xl border border-[var(--ms-line)] bg-[var(--ms-panel)]/90 px-3.5 py-4 sm:px-4 sm:py-5 ${
                 i % 2 === 0 ? "md:-rotate-1" : "md:rotate-1"
               }`}
             >
-              <BrandIcon name={item.icon} size={34} />
-              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-muted)]">
+              <BrandIcon name={item.icon} size={28} />
+              <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-muted)] sm:mt-3">
                 {item.label}
               </p>
               <p
-                className={`ms-editorial mt-1 text-2xl leading-tight ${item.tone}`}
+                className={`ms-editorial mt-1 break-words text-lg leading-snug sm:text-2xl sm:leading-tight ${item.tone}`}
               >
                 {item.value}
               </p>
@@ -384,13 +398,13 @@ export function MicrositeInfographic({
       {/* Sección destacada para compartir */}
       <section
         id="compartir"
-        className="relative scroll-mt-24 border-y border-[var(--ms-line)]/80 bg-[var(--ms-panel)]/50 py-12 md:py-16"
+        className="relative scroll-mt-24 border-y border-[var(--ms-line)]/80 bg-[var(--ms-panel)]/50 py-10 sm:py-12 md:py-16"
       >
         <div
           className="ms-stroke pointer-events-none absolute -left-8 top-12 h-20 w-40 rotate-12 bg-[var(--ms-pink)]/20"
           aria-hidden
         />
-        <div className="relative mx-auto max-w-5xl px-5">
+        <div className="relative mx-auto max-w-5xl min-w-0 px-4 sm:px-5">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
             {ui.shareSectionKicker}
           </p>
@@ -402,7 +416,7 @@ export function MicrositeInfographic({
         </div>
       </section>
 
-      <div className="mx-auto max-w-5xl space-y-16 px-5 pb-16 md:space-y-20">
+      <div className="mx-auto max-w-5xl min-w-0 space-y-12 px-4 pb-16 sm:space-y-16 sm:px-5 md:space-y-20">
         <section className="ms-rise">
           <SectionHead
             id="must"
@@ -466,12 +480,12 @@ export function MicrositeInfographic({
                 ? `${ui.mapBody(m.venueName)} ${formatVenueMetroSnapshot(venueMetros, locale)}.`
                 : ui.mapBody(m.venueName)}
           </p>
-          <div className="ms-polaroid ms-tilt-l relative mt-6 max-w-3xl">
-            <span className="ms-tape ms-tape-olive -top-2 left-10" />
-            <span className="ms-tape ms-tape-coral -top-1 right-16" />
+          <div className="ms-polaroid ms-tilt-l relative mt-5 max-w-full overflow-hidden sm:mt-6 sm:max-w-3xl">
+            <span className="ms-tape ms-tape-olive -top-2 left-6 sm:left-10" />
+            <span className="ms-tape ms-tape-coral -top-1 right-8 sm:right-16" />
             <LandingMap
               markers={mapMarkers}
-              className="h-[22rem] w-full md:h-96"
+              className="h-52 w-full sm:h-72 md:h-96"
             />
           </div>
         </section>

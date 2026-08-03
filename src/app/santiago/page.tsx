@@ -131,6 +131,18 @@ export default async function CatalogStayPage({ searchParams }: Props) {
                 {ui.ctaSee}
               </a>
               <Link
+                href="/santiago/feriados"
+                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
+              >
+                Feriado / puente
+              </Link>
+              <Link
+                href="/santiago/negocios"
+                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
+              >
+                Viaje de trabajo
+              </Link>
+              <Link
                 href="/"
                 className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
               >

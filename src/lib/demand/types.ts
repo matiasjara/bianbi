@@ -22,6 +22,7 @@ export type SignalSource =
   | "fedachi"
   | "fehoch_tournaments"
   | "fevochi"
+  | "congresos_ferias_cl"
   | "discovery_web"
   | "playwright_scrape"
   | "manual"
@@ -40,6 +41,7 @@ export type CampaignInterest =
   | "feriado_puente"
   | "vacaciones_familias"
   | "turismo_general"
+  | "congreso_feria"
   | "otro_evento";
 
 export type AudienceGeoType = "city" | "region" | "country";
@@ -208,6 +210,10 @@ export interface CampaignPack {
   playbook: CampaignPlaybook;
   channels: SuggestedCampaign["channels"];
   eventTitle: string;
+  /** Descripción pública del evento (desde señal ingestada). */
+  eventDescription: string;
+  /** URL oficial del evento / ticketera (si existe). */
+  eventUrl?: string;
   eventDates: string;
   eventStartsOn: string;
   eventEndsOn: string;
@@ -357,6 +363,8 @@ export interface MicrositeContent {
   productLabel: string;
   productLabelEs: string;
   eventSummary: string;
+  /** Descripción del evento para la guía pública. */
+  eventDescription: string;
   eventTitle: string;
   eventDates: string;
   venueName: string;

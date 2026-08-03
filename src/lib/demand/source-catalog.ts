@@ -15,6 +15,7 @@ export type Discipline =
   | "tenis"
   | "multisport"
   | "conciertos"
+  | "mice"
   | "otro";
 
 export interface DemandSourceEntry {
@@ -60,6 +61,28 @@ export const DEMAND_SOURCE_CATALOG: DemandSourceEntry[] = [
     scrapeNotes: "Catálogo curado + verificación de nota IND; RSS IND para discovery.",
     playbookHint: "mailing_first",
     keywords: ["ind", "estadio nacional", "grandes eventos"],
+  },
+  {
+    id: "congresos_ferias_cl",
+    name: "Congresos y ferias Santiago",
+    status: "active",
+    mode: "manual",
+    discipline: "mice",
+    url: "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    why: "MICE sectorial: Espacio Riesco, Metropolitan, Mapocho — pernocta corporativa.",
+    scrapeNotes:
+      "Catálogo curado 2026 (Revista Eventos + calendarios MICE); ampliar con TicketPlus/discovery.",
+    playbookHint: "hybrid",
+    keywords: [
+      "congreso",
+      "feria",
+      "expo",
+      "mice",
+      "espacio riesco",
+      "metropolitan",
+      "fidae",
+      "edifica",
+    ],
   },
   {
     id: "club_atletico_santiago",

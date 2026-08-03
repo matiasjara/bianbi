@@ -7,6 +7,7 @@ import {
   hockeyCampaignGroupKey,
   isHockeySignal,
 } from "./hockey-group";
+import { isCongressOrFairEvent, isCongressOrFairSignal } from "./congress-fair";
 
 export type { CampaignInterest };
 
@@ -18,7 +19,8 @@ const INTEREST_LABELS: Record<CampaignInterest, string> = {
   feriado_puente: "Feriado / puente",
   vacaciones_familias: "Vacaciones familias",
   turismo_general: "Turismo estacional",
-  otro_evento: "Otro evento",
+  congreso_feria: "Congreso / feria",
+  otro_evento: "Teatro / cultura / otros",
 };
 
 export function interestLabel(interest: CampaignInterest): string {
@@ -37,6 +39,59 @@ function slugPart(s: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "")
     .slice(0, 48);
+}
+
+/** Stand-up / humor en vivo → tratamos como show, no teatro. */
+function isStandUpOrComedyShow(text: string): boolean {
+  return /\bstandup\b|\bstand-up\b|\bstand up\b|\bhumorista\b|\bcomedia en vivo\b|\bcomedy\b|\bopen mic\b|\bopen mic\b/i.test(
+    text,
+  );
+}
+
+/** Teatro, danza, artes escénicas y formatos culturales (no música). */
+export function isTheaterOrCulturalEvent(text: string): boolean {
+  const t = normalize(text);
+  if (isStandUpOrComedyShow(t)) return false;
+  if (isCongressOrFairEvent(t)) return false;
+
+  return (
+    /\bteatro\b|\bobra\b|\bdramatur|\bmon[oó]logo\b|\bfunci[oó]n\b|\bartes esc[eé]nicas\b|\bmontaje\b|\bpuesta en escena\b|\bcompa[nñ][ií]a teatral\b|\bciclo de teatro\b|\btemporada teatral\b|\bteatral\b|\bbeckett\b|\bshakespeare\b|\bchejov\b|\bibsen\b|\bpinter\b|\bvidela\b|\bescenograf/i.test(
+      t,
+    ) ||
+    /\bteatro mori\b|\bmori bellavista\b|morand[eé]\s*25|\bteatro oriente\b|\bteatro nescaf|\bteatro municipal\b|\bsala metr[oó]nomo\b|\bteatro zoco\b|\bteatro cariola\b|\bteatro caupol|\bteatro coliseo\b|\bteatro universitario\b|\bcentro cultural\b|\bcentro gam\b|\bestaci[oó]n mapocho\b/i.test(
+      t,
+    ) ||
+    /\b(danza|ballet|performance|museo|charla|conferencia|taller|seminario)\b/i.test(
+      t,
+    ) ||
+    /\bexposici[oó]n\b|\bferia del libro\b/i.test(t)
+  );
+}
+
+/** Conciertos, tours y shows musicales. */
+export function isMusicConcertEvent(text: string): boolean {
+  const t = normalize(text);
+  if (isTheaterOrCulturalEvent(t)) return false;
+
+  return (
+    /\bconcierto\b|\btour\b|\blive in\b|\bfestival\b|\blollapalooza\b|\bcreamfields\b|\bfauna\b|\bjazz\b|\brock\b|\bpop\b|\bmusica\b|\bm[uú]sica\b|\bbanda\b|\bdj\b|\brecital\b|\bciclo de piano\b|\bsoda stereo\b|\bser[uú] gir[aá]n\b|\bmovistar arena\b|\bestadio nacional\b|\bparque o'?higgins\b|\bclub subterr[aá]neo\b|\bblondie\b|\brock alternativo\b|\brock chileno\b/i.test(
+      t,
+    )
+  );
+}
+
+/** Tags de audiencia al ingestar (TicketPlus, etc.). */
+export function inferEventAudienceTags(title: string, blob = ""): string[] {
+  const text = normalize(`${title} ${blob}`);
+  const tags = ["eventos"];
+  if (isCongressOrFairEvent(text)) {
+    tags.push("congresos", "ferias", "mice");
+  } else if (isTheaterOrCulturalEvent(text)) {
+    tags.push("teatro", "cultura");
+  } else if (isMusicConcertEvent(text)) {
+    tags.push("conciertos");
+  }
+  return tags;
 }
 
 /** Clasifica una señal en un interés de campaña (mutuamente excluyente). */
@@ -101,12 +156,27 @@ export function classifyInterest(signal: DemandSignal): CampaignInterest {
   }
 
   if (
-    signal.kind === "event" ||
-    /concierto|tour|live in|movistar arena|teatro|festival|lollapalooza|standup|stand-up/.test(
-      text,
-    )
+    isCongressOrFairSignal(signal) ||
+    isCongressOrFairEvent(text) ||
+    tags.some((t) => t.includes("congreso") || t.includes("mice"))
+  ) {
+    return "congreso_feria";
+  }
+
+  if (isTheaterOrCulturalEvent(text) || tags.includes("teatro")) {
+    return "otro_evento";
+  }
+
+  if (
+    isMusicConcertEvent(text) ||
+    tags.includes("conciertos") ||
+    /concierto|tour|live in|festival|lollapalooza|standup|stand-up/.test(text)
   ) {
     return "concierto";
+  }
+
+  if (signal.kind === "event") {
+    return "otro_evento";
   }
 
   if (
@@ -181,6 +251,10 @@ export function campaignGroupKey(
     return `show:${signal.startsOn}:${slugPart(signal.title).slice(0, 40)}`;
   }
 
+  if (interest === "congreso_feria") {
+    return `mice:${signal.startsOn}:${slugPart(signal.title).slice(0, 40)}`;
+  }
+
   if (interest === "turismo_general") {
     const monthKey = rangeStart.slice(0, 7);
     return `turismo:${monthKey}:${slugPart(signal.title).slice(0, 24)}`;
@@ -220,6 +294,9 @@ export function intentionSlugForInterest(
       if (pois.includes("poi-movistar")) return "movistar-arena";
       if (pois.includes("poi-estadio")) return "estadio-nacional";
       return `show-${slugPart(lead?.title ?? "santiago").slice(0, 28)}`;
+    case "congreso_feria":
+      if (pois.includes("poi-costanera")) return "congresos-oriente";
+      return `congreso-${slugPart(lead?.title ?? "santiago").slice(0, 28)}`;
     case "turismo_general":
       return "turismo-santiago";
     default:

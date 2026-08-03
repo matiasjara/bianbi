@@ -116,9 +116,25 @@ function formatScore(text: string): { score: number; factors: string[] } {
     score -= 15;
     factors.push("formato teatro/charla (menor impacto hotelero)");
   }
+  if (
+    /\bultrabailable\b|\bfull ultrabailable\b|\bweeknd'?dance\b|\bjazz club\b|\b(lunes|martes|miercoles|jueves|viernes|sabado|domingo)\s+se\s+(sale|baila)\b|\bclub subterr[aá]neo\b.*\(\+21\)/i.test(
+      text,
+    )
+  ) {
+    score -= 28;
+    factors.push("fiesta/club local recurrente (bajo impacto turístico)");
+  }
   if (/liga femenina|reserva|escuela f[uú]tbol|programa tradicional/i.test(text)) {
     score -= 20;
     factors.push("evento nicho / bajo impacto turístico");
+  }
+  if (
+    /\bsub\s*1[24689]\b|\bsub\s*12\b|\bsub\s*14\b|\bsub\s*16\b|\bsub\s*19\b|\bintermedia\b|\bh5\b.*\bhockey\b|\bhockey\b.*\bh5\b/i.test(
+      text,
+    )
+  ) {
+    score -= 22;
+    factors.push("hockey formativo/intermedia (público local)");
   }
 
   return { score: Math.max(0, Math.min(100, score)), factors };
@@ -186,6 +202,49 @@ function sportPotential(text: string): PotentialBreakdown | null {
   };
 }
 
+function congressPotential(text: string): PotentialBreakdown | null {
+  const isCongress =
+    /\b(congreso|convencion|convención|simposio|summit|cumbre|forum|foro|expo\b|feria|conference|symposium|mice|fidae|edifica|expo salud|espacio food|hyvolution|seguridad expo)\b/i.test(
+      text,
+    );
+  if (!isCongress) return null;
+  if (/\bferia libre\b|\bferia vecinal\b/i.test(text)) return null;
+
+  const factors: string[] = ["congreso / feria sectorial"];
+  let score = 58;
+
+  if (/internacional|mundial|world|european|latinoameric/i.test(text)) {
+    score += 14;
+    factors.push("convocatoria internacional");
+  }
+  if (/espacio riesco|metropolitan|centro parque|fidae|edifica|25\.000|25000/i.test(text)) {
+    score += 12;
+    factors.push("recinto MICE / feria masiva");
+  }
+  if (/salud|mineria|tecnolog|fintech|construccion|alimentari|mice|negocios/i.test(text)) {
+    score += 6;
+    factors.push("sector con viajes corporativos");
+  }
+  if (/\b\d\s*d[ií]as\b|\d{1,2}\s*al\s*\d{1,2}/i.test(text)) {
+    score += 8;
+    factors.push("multi-día → pernocta");
+  }
+
+  score = Math.round(Math.max(45, Math.min(88, score)));
+  const tier: DemandTier =
+    score >= 75 ? "alta" : score >= 55 ? "media" : "baja";
+
+  return {
+    score,
+    intensity: Math.max(1, Math.min(10, Math.round(score / 10))),
+    tier,
+    factors,
+    venueScore: 65,
+    artistScore: score,
+    formatScore: 70,
+  };
+}
+
 export function scoreEventPotential(
   title: string,
   extra = "",
@@ -194,6 +253,10 @@ export function scoreEventPotential(
 
   const sport = sportPotential(text);
   if (sport) return sport;
+
+  const congress = congressPotential(text);
+  if (congress) return congress;
+
   const artist = artistScore(text);
   const venue = venueScore(text);
   const format = formatScore(text);

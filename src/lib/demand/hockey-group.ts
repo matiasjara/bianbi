@@ -32,6 +32,61 @@ export function isHockeySignal(signal: DemandSignal): boolean {
   );
 }
 
+/** Regiones fuera de RM: no son inventario Santiago. */
+const NON_RM_HOCKEY_REGION =
+  /\baraucania\b|\bvalparaiso\b|\bvalpo\b|\bbio\s*bio\b|\bbiobio\b|\bmaule\b|\blos\s*lagos\b|\bantofagasta\b|\btarapaca\b|\baysen\b|\bmagallanes\b|\bohiggins\b|\bnuble\b|\bcoquimbo\b|\batacama\b/;
+
+/** Categorías formativas / ligas locales sin pernocta de regiones. */
+const YOUTH_HOCKEY_CATEGORY =
+  /\bsub\s*1[24689]\b|\bsub\s*12\b|\bsub\s*14\b|\bsub\s*16\b|\bsub\s*19\b|\binfantil\b|\bmini\b|\bescolar\b|\bpre\s*infantil\b/;
+
+/** Liga H5 / torneos zonal FEHOCH (mayoría clubes RM). */
+const H5_OR_ZONAL_HOCKEY = /\bh5\b|\btorneo\s+zonal\b|\bliga\s+zonal\b/;
+
+function hockeyBlob(signal: DemandSignal): string {
+  return normalize(`${signal.title} ${signal.description}`);
+}
+
+/** Evalúa nombre crudo del torneo FEHOCH (antes de crear señal). */
+export function isRelevantFehochTournamentName(name: string): boolean {
+  const t = normalize(name);
+  if (/\bfih\b|qualifier/.test(t)) return true;
+  if (NON_RM_HOCKEY_REGION.test(t)) return false;
+  if (YOUTH_HOCKEY_CATEGORY.test(t)) return false;
+  if (/\bintermedia\b/.test(t)) return false;
+  if (H5_OR_ZONAL_HOCKEY.test(t)) return false;
+  if (/\bnacional\s+primera\b/.test(t)) return true;
+  if (/\bprimera\s+(varones|damas)\b/.test(t)) return true;
+  return false;
+}
+
+/**
+ * Hockey con demanda de pernocta: selecciones/FIH y Primera adulta nacional.
+ * Excluye Sub 12–19, Intermedia, H5 y torneos regionales fuera de RM.
+ */
+export function isRelevantHockeySignal(signal: DemandSignal): boolean {
+  if (!isHockeySignal(signal)) return true;
+
+  const t = hockeyBlob(signal);
+
+  if (/\bfih\b|world cup|qualifiers|mundial|internacional/.test(t)) {
+    return true;
+  }
+  if (signal.source === "ind_cl") return true;
+
+  if (NON_RM_HOCKEY_REGION.test(t)) return false;
+  if (YOUTH_HOCKEY_CATEGORY.test(t)) return false;
+  if (/\bintermedia\b/.test(t)) return false;
+  if (H5_OR_ZONAL_HOCKEY.test(t)) return false;
+
+  if (/\bnacional\s+primera\b/.test(t)) return true;
+  if (/\bprimera\s+(varones|damas)\b/.test(t)) return true;
+
+  if (signal.source === "fehoch_tournaments") return false;
+
+  return true;
+}
+
 /** Serie del torneo: nacional, apertura, clausura, fih… */
 export function extractFehochSeries(title: string): string | null {
   const stripped = title

@@ -1,6 +1,7 @@
 import type { DemandSignal, CityId } from "../../../src/lib/demand/types";
 import { inferEventCity } from "../../../src/lib/demand/cities";
 import { normalizePublicEventTitle } from "../../../src/lib/demand/event-title";
+import { inferEventAudienceTags } from "../../../src/lib/demand/interest";
 import {
   normalizeSignal,
   parseLooseDate,
@@ -50,8 +51,31 @@ export function guessPoi(text: string): string[] {
   )
     return ["poi-movistar", "poi-ohiggins"];
   if (t.includes("lastarria")) return ["poi-lastarria"];
+  if (
+    t.includes("subterráneo") ||
+    t.includes("subterraneo") ||
+    t.includes("orrego luco") ||
+    t.includes("blondie") ||
+    t.includes("club chocolate") ||
+    t.includes("sala amarilla")
+  )
+    return ["poi-lastarria"];
   if (t.includes("barrio italia") || t.includes("italia")) return ["poi-italia"];
   if (t.includes("costanera")) return ["poi-costanera"];
+  if (
+    t.includes("espacio riesco") ||
+    t.includes("huechuraba") ||
+    t.includes("metropolitan santiago") ||
+    t.includes("centro parque") ||
+    (t.includes("metropolitan") && /convencion|congreso|feria|expo|mice/.test(t))
+  )
+    return ["poi-costanera"];
+  if (
+    t.includes("morandé") ||
+    t.includes("morande") ||
+    t.includes("teatro mori")
+  )
+    return ["poi-lastarria"];
   if (
     t.includes("caupolicán") ||
     t.includes("caupolican") ||
@@ -103,6 +127,7 @@ export function toSignal(input: {
         : ["poi-movistar"]
       : [];
   const potential = scoreEventPotential(input.title, blob);
+  const audienceTags = inferEventAudienceTags(input.title, blob);
 
   const base: DemandSignal = {
     id: `${input.source}-${slugify(`${input.title}-${input.date}`)}`,
@@ -118,7 +143,7 @@ export function toSignal(input: {
     potentialScore: potential.score,
     potentialTier: potential.tier,
     potentialFactors: potential.factors,
-    audienceTags: ["eventos", "conciertos"],
+    audienceTags,
     poiIds,
     propertyCodesPreferred:
       city === "santiago" ? guessPropertyCodes(poiIds, blob) : [],

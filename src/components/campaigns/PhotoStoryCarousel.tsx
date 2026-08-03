@@ -132,8 +132,8 @@ export function PhotoStoryCarousel({
       />
 
       {caption ? (
-        <div className="absolute inset-x-0 bottom-0 z-10 p-4">
-          <p className="text-lg font-semibold text-white drop-shadow">
+        <div className="absolute inset-x-0 bottom-0 z-10 p-3 sm:p-4">
+          <p className="text-base font-semibold text-white drop-shadow sm:text-lg">
             {caption}
           </p>
           <p className="mt-0.5 text-xs text-white/80">

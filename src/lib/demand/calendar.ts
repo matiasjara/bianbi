@@ -390,6 +390,7 @@ function playbookForInterest(
   if (interest === "partido_futbol" && clasico) return "hybrid";
   if (interest === "nieve") return "ads_heavy";
   if (interest === "concierto" && top >= 75) return "ads_heavy";
+  if (interest === "congreso_feria") return "hybrid";
   return "hybrid";
 }
 
@@ -436,6 +437,13 @@ function reasonForInterest(peak: DemandPeak, audienceRationale: string): string 
       return [
         crowd,
         "Campaña familias en vacaciones escolares: escapadas urbanas / atracciones.",
+        audienceRationale,
+      ].join(" ");
+    case "congreso_feria":
+      return [
+        crowd,
+        "Congreso o feria sectorial: delegados, expositores y compradores de otras ciudades.",
+        "Enfoque en alojamiento cerca de Espacio Riesco, Metropolitan o recinto MICE.",
         audienceRationale,
       ].join(" ");
     default:

@@ -207,6 +207,8 @@ function interestPool(interest: CampaignInterest): readonly string[] {
     case "vacaciones_familias":
     case "turismo_general":
       return VIAJE;
+    case "congreso_feria":
+      return GASTRONOMIA;
     case "otro_evento":
     default:
       return [...BARRIOS, ...GASTRONOMIA];
@@ -305,6 +307,8 @@ export function categoryCover(categoryId: string): string | null {
       return NIEVE[0];
     case "viaje":
       return VIAJE[0];
+    case "congresos":
+      return GASTRONOMIA[0];
     case "otros":
       return GASTRONOMIA[0];
     default:

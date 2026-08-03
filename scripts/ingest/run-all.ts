@@ -2,6 +2,7 @@ import { mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { buildSeasonalitySignals } from "../../src/lib/demand/seasonality";
 import { normalizeSignals } from "../../src/lib/demand/dates";
+import { isRelevantDemandSignal } from "../../src/lib/demand/signal-relevance";
 import type { DemandSignal, IngestManifest } from "../../src/lib/demand/types";
 import { ingestFeriados } from "./feriados-lib";
 
@@ -69,7 +70,7 @@ async function main() {
   // Dedup by id
   const byId = new Map<string, DemandSignal>();
   for (const s of merged) byId.set(s.id, s);
-  const all = normalizeSignals([...byId.values()]);
+  const all = normalizeSignals([...byId.values()]).filter(isRelevantDemandSignal);
 
   await writeFile(path.join(OUT_DIR, "signals.json"), JSON.stringify(all, null, 2));
   const manifest: IngestManifest = {

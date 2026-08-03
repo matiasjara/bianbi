@@ -6,6 +6,7 @@ import type { Page } from "playwright";
 import type { SourceResult } from "../lib/signal-utils";
 import { scrapeCampeonatoChileno } from "./campeonato-chileno";
 import { scrapeClubAtleticoSantiago } from "./club-atletico-santiago";
+import { scrapeCongresosFerias } from "./congresos-ferias";
 import { scrapeFedachi } from "./fedachi";
 import { scrapeFehochTournaments } from "./fehoch-tournaments";
 import { scrapeFevochi } from "./fevochi";
@@ -24,6 +25,7 @@ export const FETCH_SOURCES: FetchRunner[] = [
   scrapeTicketPlus,
   scrapeCampeonatoChileno,
   scrapeIndGrandesEventos,
+  scrapeCongresosFerias,
   scrapeClubAtleticoSantiago,
   scrapeFedachi,
   scrapeFehochTournaments,

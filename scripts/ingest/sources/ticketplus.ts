@@ -2,6 +2,7 @@
  * TicketPlus CL — ticketera con API pública de búsqueda.
  * https://ticketplus.cl/events/search.json?q=…&searching=true
  */
+import { shouldIngestScrapedEvent } from "../../../src/lib/demand/signal-relevance";
 import {
   isSantiagoRelevant,
   parseLooseDate,
@@ -24,6 +25,12 @@ const QUERIES = [
   "matucana",
   "estadio nacional",
   "parque o'higgins",
+  "congreso santiago",
+  "feria santiago",
+  "expo santiago",
+  "summit santiago",
+  "espacio riesco",
+  "metropolitan santiago",
 ];
 
 type TpResult = {
@@ -52,8 +59,17 @@ function isRmLocation(location: string): boolean {
 }
 
 function shouldSkipTitle(title: string): boolean {
-  return /^(tienda|mercato|socio\b|abonado|escuela\b|merch|merchandise)\b/i.test(
+  if (/^(tienda|mercato|socio\b|abonado|escuela\b|merch|merchandise)\b/i.test(
     title.trim(),
+  )) {
+    return true;
+  }
+  return false;
+}
+
+function isCongressFairTitle(title: string, blob: string): boolean {
+  return /\b(congreso|convencion|convención|simposio|summit|forum|foro|expo\b|feria|symposium|conference)\b/i.test(
+    `${title} ${blob}`,
   );
 }
 
@@ -103,6 +119,17 @@ export async function scrapeTicketPlus(): Promise<SourceResult> {
         if (seen.has(key)) continue;
         seen.add(key);
 
+        const description = `Evento TicketPlus${row.category ? ` · ${row.category}` : ""}${location ? ` · ${location}` : ""}.`;
+        if (
+          !shouldIngestScrapedEvent({
+            title,
+            description: `${description} ${blob}`,
+            url: row.url,
+          })
+        ) {
+          continue;
+        }
+
         signals.push(
           toSignal({
             source: "ticketplus_cl",
@@ -110,12 +137,14 @@ export async function scrapeTicketPlus(): Promise<SourceResult> {
             date,
             url: row.url,
             textForPoi: blob,
-            description: `Evento TicketPlus${location ? ` · ${location}` : ""}.`,
+            description,
             intensity: /movistar|estadio nacional|mapocho|parque o'?higgins|lolla|creamfields/i.test(
               blob,
             )
               ? 8
-              : 6,
+              : isCongressFairTitle(title, blob)
+                ? 7
+                : 6,
           }),
         );
       }

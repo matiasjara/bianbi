@@ -9,7 +9,44 @@ import type { CityId } from "./types";
 import { isPublishableGuidePeak } from "./guide-eligibility";
 import { loadAllSignals } from "./load-signals";
 import { monthRange } from "./month-range";
-import type { CampaignPack } from "./types";
+import type { CampaignPack, DemandPeak } from "./types";
+
+/** Mezcla intereses; reserva cupo para congresos/ferias (alto valor MICE). */
+function pickDiversePeaks(peaks: DemandPeak[], limit: number): DemandPeak[] {
+  const sorted = [...peaks].sort(
+    (a, b) =>
+      b.estimatedOvernight - a.estimatedOvernight ||
+      b.score - a.score ||
+      a.anchorDate.localeCompare(b.anchorDate),
+  );
+  const picked: DemandPeak[] = [];
+  const pickedIds = new Set<string>();
+
+  const push = (p: DemandPeak) => {
+    if (pickedIds.has(p.id) || picked.length >= limit) return;
+    picked.push(p);
+    pickedIds.add(p.id);
+  };
+
+  for (const p of sorted.filter((x) => x.interest === "congreso_feria").slice(0, 5)) {
+    push(p);
+  }
+
+  for (const p of sorted) {
+    if (picked.length >= limit) break;
+    if (pickedIds.has(p.id)) continue;
+    if (picked.some((x) => x.interest === p.interest)) continue;
+    push(p);
+  }
+
+  for (const p of sorted) {
+    if (picked.length >= limit) break;
+    if (pickedIds.has(p.id)) continue;
+    push(p);
+  }
+
+  return picked;
+}
 
 export type LoadCampaignPacksOptions = {
   /** Límite de packs (por score). Default 16. */
@@ -52,7 +89,8 @@ export async function loadAllCampaignPacks(
   const eligible = includeGeneric
     ? opportunities
     : opportunities.filter(isPublishableGuidePeak);
-  const suggestions = suggestCampaignsFromPeaks(eligible, limit);
+  const diverse = pickDiversePeaks(eligible, limit);
+  const suggestions = suggestCampaignsFromPeaks(diverse, limit);
   return buildCampaignPacks(suggestions, eligible);
 }
 

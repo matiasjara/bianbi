@@ -308,7 +308,7 @@ function PreviewPhone({
     <button
       type="button"
       onClick={onClick}
-      className="group relative mx-auto block w-full max-w-[15rem] transition hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ms-olive)] sm:max-w-[17rem]"
+      className="group relative mx-auto block w-full max-w-[11.5rem] transition hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ms-olive)] sm:max-w-[15rem] md:max-w-[17rem]"
       aria-label={previewTitle}
     >
       <div className="rounded-[2rem] border-[6px] border-[var(--ms-ink)] bg-[var(--ms-ink)] p-2 shadow-2xl shadow-[var(--ms-ink)]/20">
@@ -534,7 +534,7 @@ export function MicrositeShareBar({
   const light = theme === "light";
   const shell =
     variant === "featured"
-      ? "rounded-3xl border border-[var(--ms-line)] bg-gradient-to-br from-white via-[var(--ms-panel)] to-[var(--ms-gold)]/10 p-5 shadow-lg shadow-[var(--ms-ink)]/5 md:p-8"
+      ? "rounded-3xl border border-[var(--ms-line)] bg-gradient-to-br from-white via-[var(--ms-panel)] to-[var(--ms-gold)]/10 p-4 shadow-lg shadow-[var(--ms-ink)]/5 sm:p-5 md:p-8"
       : light
         ? "rounded-2xl border border-[var(--ms-line)] bg-white/75 p-3 backdrop-blur"
         : "rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur";
@@ -542,10 +542,10 @@ export function MicrositeShareBar({
   const circle = light
     ? "inline-flex size-11 items-center justify-center rounded-full border border-[var(--ms-line)] bg-[var(--ms-paper)] text-[var(--ms-ink)] transition hover:border-[var(--ms-olive)] hover:text-[var(--ms-olive)] disabled:opacity-50"
     : "inline-flex size-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20 disabled:opacity-50";
-  const primary =
-    "inline-flex items-center gap-2 rounded-full bg-[var(--ms-olive,#7d8b4e)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60";
   const whatsAppBtn =
-    "inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#25D366]/25 transition hover:brightness-105 disabled:opacity-60";
+    "inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#25D366]/25 transition hover:brightness-105 disabled:opacity-60 sm:w-auto";
+  const primary =
+    "inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ms-olive,#7d8b4e)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60 sm:w-auto";
   const circleCopied = copied
     ? light
       ? "inline-flex size-11 items-center justify-center rounded-full border-2 border-[var(--ms-olive)] bg-[var(--ms-olive)]/10 text-[var(--ms-olive)] transition"
@@ -553,7 +553,7 @@ export function MicrositeShareBar({
     : circle;
 
   const actionRow = (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
       <span className="sr-only" aria-live="polite">
         {copied ? copiedLabel : downloading ? sharingLabel : ""}
       </span>
@@ -575,29 +575,31 @@ export function MicrositeShareBar({
         <IconShare className="size-4" />
         {busy || loadingPreview ? sharingLabel : shareImageLabel}
       </button>
-      <button
-        type="button"
-        className={circle}
-        onClick={downloadImage}
-        disabled={downloading || busy}
-        aria-label={downloading ? sharingLabel : downloadImageLabel}
-        title={downloading ? sharingLabel : downloadImageLabel}
-      >
-        {downloading ? (
-          <IconSpinner className="size-5 animate-spin" />
-        ) : (
-          <IconDownload className="size-5" />
-        )}
-      </button>
-      <button
-        type="button"
-        className={circleCopied}
-        onClick={() => copyLink("copy")}
-        aria-label={copied ? copiedLabel : copyLabel}
-        title={copied ? copiedLabel : copyLabel}
-      >
-        {copied ? <IconCheck className="size-5" /> : <IconLink className="size-5" />}
-      </button>
+      <div className="flex gap-2 sm:contents">
+        <button
+          type="button"
+          className={circle}
+          onClick={downloadImage}
+          disabled={downloading || busy}
+          aria-label={downloading ? sharingLabel : downloadImageLabel}
+          title={downloading ? sharingLabel : downloadImageLabel}
+        >
+          {downloading ? (
+            <IconSpinner className="size-5 animate-spin" />
+          ) : (
+            <IconDownload className="size-5" />
+          )}
+        </button>
+        <button
+          type="button"
+          className={circleCopied}
+          onClick={() => copyLink("copy")}
+          aria-label={copied ? copiedLabel : copyLabel}
+          title={copied ? copiedLabel : copyLabel}
+        >
+          {copied ? <IconCheck className="size-5" /> : <IconLink className="size-5" />}
+        </button>
+      </div>
     </div>
   );
 
@@ -606,10 +608,10 @@ export function MicrositeShareBar({
       <div className={variant === "featured" ? "" : `mt-6 ${shell}`}>
         {variant === "featured" ? (
           <div className={shell}>
-            <div className="grid items-center gap-8 md:grid-cols-[1.05fr_0.95fr]">
-              <div>
+            <div className="grid items-center gap-6 sm:gap-8 md:grid-cols-[1.05fr_0.95fr]">
+              <div className="min-w-0">
                 {shareHeadline ? (
-                  <h2 className="ms-editorial text-2xl leading-tight text-[var(--ms-ink)] md:text-[2rem]">
+                  <h2 className="ms-editorial text-xl leading-tight text-[var(--ms-ink)] sm:text-2xl md:text-[2rem]">
                     {shareHeadline}
                   </h2>
                 ) : null}

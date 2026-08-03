@@ -3,6 +3,7 @@
  * Reglas de estacionalidad genéricas (congresos, verano amplio…) no son eventos concretos.
  */
 import { classifyInterest } from "./interest";
+import { isRelevantDemandSignal } from "./signal-relevance";
 import type { DemandPeak, DemandSignal } from "./types";
 
 /** IDs base de seasonality_rules que no deben ser guías públicas. */
@@ -23,6 +24,8 @@ const VAGUE_TITLE =
   /^(evento|show|actividad|otro|sin t[ií]tulo|tbd|por confirmar)\b/i;
 
 export function isPublishableGuideSignal(signal: DemandSignal): boolean {
+  if (!isRelevantDemandSignal(signal)) return false;
+
   const ruleId = seasonRuleBaseId(signal);
   if (ruleId && NON_PUBLISHABLE_SEASON_RULES.has(ruleId)) return false;
 

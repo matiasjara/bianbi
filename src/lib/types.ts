@@ -139,6 +139,7 @@ export interface OutreachOrganization {
     | "feriado_puente"
     | "vacaciones_familias"
     | "turismo_general"
+    | "congreso_feria"
     | "otro_evento"
   >;
 }

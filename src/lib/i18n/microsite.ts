@@ -1,11 +1,14 @@
 import type { CampaignInterest, CampaignPack, MicrositeContent } from "@/lib/demand/types";
 import { climateForCampaign } from "@/lib/demand/climate-copy";
-import { cleanPublicEventTitle } from "@/lib/demand/guide-eligibility";
 import {
-  formatVenueMetroMustKnow,
-  formatVenueMetroTransport,
-  nearestMetroStations,
-} from "@/lib/demand/venue-metro";
+  buildMicrositeEventCopy,
+  type MicrositeCopyInput,
+} from "@/lib/demand/microsite-event-copy";
+import {
+  publicEventDescriptionEn,
+  publicEventDescriptionPt,
+} from "@/lib/demand/public-event-description";
+import { cleanPublicEventTitle } from "@/lib/demand/guide-eligibility";
 import type { Locale } from "@/lib/i18n/locale";
 
 type Ui = {
@@ -47,6 +50,7 @@ type Ui = {
   navStay: string;
   kickerMust: string;
   titleMust: string;
+  kickerAbout: string;
   kickerNews: string;
   titleNews: string;
   kickerMap: string;
@@ -111,6 +115,7 @@ const UI: Record<Locale, Ui> = {
     navFaq: "FAQ",
     navStay: "Alojamiento",
     kickerMust: "01 · Prioridad",
+    kickerAbout: "Sobre el evento",
     titleMust: "Lo esencial",
     kickerNews: "02 · Actualizado",
     titleNews: "Novedades",
@@ -177,6 +182,7 @@ const UI: Record<Locale, Ui> = {
     navFaq: "FAQ",
     navStay: "Stay",
     kickerMust: "01 · Priority",
+    kickerAbout: "About the event",
     titleMust: "Must-know",
     kickerNews: "02 · Updated",
     titleNews: "Updates",
@@ -243,6 +249,7 @@ const UI: Record<Locale, Ui> = {
     navFaq: "FAQ",
     navStay: "Hospedagem",
     kickerMust: "01 · Prioridade",
+    kickerAbout: "Sobre o evento",
     titleMust: "O essencial",
     kickerNews: "02 · Atualizado",
     titleNews: "Novidades",
@@ -288,7 +295,12 @@ const INTEREST: Record<CampaignInterest, Record<Locale, string>> = {
     pt: "Férias",
   },
   turismo_general: { es: "Turismo", en: "Travel", pt: "Turismo" },
-  otro_evento: { es: "Evento", en: "Event", pt: "Evento" },
+  congreso_feria: {
+    es: "Congreso / feria",
+    en: "Congress / trade show",
+    pt: "Congresso / feira",
+  },
+  otro_evento: { es: "Teatro / cultura", en: "Theater / culture", pt: "Teatro / cultura" },
 };
 
 function guideTitle(
@@ -301,6 +313,7 @@ function guideTitle(
     if (interest === "concierto") return `Concert guide: ${t}`;
     if (interest === "partido_futbol") return `Match guide: ${t}`;
     if (interest === "deporte_competencia") return `Travel guide: ${t}`;
+    if (interest === "congreso_feria") return `Congress guide: ${t}`;
     if (interest === "nieve") return `Snow travel guide: Santiago as your base`;
     if (
       interest === "feriado_puente" ||
@@ -315,6 +328,7 @@ function guideTitle(
     if (interest === "concierto") return `Guia do show: ${t}`;
     if (interest === "partido_futbol") return `Guia do jogo: ${t}`;
     if (interest === "deporte_competencia") return `Guia de viagem: ${t}`;
+    if (interest === "congreso_feria") return `Guia do congresso: ${t}`;
     if (interest === "nieve") return `Guia de neve: Santiago como base`;
     if (
       interest === "feriado_puente" ||
@@ -328,472 +342,66 @@ function guideTitle(
   return pack.microsite.guideTitle;
 }
 
+function copyInput(pack: CampaignPack): MicrositeCopyInput {
+  return {
+    eventTitle: pack.eventTitle,
+    eventDescription: pack.eventDescription,
+    eventDates: pack.eventDates,
+    eventStartsOn: pack.eventStartsOn,
+    eventEndsOn: pack.eventEndsOn,
+    venueName: pack.venueName,
+    venuePoiId: pack.venuePoiId,
+    venueLat: pack.venueLat,
+    venueLng: pack.venueLng,
+    interest: pack.interest,
+    interestLabel: pack.interestLabel,
+    estimatedAttendance: pack.estimatedAttendance,
+    estimatedOvernight: pack.estimatedOvernight,
+    demandDimension: pack.demandDimension,
+    drivers: pack.drivers,
+    properties: pack.properties,
+    audience: pack.audience,
+    eventUrl: pack.eventUrl,
+  };
+}
+
 function eventSummary(pack: CampaignPack, locale: Locale): string {
-  if (pack.interest === "nieve") {
-    if (locale === "en") {
-      return "Santiago as a comfortable base for Valle Nevado, Farellones and Portillo.";
-    }
-    if (locale === "pt") {
-      return "Santiago como base confortável para Valle Nevado, Farellones e Portillo.";
-    }
-  }
-  if (locale === "en") {
-    return `Everything for ${pack.venueName}: transport, weather and where to stay in Santiago.`;
-  }
-  if (locale === "pt") {
-    return `O essencial para ${pack.venueName}: transporte, clima e onde ficar em Santiago.`;
-  }
-  return pack.microsite.eventSummary;
+  return buildMicrositeEventCopy(copyInput(pack), locale).eventSummary;
+}
+
+function eventDescription(pack: CampaignPack, locale: Locale): string {
+  const base = {
+    eventTitle: pack.eventTitle,
+    venueName: pack.venueName,
+    interest: pack.interest,
+    eventDates: pack.eventDates,
+  };
+  if (locale === "en") return publicEventDescriptionEn(base);
+  if (locale === "pt") return publicEventDescriptionPt(base);
+  return pack.eventDescription;
 }
 
 function mustKnow(pack: CampaignPack, locale: Locale): string[] {
-  const mins = pack.properties[0]?.walkingMinutes ?? 15;
-  if (pack.interest === "nieve") {
-    if (locale === "en") {
-      return [
-        "Santiago is your base: sleep in the city and head to the mountains.",
-        "Common resorts: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h).",
-        "Check the snow report and book van/tour ahead on winter weekends.",
-        "Send this to your group before booking stays or transfers.",
-      ];
-    }
-    if (locale === "pt") {
-      return [
-        "Santiago é sua base: durma na cidade e saia para a cordilheira.",
-        "Centros habituais: Valle Nevado, Farellones/El Colorado, Portillo (1–2 h).",
-        "Confira o boletim de neve e reserve van/tour com antecedência nos fins de semana.",
-        "Mande para seu grupo antes de reservar hospedagem ou traslado.",
-      ];
-    }
-  }
-  if (locale === "en") {
-    const tips: string[] = [];
-    if (pack.interest === "concierto") {
-      const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
-      if (venueMetros.length) {
-        tips.push(formatVenueMetroMustKnow(venueMetros, "en"));
-      }
-    }
-    tips.push(
-      `Arrive early: recommended stays are ~${mins} min from the venue.`,
-      "Send this to your group before the trip — map, weather and tips in one link.",
-    );
-    if (pack.interest === "concierto") {
-      tips.push(
-        "Build in buffer time: queues, security and merch usually take longer.",
-        "Plan the night return: metro, rideshare or a short walk depending on the hour.",
-      );
-    } else if (pack.interest === "partido_futbol") {
-      tips.push(
-        "Check stadium access times and possible street closures.",
-        "If you're visiting fans, move in a group on well-lit routes.",
-      );
-    } else if (pack.interest === "deporte_competencia") {
-      tips.push(
-        "Confirm competition times and credentials if you're staff or family.",
-        "Rest near the venue: competition days run long.",
-      );
-    }
-    return tips;
-  }
-  if (locale === "pt") {
-    const tips: string[] = [];
-    if (pack.interest === "concierto") {
-      const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
-      if (venueMetros.length) {
-        tips.push(formatVenueMetroMustKnow(venueMetros, "pt"));
-      }
-    }
-    tips.push(
-      `Chegue com antecedência: aptos recomendados a ~${mins} min do venue.`,
-      "Mande para seu grupo antes da viagem — mapa, clima e dicas em um link.",
-    );
-    if (pack.interest === "concierto") {
-      tips.push(
-        "Entre com margem: filas, controle de acesso e merch costumam demorar.",
-        "Planeje a volta à noite: metrô, rideshare ou caminhada curta conforme o horário.",
-      );
-    } else if (pack.interest === "partido_futbol") {
-      tips.push(
-        "Confira horários de acesso ao estádio e possíveis cortes de rua.",
-        "Se for torcida visitante, ande em grupo por rotas iluminadas.",
-      );
-    } else if (pack.interest === "deporte_competencia") {
-      tips.push(
-        "Confirme horários da competição e credenciais se for staff ou família.",
-        "Descanse perto do venue: o dia é longo.",
-      );
-    }
-    return tips;
-  }
-  return pack.microsite.mustKnow;
+  return buildMicrositeEventCopy(copyInput(pack), locale).mustKnow;
 }
 
 function news(pack: CampaignPack, locale: Locale): string[] {
-  if (pack.interest === "nieve") {
-    if (locale === "en") {
-      return [
-        `Snow season ${pack.eventDates}: stronger flow to mountain resorts.`,
-        "If you still need a place in Santiago, book soon — July and weekends fill up.",
-        "Snow conditions change fast: confirm resorts and roads the same day.",
-        "Tips: city base + early departure + van/tour or car with chains when required.",
-      ];
-    }
-    if (locale === "pt") {
-      return [
-        `Temporada de neve ${pack.eventDates}: maior fluxo para centros na cordilheira.`,
-        "Se ainda não tem hospedagem em Santiago, reserve cedo — julho e fins de semana esgotam.",
-        "Condições de neve mudam rápido: confirme centros e estradas no mesmo dia.",
-        "Dicas: base na cidade + saída cedo + van/tour ou carro com correntes se necessário.",
-      ];
-    }
-  }
-  if (locale === "en") {
-    const items = [
-      `${pack.eventTitle} takes place at ${pack.venueName} (${pack.eventDates}).`,
-      "If you still need a place to stay, book soon: event dates fill up near the venue.",
-    ];
-    if (pack.interest === "concierto") {
-      items.push(
-        "Check the ticket app or email for door changes or opening times.",
-      );
-    }
-    if (pack.interest === "partido_futbol") {
-      items.push(
-        "Follow your club and the league for possible kickoff or venue changes.",
-      );
-    }
-    if (pack.interest === "nieve") {
-      items.push(
-        "Snow conditions change fast: confirm resorts and roads the same day.",
-      );
-    }
-    items.push(
-      "Local tips: metro + safe neighborhood + fully equipped apartment to arrive and rest.",
-    );
-    return items;
-  }
-  if (locale === "pt") {
-    const items = [
-      `${pack.eventTitle} acontece em ${pack.venueName} (${pack.eventDates}).`,
-      "Se ainda não tem hospedagem, reserve cedo: datas de evento esgotam perto do venue.",
-    ];
-    if (pack.interest === "concierto") {
-      items.push(
-        "Confira o app ou e-mail do ingresso por mudanças de porta ou horário de abertura.",
-      );
-    }
-    if (pack.interest === "partido_futbol") {
-      items.push(
-        "Acompanhe seu clube e a liga por possíveis mudanças de horário ou sede.",
-      );
-    }
-    if (pack.interest === "nieve") {
-      items.push(
-        "Condições de neve mudam rápido: confirme centros e estradas no mesmo dia.",
-      );
-    }
-    items.push(
-      "Dicas locais: metrô + bairro seguro + apartamento completo para chegar e descansar.",
-    );
-    return items;
-  }
-  return pack.microsite.news;
+  return buildMicrositeEventCopy(copyInput(pack), locale).news;
 }
 
 function recommendations(pack: CampaignPack, locale: Locale): string[] {
-  const venue = pack.venueName;
-  const mins = pack.properties[0]?.walkingMinutes ?? 15;
-  if (locale === "en") {
-    const base = [
-      `Leave buffer time: plan ~${mins} min to ${venue}.`,
-      "Save the apartment pin and the venue pin for offline maps.",
-      "Coordinate check-in on Airbnb the same day you book.",
-    ];
-    if (pack.interest === "concierto") {
-      return [
-        ...base,
-        "Eat near the neighborhood before the show; rideshare back if it's very late.",
-        "Don't leave valuable bags at the venue: travel light.",
-      ];
-    }
-    if (pack.interest === "partido_futbol") {
-      return [
-        ...base,
-        "If there's an away crowd, move in a group and use lit routes / metro.",
-        "Avoid driving if you'll celebrate: skip the car or use rideshare.",
-      ];
-    }
-    if (pack.interest === "deporte_competencia") {
-      return [
-        ...base,
-        "In winter, dress in layers for early outdoor sessions.",
-        "Stay hydrated and rest near the venue — competition days are long.",
-      ];
-    }
-    if (pack.interest === "nieve") {
-      return [
-        "Use Santiago as a base: sleep well and leave early for the mountains.",
-        "Check the snow report and valley weather the day before.",
-        "Metro and a safe neighborhood for city nights.",
-      ];
-    }
-    return [
-      ...base,
-      "Combine the event with a neighborhood walk (cafés, plazas, viewpoints).",
-      "Traveling as a couple? Pick a place with a double bed and sofa bed if someone else joins.",
-    ];
-  }
-  if (locale === "pt") {
-    const base = [
-      `Chegue com margem: calcule ~${mins} min até ${venue}.`,
-      "Salve o pin do apartamento e do venue no mapa offline.",
-      "Combine o check-in no Airbnb no mesmo dia da reserva.",
-    ];
-    if (pack.interest === "concierto") {
-      return [
-        ...base,
-        "Coma perto do bairro antes do show; volte de rideshare se for muito tarde.",
-        "Não deixe mochilas de valor no venue: viaje leve.",
-      ];
-    }
-    if (pack.interest === "partido_futbol") {
-      return [
-        ...base,
-        "Se houver torcida visitante, ande em grupo e use rotas iluminadas / metrô.",
-        "Evite dirigir se for comemorar: deixe o carro ou use rideshare.",
-      ];
-    }
-    if (pack.interest === "deporte_competencia") {
-      return [
-        ...base,
-        "No inverno, vá em camadas para provas ao ar livre cedo.",
-        "Hidrate-se e descanse perto do venue — dias de competição são longos.",
-      ];
-    }
-    if (pack.interest === "nieve") {
-      return [
-        "Use Santiago como base: durma bem e saia cedo para a cordilheira.",
-        "Confira o boletim de neve e o clima do vale no dia anterior.",
-        "Metrô e bairro seguro para as noites na cidade.",
-      ];
-    }
-    return [
-      ...base,
-      "Combine o evento com um passeio pelo bairro (cafés, praças, mirantes).",
-      "Viajando a dois? Escolha apto com cama de casal e sofá-cama se alguém mais chegar.",
-    ];
-  }
-  return pack.microsite.recommendations;
+  return buildMicrositeEventCopy(copyInput(pack), locale).recommendations;
 }
 
 function transport(pack: CampaignPack, locale: Locale): string[] {
-  const metros = [
-    ...new Set(pack.properties.flatMap((p) => p.metroStations)),
-  ];
-  if (pack.interest === "nieve") {
-    if (locale === "en") {
-      return [
-        metros.length
-          ? `In the city: Metro ${metros.slice(0, 3).join(", ")} near hub apartments.`
-          : "Good connection to Santiago public transit.",
-        "To the mountains: van/tour from Santiago to Valle Nevado, Farellones or Portillo (book ahead).",
-        "Own car: check road status, fog and chain requirements.",
-        "SCL airport: transfer, taxi or Uber to your Santiago check-in.",
-      ];
-    }
-    if (locale === "pt") {
-      return [
-        metros.length
-          ? `Na cidade: Metrô ${metros.slice(0, 3).join(", ")} perto dos aptos hub.`
-          : "Boa conexão com transporte público de Santiago.",
-        "Para a cordilheira: van/tour de Santiago a Valle Nevado, Farellones ou Portillo (reserve antes).",
-        "Carro próprio: confira estado da estrada, neblina e correntes obrigatórias.",
-        "Aeroporto SCL: transfer, táxi ou Uber até o check-in em Santiago.",
-      ];
-    }
-  }
-  if (pack.interest === "concierto") {
-    const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
-    if (locale === "en") {
-      return [
-        venueMetros.length
-          ? formatVenueMetroTransport(venueMetros, "en")
-          : "Good connection to Santiago public transit.",
-        "Plan the night return: last Metro train or rideshare depending on the hour.",
-        "From other regions: bus to terminals + metro/Uber to the apartment.",
-        "SCL airport: official transfer, taxi or Uber to check-in.",
-      ];
-    }
-    if (locale === "pt") {
-      return [
-        venueMetros.length
-          ? formatVenueMetroTransport(venueMetros, "pt")
-          : "Boa conexão com o transporte público de Santiago.",
-        "Planeje a volta à noite: último trem do Metrô ou rideshare conforme o horário.",
-        "De outras regiões: ônibus até terminais + metrô/Uber até o apartamento.",
-        "Aeroporto SCL: transfer oficial, táxi ou Uber até o check-in.",
-      ];
-    }
-  }
-  if (locale === "en") {
-    return [
-      metros.length
-        ? `Nearby metro: ${metros.slice(0, 3).join(", ")}.`
-        : "Good connection to Santiago public transit.",
-      "Walk to the venue when it's close; rideshare at night if you prefer.",
-      "From other regions: bus to terminals + metro/Uber to the apartment.",
-      "SCL airport: official transfer, taxi or Uber to check-in.",
-    ];
-  }
-  if (locale === "pt") {
-    return [
-      metros.length
-        ? `Metrô próximo: ${metros.slice(0, 3).join(", ")}.`
-        : "Boa conexão com o transporte público de Santiago.",
-      "A pé até o venue quando a distância é curta; rideshare à noite se preferir.",
-      "De outras regiões: ônibus até terminais + metrô/Uber até o apartamento.",
-      "Aeroporto SCL: transfer oficial, táxi ou Uber até o check-in.",
-    ];
-  }
-  return pack.microsite.transport;
+  return buildMicrositeEventCopy(copyInput(pack), locale).transport;
 }
 
 function faqs(
   pack: CampaignPack,
   locale: Locale,
 ): Array<{ q: string; a: string }> {
-  const mins = pack.properties[0]?.walkingMinutes ?? 15;
-  const venue = pack.venueName;
-  const metro = pack.properties[0]?.metroStations[0];
-  const hoods = [
-    ...new Set(pack.properties.map((p) => p.neighborhood)),
-  ].slice(0, 3);
-
-  if (pack.interest === "nieve") {
-    if (locale === "en") {
-      return [
-        {
-          q: "Where are the apartments?",
-          a: `In Santiago hub neighborhoods${hoods.length ? ` (${hoods.join(", ")})` : ""}: well connected, metro nearby, comfortable between ski days.`,
-        },
-        {
-          q: "How do I get to the ski resorts?",
-          a: "From Santiago you can book van/tour (Valle Nevado, Farellones/El Colorado, Portillo), private transfer or a car with chains when required. Leave early — the drive can take 1–2 h.",
-        },
-        {
-          q: "Why stay in Santiago instead of the mountain?",
-          a: "Santiago is the flight hub with restaurants and easier logistics: you sleep better, have metro, and more flexible bookings. Ideal if you mix ski + city.",
-        },
-        {
-          q: "How do I get from the airport?",
-          a: metro
-            ? `Transfer or taxi/Uber to the apartment. Then use Metro ${metro} on non-ski days.`
-            : "Transfer or taxi/Uber straight to the apartment. Then metro or rideshare in the city.",
-        },
-        {
-          q: "Where do I book and pay?",
-          a: "Only on Airbnb via each apartment link — protected payment, cancellation policy and host chat.",
-        },
-        {
-          q: "Is Crambie part of Airbnb?",
-          a: "No. Crambie shows options and the travel guide; booking and payment are always on the official Airbnb listing.",
-        },
-      ];
-    }
-    if (locale === "pt") {
-      return [
-        {
-          q: "Onde ficam os apartamentos?",
-          a: `Em bairros hub de Santiago${hoods.length ? ` (${hoods.join(", ")})` : ""}: bem conectados, metrô perto e confortáveis entre dias de ski.`,
-        },
-        {
-          q: "Como chego aos centros de ski?",
-          a: "De Santiago você pode contratar van/tour (Valle Nevado, Farellones/El Colorado, Portillo), transfer privado ou carro com correntes se necessário. Saia cedo — a viagem pode levar 1–2 h.",
-        },
-        {
-          q: "Por que me hospedar em Santiago e não na montanha?",
-          a: "Santiago é hub de voos, restaurantes e logística: você dorme melhor, tem metrô e reservas mais flexíveis. Ideal se combina ski + cidade.",
-        },
-        {
-          q: "Como chego do aeroporto?",
-          a: metro
-            ? `Transfer ou táxi/Uber até o apto. Depois use o Metrô ${metro} nos dias sem ski.`
-            : "Transfer ou táxi/Uber direto ao apartamento. Depois metrô ou rideshare na cidade.",
-        },
-        {
-          q: "Onde reservo e pago?",
-          a: "Só no Airbnb, no link de cada apartamento — pagamento protegido, cancelamento e chat com o anfitrião.",
-        },
-        {
-          q: "A Crambie faz parte do Airbnb?",
-          a: "Não. A Crambie mostra opções e o guia de viagem; reserva e pagamento são sempre no anúncio oficial do Airbnb.",
-        },
-      ];
-    }
-  }
-
-  if (locale === "en") {
-    return [
-      {
-        q: `How close are the apartments to ${venue}?`,
-        a: `Featured options start from ~${mins} minutes (varies by unit). The map shows real distance before you book.`,
-      },
-      {
-        q: "Is the neighborhood safe?",
-        a: "We focus on well-connected residential areas (Ñuñoa, Barrio Italia, Santiago Centro). Metro nearby and neighborhood life — still use big-city common sense.",
-      },
-      {
-        q: "How do I get from the airport?",
-        a: metro
-          ? `From the airport: transfer or taxi/Uber to the apartment. Then move easily via Metro ${metro} and surroundings.`
-          : "From the airport: transfer or taxi/Uber straight to the apartment. Then metro, walking or rideshare.",
-      },
-      {
-        q: "Can I check in late?",
-        a: "Most of our apartments have digital locks / self check-in. Confirm details with the host on Airbnb when you book.",
-      },
-      {
-        q: "Where do I book and pay?",
-        a: "Only on Airbnb, via each apartment link. That's where protected payment, cancellation policy and host chat live.",
-      },
-      {
-        q: "Is Crambie part of Airbnb?",
-        a: "No. Crambie shows options and the event guide; booking and payment are always on the official Airbnb listing.",
-      },
-    ];
-  }
-  if (locale === "pt") {
-    return [
-      {
-        q: `Quão perto ficam os apartamentos de ${venue}?`,
-        a: `As opções em destaque ficam a partir de ~${mins} minutos (conforme o apto). No mapa você vê a distância real antes de reservar.`,
-      },
-      {
-        q: "O bairro é seguro?",
-        a: "Trabalhamos bairros residenciais bem conectados (Ñuñoa, Barrio Italia, Santiago Centro). Metrô perto e vida de bairro; ainda assim use o senso comum de qualquer cidade grande.",
-      },
-      {
-        q: "Como chego do aeroporto?",
-        a: metro
-          ? `Do aeroporto: transfer ou táxi/Uber até o apto. Depois você se move fácil pelo Metrô ${metro} e arredores.`
-          : "Do aeroporto: transfer ou táxi/Uber direto ao apartamento. Depois metrô, a pé ou rideshare.",
-      },
-      {
-        q: "Posso fazer check-in tarde?",
-        a: "A maioria dos nossos aptos tem fechadura digital / check-in autônomo. Confirme detalhes com o anfitrião no Airbnb ao reservar.",
-      },
-      {
-        q: "Onde reservo e pago?",
-        a: "Só no Airbnb, no link de cada apartamento. Lá estão o pagamento protegido, o cancelamento conforme a política do anúncio e o chat com o anfitrião.",
-      },
-      {
-        q: "A Crambie faz parte do Airbnb?",
-        a: "Não. A Crambie mostra opções e o guia do evento; a reserva e o pagamento são sempre no anúncio oficial do Airbnb.",
-      },
-    ];
-  }
-  return pack.microsite.faqs;
+  return buildMicrositeEventCopy(copyInput(pack), locale).faqs;
 }
 
 function localizePitch(
@@ -851,6 +459,7 @@ export function localizeMicrosite(
     INTEREST[pack.interest]?.[locale] ?? pack.interestLabel;
   const weather = climateForCampaign(pack.eventStartsOn, pack.interest, locale);
   const summary = eventSummary(pack, locale);
+  const description = eventDescription(pack, locale);
 
   const content: MicrositeContent = {
     ...pack.microsite,
@@ -858,6 +467,7 @@ export function localizeMicrosite(
     productLabel: ui.productLabel,
     productLabelEs: ui.productLabel,
     eventSummary: summary,
+    eventDescription: description,
     interestLabel,
     mustKnow: mustKnow(pack, locale),
     recommendations: recommendations(pack, locale),
@@ -881,9 +491,9 @@ export function localizeMicrosite(
             ? `${title}. Datas, dicas, clima, traslados para ski, FAQ e hospedagem hub em Santiago.`
             : pack.microsite.seoDescription
         : locale === "en"
-          ? `${title}. Dates, map, tips, weather, transit, FAQ and stays near ${pack.venueName} in Santiago.`
+          ? `${description} Map, tips, weather, transit, FAQ and stays near ${pack.venueName} in Santiago.`
           : locale === "pt"
-            ? `${title}. Datas, mapa, dicas, clima, transporte, FAQ e hospedagem perto de ${pack.venueName} em Santiago.`
+            ? `${description} Mapa, dicas, clima, transporte, FAQ e hospedagem perto de ${pack.venueName} em Santiago.`
             : pack.microsite.seoDescription,
     shareText:
       pack.interest === "nieve"

@@ -244,6 +244,26 @@ body {
   .ms-tilt-r {
     transform: none;
   }
+
+  .ms-stroke {
+    display: none;
+  }
+
+  .ms-polaroid {
+    padding: 0.35rem 0.35rem 0.85rem;
+    box-shadow: 0 10px 28px -22px rgba(20, 20, 20, 0.45);
+  }
+
+  .ms-tape {
+    width: 2.6rem;
+    height: 0.95rem;
+  }
+}
+
+.ms-root img,
+.ms-root video,
+.ms-root svg:not(.ms-connector) {
+  max-width: 100%;
 }
 
 .ms-polaroid {

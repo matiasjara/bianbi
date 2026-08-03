@@ -8,6 +8,7 @@ import {
   applySignalAdmin,
   loadSignalAdminState,
 } from "./signal-admin";
+import { isRelevantDemandSignal } from "./signal-relevance";
 import type { CityId, DemandSignal } from "./types";
 
 async function readJsonSafe<T>(file: string, fallback: T): Promise<T> {
@@ -68,9 +69,9 @@ export async function loadAllSignals(options?: {
   }
 
   // Recalcula potencial de eventos (BTS ≠ teatro chico) aunque el JSON sea viejo
-  const enriched = enrichSignalPotentials([...byId.values()]).map(
-    enrichSignalCity,
-  );
+  const enriched = enrichSignalPotentials([...byId.values()])
+    .filter(isRelevantDemandSignal)
+    .map(enrichSignalCity);
   const admin = await loadSignalAdminState();
   let signals = applySignalAdmin(enriched, admin);
   if (options?.city) {

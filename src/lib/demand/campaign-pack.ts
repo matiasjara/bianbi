@@ -16,6 +16,7 @@ import {
   sportLandingHeadline,
   sportLandingSubhead,
 } from "./event-title";
+import { publicEventDescription } from "./public-event-description";
 import { attachTravelBriefAndMicrosite } from "./travel-brief";
 import { resolveSignalCity } from "./cities";
 import type { CampaignAudience, CityId } from "./types";
@@ -514,6 +515,14 @@ export function buildCampaignPack(
   const packCity: CityId =
     lead && resolveSignalCity(lead) === "concepcion" ? "concepcion" : "santiago";
 
+  const eventDescription = publicEventDescription({
+    signal: lead,
+    eventTitle,
+    venueName: poi.name,
+    interest: campaign.interest,
+    eventDates,
+  });
+
   const base = {
     slug,
     city: packCity,
@@ -522,6 +531,8 @@ export function buildCampaignPack(
     playbook: campaign.playbook,
     channels: campaign.channels,
     eventTitle,
+    eventDescription,
+    eventUrl: lead?.url,
     eventDates,
     eventStartsOn: eventStart,
     eventEndsOn: eventEnd,

@@ -10,6 +10,7 @@ import path from "node:path";
 import { chromium } from "playwright";
 import type { DemandSignal, IngestManifest } from "../../src/lib/demand/types";
 import { normalizeSignals } from "../../src/lib/demand/dates";
+import { isRelevantDemandSignal } from "../../src/lib/demand/signal-relevance";
 import { FETCH_SOURCES, PLAYWRIGHT_SOURCES } from "./sources/registry";
 
 const OUT_DIR = path.join(process.cwd(), "data", "ingested");
@@ -61,9 +62,9 @@ async function main() {
     const prev = byKey.get(key);
     if (!prev || s.intensity >= prev.intensity) byKey.set(key, s);
   }
-  const signals = normalizeSignals([...byKey.values()]).sort((a, b) =>
-    a.startsOn.localeCompare(b.startsOn),
-  );
+  const signals = normalizeSignals([...byKey.values()])
+    .filter(isRelevantDemandSignal)
+    .sort((a, b) => a.startsOn.localeCompare(b.startsOn));
 
   const outPath = path.join(OUT_DIR, "events.json");
   await writeFile(outPath, JSON.stringify(signals, null, 2));

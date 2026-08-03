@@ -16318,5 +16318,992 @@
     "url": "https://www.puntoticket.com/floor-jansen",
     "scrapedAt": "2026-08-03T03:40:57.482Z",
     "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-icpc-championship-latam-2026-03-02",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "ICPC Championship Latam",
+    "description": "Competencia latinoamericana de programación (ICPC). Delegaciones universitarias de la región → pernocta en Santiago. Fecha: 02-03-2026 – 07-03-2026.",
+    "startsOn": "2026-03-02",
+    "endsOn": "2026-03-07",
+    "intensity": 4,
+    "potentialScore": 36,
+    "potentialTier": "baja",
+    "potentialFactors": [
+      "artista/local o desconocido",
+      "venue no clasificado"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "ferias",
+      "tecnologia",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.588Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-congreso-acades-2026-03-17",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Congreso ACADES",
+    "description": "Congreso nacional de administración de empresas. Asistentes de regiones y sector corporativo en Metropolitan Santiago. Fecha: 17-03-2026 – 19-03-2026.",
+    "startsOn": "2026-03-17",
+    "endsOn": "2026-03-19",
+    "intensity": 7,
+    "potentialScore": 70,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "congresos",
+      "negocios",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.596Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-congreso-latinoamericano-de-imagen-360-2026-03-26",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Congreso Latinoamericano de Imagen 360",
+    "description": "5° edición del congreso latinoamericano de imagen y comunicación visual. Público profesional regional. Fecha: 26-03-2026 – 29-03-2026.",
+    "startsOn": "2026-03-26",
+    "endsOn": "2026-03-29",
+    "intensity": 7,
+    "potentialScore": 72,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "mice",
+      "internacional",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.596Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-fidae-feria-internacional-del-aire-y-del-espacio-2026-04-07",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "FIDAE — Feria Internacional del Aire y del Espacio",
+    "description": "Mayor feria aeroespacial y defensa de Latinoamérica. Expositores y delegaciones internacionales en Santiago. Fecha: 07-04-2026 – 12-04-2026.",
+    "startsOn": "2026-04-07",
+    "endsOn": "2026-04-12",
+    "intensity": 9,
+    "potentialScore": 84,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "internacional",
+      "mice",
+      "defensa"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.597Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-congreso-america-digital-2026-04-08",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Congreso América Digital",
+    "description": "Cumbre de tecnología y negocios digitales en Cono Sur. Ejecutivos y equipos de transformación digital. Fecha: 08-04-2026 – 09-04-2026.",
+    "startsOn": "2026-04-08",
+    "endsOn": "2026-04-09",
+    "intensity": 8,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "congresos",
+      "tecnologia",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.597Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-world-copper-conference-2026-04-13",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "World Copper Conference",
+    "description": "Conferencia internacional del cobre. Minería, energía y delegaciones globales en Santiago. Fecha: 13-04-2026 – 15-04-2026.",
+    "startsOn": "2026-04-13",
+    "endsOn": "2026-04-15",
+    "intensity": 7,
+    "potentialScore": 72,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "mineria",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-circlepack-by-cenem-2026-04-14",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Circlepack by Cenem",
+    "description": "Expo-congreso de packaging y envases. Industria alimentaria y retail — asistentes de todo Chile. Fecha: 14-04-2026 – 16-04-2026.",
+    "startsOn": "2026-04-14",
+    "endsOn": "2026-04-16",
+    "intensity": 8,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "industria",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-expodent-2026-04-24",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "ExpoDent",
+    "description": "Exposición y congreso de odontología. Profesionales de salud dental de regiones y Latinoamérica. Fecha: 24-04-2026 – 25-04-2026.",
+    "startsOn": "2026-04-24",
+    "endsOn": "2026-04-25",
+    "intensity": 8,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "salud",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-chile-fintech-forum-2026-05-04",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Chile Fintech Forum",
+    "description": "Foro fintech con startups, bancos e inversores. Viajes corporativos y pernocta de equipos regionales. Fecha: 04-05-2026 – 06-05-2026.",
+    "startsOn": "2026-05-04",
+    "endsOn": "2026-05-06",
+    "intensity": 8,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "congresos",
+      "ferias",
+      "tecnologia",
+      "negocios",
+      "mice"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-expobebe-2026-05-29",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "ExpoBebé",
+    "description": "Feria de puericultura y familia. Expositores nacionales y visitantes de regiones en Metropolitan. Fecha: 29-05-2026 – 31-05-2026.",
+    "startsOn": "2026-05-29",
+    "endsOn": "2026-05-31",
+    "intensity": 7,
+    "potentialScore": 70,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "familias",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-expo-vivienda-2026-05-29",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Expo Vivienda",
+    "description": "Feria inmobiliaria y hogar en Estación Mapocho. Compradores y expositores de fuera de Santiago. Fecha: 29-05-2026 – 31-05-2026.",
+    "startsOn": "2026-05-29",
+    "endsOn": "2026-05-31",
+    "intensity": 6,
+    "potentialScore": 58,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial"
+    ],
+    "poiIds": [
+      "poi-movistar",
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "ferias",
+      "negocios",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "Z114",
+      "Z107",
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-motortec-2026-06-18",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Motortec",
+    "description": "Feria de autopartes, lubricantes y servicios automotrices. Distribuidores y talleres de regiones. Fecha: 18-06-2026 – 20-06-2026.",
+    "startsOn": "2026-06-18",
+    "endsOn": "2026-06-20",
+    "intensity": 7,
+    "potentialScore": 70,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "industria",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-smart-city-expo-santiago-2026-07-08",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Smart City Expo Santiago",
+    "description": "Cumbre de ciudades inteligentes, movilidad y sostenibilidad urbana. Delegaciones público-privadas. Fecha: 08-07-2026 – 10-07-2026.",
+    "startsOn": "2026-07-08",
+    "endsOn": "2026-07-10",
+    "intensity": 6,
+    "potentialScore": 58,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "tecnologia",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-money-expo-global-2026-07-24",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Money Expo Global",
+    "description": "Expo de servicios financieros, trading e inversiones. Asistentes nacionales e internacionales. Fecha: 24-07-2026 – 26-07-2026.",
+    "startsOn": "2026-07-24",
+    "endsOn": "2026-07-26",
+    "intensity": 8,
+    "potentialScore": 84,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "negocios",
+      "mice"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://www.nferias.com/espacio-riesco/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-business-travel-expo-bte-2026-08-13",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Business Travel Expo BTE",
+    "description": "Encuentro de viajes corporativos y turismo de negocios (MICE). Compradores y proveedores de la región. Fecha: 13-08-2026.",
+    "startsOn": "2026-08-13",
+    "endsOn": "2026-08-13",
+    "intensity": 8,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "congresos",
+      "negocios",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-expo-salud-2026-09-02",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Expo Salud",
+    "description": "Principal feria-congreso de salud en Chile. Directivos, clínicas y proveedores médicos de todo el país. Fecha: 02-09-2026 – 04-09-2026.",
+    "startsOn": "2026-09-02",
+    "endsOn": "2026-09-04",
+    "intensity": 8,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "salud",
+      "mice",
+      "internacional",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-insurtechile-eila-2026-09-03",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "InsurteChile / EILA",
+    "description": "Congreso-feria de seguros y latinoamerica insurance. Ejecutivos del sector en Centro Parque. Fecha: 03-09-2026 – 04-09-2026.",
+    "startsOn": "2026-09-03",
+    "endsOn": "2026-09-04",
+    "intensity": 8,
+    "potentialScore": 84,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "congresos",
+      "ferias",
+      "negocios",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-hyvolution-chile-2026-09-08",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Hyvolution Chile",
+    "description": "Expo y congreso del hidrógeno verde. Energía, minería y delegaciones internacionales. Fecha: 08-09-2026 – 10-09-2026.",
+    "startsOn": "2026-09-08",
+    "endsOn": "2026-09-10",
+    "intensity": 8,
+    "potentialScore": 84,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "congresos",
+      "ferias",
+      "energia",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-expo-mercado-publico-2026-09-09",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Expo Mercado Público",
+    "description": "Mayor encuentro de compras públicas del país. Proveedores y servicios de regiones en Espacio Riesco. Fecha: 09-09-2026 – 10-09-2026.",
+    "startsOn": "2026-09-09",
+    "endsOn": "2026-09-10",
+    "intensity": 7,
+    "potentialScore": 70,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "negocios",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-seguridad-expo-2026-09-23",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Seguridad Expo",
+    "description": "Feria de seguridad, emergencias y ciberseguridad. Integradores y empresas de todo Chile. Fecha: 23-09-2026 – 25-09-2026.",
+    "startsOn": "2026-09-23",
+    "endsOn": "2026-09-25",
+    "intensity": 7,
+    "potentialScore": 70,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "industria",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-congreso-mundial-de-medicina-del-deporte-2026-09-24",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Congreso Mundial de Medicina del Deporte",
+    "description": "Congreso mundial con médicos del deporte y federaciones. Delegaciones internacionales en Santiago. Fecha: 24-09-2026 – 27-09-2026.",
+    "startsOn": "2026-09-24",
+    "endsOn": "2026-09-27",
+    "intensity": 8,
+    "potentialScore": 72,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "salud",
+      "deportes",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-espacio-food-service-2026-09-29",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Espacio Food & Service",
+    "description": "Mayor feria de industria alimentaria en Chile (+25.000 profesionales). Horeca y retail de regiones. Fecha: 29-09-2026 – 01-10-2026.",
+    "startsOn": "2026-09-29",
+    "endsOn": "2026-10-01",
+    "intensity": 9,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "gastronomia",
+      "mice",
+      "regiones",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://www.espacioriesco.cl/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-congreso-chileno-de-radiologia-2026-10-08",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Congreso Chileno de Radiología",
+    "description": "Congreso nacional de radiología e imagenología. Médicos especialistas de regiones. Fecha: 08-10-2026 – 10-10-2026.",
+    "startsOn": "2026-10-08",
+    "endsOn": "2026-10-10",
+    "intensity": 6,
+    "potentialScore": 58,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "salud",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-congreso-internacional-de-medicina-estetica-y-regenerativa-2",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Congreso Internacional de Medicina Estética y Regenerativa",
+    "description": "Congreso médico-estético con participantes latinoamericanos. Pernocta de delegaciones. Fecha: 08-10-2026 – 10-10-2026.",
+    "startsOn": "2026-10-08",
+    "endsOn": "2026-10-10",
+    "intensity": 7,
+    "potentialScore": 72,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "salud",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-edifica-2026-10-20",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Edifica",
+    "description": "Feria de construcción más relevante de Latinoamérica. Expositores, arquitectos y constructoras regionales. Fecha: 20-10-2026 – 22-10-2026.",
+    "startsOn": "2026-10-20",
+    "endsOn": "2026-10-22",
+    "intensity": 9,
+    "potentialScore": 70,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "construccion",
+      "mice",
+      "internacional",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://www.espacioriesco.cl/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-feria-vyva-2026-10-23",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Feria VYVA",
+    "description": "Feria de vinos, vitivinicultura y bebidas. Productores y compradores nacionales. Fecha: 23-10-2026 – 25-10-2026.",
+    "startsOn": "2026-10-23",
+    "endsOn": "2026-10-25",
+    "intensity": 7,
+    "potentialScore": 70,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "gastronomia",
+      "mice",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-experiencia-e-2026-11-05",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "Experiencia E",
+    "description": "Feria de eventos, producción y experiencias. Industria MICE y marketing en Espacio Riesco. Fecha: 05-11-2026 – 08-11-2026.",
+    "startsOn": "2026-11-05",
+    "endsOn": "2026-11-08",
+    "intensity": 8,
+    "potentialScore": 76,
+    "potentialTier": "alta",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "recinto MICE / feria masiva",
+      "sector con viajes corporativos"
+    ],
+    "poiIds": [
+      "poi-costanera"
+    ],
+    "audienceTags": [
+      "ferias",
+      "congresos",
+      "mice",
+      "negocios",
+      "regiones"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "Z114",
+      "Z107",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
+  },
+  {
+    "id": "congresos_ferias_cl-eha-european-hematology-association-2026-11-05",
+    "kind": "event",
+    "source": "congresos_ferias_cl",
+    "title": "EHA — European Hematology Association",
+    "description": "Congreso europeo de hematología en Santiago. Delegaciones médicas internacionales. Fecha: 05-11-2026 – 06-11-2026.",
+    "startsOn": "2026-11-05",
+    "endsOn": "2026-11-06",
+    "intensity": 8,
+    "potentialScore": 72,
+    "potentialTier": "media",
+    "potentialFactors": [
+      "congreso / feria sectorial",
+      "convocatoria internacional"
+    ],
+    "poiIds": [
+      "poi-lastarria"
+    ],
+    "audienceTags": [
+      "congresos",
+      "salud",
+      "mice",
+      "internacional"
+    ],
+    "propertyCodesPreferred": [
+      "E801",
+      "E214",
+      "T112"
+    ],
+    "url": "https://revistaeventos.cl/chile-congresos-y-ferias-2026/",
+    "scrapedAt": "2026-08-03T17:27:37.598Z",
+    "city": "santiago"
   }
 ]

@@ -160,7 +160,7 @@ function StayGroupCard({
 
   return (
     <article
-      className={`relative md:grid md:items-start md:gap-8 ${
+      className={`relative min-w-0 md:grid md:items-start md:gap-8 ${
         variant === "landing"
           ? "md:grid-cols-[minmax(220px,300px)_1fr]"
           : `md:grid-cols-[minmax(220px,280px)_1fr] ${
@@ -169,7 +169,7 @@ function StayGroupCard({
       }`}
     >
       <div
-        className={`ms-polaroid relative ${
+        className={`ms-polaroid relative max-w-full overflow-hidden ${
           tiltEven ? "ms-tilt-l md:order-1" : "ms-tilt-r md:order-2"
         }`}
       >
@@ -189,12 +189,12 @@ function StayGroupCard({
           photos={photos}
           alt={title}
           caption={group.neighborhood}
-          className="h-60 w-full md:h-72"
+          className="aspect-[4/3] w-full sm:aspect-auto sm:h-60 md:h-72"
         />
       </div>
 
       <div
-        className={`pt-3 md:pt-2 ${tiltEven ? "md:order-2" : "md:order-1"}`}
+        className={`min-w-0 pt-3 md:pt-2 ${tiltEven ? "md:order-2" : "md:order-1"}`}
       >
         {variant === "landing" && group.locationHighlights?.length ? (
           <>
@@ -236,7 +236,7 @@ function StayGroupCard({
         )}
 
         <h3
-          className={`mt-2 text-2xl leading-snug ${
+          className={`mt-2 text-xl leading-snug sm:text-2xl ${
             variant === "landing"
               ? "font-[family-name:var(--font-display)]"
               : "ms-editorial"

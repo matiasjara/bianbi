@@ -38,6 +38,7 @@ const EVENTS_SOURCES = new Set<SignalSource>([
   "fedachi",
   "fehoch_tournaments",
   "fevochi",
+  "congresos_ferias_cl",
   "discovery_web",
   "playwright_scrape",
   "manual",

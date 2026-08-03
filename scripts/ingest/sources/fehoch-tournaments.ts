@@ -9,6 +9,7 @@ import {
   slugify,
   type SourceResult,
 } from "../lib/signal-utils";
+import { isRelevantFehochTournamentName } from "../../../src/lib/demand/hockey-group";
 
 const LIST_URL = "https://atn.fehoch.cl/es/tournaments";
 const UA =
@@ -127,6 +128,7 @@ export async function scrapeFehochTournaments(): Promise<SourceResult> {
 
     for (const row of rows) {
       try {
+        if (!isRelevantFehochTournamentName(row.name)) continue;
         const detail = await fetchText(
           `https://atn.fehoch.cl/es/tournament/${row.id}/summary`,
         );
