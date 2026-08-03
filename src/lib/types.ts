@@ -98,6 +98,7 @@ export type OutreachSourceId =
   | "tabla_asociaciones"
   | "registro_fdn"
   | "fehoch"
+  | "fevochi_asociaciones"
   | "manual_outreach"
   | "sernatur"
   | "ski_resorts"

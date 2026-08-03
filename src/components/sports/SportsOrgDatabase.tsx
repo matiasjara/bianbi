@@ -16,6 +16,7 @@ const SOURCE_LABEL: Record<OutreachOrganization["source"], string> = {
   tabla_asociaciones: "Tabla / IND",
   registro_fdn: "Registro FDN",
   fehoch: "FEHOCH",
+  fevochi_asociaciones: "FEVOCHI",
   manual_outreach: "Curaduría",
   sernatur: "Sernatur",
   ski_resorts: "Centros de ski",

@@ -15,19 +15,30 @@ export type EventCopyOverride = {
   news?: string[];
 };
 
+/** Campos mínimos para decidir / armar overrides editoriales. */
+export type EventCopyOverrideInput = Pick<
+  MicrositeCopyInput,
+  | "eventTitle"
+  | "eventDates"
+  | "eventStartsOn"
+  | "eventEndsOn"
+  | "venueName"
+  | "properties"
+>;
+
 function t(locale: Locale, es: string, en: string, pt: string): string {
   if (locale === "en") return en;
   if (locale === "pt") return pt;
   return es;
 }
 
-function isMundialU17Volleyball(pack: MicrositeCopyInput): boolean {
+function isMundialU17Volleyball(pack: EventCopyOverrideInput): boolean {
   return /mundial.*u17.*voleibol|voleibol.*u17.*mundial|mundial femenino u17/i.test(
     pack.eventTitle,
   );
 }
 
-function displayDates(pack: MicrositeCopyInput, locale: Locale): string {
+function displayDates(pack: EventCopyOverrideInput, locale: Locale): string {
   return formatDateRangeHuman(
     pack.eventStartsOn,
     pack.eventEndsOn,
@@ -36,7 +47,7 @@ function displayDates(pack: MicrositeCopyInput, locale: Locale): string {
 }
 
 function mundialU17VolleyballOverride(
-  pack: MicrositeCopyInput,
+  pack: EventCopyOverrideInput,
   locale: Locale,
   nearestMinsOverride?: number,
 ): EventCopyOverride {
@@ -144,7 +155,7 @@ function mundialU17VolleyballOverride(
 }
 
 export function getEventCopyOverride(
-  pack: MicrositeCopyInput,
+  pack: EventCopyOverrideInput,
   locale: Locale,
   opts?: { nearestMins?: number },
 ): EventCopyOverride | null {

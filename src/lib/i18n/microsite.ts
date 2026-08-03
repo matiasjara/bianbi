@@ -308,29 +308,7 @@ function guideTitle(
   pack: CampaignPack,
   locale: Locale,
 ): string {
-  const override = getEventCopyOverride(
-    {
-      eventTitle: pack.eventTitle,
-      eventDescription: pack.eventDescription,
-      eventDates: pack.eventDates,
-      eventStartsOn: pack.eventStartsOn,
-      eventEndsOn: pack.eventEndsOn,
-      venueName: pack.venueName,
-      venuePoiId: pack.venuePoiId,
-      venueLat: pack.venueLat,
-      venueLng: pack.venueLng,
-      interest: pack.interest,
-      interestLabel: pack.interestLabel,
-      estimatedAttendance: pack.estimatedAttendance,
-      estimatedOvernight: pack.estimatedOvernight,
-      demandDimension: pack.demandDimension,
-      drivers: pack.drivers,
-      properties: pack.properties,
-      audience: pack.audience,
-      eventUrl: pack.eventUrl,
-    },
-    locale,
-  );
+  const override = getEventCopyOverride(copyInput(pack), locale);
   if (override?.shortTitle) {
     return locale === "en"
       ? `Guide: ${override.shortTitle}`
