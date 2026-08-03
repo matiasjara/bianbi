@@ -6,7 +6,6 @@ import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
 import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
-import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import { localizeLanding } from "@/lib/i18n/landing";
@@ -133,18 +132,17 @@ export default async function CampaignLandingPage({
       >
         <LandingLangSwitch basePath={`/c/${slug}`} locale={locale} />
         <div className="mx-auto flex min-h-[78vh] max-w-4xl flex-col justify-end px-5 pb-14 pt-24">
-          <div className="animate-rise mb-4 inline-flex rounded-xl bg-[var(--brand-crema,#F4F0E8)]/95 shadow-sm">
-            <BianbiLogo variant="logo" href="/" tone="onLight" />
-          </div>
           <p className="animate-rise mb-3 text-xs font-medium uppercase tracking-[0.2em] text-white/75">
             {pack.venueName} · {pack.eventDates}
           </p>
           <h1 className="animate-rise max-w-3xl font-[family-name:var(--font-display)] text-4xl leading-[1.1] text-white md:text-5xl">
             {L.headline}
           </h1>
-          <p className="animate-rise-delay mt-4 max-w-2xl text-lg leading-relaxed text-white/90">
-            {L.subhead}
-          </p>
+          <div className="animate-rise-delay mt-4 max-w-2xl space-y-3 text-lg leading-relaxed text-white/90">
+            {L.subhead.split("\n\n").map((paragraph) => (
+              <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+            ))}
+          </div>
 
           <p className="animate-rise-delay mt-5 max-w-2xl text-sm text-white/80">
             {L.heroLine}

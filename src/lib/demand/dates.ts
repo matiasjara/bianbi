@@ -63,6 +63,83 @@ export function formatDateRangeCL(start: string, end?: string | null): string {
   return `${formatDateCL(start)} – ${formatDateCL(safeEnd)}`;
 }
 
+const MONTH_SHORT: Record<"es" | "en" | "pt", string[]> = {
+  es: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  pt: ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"],
+};
+
+function dayOf(iso: string): number {
+  return Number.parseInt(iso.slice(8, 10), 10);
+}
+
+function monthIndex(iso: string): number {
+  return Number.parseInt(iso.slice(5, 7), 10) - 1;
+}
+
+function yearOf(iso: string): string {
+  return iso.slice(0, 4);
+}
+
+/** Rango en prosa (es): «6 al 16 de agosto de 2026». */
+export function formatDateRangeLongEs(start: string, end?: string | null): string {
+  if (!isIsoDate(start)) return start;
+  const safeEnd = end && isIsoDate(end) ? end : start;
+  const months = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+  ];
+  const month = months[monthIndex(start)] ?? start.slice(5, 7);
+  const year = yearOf(start);
+  if (safeEnd === start) return `${dayOf(start)} de ${month} de ${year}`;
+  if (start.slice(0, 7) === safeEnd.slice(0, 7)) {
+    return `${dayOf(start)} al ${dayOf(safeEnd)} de ${month} de ${year}`;
+  }
+  const monthEnd = months[monthIndex(safeEnd)] ?? safeEnd.slice(5, 7);
+  return `${dayOf(start)} de ${month} al ${dayOf(safeEnd)} de ${monthEnd} de ${year}`;
+}
+
+/** Fecha legible para landings: «6 ago 2026». */
+export function formatDateHuman(
+  iso: string,
+  locale: "es" | "en" | "pt" = "es",
+): string {
+  if (!isIsoDate(iso)) return iso;
+  const month = MONTH_SHORT[locale][monthIndex(iso)] ?? iso.slice(5, 7);
+  return `${dayOf(iso)} ${month} ${yearOf(iso)}`;
+}
+
+/** Rango legible: «6–16 ago 2026» o «28 ago – 2 sep 2026». */
+export function formatDateRangeHuman(
+  start: string,
+  end?: string | null,
+  locale: "es" | "en" | "pt" = "es",
+): string {
+  if (!isIsoDate(start)) return start;
+  const safeEnd = end && isIsoDate(end) ? end : start;
+  if (safeEnd === start) return formatDateHuman(start, locale);
+
+  const sameMonth =
+    start.slice(0, 7) === safeEnd.slice(0, 7) &&
+    yearOf(start) === yearOf(safeEnd);
+  if (sameMonth) {
+    const month = MONTH_SHORT[locale][monthIndex(start)] ?? start.slice(5, 7);
+    return `${dayOf(start)}–${dayOf(safeEnd)} ${month} ${yearOf(start)}`;
+  }
+
+  return `${formatDateHuman(start, locale)} – ${formatDateHuman(safeEnd, locale)}`;
+}
+
 /** Encabezado de día en calendario: «sábado 14-08-2026». */
 export function formatDayHeadingCL(iso: string): string {
   if (!isIsoDate(iso)) return iso;

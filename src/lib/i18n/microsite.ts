@@ -4,6 +4,7 @@ import {
   buildMicrositeEventCopy,
   type MicrositeCopyInput,
 } from "@/lib/demand/microsite-event-copy";
+import { getEventCopyOverride } from "@/lib/demand/microsite-event-overrides";
 import {
   publicEventDescriptionEn,
   publicEventDescriptionPt,
@@ -307,6 +308,37 @@ function guideTitle(
   pack: CampaignPack,
   locale: Locale,
 ): string {
+  const override = getEventCopyOverride(
+    {
+      eventTitle: pack.eventTitle,
+      eventDescription: pack.eventDescription,
+      eventDates: pack.eventDates,
+      eventStartsOn: pack.eventStartsOn,
+      eventEndsOn: pack.eventEndsOn,
+      venueName: pack.venueName,
+      venuePoiId: pack.venuePoiId,
+      venueLat: pack.venueLat,
+      venueLng: pack.venueLng,
+      interest: pack.interest,
+      interestLabel: pack.interestLabel,
+      estimatedAttendance: pack.estimatedAttendance,
+      estimatedOvernight: pack.estimatedOvernight,
+      demandDimension: pack.demandDimension,
+      drivers: pack.drivers,
+      properties: pack.properties,
+      audience: pack.audience,
+      eventUrl: pack.eventUrl,
+    },
+    locale,
+  );
+  if (override?.shortTitle) {
+    return locale === "en"
+      ? `Guide: ${override.shortTitle}`
+      : locale === "pt"
+        ? `Guia: ${override.shortTitle}`
+        : `Guía: ${override.shortTitle}`;
+  }
+
   const t = cleanPublicEventTitle(pack.eventTitle);
   const interest = pack.interest;
   if (locale === "en") {
@@ -370,11 +402,16 @@ function eventSummary(pack: CampaignPack, locale: Locale): string {
 }
 
 function eventDescription(pack: CampaignPack, locale: Locale): string {
+  const override = getEventCopyOverride(copyInput(pack), locale);
+  if (override?.eventDescription) return override.eventDescription;
+
   const base = {
     eventTitle: pack.eventTitle,
     venueName: pack.venueName,
     interest: pack.interest,
     eventDates: pack.eventDates,
+    eventStartsOn: pack.eventStartsOn,
+    eventEndsOn: pack.eventEndsOn,
   };
   if (locale === "en") return publicEventDescriptionEn(base);
   if (locale === "pt") return publicEventDescriptionPt(base);
@@ -491,10 +528,10 @@ export function localizeMicrosite(
             ? `${title}. Datas, dicas, clima, traslados para ski, FAQ e hospedagem hub em Santiago.`
             : pack.microsite.seoDescription
         : locale === "en"
-          ? `${description} Map, tips, weather, transit, FAQ and stays near ${pack.venueName} in Santiago.`
+          ? `${summary} Map, tips, weather, transit, FAQ and stays near ${pack.venueName} in Santiago.`
           : locale === "pt"
-            ? `${description} Mapa, dicas, clima, transporte, FAQ e hospedagem perto de ${pack.venueName} em Santiago.`
-            : pack.microsite.seoDescription,
+            ? `${summary} Mapa, dicas, clima, transporte, FAQ e hospedagem perto de ${pack.venueName} em Santiago.`
+            : `${summary} Mapa, transporte, clima, FAQ y alojamiento cerca de ${pack.venueName}.`,
     shareText:
       pack.interest === "nieve"
         ? locale === "en"

@@ -49,16 +49,16 @@ function isMajorBridge(names: string[], start: string): boolean {
 function bridgeTitle(names: string[], start: string, end: string): string {
   const blob = names.join(" ").toLowerCase();
   if (/fiestas patrias|18 de septiembre|día nacional/i.test(blob)) {
-    return "Fiestas Patrias — puente en Santiago";
+    return "Fiestas Patrias — fin de semana largo";
   }
   if (/año nuevo|navidad/i.test(blob)) {
-    return "Año Nuevo — fin de semana en Santiago";
+    return "Año Nuevo — escapada a Santiago";
   }
   if (/viernes santo|sábado santo|sabado santo|jueves santo/i.test(blob)) {
     return "Semana Santa — escapada a Santiago";
   }
   if (names.length === 1) {
-    return `Puente ${names[0]} — Santiago`;
+    return `Feriado ${names[0]} — Santiago`;
   }
   return `Fin de semana largo — ${names[0]}`;
 }

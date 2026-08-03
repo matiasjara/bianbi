@@ -25,7 +25,7 @@ const CURATED: Array<{
   {
     title: "Mundial Femenino U17 de Voleibol Chile 2026",
     description:
-      "FIVB/FEVOCHI: 6–16 ago 2026. Fase grupos y finales en Parque Estadio Nacional (Ñuñoa) + sedes Aconcagua. Delegaciones internacionales → pernocta Santiago + mailing federaciones.",
+      "Campeonato Mundial Femenino Sub-17 FIVB en Chile (6–16 ago 2026). Fase de grupos y finales en Parque Estadio Nacional (Ñuñoa), con partidos también en Aconcagua.",
     startsOn: "2026-08-06",
     endsOn: "2026-08-16",
     url: "https://www.fevochi.cl/",

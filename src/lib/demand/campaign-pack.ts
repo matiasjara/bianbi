@@ -4,7 +4,7 @@ import {
   properties as allProperties,
 } from "@/lib/data/seed";
 import { buildAdPublishPlan } from "./ad-brief";
-import { formatDateRangeCL } from "./dates";
+import { formatDateRangeHuman } from "./dates";
 import { publicPropertyLocation } from "./public-location";
 import {
   poiIdsForInterest,
@@ -18,6 +18,7 @@ import {
 } from "./event-title";
 import { publicEventDescription } from "./public-event-description";
 import { attachTravelBriefAndMicrosite } from "./travel-brief";
+import { getEventCopyOverride } from "./microsite-event-overrides";
 import { resolveSignalCity } from "./cities";
 import type { CampaignAudience, CityId } from "./types";
 import {
@@ -95,7 +96,7 @@ function ensureUniquePackSlugs(packs: CampaignPack[]): CampaignPack[] {
 }
 
 function formatRange(start: string, end: string): string {
-  return formatDateRangeCL(start, end);
+  return formatDateRangeHuman(start, end, "es");
 }
 
 function withUtm(url: string, campaign: string, content: string): string {
@@ -343,12 +344,12 @@ function buildCopy(input: {
   if (interest === "deporte_competencia") {
     const { sport, detail, displayTitle } = sportCopyParts(leadSignal);
     const sportName = sport && sport !== "Deporte" ? sport : "Competencia";
-    const headline = sportLandingHeadline({
+    let headline = sportLandingHeadline({
       signal: leadSignal,
       venueName,
       nearestMins,
     });
-    const subhead = sportLandingSubhead({
+    let subhead = sportLandingSubhead({
       signal: leadSignal,
       eventDates,
       venueName,
@@ -356,6 +357,27 @@ function buildCopy(input: {
       placeHook,
       stayHint,
     });
+    const override = getEventCopyOverride(
+      {
+        eventTitle,
+        eventDates,
+        eventStartsOn: leadSignal?.startsOn ?? "",
+        eventEndsOn: leadSignal?.endsOn ?? leadSignal?.startsOn ?? "",
+        venueName,
+        venuePoiId: "",
+        venueLat: 0,
+        venueLng: 0,
+        interest,
+        interestLabel: "",
+        drivers: [],
+        properties: [],
+        audience,
+      },
+      "es",
+      { nearestMins },
+    );
+    if (override?.headline) headline = override.headline;
+    if (override?.subhead) subhead = override.subhead;
     return {
       headline,
       subhead,
@@ -521,6 +543,8 @@ export function buildCampaignPack(
     venueName: poi.name,
     interest: campaign.interest,
     eventDates,
+    eventStartsOn: eventStart,
+    eventEndsOn: eventEnd,
   });
 
   const base = {

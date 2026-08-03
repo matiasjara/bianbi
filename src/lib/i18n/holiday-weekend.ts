@@ -41,7 +41,7 @@ const UI: Record<Locale, HolidayWeekendUi> = {
   es: {
     metaTitle: "Feriado en Santiago — escapada desde regiones",
     metaDescription:
-      "Fin de semana largo en Santiago: próximos puentes, qué hacer, eventos del momento y departamentos en barrios caminables. Ideal si vienes desde regiones.",
+      "Fin de semana largo en Santiago: próximos feriados, qué hacer, eventos del momento y departamentos en barrios caminables. Ideal si vienes desde regiones.",
     eyebrow: "Feriado · Santiago",
     headline: "Escapada a Santiago en fin de semana largo",
     subhead:
@@ -50,32 +50,32 @@ const UI: Record<Locale, HolidayWeekendUi> = {
     ctaEvents: "Calendario de eventos",
     audienceTitle: "Hecho para quien viene de fuera de Santiago",
     audienceBody:
-      "No necesitas un evento específico: mucha gente sube en puentes por panoramas urbanos, comida, shows y paseos. Esta guía es ese caso — distinto a un viaje de trabajo o a una guía de un solo concierto.",
-    bridgesTitle: "Próximos puentes",
+      "No necesitas un evento específico: mucha gente sube en feriados prolongados por panoramas urbanos, comida, shows y paseos. Esta guía es ese caso — distinto a un viaje de trabajo o a una guía de un solo concierto.",
+    bridgesTitle: "Próximos feriados y fines de semana largos",
     bridgesBody:
-      "Feriados oficiales agrupados en ventanas de escape (incluye fines de semana adyacentes cuando aplica). Reserva con anticipación en los puentes marcados.",
+      "Feriados oficiales con los días adyacentes que suelen tomarse para viajar. Reserva con anticipación en las fechas marcadas como alta demanda.",
     bridgesDays: (n) => `${n} día${n === 1 ? "" : "s"}`,
     plansTitle: "Qué hacer en Santiago (sin auto)",
     plansBody:
       "Barrios caminables y metro: combina 2–3 por día según dónde te quedes.",
     eventsTitle: "Eventos en esas fechas",
     eventsBody:
-      "Si tu puente coincide con un concierto, partido o feria, suma la guía del evento al plan.",
+      "Si viajas en esas fechas y coincide un concierto, partido o feria, suma la guía del evento al plan.",
     eventsEmpty: "Revisa el calendario del home para el mes de tu viaje.",
     eventsCta: "Ver guía",
     tipsTitle: "Tips para regiones",
     tips: [
       "Reserva alojamiento antes en Fiestas Patrias y Año Nuevo: sube la demanda y el precio.",
-      "Prioriza barrio con metro: evitas depender de auto y estacionamiento en puentes.",
+      "Prioriza barrio con metro: evitas depender de auto y estacionamiento en feriados.",
       "Combina día cultural (Lastarria / Italia) con noche de show si hay cartelera.",
       "Bus o avión según distancia; desde muchas ciudades el bus nocturno rinde para 3 días.",
     ],
-    stayTitle: "Dónde quedarte el puente",
+    stayTitle: "Dónde quedarte el fin de semana largo",
     stayBody:
       "Departamentos full equipados en Italia, Ñuñoa y Centro: cocina, WiFi y base para moverte en metro todo el fin de semana.",
     mapTitle: "Ubicación de los alojamientos",
     mapBody: "Puntos de referencia y deptos — Santiago como ciudad, no solo un venue.",
-    closeTitle: "Arma tu puente en Santiago",
+    closeTitle: "Arma tu escapada de feriado en Santiago",
     closeBody:
       "Elige fechas, mira si hay evento que te interese y reserva un depto conectado. Tú pagas en Airbnb; nosotros te orientamos.",
     footerNote: "Escapadas en feriado · alojamiento independiente en Santiago",
@@ -179,7 +179,7 @@ const PLANS: Record<Locale, SantiagoPlan[]> = {
     {
       id: "shows",
       name: "Show o partido",
-      blurb: "Revisa el calendario: a veces el puente coincide con Movistar o Estadio Nacional.",
+      blurb: "Revisa el calendario: a veces el feriado coincide con Movistar o Estadio Nacional.",
       icon: "music",
     },
     {

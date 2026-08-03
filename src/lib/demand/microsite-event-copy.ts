@@ -3,6 +3,10 @@
  */
 import { formatPeople } from "./attendance";
 import {
+  getEventCopyOverride,
+  isInternalNewsLine,
+} from "./microsite-event-overrides";
+import {
   formatVenueMetroMustKnow,
   formatVenueMetroTransport,
   nearestMetroStations,
@@ -71,8 +75,11 @@ function extractFootballMatch(title: string): { home: string; away: string } | n
   return { home, away };
 }
 
-function extractTicketingSource(description: string): string | null {
-  const d = description.toLowerCase();
+function extractTicketingSource(
+  description: string,
+  eventUrl?: string,
+): string | null {
+  const d = `${description} ${eventUrl ?? ""}`.toLowerCase();
   if (/punto\s*ticket|puntoticket/.test(d)) return "PuntoTicket";
   if (/ticketplus/.test(d)) return "TicketPlus";
   if (/passline/.test(d)) return "Passline";
@@ -123,7 +130,8 @@ function audienceOriginLine(pack: MicrositeCopyInput, locale: Locale): string | 
 }
 
 function venueAccessTip(pack: MicrositeCopyInput, locale: Locale): string | null {
-  const { venuePoiId, venueName } = pack;
+  const { venuePoiId, venueName, eventTitle } = pack;
+  const isVolleyball = /voleibol|v[oó]leibol|volley/i.test(eventTitle);
   switch (venuePoiId) {
     case "poi-movistar":
       return t(
@@ -133,6 +141,14 @@ function venueAccessTip(pack: MicrositeCopyInput, locale: Locale): string | null
         `${venueName} fica no Parque O'Higgins (Av. Beaucheff): combine Metrô Toesca ou Irarrázaval com caminhada ou rideshare conforme sua hospedagem.`,
       );
     case "poi-estadio":
+      if (isVolleyball) {
+        return t(
+          locale,
+          `${venueName} en Ñuñoa: metro Irarrázaval o Ñuble suelen ser los más cómodos; en días de partido hay mayor flujo de público y conviene llegar con anticipación.`,
+          `${venueName} in Ñuñoa: Irarrázaval or Ñuble metro are usually best; match days bring heavier crowds — arrive early.`,
+          `${venueName} em Ñuñoa: metrô Irarrázaval ou Ñuble costumam ser os mais práticos; em dias de jogo há mais público — chegue com antecedência.`,
+        );
+      }
       return t(
         locale,
         `${venueName} en Ñuñoa: metro Irarrázaval o Ñuble suelen ser los más útiles; en partidos grandes hay cortes de calle y colas tempranas.`,
@@ -180,6 +196,9 @@ export function buildEventSummary(
   pack: MicrositeCopyInput,
   locale: Locale,
 ): string {
+  const override = getEventCopyOverride(pack, locale);
+  if (override?.eventSummary) return override.eventSummary;
+
   const { eventTitle, eventDates, venueName, interest } = pack;
   if (interest === "nieve") {
     return t(
@@ -201,6 +220,9 @@ export function buildMustKnow(
   pack: MicrositeCopyInput,
   locale: Locale,
 ): string[] {
+  const override = getEventCopyOverride(pack, locale);
+  if (override?.mustKnow) return override.mustKnow;
+
   const mins = nearestMins(pack.properties);
   const tips: string[] = [];
 
@@ -307,6 +329,9 @@ export function buildMustKnow(
 }
 
 export function buildNews(pack: MicrositeCopyInput, locale: Locale): string[] {
+  const override = getEventCopyOverride(pack, locale);
+  if (override?.news) return override.news;
+
   if (pack.interest === "nieve") {
     return [
       t(
@@ -339,7 +364,7 @@ export function buildNews(pack: MicrositeCopyInput, locale: Locale): string[] {
     ),
   ];
 
-  const driver = pack.drivers.find((d) => d.length > 12);
+  const driver = pack.drivers.find((d) => d.length > 12 && !isInternalNewsLine(d));
   if (driver) {
     items.push(driver.endsWith(".") ? driver : `${driver}.`);
   }
@@ -347,7 +372,10 @@ export function buildNews(pack: MicrositeCopyInput, locale: Locale): string[] {
   const overnight = overnightLine(pack, locale);
   if (overnight) items.push(overnight);
 
-  const ticketSource = extractTicketingSource(pack.eventDescription);
+  const ticketSource = extractTicketingSource(
+    pack.eventDescription,
+    pack.eventUrl,
+  );
   if (ticketSource) {
     items.push(
       t(

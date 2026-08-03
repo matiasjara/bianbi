@@ -7,6 +7,10 @@ import {
   sportsOrganizations as rawSports,
   sportsOrgSources,
 } from "./sports-organizations";
+import {
+  volleyballOrganizations,
+  volleyballOrgSources,
+} from "./volleyball-organizations";
 
 /** Etiquetas UI de categoría de outreach. */
 export const OUTREACH_CATEGORY_LABEL: Record<
@@ -62,14 +66,36 @@ const sportsAsOutreach: OutreachOrganization[] = rawSports.map((o) => ({
   campaignInterests: ["partido_futbol", "deporte_competencia"],
 }));
 
+const volleyballAsOutreach: OutreachOrganization[] = volleyballOrganizations.map(
+  (o) => ({
+    id: o.id,
+    name: o.name,
+    category: "deporte" as const,
+    orgType: o.orgType as OutreachOrganization["orgType"],
+    segment: o.sport,
+    sport: o.sport,
+    region: o.region,
+    emails: o.emails,
+    phones: o.phones,
+    address: o.address,
+    source: o.source,
+    sourceUrl: o.sourceUrl,
+    website: o.website,
+    mailingReady: o.mailingReady,
+    campaignInterests: ["deporte_competencia"],
+  }),
+);
+
 export const outreachSources: OutreachSource[] = [
   ...sportsOrgSources,
+  ...volleyballOrgSources,
   ...nonSportsSources,
 ];
 
 /** Base unificada: clubes / federaciones / asociaciones (+ Fedeski). */
 export const outreachOrganizations: OutreachOrganization[] = [
   ...sportsAsOutreach,
+  ...volleyballAsOutreach,
   ...nonSportsOrganizations,
 ].filter((o) =>
   OUTREACH_MAILING_ORG_TYPES.includes(o.orgType),

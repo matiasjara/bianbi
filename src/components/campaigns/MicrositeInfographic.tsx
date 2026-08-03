@@ -238,9 +238,11 @@ export function MicrositeInfographic({
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
                   {ui.kickerAbout}
                 </p>
-                <p className="mt-2 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
-                  {m.eventDescription}
-                </p>
+                <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
+                  {m.eventDescription.split("\n\n").map((paragraph) => (
+                    <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                  ))}
+                </div>
               </div>
             ) : null}
 

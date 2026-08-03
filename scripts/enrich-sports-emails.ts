@@ -256,6 +256,10 @@ const CLUB_FED_FALLBACK: Array<{ match: RegExp; emails: string[] }> = [
     match: /\btenis\b/,
     emails: ["federacion@federaciondetenisdechile.cl"],
   },
+  {
+    match: /voleibol|v[oó]leibol|volley|fevochi|liname|manquehue|provoley|sparta|arv\b/,
+    emails: ["info@fevochi.cl", "asovoleibolsantiago@gmail.com"],
+  },
 ];
 
 function resolvePatch(
