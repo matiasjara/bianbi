@@ -9,6 +9,7 @@ import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { mediaSrc } from "@/lib/demand/guide-images";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
+import { santiagoCatalogMapMarkers } from "@/lib/demand/santiago-map-pois";
 import {
   getCatalogAttractions,
   getCatalogStayProperties,
@@ -91,12 +92,15 @@ export default async function CatalogStayPage({ searchParams }: Props) {
   const stayProperties = getCatalogStayProperties(locale);
   const mapProperties = uniquePropertyLocations(stayProperties);
 
-  const mapMarkers = mapProperties.map((p) => ({
-    lat: p.lat,
-    lng: p.lng,
-    label: p.buildingName ?? p.neighborhood,
-    kind: "property" as const,
-  }));
+  const mapMarkers = [
+    ...santiagoCatalogMapMarkers(),
+    ...mapProperties.map((p) => ({
+      lat: p.lat,
+      lng: p.lng,
+      label: p.buildingName ?? p.neighborhood,
+      kind: "property" as const,
+    })),
+  ];
 
   return (
     <div lang={locale} className="ms-root min-h-screen overflow-x-hidden">

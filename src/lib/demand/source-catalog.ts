@@ -44,7 +44,8 @@ export const DEMAND_SOURCE_CATALOG: DemandSourceEntry[] = [
     discipline: "futbol",
     url: "https://www.campeonatochileno.cl/",
     why: "Visitas de regiones a Santiago → pernocta + mailing a hinchadas.",
-    scrapeNotes: "Match pages locales Santiago; tags regiones/clásico.",
+    scrapeNotes:
+      "Homepage + calendario Estadio Nacional (/estadio/estadio-nacional-julio-martinez-pradanos/); mapea local vs visita y audiencia regional (ej. Ñublense → Ñuble).",
     playbookHint: "mailing_first",
     keywords: ["campeonato chileno", "anfp", "estadio"],
   },
@@ -117,9 +118,17 @@ export const DEMAND_SOURCE_CATALOG: DemandSourceEntry[] = [
     discipline: "conciertos",
     url: "https://www.ticketmaster.cl/",
     why: "Mega shows → ads heavy.",
-    scrapeNotes: "Playwright listados.",
+    scrapeNotes:
+      "Fetch calendarios por venue (Estadio Nacional, Monumental) + categorías filtradas + Playwright. Solo venues ≤ ~5 km del inventario.",
     playbookHint: "ads_heavy",
-    keywords: ["ticketmaster", "movistar arena"],
+    keywords: [
+      "ticketmaster",
+      "movistar arena",
+      "estadio nacional",
+      "parque o'higgins",
+      "caupolican",
+      "club hipico",
+    ],
   },
   {
     id: "puntoticket",
@@ -129,9 +138,16 @@ export const DEMAND_SOURCE_CATALOG: DemandSourceEntry[] = [
     discipline: "conciertos",
     url: "https://www.puntoticket.com/",
     why: "Agenda local / arenas.",
-    scrapeNotes: "Playwright.",
+    scrapeNotes:
+      "Playwright: páginas venue (/movistar-arena, /teatro-caupolican, /teatro-coliseo) + /todos filtrado por venues cercanos al inventario.",
     playbookHint: "ads_heavy",
-    keywords: ["puntoticket"],
+    keywords: [
+      "puntoticket",
+      "movistar arena",
+      "teatro caupolican",
+      "teatro coliseo",
+      "estadio nacional",
+    ],
   },
   {
     id: "ticketplus_cl",

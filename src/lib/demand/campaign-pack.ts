@@ -7,6 +7,10 @@ import {
 } from "@/lib/data/seed";
 import { buildAdPublishPlan } from "./ad-brief";
 import { publicPropertyLocation } from "./public-location";
+import {
+  poiIdsForInterest,
+  preferredPoiOrder,
+} from "./poi-relevance";
 import { attachTravelBriefAndMicrosite } from "./travel-brief";
 import type { CampaignAudience } from "./types";
 import {
@@ -18,7 +22,7 @@ import {
   distanceKm,
   osmEmbedUrl,
   osmLinkMulti,
-  walkingMinutes,
+  travelMinutes,
 } from "./geo";
 import type {
   CampaignPack,
@@ -117,7 +121,10 @@ function withUtm(url: string, campaign: string, content: string): string {
 }
 
 function resolveAnchorPoi(peak: DemandPeak, intentionSlug: string) {
-  const fromSignals = peak.signals.flatMap((s) => s.poiIds);
+  const fromSignals = poiIdsForInterest(
+    peak.interest,
+    peak.signals.flatMap((s) => s.poiIds),
+  );
 
   if (peak.interest === "nieve" || intentionSlug.includes("nieve")) {
     const hub =
@@ -141,22 +148,7 @@ function resolveAnchorPoi(peak: DemandPeak, intentionSlug: string) {
     if (poi) return poi;
   }
 
-  // Orden por interés: no mezclar Estadio (fútbol) con Movistar (conciertos)
-  const preferredOrder =
-    peak.interest === "concierto"
-      ? ["poi-movistar", "poi-ohiggins", "poi-fantasilandia", "poi-estadio"]
-      : peak.interest === "partido_futbol"
-        ? ["poi-estadio", "poi-movistar", "poi-italia"]
-        : peak.interest === "deporte_competencia"
-          ? ["poi-estadio", "poi-movistar", "poi-italia"]
-          : [
-              "poi-movistar",
-              "poi-estadio",
-              "poi-fantasilandia",
-              "poi-ohiggins",
-              "poi-italia",
-              "poi-lastarria",
-            ];
+  const preferredOrder = preferredPoiOrder(peak.interest);
 
   for (const id of preferredOrder) {
     if (fromSignals.includes(id) || intentionSlug.includes(id.replace("poi-", ""))) {
@@ -211,7 +203,7 @@ function pickProperties(
   const ranked = pool
     .map((p) => {
       const km = distanceKm(p.lat, p.lng, poiLat, poiLng);
-      const mins = walkingMinutes(km);
+      const mins = travelMinutes(km);
       const boost = preferred.has(p.code) ? (isSnow ? -1.2 : -0.15) : 0;
       return { p, km, mins, sortKey: km + boost };
     })
@@ -230,7 +222,7 @@ function pickProperties(
           "Anfitrión Superhost en Airbnb",
         ]
       : [
-          `${mins} min a pie del punto del evento`,
+          `${mins} min del punto del evento`,
           metro,
           `${p.neighborhood}: barrio residencial y bien conectado en Santiago`,
           "Anfitrión Superhost en Airbnb",
@@ -290,7 +282,7 @@ function buildTrustPoints(input: {
   const points = [
     input.interest === "nieve"
       ? "Base en Santiago: llegas, descansas y sales a la cordillera sin perder el día"
-      : `A ~${input.nearestMins} min a pie de ${input.venueName}: llegas, te duchas y sales al evento`,
+      : `A ~${input.nearestMins} min de ${input.venueName}: llegas, te duchas y sales al evento`,
     metros.length > 0
       ? `Metro cerca (${metros.slice(0, 3).join(", ")}): te mueves por Santiago sin auto`
       : "Bien conectado al transporte de Santiago",

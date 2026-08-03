@@ -1,5 +1,10 @@
 import type { CampaignInterest, CampaignPack, MicrositeContent } from "@/lib/demand/types";
 import { climateForCampaign } from "@/lib/demand/climate-copy";
+import {
+  formatVenueMetroMustKnow,
+  formatVenueMetroTransport,
+  nearestMetroStations,
+} from "@/lib/demand/venue-metro";
 import type { Locale } from "@/lib/i18n/locale";
 
 type Ui = {
@@ -15,6 +20,15 @@ type Ui = {
   previewTitle: string;
   previewCloseLabel: string;
   previewLoadingLabel: string;
+  navShare: string;
+  shareSectionKicker: string;
+  shareSectionTitle: string;
+  shareSectionBody: string;
+  shareHighlightsTitle: string;
+  ctaShare: string;
+  whatsAppLabel: string;
+  stickyShareLabel: string;
+  guideLinkLabel: string;
   snapshotKicker: string;
   snapshotTitle: string;
   when: string;
@@ -70,6 +84,16 @@ const UI: Record<Locale, Ui> = {
     previewTitle: "Vista previa",
     previewCloseLabel: "Cerrar",
     previewLoadingLabel: "Generando imagen…",
+    navShare: "Compartir",
+    shareSectionKicker: "Para tu grupo",
+    shareSectionTitle: "La guía lista para mandar",
+    shareSectionBody:
+      "Fechas, mapa, tips y dónde quedarte — en una imagen lista para WhatsApp o tus redes.",
+    shareHighlightsTitle: "Lo que incluye",
+    ctaShare: "Compartir guía",
+    whatsAppLabel: "Enviar por WhatsApp",
+    stickyShareLabel: "Compartir",
+    guideLinkLabel: "Ver guía completa para compartir",
     snapshotKicker: "Snapshot",
     snapshotTitle: "Todo lo clave, de un vistazo",
     when: "Cuándo",
@@ -126,6 +150,16 @@ const UI: Record<Locale, Ui> = {
     previewTitle: "Preview",
     previewCloseLabel: "Close",
     previewLoadingLabel: "Generating image…",
+    navShare: "Share",
+    shareSectionKicker: "For your group",
+    shareSectionTitle: "The guide, ready to send",
+    shareSectionBody:
+      "Dates, map, tips and where to stay — one image for WhatsApp or social.",
+    shareHighlightsTitle: "What's inside",
+    ctaShare: "Share guide",
+    whatsAppLabel: "Send on WhatsApp",
+    stickyShareLabel: "Share",
+    guideLinkLabel: "Open full guide to share",
     snapshotKicker: "Snapshot",
     snapshotTitle: "The essentials at a glance",
     when: "When",
@@ -182,6 +216,16 @@ const UI: Record<Locale, Ui> = {
     previewTitle: "Pré-visualização",
     previewCloseLabel: "Fechar",
     previewLoadingLabel: "Gerando imagem…",
+    navShare: "Compartilhar",
+    shareSectionKicker: "Para seu grupo",
+    shareSectionTitle: "O guia pronto para enviar",
+    shareSectionBody:
+      "Datas, mapa, dicas e onde ficar — uma imagem para WhatsApp ou redes.",
+    shareHighlightsTitle: "O que inclui",
+    ctaShare: "Compartilhar guia",
+    whatsAppLabel: "Enviar no WhatsApp",
+    stickyShareLabel: "Compartilhar",
+    guideLinkLabel: "Ver guia completa para compartilhar",
     snapshotKicker: "Snapshot",
     snapshotTitle: "O essencial de um olhar",
     when: "Quando",
@@ -328,9 +372,17 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
     const tips = [
       `Date: ${pack.eventDates}.`,
       `Venue: ${venue}, Santiago.`,
-      `Arrive early: recommended stays are ~${mins} min walk away.`,
-      "Save this guide and share it with whoever is coming with you.",
     ];
+    if (pack.interest === "concierto") {
+      const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
+      if (venueMetros.length) {
+        tips.push(formatVenueMetroMustKnow(venueMetros, "en"));
+      }
+    }
+    tips.push(
+      `Arrive early: recommended stays are ~${mins} min away.`,
+      "Save this guide and share it with whoever is coming with you.",
+    );
     if (pack.interest === "concierto") {
       tips.push(
         "Build in buffer time: queues, security and merch usually take longer.",
@@ -358,9 +410,17 @@ function mustKnow(pack: CampaignPack, locale: Locale): string[] {
     const tips = [
       `Data: ${pack.eventDates}.`,
       `Local: ${venue}, Santiago.`,
-      `Chegue com antecedência: os aptos recomendados ficam a ~${mins} min a pé.`,
-      "Salve este guia e compartilhe com quem vai com você.",
     ];
+    if (pack.interest === "concierto") {
+      const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
+      if (venueMetros.length) {
+        tips.push(formatVenueMetroMustKnow(venueMetros, "pt"));
+      }
+    }
+    tips.push(
+      `Chegue com antecedência: os aptos recomendados ficam a ~${mins} min.`,
+      "Salve este guia e compartilhe com quem vai com você.",
+    );
     if (pack.interest === "concierto") {
       tips.push(
         "Entre com margem: filas, controle de acesso e merch costumam demorar.",
@@ -464,7 +524,7 @@ function recommendations(pack: CampaignPack, locale: Locale): string[] {
   const mins = pack.properties[0]?.walkingMinutes ?? 15;
   if (locale === "en") {
     const base = [
-      `Leave buffer time: plan ~${mins} min walk to ${venue}.`,
+      `Leave buffer time: plan ~${mins} min to ${venue}.`,
       "Save the apartment pin and the venue pin for offline maps.",
       "Coordinate check-in on Airbnb the same day you book.",
     ];
@@ -504,7 +564,7 @@ function recommendations(pack: CampaignPack, locale: Locale): string[] {
   }
   if (locale === "pt") {
     const base = [
-      `Chegue com margem: calcule ~${mins} min a pé até ${venue}.`,
+      `Chegue com margem: calcule ~${mins} min até ${venue}.`,
       "Salve o pin do apartamento e do venue no mapa offline.",
       "Combine o check-in no Airbnb no mesmo dia da reserva.",
     ];
@@ -568,6 +628,29 @@ function transport(pack: CampaignPack, locale: Locale): string[] {
         "Para a cordilheira: van/tour de Santiago a Valle Nevado, Farellones ou Portillo (reserve antes).",
         "Carro próprio: confira estado da estrada, neblina e correntes obrigatórias.",
         "Aeroporto SCL: transfer, táxi ou Uber até o check-in em Santiago.",
+      ];
+    }
+  }
+  if (pack.interest === "concierto") {
+    const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
+    if (locale === "en") {
+      return [
+        venueMetros.length
+          ? formatVenueMetroTransport(venueMetros, "en")
+          : "Good connection to Santiago public transit.",
+        "Plan the night return: last Metro train or rideshare depending on the hour.",
+        "From other regions: bus to terminals + metro/Uber to the apartment.",
+        "SCL airport: official transfer, taxi or Uber to check-in.",
+      ];
+    }
+    if (locale === "pt") {
+      return [
+        venueMetros.length
+          ? formatVenueMetroTransport(venueMetros, "pt")
+          : "Boa conexão com o transporte público de Santiago.",
+        "Planeje a volta à noite: último trem do Metrô ou rideshare conforme o horário.",
+        "De outras regiões: ônibus até terminais + metrô/Uber até o apartamento.",
+        "Aeroporto SCL: transfer oficial, táxi ou Uber até o check-in.",
       ];
     }
   }
@@ -672,7 +755,7 @@ function faqs(
     return [
       {
         q: `How close are the apartments to ${venue}?`,
-        a: `Featured options start from ~${mins} minutes on foot (varies by unit). The map shows real distance before you book.`,
+        a: `Featured options start from ~${mins} minutes (varies by unit). The map shows real distance before you book.`,
       },
       {
         q: "Is the neighborhood safe?",
@@ -702,7 +785,7 @@ function faqs(
     return [
       {
         q: `Quão perto ficam os apartamentos de ${venue}?`,
-        a: `As opções em destaque ficam a partir de ~${mins} minutos a pé (conforme o apto). No mapa você vê a distância real antes de reservar.`,
+        a: `As opções em destaque ficam a partir de ~${mins} minutos (conforme o apto). No mapa você vê a distância real antes de reservar.`,
       },
       {
         q: "O bairro é seguro?",
@@ -744,7 +827,7 @@ function localizePitch(
 
   if (locale === "en") {
     return [
-      `${prop.walkingMinutes} min walk from the venue`,
+      `${prop.walkingMinutes} min from the venue`,
       metro,
       `${prop.neighborhood}: residential, well-connected Santiago neighborhood`,
       prop.isSuperhost ? "Airbnb Superhost" : "Book direct on Airbnb",
@@ -754,7 +837,7 @@ function localizePitch(
   }
   if (locale === "pt") {
     return [
-      `${prop.walkingMinutes} min a pé do venue`,
+      `${prop.walkingMinutes} min do venue`,
       metro,
       `${prop.neighborhood}: bairro residencial e bem conectado em Santiago`,
       prop.isSuperhost

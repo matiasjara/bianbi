@@ -9,6 +9,7 @@ import {
 import type { CampaignPackProperty } from "@/lib/demand/types";
 import { publicPropertyLocation } from "@/lib/demand/public-location";
 import {
+  formatParkingIncluded,
   formatStayReviews,
   formatStayUnitOption,
   STAY_RATING,
@@ -29,9 +30,31 @@ function SuperhostBadge({ variant }: { variant: "microsite" | "landing" }) {
 
   return (
     <span
-      className={`mt-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${badgeBg} ${badgeText}`}
+      className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${badgeBg} ${badgeText}`}
     >
       Superhost
+    </span>
+  );
+}
+
+function ParkingBadge({
+  variant,
+  label,
+}: {
+  variant: "microsite" | "landing";
+  label: string;
+}) {
+  const badgeBg =
+    variant === "landing" ? "bg-[#222]/8" : "bg-[var(--ms-gold)]/18";
+  const badgeText =
+    variant === "landing" ? "text-[#222]" : "text-[var(--ms-ink)]";
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${badgeBg} ${badgeText}`}
+    >
+      <span aria-hidden>🅿️</span>
+      {label}
     </span>
   );
 }
@@ -90,6 +113,35 @@ function StayUnitCta({
   );
 }
 
+function LocationHighlights({
+  items,
+  variant,
+}: {
+  items: string[];
+  variant: "microsite" | "landing";
+}) {
+  const text =
+    variant === "landing" ? "text-[#484848]" : "text-[var(--ms-ink)]/90";
+  const icon =
+    variant === "landing" ? "text-[#7B8B3E]" : "text-[var(--ms-olive)]";
+
+  return (
+    <ul className="mt-3 space-y-2">
+      {items.map((item) => (
+        <li key={item} className={`flex gap-2.5 text-sm leading-snug ${text}`}>
+          <span
+            className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[var(--ms-olive)]/12 ${icon}`}
+            aria-hidden
+          >
+            ✓
+          </span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function StayGroupCard({
   group,
   rank,
@@ -144,24 +196,44 @@ function StayGroupCard({
       <div
         className={`pt-3 md:pt-2 ${tiltEven ? "md:order-2" : "md:order-1"}`}
       >
-        <div
-          className={`flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] ${
-            variant === "landing" ? "text-[#6a6a6a]" : "text-[var(--ms-muted)]"
-          }`}
-        >
-          <span
-            className={`inline-flex items-center gap-1 ${
-              variant === "landing" ? "text-[#484848]" : "text-[var(--ms-olive)]"
+        {variant === "landing" && group.locationHighlights?.length ? (
+          <>
+            <p
+              className={`text-[10px] font-semibold uppercase tracking-[0.18em] ${
+                variant === "landing"
+                  ? "text-[#6a6a6a]"
+                  : "text-[var(--ms-muted)]"
+              }`}
+            >
+              {group.neighborhood}
+            </p>
+            <LocationHighlights
+              items={group.locationHighlights}
+              variant={variant}
+            />
+          </>
+        ) : (
+          <div
+            className={`flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] ${
+              variant === "landing" ? "text-[#6a6a6a]" : "text-[var(--ms-muted)]"
             }`}
           >
-            <BrandIcon name="pin" size={18} />
-            {group.walkingMinutes} {ui.minWalk}
-          </span>
-          <span aria-hidden>·</span>
-          <span>{group.distanceKm} km</span>
-          <span aria-hidden>·</span>
-          <span>{group.neighborhood}</span>
-        </div>
+            <span
+              className={`inline-flex items-center gap-1 ${
+                variant === "landing"
+                  ? "text-[#484848]"
+                  : "text-[var(--ms-olive)]"
+              }`}
+            >
+              <BrandIcon name="pin" size={18} />
+              {group.walkingMinutes} {ui.minWalk}
+            </span>
+            <span aria-hidden>·</span>
+            <span>{group.distanceKm} km</span>
+            <span aria-hidden>·</span>
+            <span>{group.neighborhood}</span>
+          </div>
+        )}
 
         <h3
           className={`mt-2 text-2xl leading-snug ${
@@ -172,7 +244,15 @@ function StayGroupCard({
         >
           {title}
         </h3>
-        <SuperhostBadge variant={variant} />
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <SuperhostBadge variant={variant} />
+          {group.hasParking ? (
+            <ParkingBadge
+              variant={variant}
+              label={formatParkingIncluded(ui.locale)}
+            />
+          ) : null}
+        </div>
         <p
           className={`mt-1 text-sm leading-relaxed ${
             variant === "landing" ? "text-[#6a6a6a]" : "text-[var(--ms-muted)]"

@@ -2,7 +2,7 @@ import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { BrandIcon } from "@/components/brand/BrandIcon";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
-import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
+import { MicrositeShareBar, MicrositeShareSticky } from "@/components/campaigns/MicrositeShareBar";
 import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import type { BrandIconName } from "@/lib/brand/icons";
@@ -11,6 +11,10 @@ import {
   resolveGuideImages,
 } from "@/lib/demand/guide-images";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
+import {
+  formatVenueMetroSnapshot,
+  nearestMetroStations,
+} from "@/lib/demand/venue-metro";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 
 function IconBadge({ name }: { name: BrandIconName }) {
@@ -104,6 +108,11 @@ export function MicrositeInfographic({
 }) {
   const { ui, content: m, properties: props, locale } = L;
 
+  const venueMetros =
+    m.interest === "concierto"
+      ? nearestMetroStations(m.venueLat, m.venueLng)
+      : [];
+
   const mapMarkers = [
     {
       lat: m.venueLat,
@@ -111,6 +120,12 @@ export function MicrositeInfographic({
       label: m.venueName,
       kind: "venue" as const,
     },
+    ...venueMetros.map((s) => ({
+      lat: s.lat,
+      lng: s.lng,
+      label: s.label,
+      kind: "metro" as const,
+    })),
     ...uniquePropertyLocations(props).map((p) => ({
       lat: p.lat,
       lng: p.lng,
@@ -139,6 +154,7 @@ export function MicrositeInfographic({
 
   const nav = [
     ["must", ui.navMust],
+    ["compartir", ui.navShare],
     ["novedades", ui.navNews],
     ["mapa", ui.navMap],
     ["tips", ui.navTips],
@@ -163,6 +179,11 @@ export function MicrositeInfographic({
     previewTitle: ui.previewTitle,
     previewCloseLabel: ui.previewCloseLabel,
     previewLoadingLabel: ui.previewLoadingLabel,
+    whatsAppLabel: ui.whatsAppLabel,
+    shareHeadline: ui.shareSectionTitle,
+    shareBody: ui.shareSectionBody,
+    shareHighlights: m.mustKnow.slice(0, 3),
+    shareHighlightsTitle: ui.shareHighlightsTitle,
   };
 
   return (
@@ -203,6 +224,13 @@ export function MicrositeInfographic({
 
             <div className="ms-rise ms-rise-d3 mt-7 flex flex-wrap gap-2">
               <a
+                href="#compartir"
+                className="inline-flex items-center gap-2 rounded-lg bg-[var(--ms-olive)] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
+              >
+                <BrandIcon name="megaphone" size={22} tone="onDark" />
+                {ui.ctaShare}
+              </a>
+              <a
                 href="#alojar"
                 className="inline-flex items-center gap-2 rounded-lg bg-[var(--ms-ink)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-black"
               >
@@ -216,8 +244,6 @@ export function MicrositeInfographic({
                 {ui.ctaEssentials}
               </a>
             </div>
-
-            <MicrositeShareBar {...shareProps} theme="light" />
           </div>
 
           <div className="relative mx-auto w-full max-w-sm md:mx-0 md:justify-self-end">
@@ -287,6 +313,10 @@ export function MicrositeInfographic({
                 m.interest === "nieve"
                   ? "Santiago — hub cordillera"
                   : m.venueName,
+              sub:
+                m.interest === "concierto" && venueMetros.length
+                  ? formatVenueMetroSnapshot(venueMetros, locale)
+                  : undefined,
               tone: "text-[var(--ms-terracotta)]",
               icon: "pin" as const,
             },
@@ -345,6 +375,27 @@ export function MicrositeInfographic({
             </span>
           ))}
         </nav>
+      </section>
+
+      {/* Sección destacada para compartir */}
+      <section
+        id="compartir"
+        className="relative scroll-mt-24 border-y border-[var(--ms-line)]/80 bg-[var(--ms-panel)]/50 py-12 md:py-16"
+      >
+        <div
+          className="ms-stroke pointer-events-none absolute -left-8 top-12 h-20 w-40 rotate-12 bg-[var(--ms-pink)]/20"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-5xl px-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
+            {ui.shareSectionKicker}
+          </p>
+          <MicrositeShareBar
+            {...shareProps}
+            theme="light"
+            variant="featured"
+          />
+        </div>
       </section>
 
       <div className="mx-auto max-w-5xl space-y-16 px-5 pb-16 md:space-y-20">
@@ -407,7 +458,9 @@ export function MicrositeInfographic({
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--ms-muted)]">
             {m.interest === "nieve"
               ? "Alojamientos hub en Santiago para combinar ciudad y días de ski."
-              : ui.mapBody(m.venueName)}
+              : m.interest === "concierto" && venueMetros.length
+                ? `${ui.mapBody(m.venueName)} ${formatVenueMetroSnapshot(venueMetros, locale)}.`
+                : ui.mapBody(m.venueName)}
           </p>
           <div className="ms-polaroid ms-tilt-l relative mt-6 max-w-3xl">
             <span className="ms-tape ms-tape-olive -top-2 left-10" />
@@ -535,11 +588,22 @@ export function MicrositeInfographic({
         <div className="mx-auto max-w-5xl px-5 pt-10 text-center">
           <p className="text-sm text-white/55">{ui.footerShare}</p>
           <div className="flex justify-center">
-            <MicrositeShareBar {...shareProps} theme="dark" />
+            <MicrositeShareBar {...shareProps} theme="dark" variant="inline" />
           </div>
         </div>
         <PublicSiteFooter note={ui.footerNote} />
       </div>
+
+      <MicrositeShareSticky
+        slug={slug}
+        locale={locale}
+        path={`/g/${slug}`}
+        shareText={m.shareText}
+        title={m.guideTitle}
+        whatsAppLabel={ui.whatsAppLabel}
+        shareImageLabel={ui.stickyShareLabel}
+        sharingLabel={ui.sharingLabel}
+      />
     </div>
   );
 }

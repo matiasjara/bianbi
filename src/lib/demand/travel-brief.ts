@@ -11,6 +11,11 @@ import type {
   TravelBrief,
 } from "./types";
 import { climateForCampaign } from "./climate-copy";
+import {
+  formatVenueMetroMustKnow,
+  formatVenueMetroTransport,
+  nearestMetroStations,
+} from "./venue-metro";
 
 type PackCore = Omit<CampaignPack, "publishPlan" | "travelBrief" | "microsite">;
 
@@ -125,8 +130,8 @@ function strategy(pack: PackCore): TravelBrief["strategy"] {
           "¿Es seguro el barrio de noche?",
           "¿Queda muy lejos del venue?",
           mins > 25
-            ? "¿Conviene taxi o se puede ir a pie / metro?"
-            : "¿Puedo volver caminando después del evento?",
+            ? "¿Conviene taxi o metro para el traslado?"
+            : "¿Hay metro cerca para volver después del evento?",
           "¿Hay check-in flexible si llego tarde?",
           pack.properties.some((p) =>
             p.amenities.some((a) => /estacionamiento/i.test(a)),
@@ -148,7 +153,7 @@ function strategy(pack: PackCore): TravelBrief["strategy"] {
           "Ideal para combinar noches en ciudad + salidas temprano a la cordillera",
         ]
       : [
-          `Mapa con tiempo a pie (~${mins} min al venue)`,
+          `Mapa con tiempo estimado (~${mins} min al venue)`,
           "Fotos reales del alojamiento (no stock)",
           pack.properties.some((p) => p.isSuperhost)
             ? "Anfitrión Superhost en Airbnb"
@@ -213,7 +218,7 @@ function faqs(pack: PackCore): Array<{ q: string; a: string }> {
   return [
     {
       q: `¿Qué tan cerca quedan los alojamientos de ${venue}?`,
-      a: `Las opciones destacadas están desde ~${mins} minutos a pie (según unidad). En el mapa ves la distancia real antes de reservar.`,
+      a: `Las opciones destacadas están desde ~${mins} minutos (según unidad). En el mapa ves la distancia real antes de reservar.`,
     },
     {
       q: "¿Es seguro el barrio?",
@@ -251,7 +256,7 @@ function recommendations(pack: PackCore): string[] {
     ];
   }
   const base = [
-    `Llega con margen: calcula ~${pack.properties[0]?.walkingMinutes ?? 15} min a pie hasta ${venue}.`,
+    `Llega con margen: calcula ~${pack.properties[0]?.walkingMinutes ?? 15} min hasta ${venue}.`,
     "Guarda el pin del alojamiento y el del venue en tu mapa offline.",
     "Coordina check-in en Airbnb el mismo día que reserves.",
   ];
@@ -297,6 +302,17 @@ function transport(pack: PackCore): string[] {
       "Aeropuerto SCL: transfer, taxi o Uber hasta el check-in en Santiago.",
     ];
   }
+  if (pack.interest === "concierto") {
+    const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
+    return [
+      venueMetros.length
+        ? formatVenueMetroTransport(venueMetros, "es")
+        : "Buena conexión a transporte público de Santiago.",
+      "Planifica la vuelta de noche: último tren del Metro o rideshare según horario.",
+      "Desde regiones: bus a terminales + metro/Uber al alojamiento.",
+      "Aeropuerto SCL: transfer oficial, taxi o Uber hasta el check-in.",
+    ];
+  }
   return [
     metros.length
       ? `Metro cercano: ${metros.slice(0, 3).join(", ")}.`
@@ -328,9 +344,17 @@ function mustKnow(pack: PackCore): string[] {
   const tips = [
     `Fecha: ${pack.eventDates}.`,
     `Lugar: ${pack.venueName}, Santiago.`,
-    `Llega con tiempo: desde los alojamientos recomendados son ~${mins} min a pie.`,
-    "Guarda esta guía y compártela con quien va contigo.",
   ];
+  if (pack.interest === "concierto") {
+    const venueMetros = nearestMetroStations(pack.venueLat, pack.venueLng);
+    if (venueMetros.length) {
+      tips.push(formatVenueMetroMustKnow(venueMetros, "es"));
+    }
+  }
+  tips.push(
+    `Llega con tiempo: desde los alojamientos recomendados son ~${mins} min.`,
+    "Guarda esta guía y compártela con quien va contigo.",
+  );
   if (pack.interest === "concierto") {
     tips.push(
       "Entra con margen: colas, control de acceso y merch suelen demorar.",
@@ -435,8 +459,8 @@ export function buildMicrosite(pack: PackCore): MicrositeContent {
     interestLabel: pack.interestLabel,
     shareText:
       pack.interest === "nieve"
-        ? `${title} — ${pack.eventDates}. Lo esencial para tu viaje a la nieve:`
-        : `${title} — ${pack.eventDates} en ${pack.venueName}. Lo esencial para tu visita:`,
+        ? `🎿 ${title} — ${pack.eventDates}. Guía con tips, clima y dónde quedarte en Santiago:`
+        : `📍 ${title} — ${pack.eventDates} en ${pack.venueName}. Guía con mapa, tips y alojamiento:`,
   };
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Props = {
   photos: string[];
@@ -18,6 +18,11 @@ export function PhotoStoryCarousel({
 }: Props) {
   const slides = photos.length > 0 ? photos : [];
   const [index, setIndex] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  const focusRoot = useCallback(() => {
+    rootRef.current?.focus({ preventScroll: true });
+  }, []);
 
   useEffect(() => {
     setIndex(0);
@@ -31,24 +36,47 @@ export function PhotoStoryCarousel({
     return () => window.clearInterval(id);
   }, [slides.length, index]);
 
+  const go = useCallback(
+    (delta: number) => {
+      setIndex((i) => {
+        const next = i + delta;
+        if (next < 0) return slides.length - 1;
+        if (next >= slides.length) return 0;
+        return next;
+      });
+    },
+    [slides.length],
+  );
+
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (slides.length <= 1) return;
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        go(-1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        go(1);
+      }
+    },
+    [go, slides.length],
+  );
+
   if (slides.length === 0) {
     return <div className={`bg-[#eee] ${className ?? ""}`} />;
   }
 
   const current = slides[Math.min(index, slides.length - 1)];
 
-  function go(delta: number) {
-    setIndex((i) => {
-      const next = i + delta;
-      if (next < 0) return slides.length - 1;
-      if (next >= slides.length) return 0;
-      return next;
-    });
-  }
-
   return (
     <div
-      className={`relative isolate overflow-hidden bg-[#111] ${className ?? ""}`}
+      ref={rootRef}
+      tabIndex={0}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={alt}
+      onKeyDown={onKeyDown}
+      className={`relative isolate overflow-hidden bg-[#111] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/35 ${className ?? ""}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -79,18 +107,28 @@ export function PhotoStoryCarousel({
         ))}
       </div>
 
-      {/* Zonas de tap */}
+      {/* Zonas de tap (sin foco: la navegación por teclado va en el contenedor) */}
       <button
         type="button"
-        aria-label="Foto anterior"
-        onClick={() => go(-1)}
-        className="absolute inset-y-0 left-0 z-10 w-1/3"
+        tabIndex={-1}
+        aria-hidden
+        onClick={() => {
+          go(-1);
+          focusRoot();
+        }}
+        onMouseDown={(e) => e.preventDefault()}
+        className="absolute inset-y-0 left-0 z-10 w-1/3 cursor-pointer border-0 bg-transparent p-0 outline-none"
       />
       <button
         type="button"
-        aria-label="Foto siguiente"
-        onClick={() => go(1)}
-        className="absolute inset-y-0 right-0 z-10 w-2/3"
+        tabIndex={-1}
+        aria-hidden
+        onClick={() => {
+          go(1);
+          focusRoot();
+        }}
+        onMouseDown={(e) => e.preventDefault()}
+        className="absolute inset-y-0 right-0 z-10 w-2/3 cursor-pointer border-0 bg-transparent p-0 outline-none"
       />
 
       {caption ? (

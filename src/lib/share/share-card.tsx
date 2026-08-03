@@ -5,6 +5,10 @@ import { ImageResponse } from "next/og";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 import type { Locale } from "@/lib/i18n/locale";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
+import {
+  formatVenueMetroSnapshot,
+  nearestMetroStations,
+} from "@/lib/demand/venue-metro";
 import { CRAMBIE_LOGO } from "@/lib/brand/logos";
 import { SITE_HOST } from "@/lib/site/url";
 
@@ -23,11 +27,19 @@ const MUSTARD = "#E1B53A";
 const CORAL = "#EF7A82";
 const MAP_PARK = "#C5D4A8";
 const MAP_ROAD = "#E8C89A";
+const ROCK_BLUE = "#2B59FF";
+const ROCK_PURPLE = "#7B3FE4";
+const ROCK_PINK = "#FF3864";
+const ROCK_GOLD = "#FFB020";
+const ROCK_INK = "#12151C";
+
+const TIP_BANNERS = [ROCK_BLUE, ROCK_PURPLE, ROCK_PINK, ROCK_GOLD] as const;
 
 const FLEX = { display: "flex" } as const;
 
-function truncate(s: string, n: number) {
-  const t = s.trim();
+function truncate(s: string | undefined | null, n: number) {
+  const t = (s ?? "").trim();
+  if (!t) return "";
   if (t.length <= n) return t;
   return `${t.slice(0, n - 1).trimEnd()}…`;
 }
@@ -65,9 +77,9 @@ function getFonts() {
   return fontsCache;
 }
 
-async function logoDataUri() {
+async function logoDataUri(tone: "onLight" | "onDark" = "onLight") {
   const file = await readFile(
-    path.join(process.cwd(), CRAMBIE_LOGO.onLight.path),
+    path.join(process.cwd(), CRAMBIE_LOGO[tone].path),
   );
   return `data:image/png;base64,${file.toString("base64")}`;
 }
@@ -172,15 +184,14 @@ function SnapshotCard({
       style={{
         ...FLEX,
         flexDirection: "column",
-        flex: fullWidth ? undefined : 1,
-        width: fullWidth ? "100%" : undefined,
+        ...(fullWidth ? { width: "100%" } : { flex: 1 }),
         backgroundColor: story ? "#FFFFFF" : "rgba(250,247,242,0.96)",
         borderRadius: story ? 22 : compact ? 14 : 18,
         border: `1.5px solid ${LINE}`,
         padding: story ? "20px 22px" : compact ? "12px 10px" : "16px 14px",
         minWidth: 0,
         boxShadow: "0 10px 28px rgba(22,26,34,0.07)",
-        transform: tilt ? `rotate(${tilt}deg)` : undefined,
+        ...(tilt ? { transform: `rotate(${tilt}deg)` } : {}),
       }}
     >
       <div style={{ ...FLEX, marginBottom: story ? 10 : compact ? 6 : 8 }}>
@@ -504,6 +515,131 @@ function layoutMapPins(
   return placed;
 }
 
+function StoryFactStrip({
+  label,
+  value,
+  sub,
+  bg,
+  fg = "#FFFFFF",
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+  bg: string;
+  fg?: string;
+}) {
+  return (
+    <div
+      style={{
+        ...FLEX,
+        flexDirection: "column",
+        width: "100%",
+        padding: "22px 28px",
+        backgroundColor: bg,
+        borderRadius: 20,
+        border: `3px solid ${ROCK_INK}`,
+        boxShadow: "6px 6px 0 rgba(18,21,28,0.92)",
+      }}
+    >
+      <div
+        style={{
+          ...FLEX,
+          fontSize: 18,
+          fontFamily: "Manrope",
+          fontWeight: 700,
+          letterSpacing: "0.16em",
+          textTransform: "uppercase",
+          color: fg,
+          opacity: 0.88,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          ...FLEX,
+          marginTop: 8,
+          fontSize: 36,
+          fontFamily: "Fraunces",
+          fontWeight: 700,
+          lineHeight: 1.08,
+          color: fg,
+        }}
+      >
+        {value}
+      </div>
+      {sub ? (
+        <div
+          style={{
+            ...FLEX,
+            marginTop: 6,
+            fontSize: 24,
+            fontFamily: "Manrope",
+            fontWeight: 600,
+            lineHeight: 1.25,
+            color: fg,
+            opacity: 0.92,
+          }}
+        >
+          {sub}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function StoryTipBanner({ index, text }: { index: number; text: string }) {
+  const bg = TIP_BANNERS[index % TIP_BANNERS.length]!;
+  return (
+    <div
+      style={{
+        ...FLEX,
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: 18,
+        width: "100%",
+        padding: "22px 26px",
+        backgroundColor: bg,
+        borderRadius: 18,
+        border: `3px solid ${ROCK_INK}`,
+        boxShadow: "5px 5px 0 rgba(18,21,28,0.9)",
+      }}
+    >
+      <div
+        style={{
+          ...FLEX,
+          width: 44,
+          height: 44,
+          borderRadius: 999,
+          backgroundColor: ROCK_INK,
+          color: "#FFFFFF",
+          fontSize: 24,
+          fontFamily: "Manrope",
+          fontWeight: 700,
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+        }}
+      >
+        {index + 1}
+      </div>
+      <div
+        style={{
+          ...FLEX,
+          fontSize: 28,
+          fontFamily: "Manrope",
+          fontWeight: 700,
+          lineHeight: 1.28,
+          color: "#FFFFFF",
+          flex: 1,
+        }}
+      >
+        {text}
+      </div>
+    </div>
+  );
+}
+
 function ReferentialMap({
   venueLat,
   venueLng,
@@ -631,10 +767,14 @@ export async function renderShareCard(
   const ui = L.ui;
   const nearest = L.properties[0];
   const isStory = opts.format === "story";
-  const logoSrc = await logoDataUri();
+  const logoSrc = await logoDataUri(isStory ? "onDark" : "onLight");
   const fonts = await getFonts();
   const pageLabel = SITE_HOST;
-  const storyMapHeight = 920;
+  const storyMapHeight = 420;
+  const venueMetros =
+    m.interest === "concierto"
+      ? nearestMetroStations(m.venueLat, m.venueLng)
+      : [];
   const eventLine = truncate(
     m.interest === "nieve"
       ? `${m.interestLabel} · Santiago hub cordillera`
@@ -658,35 +798,37 @@ export async function renderShareCard(
           position: "relative",
         }}
       >
-        <div
-          style={{
-            ...FLEX,
-            position: "absolute",
-            top: 28,
-            right: -56,
-            width: 280,
-            height: 88,
-            backgroundColor: TEAL,
-            opacity: 0.18,
-            borderRadius: 999,
-            transform: "rotate(-8deg)",
-            zIndex: 0,
-          }}
-        />
-        <div
-          style={{
-            ...FLEX,
-            position: "absolute",
-            bottom: 420,
-            left: -48,
-            width: 180,
-            height: 180,
-            backgroundColor: CORAL,
-            opacity: 0.1,
-            borderRadius: 999,
-            zIndex: 0,
-          }}
-        />
+        {!isStory ? (
+          <div
+            style={{
+              ...FLEX,
+              position: "absolute",
+              top: 28,
+              right: -56,
+              width: 280,
+              height: 88,
+              backgroundColor: TEAL,
+              opacity: 0.18,
+              borderRadius: 999,
+              transform: "rotate(-8deg)",
+            }}
+          />
+        ) : null}
+        {!isStory ? (
+          <div
+            style={{
+              ...FLEX,
+              position: "absolute",
+              bottom: 420,
+              left: -48,
+              width: 180,
+              height: 180,
+              backgroundColor: CORAL,
+              opacity: 0.1,
+              borderRadius: 999,
+            }}
+          />
+        ) : null}
 
         {isStory ? (
           <div
@@ -694,152 +836,200 @@ export async function renderShareCard(
               ...FLEX,
               flexDirection: "column",
               height: "100%",
-              padding: "48px 52px 44px",
               position: "relative",
-              zIndex: 1,
             }}
           >
+            {/* Hero poster */}
             <div
               style={{
                 ...FLEX,
                 flexDirection: "column",
                 alignItems: "center",
                 width: "100%",
+                padding: "44px 48px 36px",
+                backgroundColor: ROCK_INK,
+                backgroundImage:
+                  "linear-gradient(135deg, rgba(43,89,255,0.35) 0%, rgba(18,21,28,0) 55%), linear-gradient(225deg, rgba(255,56,100,0.28) 0%, rgba(18,21,28,0) 50%)",
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logoSrc}
                 alt="Crambie"
-                width={260}
-                height={52}
+                width={240}
+                height={48}
                 style={{ objectFit: "contain" }}
               />
               <div
                 style={{
                   ...FLEX,
-                  marginTop: 8,
-                  fontSize: 13,
-                  letterSpacing: "0.18em",
+                  marginTop: 16,
+                  backgroundColor: ROCK_PINK,
+                  color: "#FFFFFF",
+                  fontSize: 20,
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: MUTED,
+                  padding: "12px 24px",
+                  borderRadius: 999,
+                  border: `2px solid #FFFFFF`,
                 }}
               >
-                {ui.productLabel}
+                {truncate(m.interestLabel, 18)}
+              </div>
+              <div
+                style={{
+                  ...FLEX,
+                  marginTop: 24,
+                  fontSize: 52,
+                  fontFamily: "Fraunces",
+                  fontWeight: 700,
+                  lineHeight: 1.06,
+                  color: "#FFFFFF",
+                  textAlign: "center",
+                  maxWidth: 920,
+                }}
+              >
+                {truncate(m.guideTitle, 52)}
               </div>
               <div
                 style={{
                   ...FLEX,
                   marginTop: 14,
-                  backgroundColor: TERRACOTTA,
+                  fontSize: 28,
+                  fontWeight: 700,
                   color: "#FFFFFF",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  padding: "9px 18px",
-                  borderRadius: 999,
-                }}
-              >
-                {truncate(m.interestLabel, 16)}
-              </div>
-              <div
-                style={{
-                  ...FLEX,
-                  marginTop: 22,
-                  fontSize: 44,
-                  fontFamily: "Fraunces",
-                  fontWeight: 700,
-                  lineHeight: 1.08,
-                  color: INK,
                   textAlign: "center",
-                  maxWidth: 860,
+                  opacity: 0.92,
                 }}
               >
-                {ui.snapshotTitle}
+                {truncate(m.eventDates, 32)}
               </div>
             </div>
 
-            <div style={{ ...FLEX, marginTop: 28, width: "100%" }}>
-              <SnapshotGrid
-                ui={ui}
-                m={m}
-                nearest={nearest}
-                variant="story"
-              />
-            </div>
-
             <div
               style={{
                 ...FLEX,
-                marginTop: 18,
-                justifyContent: "center",
-                fontSize: 18,
-                fontWeight: 600,
-                letterSpacing: "0.02em",
-                color: INK,
-              }}
-            >
-              {eventLine}
-            </div>
-
-            <div
-              style={{
-                ...FLEX,
-                flex: 1,
-                marginTop: 16,
-                width: "100%",
-                minHeight: storyMapHeight,
-                borderRadius: 28,
-                overflow: "hidden",
-                border: `1.5px solid ${LINE}`,
-                backgroundColor: "#FFFFFF",
-                boxShadow: "0 16px 40px rgba(22,26,34,0.1)",
-              }}
-            >
-              <ReferentialMap
-                venueLat={m.venueLat}
-                venueLng={m.venueLng}
-                properties={L.properties}
-                locale={L.locale}
-                width={976}
-                height={storyMapHeight}
-              />
-            </div>
-
-            <div
-              style={{
-                ...FLEX,
-                marginTop: 24,
                 flexDirection: "column",
-                alignItems: "center",
-                gap: 16,
+                flex: 1,
+                gap: 14,
+                padding: "28px 44px 36px",
+                backgroundColor: PAPER,
               }}
             >
+              <StoryFactStrip
+                label={ui.when}
+                value={truncate(m.eventDates, 28)}
+                bg={ROCK_BLUE}
+              />
+              <StoryFactStrip
+                label={ui.where}
+                value={truncate(whereLabel(m), 24)}
+                sub={
+                  m.interest === "concierto" && venueMetros.length
+                    ? formatVenueMetroSnapshot(venueMetros, L.locale)
+                    : undefined
+                }
+                bg={ROCK_PURPLE}
+              />
+              <StoryFactStrip
+                label={ui.weather}
+                value={truncate(
+                  m.weather.summary.replace(/^[^:]+:\s*/, ""),
+                  36,
+                )}
+                sub={truncate(m.weather.tip, 48)}
+                bg={ROCK_GOLD}
+                fg={ROCK_INK}
+              />
+
+              {m.mustKnow.length > 0 ? (
+                <div
+                  style={{
+                    ...FLEX,
+                    flexDirection: "column",
+                    gap: 12,
+                    width: "100%",
+                    marginTop: 6,
+                  }}
+                >
+                  <div
+                    style={{
+                      ...FLEX,
+                      fontSize: 32,
+                      fontFamily: "Fraunces",
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      color: ROCK_INK,
+                    }}
+                  >
+                    {ui.titleMust}
+                  </div>
+                  {m.mustKnow.slice(0, 3).map((tip, i) => (
+                    <StoryTipBanner key={tip} index={i} text={truncate(tip, 72)} />
+                  ))}
+                </div>
+              ) : null}
+
               <div
                 style={{
                   ...FLEX,
-                  backgroundColor: MUSTARD,
-                  color: INK,
-                  fontSize: 17,
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  padding: "16px 36px",
-                  borderRadius: 999,
-                  boxShadow: "0 8px 20px rgba(225,181,58,0.35)",
+                  marginTop: 4,
+                  width: "100%",
+                  height: storyMapHeight,
+                  borderRadius: 22,
+                  overflow: "hidden",
+                  border: `3px solid ${ROCK_INK}`,
+                  boxShadow: "6px 6px 0 rgba(18,21,28,0.88)",
                 }}
               >
-                {ui.ctaStay}
+                <ReferentialMap
+                  venueLat={m.venueLat}
+                  venueLng={m.venueLng}
+                  properties={L.properties}
+                  locale={L.locale}
+                  width={992}
+                  height={storyMapHeight}
+                />
               </div>
+
               <div
                 style={{
                   ...FLEX,
-                  fontSize: 16,
-                  color: MUTED,
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 14,
+                  marginTop: 8,
                 }}
               >
-                {pageLabel}
+                <div
+                  style={{
+                    ...FLEX,
+                    backgroundColor: MUSTARD,
+                    color: ROCK_INK,
+                    fontSize: 26,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    padding: "20px 40px",
+                    borderRadius: 999,
+                    border: `3px solid ${ROCK_INK}`,
+                    boxShadow: "5px 5px 0 rgba(18,21,28,0.9)",
+                  }}
+                >
+                  {ui.ctaStay}
+                </div>
+                <div
+                  style={{
+                    ...FLEX,
+                    fontSize: 22,
+                    fontWeight: 600,
+                    color: MUTED,
+                  }}
+                >
+                  {pageLabel}
+                </div>
               </div>
             </div>
           </div>

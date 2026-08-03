@@ -31,6 +31,21 @@ export function formatStayReviews(locale: Locale, n: number): string {
   }
 }
 
+export function formatParkingIncluded(locale: Locale): string {
+  switch (locale) {
+    case "en":
+      return "Parking included";
+    case "pt":
+      return "Estacionamento incluído";
+    default:
+      return "Estacionamiento incluido";
+  }
+}
+
+export function propertyHasParking(amenities: string[]): boolean {
+  return amenities.some((a) => /^estacionamiento$/i.test(a.trim()));
+}
+
 /** Rating + reseñas de una unidad (no del edificio). */
 export function formatStayUnitTrust(
   locale: Locale,

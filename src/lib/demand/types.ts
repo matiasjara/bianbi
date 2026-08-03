@@ -190,6 +190,8 @@ export interface CampaignPackProperty {
   isSuperhost?: boolean;
   /** Frase corta vendedora para la ficha */
   pitch: string;
+  /** Bullets de ubicación (catálogo /santiago sin evento ancla) */
+  locationHighlights?: string[];
 }
 
 export interface CampaignPack {

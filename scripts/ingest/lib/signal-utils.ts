@@ -33,13 +33,14 @@ export function guessPoi(text: string): string[] {
     t.includes("pista atletica")
   )
     return ["poi-estadio"];
+  if (t.includes("fantasilandia")) return ["poi-fantasilandia"];
   if (
-    t.includes("fantasilandia") ||
     t.includes("o'higgins") ||
     t.includes("ohiggins") ||
-    t.includes("parque o higgins")
+    t.includes("parque o higgins") ||
+    t.includes("parque o'higgins")
   )
-    return ["poi-fantasilandia"];
+    return ["poi-movistar", "poi-ohiggins"];
   if (t.includes("lastarria")) return ["poi-lastarria"];
   if (t.includes("barrio italia") || t.includes("italia")) return ["poi-italia"];
   if (t.includes("costanera")) return ["poi-costanera"];
@@ -60,9 +61,9 @@ export function guessPoi(text: string): string[] {
 export function guessPropertyCodes(poiIds: string[], text = ""): string[] {
   const t = text.toLowerCase();
   if (poiIds.includes("poi-estadio") || poiIds.includes("poi-movistar")) {
-    return ["Z114", "Z107", "E801", "E214"];
+    return ["Z114", "Z107", "E801", "E214", "T112"];
   }
-  if (poiIds.includes("poi-fantasilandia") || t.includes("parque o")) {
+  if (poiIds.includes("poi-fantasilandia")) {
     return ["T112"];
   }
   if (poiIds.includes("poi-italia") || poiIds.includes("poi-lastarria")) {

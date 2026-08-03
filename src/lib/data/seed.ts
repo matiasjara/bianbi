@@ -15,7 +15,6 @@ const BUILDING_ITALIA = {
     "poi-estadio", // ~2.0 km
     "poi-lastarria", // ~2.2 km
     "poi-movistar", // ~3.0 km
-    "poi-fantasilandia", // ~3.0 km
   ],
   audiences: [
     "parejas",

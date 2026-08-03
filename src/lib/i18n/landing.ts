@@ -44,7 +44,7 @@ const UI: Record<Locale, Ui> = {
     unitsTitle: "Elige tu alojamiento",
     unitsBody: (venue) =>
       `Ordenados por cercanía a ${venue}. Reserva con las fechas del evento directo en Airbnb: pago protegido y mensajes con el anfitrión.`,
-    option: (n, mins, km) => `Opción ${n} · ${mins} min a pie · ${km} km`,
+    option: (n, mins, km) => `Opción ${n} · ${mins} min · ${km} km`,
     barrio: "Barrio",
     metro: "Metro",
     beds: "Camas",
@@ -80,8 +80,8 @@ const UI: Record<Locale, Ui> = {
       `Not a generic hotel far from the event — a real apartment in Santiago, so you arrive, rest, and stay close to ${venue}.`,
     unitsTitle: "Choose your apartment",
     unitsBody: (venue) =>
-      `Sorted by walking time to ${venue}. Book event dates directly on Airbnb: protected payment and host messaging.`,
-    option: (n, mins, km) => `Option ${n} · ${mins} min walk · ${km} km`,
+      `Sorted by distance to ${venue}. Book event dates directly on Airbnb: protected payment and host messaging.`,
+    option: (n, mins, km) => `Option ${n} · ${mins} min · ${km} km`,
     barrio: "Neighborhood",
     metro: "Metro",
     beds: "Beds",
@@ -118,7 +118,7 @@ const UI: Record<Locale, Ui> = {
     unitsTitle: "Escolha seu apartamento",
     unitsBody: (venue) =>
       `Ordenados pela proximidade a ${venue}. Reserve nas datas do evento direto no Airbnb: pagamento protegido e mensagens com o anfitrião.`,
-    option: (n, mins, km) => `Opção ${n} · ${mins} min a pé · ${km} km`,
+    option: (n, mins, km) => `Opção ${n} · ${mins} min · ${km} km`,
     barrio: "Bairro",
     metro: "Metrô",
     beds: "Camas",
@@ -243,7 +243,7 @@ function localizeTrust(pack: CampaignPack, locale: Locale): string[] {
     return [
       pack.interest === "nieve"
         ? "Santiago as your base: arrive, rest, then head to the mountains without losing the day"
-        : `About ${mins} min walk from ${venue}: arrive, shower, and head to the event`,
+        : `About ${mins} min from ${venue}: arrive, shower, and head to the event`,
       metros.length
         ? `Metro nearby (${metros.slice(0, 3).join(", ")}): move around Santiago without a car`
         : "Well connected to Santiago transit",
@@ -256,7 +256,7 @@ function localizeTrust(pack: CampaignPack, locale: Locale): string[] {
     return [
       pack.interest === "nieve"
         ? "Base em Santiago: você chega, descansa e vai à cordilheira sem perder o dia"
-        : `A ~${mins} min a pé de ${venue}: chegue, tome banho e saia para o evento`,
+        : `A ~${mins} min de ${venue}: chegue, tome banho e saia para o evento`,
       metros.length
         ? `Metrô perto (${metros.slice(0, 3).join(", ")}): circule por Santiago sem carro`
         : "Bem conectado ao transporte de Santiago",
@@ -284,7 +284,7 @@ function localizePitch(
   const parts =
     locale === "en"
       ? [
-          `${prop.walkingMinutes} min walk from the event spot`,
+          `${prop.walkingMinutes} min from the event spot`,
           metro,
           `${prop.neighborhood}: residential, well-connected Santiago neighborhood`,
           prop.isSuperhost
@@ -293,7 +293,7 @@ function localizePitch(
         ]
       : locale === "pt"
         ? [
-            `${prop.walkingMinutes} min a pé do ponto do evento`,
+            `${prop.walkingMinutes} min do ponto do evento`,
             metro,
             `${prop.neighborhood}: bairro residencial e bem conectado em Santiago`,
             prop.isSuperhost

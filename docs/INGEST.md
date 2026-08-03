@@ -4,8 +4,8 @@ La ingesta **no depende de una sola ticketera**. Cada fuente normaliza a `Demand
 
 | Fuente | Script | Método | Notas |
 |--------|--------|--------|-------|
-| **Ticketmaster CL** | `sources/ticketmaster.ts` | Playwright | Conciertos/festivales grandes |
-| **PuntoTicket** | `sources/puntoticket.ts` | Playwright | Muy fuerte en Movistar Arena / productoras locales |
+| **Ticketmaster CL** | `sources/ticketmaster.ts` + `ticketmaster-venues.ts` | Fetch venue + búsqueda | Solo venues ≤ ~5 km del inventario (Nacional, Movistar, O'Higgins, Caupolicán…) |
+| **PuntoTicket** | `sources/puntoticket.ts` + `lib/nearby-venues.ts` | Playwright venue + /todos | Movistar Arena, Caupolicán, Coliseo + filtro RM cercana |
 | **TicketPlus CL** | `sources/ticketplus.ts` | Fetch JSON | `/events/search.json` — teatros/shows/deportes RM |
 | **Tocador** | `sources/tocador.ts` | Fetch HTML | Agenda editorial con venue + ticketera |
 | **Passline** | `sources/passline.ts` | Playwright | A menudo Cloudflare (falla sin tumbar el pipeline) |

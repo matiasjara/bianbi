@@ -1,6 +1,6 @@
 import { getPoi, properties as allProperties } from "@/lib/data/seed";
-import { distanceKm, walkingMinutes } from "@/lib/demand/geo";
 import { publicPropertyLocation } from "@/lib/demand/public-location";
+import { buildCatalogLocationHighlights } from "@/lib/demand/catalog-location-highlights";
 import type { CampaignPackProperty } from "@/lib/demand/types";
 import type { Locale } from "@/lib/i18n/locale";
 import type { Property } from "@/lib/types";
@@ -249,6 +249,7 @@ const POI_BLURB: Record<string, Record<Locale, string>> = {
 const WHY_POINTS: Record<Locale, string[]> = {
   es: [
     "Barrios seguros y residenciales: Barrio Italia, Ñuñoa y Santiago Centro",
+    "Deptos en Ñuñoa con estacionamiento incluido — ideal si vas en auto al estadio o eventos",
     "Alojamientos nuevos y modernos, full equipados y en excelentes condiciones",
     "Cerradura digital para tu comodidad y seguridad",
     "Metro cerca para moverte sin auto",
@@ -256,6 +257,7 @@ const WHY_POINTS: Record<Locale, string[]> = {
   ],
   en: [
     "Safe residential neighborhoods: Barrio Italia, Ñuñoa and Santiago Centro",
+    "Ñuñoa stays include parking — handy if you're driving to the stadium or events",
     "New, modern stays — fully equipped and in excellent condition",
     "Digital lock for comfort and security",
     "Metro nearby so you can get around without a car",
@@ -263,6 +265,7 @@ const WHY_POINTS: Record<Locale, string[]> = {
   ],
   pt: [
     "Bairros seguros e residenciais: Barrio Italia, Ñuñoa e Santiago Centro",
+    "Acomodações em Ñuñoa com estacionamento incluído — ideal se for de carro ao estádio",
     "Acomodações novas e modernas, totalmente equipadas e em excelentes condições",
     "Fechadura digital para conforto e segurança",
     "Metrô perto para circular sem carro",
@@ -275,6 +278,7 @@ function tAmenity(a: string, locale: Locale): string {
 }
 
 function pitchFor(prop: Property, locale: Locale): string {
+  const parking = prop.amenities.some((a) => /^estacionamiento$/i.test(a.trim()));
   const metro =
     prop.metroStations.length > 0
       ? locale === "en"
@@ -291,6 +295,7 @@ function pitchFor(prop: Property, locale: Locale): string {
   if (locale === "en") {
     return [
       `${prop.neighborhood}: residential and well connected`,
+      parking ? "Parking included" : null,
       metro,
       nearbyNames.length ? `Near ${nearbyNames.join(" · ")}` : null,
       prop.isSuperhost ? "Airbnb Superhost" : "Book on Airbnb",
@@ -301,6 +306,7 @@ function pitchFor(prop: Property, locale: Locale): string {
   if (locale === "pt") {
     return [
       `${prop.neighborhood}: residencial e bem conectado`,
+      parking ? "Estacionamento incluído" : null,
       metro,
       nearbyNames.length ? `Perto de ${nearbyNames.join(" · ")}` : null,
       prop.isSuperhost ? "Superhost no Airbnb" : "Reserve no Airbnb",
@@ -310,6 +316,7 @@ function pitchFor(prop: Property, locale: Locale): string {
   }
   return [
     `${prop.neighborhood}: residencial y bien conectado`,
+    parking ? "Estacionamiento incluido" : null,
     metro,
     nearbyNames.length ? `Cerca de ${nearbyNames.join(" · ")}` : null,
     prop.isSuperhost ? "Superhost en Airbnb" : "Reserva en Airbnb",
@@ -333,7 +340,6 @@ export function getCatalogAttractions(locale: Locale) {
     "poi-movistar",
     "poi-ohiggins",
     "poi-club-hipico",
-    "poi-fantasilandia",
     "poi-lastarria",
   ];
   return ids
@@ -374,14 +380,6 @@ export function getCatalogStayProperties(locale: Locale): CampaignPackProperty[]
   return allProperties
     .filter((p) => p.isReal)
     .map((p) => {
-      const nearestPoi = p.nearbyPoiIds
-        .map((id) => getPoi(id))
-        .find(Boolean);
-      const km = nearestPoi
-        ? distanceKm(p.lat, p.lng, nearestPoi.lat, nearestPoi.lng)
-        : 2;
-      const mins = walkingMinutes(km);
-
       return {
         code: p.code,
         name: p.name,
@@ -394,8 +392,8 @@ export function getCatalogStayProperties(locale: Locale): CampaignPackProperty[]
         buildingName: p.buildingName,
         address: publicPropertyLocation(p.neighborhood, p.address),
         amenities: p.amenities.slice(0, 6),
-        distanceKm: Math.round(km * 100) / 100,
-        walkingMinutes: mins,
+        distanceKm: 0,
+        walkingMinutes: 0,
         airbnbUrl: p.airbnbUrl,
         lat: p.lat,
         lng: p.lng,
@@ -404,6 +402,7 @@ export function getCatalogStayProperties(locale: Locale): CampaignPackProperty[]
         reviewCount: p.reviewCount,
         isSuperhost: true,
         pitch: pitchFor(p, locale),
+        locationHighlights: buildCatalogLocationHighlights(p, locale),
       };
     });
 }

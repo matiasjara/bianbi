@@ -16,9 +16,14 @@ export function distanceKm(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-/** Minutos a pie (~5 km/h). */
+/** Minutos estimados de traslado en Santiago (~28 km/h). */
+export function travelMinutes(km: number): number {
+  return Math.max(3, Math.round((km / 28) * 60));
+}
+
+/** @deprecated Usar travelMinutes */
 export function walkingMinutes(km: number): number {
-  return Math.max(3, Math.round((km / 5) * 60));
+  return travelMinutes(km);
 }
 
 export function osmEmbedUrl(lat: number, lng: number, delta = 0.018): string {

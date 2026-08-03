@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
+import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
 import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import { localizeLanding } from "@/lib/i18n/landing";
-import { getMicrositeUi } from "@/lib/i18n/microsite";
+import { getMicrositeUi, localizeMicrosite } from "@/lib/i18n/microsite";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
 import { loadCampaignPackBySlug } from "@/lib/demand/load-campaign-packs";
 
@@ -43,9 +45,38 @@ export async function generateMetadata({
   if (!pack) return { title: "Crambie" };
   const locale = await resolveLandingLocale(sp.lang);
   const L = localizeLanding(pack, locale);
+  const { ui } = L;
+  const guide = pack.microsite ? localizeMicrosite(pack, locale) : null;
+  const ogImage = guide
+    ? `/api/share-card/${encodeURIComponent(slug)}?lang=${locale}&format=og`
+    : undefined;
+
   return {
     title: L.headline,
     description: L.subhead,
+    openGraph: guide
+      ? {
+          title: guide.content.seoTitle,
+          description: guide.content.seoDescription,
+          type: "article",
+          images: [
+            {
+              url: ogImage!,
+              width: 1200,
+              height: 630,
+              alt: guide.content.guideTitle,
+            },
+          ],
+        }
+      : undefined,
+    twitter: guide
+      ? {
+          card: "summary_large_image" as const,
+          title: guide.content.seoTitle,
+          description: guide.content.seoDescription,
+          images: ogImage ? [ogImage] : undefined,
+        }
+      : undefined,
     alternates: {
       languages: {
         es: `/c/${slug}?lang=es`,
@@ -68,6 +99,7 @@ export default async function CampaignLandingPage({
   const locale = await resolveLandingLocale(sp.lang);
   const L = localizeLanding(pack, locale);
   const { ui } = L;
+  const guide = pack.microsite ? localizeMicrosite(pack, locale) : null;
 
   const lead = L.properties[0];
   const stayUi = getMicrositeUi(locale);
@@ -195,6 +227,58 @@ export default async function CampaignLandingPage({
           </div>
         </div>
       </section>
+
+      {guide ? (
+        <section
+          id="compartir"
+          className="border-t border-black/8 bg-[#f7f4f0] py-14"
+        >
+          <div className="mx-auto max-w-4xl px-5">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6a6a6a]">
+              {guide.ui.shareSectionKicker}
+            </p>
+            <p className="mt-2 font-[family-name:var(--font-display)] text-2xl md:text-3xl">
+              {guide.ui.shareSectionTitle}
+            </p>
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#6a6a6a]">
+              {guide.ui.shareSectionBody}
+            </p>
+            <div className="mt-6">
+              <MicrositeShareBar
+                title={guide.content.guideTitle}
+                shareText={guide.content.shareText}
+                path={`/g/${slug}`}
+                slug={slug}
+                locale={locale}
+                theme="light"
+                variant="featured"
+                shareHeadline={guide.content.guideTitle}
+                shareBody={guide.ui.shareSectionBody}
+                shareHighlights={guide.content.mustKnow.slice(0, 3)}
+                shareHighlightsTitle={guide.ui.shareHighlightsTitle}
+                shareLabel={guide.ui.shareLabel}
+                copyLabel={guide.ui.copyLabel}
+                copiedLabel={guide.ui.copiedLabel}
+                shareImageLabel={guide.ui.shareImageLabel}
+                downloadImageLabel={guide.ui.downloadImageLabel}
+                sharingLabel={guide.ui.sharingLabel}
+                previewTitle={guide.ui.previewTitle}
+                previewCloseLabel={guide.ui.previewCloseLabel}
+                previewLoadingLabel={guide.ui.previewLoadingLabel}
+                whatsAppLabel={guide.ui.whatsAppLabel}
+              />
+            </div>
+            <p className="mt-6 text-center text-sm">
+              <Link
+                href={`/g/${slug}?lang=${locale}`}
+                className="font-semibold text-[#222] underline-offset-4 hover:underline"
+              >
+                {guide.ui.guideLinkLabel} →
+              </Link>
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       <section className="border-t border-black/8 bg-[#222] text-white">
         <div className="mx-auto max-w-4xl px-5 py-14 text-center">

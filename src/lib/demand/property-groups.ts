@@ -1,4 +1,5 @@
 import type { CampaignPackProperty } from "./types";
+import { propertyHasParking } from "@/lib/i18n/stay-labels";
 
 export type StayUnit = {
   slug: string;
@@ -23,6 +24,9 @@ export type PropertyStayGroup = {
   /** Galería del edificio (une fotos de todas las unidades). */
   photos: string[];
   units: StayUnit[];
+  hasParking: boolean;
+  /** Bullets concretos de ubicación (p. ej. catálogo /santiago) */
+  locationHighlights?: string[];
 };
 
 /** Agrupa deptos por ubicación (misma lat/lng ≈ mismo edificio). El orden global se mantiene. */
@@ -49,6 +53,9 @@ export function groupPropertiesByLocation(
     if (idx != null) {
       groups[idx].units.push(unit);
       groups[idx].photos.push(...unitPhotos);
+      if (propertyHasParking(p.amenities)) {
+        groups[idx].hasParking = true;
+      }
       continue;
     }
 
@@ -65,6 +72,8 @@ export function groupPropertiesByLocation(
       photo: p.photo,
       photos: [...unitPhotos],
       units: [unit],
+      hasParking: propertyHasParking(p.amenities),
+      locationHighlights: p.locationHighlights,
     });
   }
 
