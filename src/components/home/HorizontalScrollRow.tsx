@@ -35,29 +35,53 @@ export function HorizontalScrollRow({
 
   useLayoutEffect(() => {
     update();
-  }, [update]);
+    const id = window.requestAnimationFrame(update);
+    return () => window.cancelAnimationFrame(id);
+  }, [update, children]);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    el.addEventListener("scroll", update, { passive: true });
-    const ro = new ResizeObserver(update);
+
+    const onScroll = () => update();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+
+    const ro = new ResizeObserver(() => update());
     ro.observe(el);
+    for (const child of el.children) {
+      ro.observe(child);
+    }
+
+    const mo = new MutationObserver(() => {
+      update();
+      for (const child of el.children) {
+        ro.observe(child);
+      }
+    });
+    mo.observe(el, { childList: true, subtree: true });
+
+    // Imágenes / fuentes pueden agrandar el contenido después del primer layout.
+    const t1 = window.setTimeout(update, 120);
+    const t2 = window.setTimeout(update, 500);
+
     return () => {
-      el.removeEventListener("scroll", update);
+      el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
       ro.disconnect();
+      mo.disconnect();
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
     };
-  }, [update]);
+  }, [update, children]);
 
   function scrollBy(delta: number) {
     ref.current?.scrollBy({ left: delta, behavior: "smooth" });
   }
 
-  const scrollable = canLeft || canRight;
-
   return (
     <div className={`relative ${className ?? ""}`}>
-      {scrollable && canLeft ? (
+      {canLeft ? (
         <>
           <div
             className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-10 bg-gradient-to-r from-[var(--ms-paper,#faf8f5)] to-transparent"
@@ -81,7 +105,7 @@ export function HorizontalScrollRow({
         {children}
       </div>
 
-      {scrollable && canRight ? (
+      {canRight ? (
         <>
           <div
             className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-12 bg-gradient-to-l from-[var(--ms-paper,#faf8f5)] to-transparent"

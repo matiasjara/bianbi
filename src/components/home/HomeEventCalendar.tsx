@@ -22,6 +22,7 @@ import { mediaSrc } from "@/lib/demand/guide-images";
 import { micrositePath } from "@/lib/demand/travel-brief";
 import type { CityId } from "@/lib/demand/types";
 import { cityCalendarHref } from "@/components/home/HomeCitySelector";
+import { HorizontalScrollRow } from "@/components/home/HorizontalScrollRow";
 import { formatDayHeadingCL } from "@/lib/demand/dates";
 import { MONTH_NAMES_ES } from "@/lib/demand/month-range";
 
@@ -56,6 +57,14 @@ function bandRadiusClass(role: RangeBandRole): string {
     default:
       return "rounded-md";
   }
+}
+
+function chunkEvents<T>(items: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    out.push(items.slice(i, i + size));
+  }
+  return out;
 }
 
 function EventMiniCard({ ev }: { ev: CalendarEvent }) {
@@ -182,6 +191,11 @@ export function HomeEventCalendar({
     ? eventsActiveOnDay(monthEvents, selectedDay)
     : monthListEvents;
 
+  const listColumns = useMemo(
+    () => chunkEvents(listEvents, 4),
+    [listEvents],
+  );
+
   function selectDay(iso: string) {
     setSelectedDay((prev) => (prev === iso ? null : iso));
   }
@@ -306,8 +320,8 @@ export function HomeEventCalendar({
           )}
         </div>
       ) : (
-        <div className="mt-5 md:mt-6 md:flex md:items-start md:gap-10">
-          <div className="mx-auto w-full max-w-[17.5rem] shrink-0 md:mx-0">
+        <div className="mt-5 md:mt-6">
+          <div className="mx-auto w-full max-w-[17.5rem] md:mx-0">
             <div className="grid grid-cols-7 gap-0.5 text-center text-[10px] font-medium text-[var(--ms-muted)]">
               {weekdayLabelsEs().map((wd) => (
                 <div key={wd} className="py-0.5">
@@ -380,7 +394,7 @@ export function HomeEventCalendar({
             </div>
           </div>
 
-          <div className="mt-6 min-h-[5rem] flex-1 md:mt-0">
+          <div className="mt-6">
             {listEvents.length > 0 ? (
               <>
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -404,16 +418,21 @@ export function HomeEventCalendar({
                     </button>
                   ) : null}
                 </div>
-                <ul className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-                  {listEvents.map((ev) => (
-                    <li key={ev.slug}>
-                      <EventMiniCard ev={ev} />
-                    </li>
+                <HorizontalScrollRow className="mt-3" step={292}>
+                  {listColumns.map((column, colIdx) => (
+                    <div
+                      key={`col-${colIdx}-${column[0]?.slug ?? colIdx}`}
+                      className="flex w-[260px] shrink-0 flex-col gap-2 sm:w-[280px]"
+                    >
+                      {column.map((ev) => (
+                        <EventMiniCard key={ev.slug} ev={ev} />
+                      ))}
+                    </div>
                   ))}
-                </ul>
+                </HorizontalScrollRow>
               </>
             ) : (
-              <p className="text-sm text-[var(--ms-muted)] md:pt-6">
+              <p className="text-sm text-[var(--ms-muted)]">
                 {monthEvents.length === 0
                   ? "No hay guías publicadas en este mes."
                   : selectedDay
