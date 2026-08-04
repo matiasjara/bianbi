@@ -1,6 +1,8 @@
 import { DEMAND_SOURCE_CATALOG } from "./source-catalog";
 import { formatDateRangeCL } from "./dates";
 import type { CalendarEvent } from "./event-calendar";
+import { classifyEventType, eventTypeLabel } from "./event-type";
+import { classifyInterest } from "./interest";
 import type { DemandSignal, SignalKind, SignalSource } from "./types";
 
 export type AdminCalendarEvent = CalendarEvent & {
@@ -65,23 +67,34 @@ export function signalsToAdminCalendarEvents(
   signals: DemandSignal[],
   overriddenIds: Set<string> = new Set(),
 ): AdminCalendarEvent[] {
-  return signals.map((s) => ({
-    id: s.id,
-    slug: s.id,
-    title: s.title,
-    start: s.startsOn,
-    end: s.endsOn,
-    interestLabel: kindLabel(s.kind),
-    eventDates: formatDateRangeCL(s.startsOn, s.endsOn),
-    kind: s.kind,
-    source: s.source,
-    sourceLabel: sourceLabel(s.source),
-    originHint: signalOriginHint(s),
-    description: s.description,
-    url: s.url,
-    scrapedAt: s.scrapedAt,
-    potentialScore: s.potentialScore,
-    potentialTier: s.potentialTier,
-    hasOverride: overriddenIds.has(s.id),
-  }));
+  return signals.map((s) => {
+    const interest = classifyInterest(s);
+    const eventType = classifyEventType({
+      title: s.title,
+      description: s.description,
+      interest,
+      source: s.source,
+      audienceTags: s.audienceTags,
+    });
+    return {
+      id: s.id,
+      slug: s.id,
+      title: s.title,
+      start: s.startsOn,
+      end: s.endsOn,
+      interestLabel: eventTypeLabel(eventType),
+      eventType,
+      eventDates: formatDateRangeCL(s.startsOn, s.endsOn),
+      kind: s.kind,
+      source: s.source,
+      sourceLabel: sourceLabel(s.source),
+      originHint: signalOriginHint(s),
+      description: s.description,
+      url: s.url,
+      scrapedAt: s.scrapedAt,
+      potentialScore: s.potentialScore,
+      potentialTier: s.potentialTier,
+      hasOverride: overriddenIds.has(s.id),
+    };
+  });
 }

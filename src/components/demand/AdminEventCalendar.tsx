@@ -5,7 +5,6 @@ import { useMemo, useState, useEffect } from "react";
 import {
   buildMonthGrid,
   eventsActiveOnDay,
-  firstActiveDayInMonth,
   isoToday,
   weekdayLabelsEs,
   type RangeBandRole,
@@ -18,6 +17,11 @@ import {
 } from "@/lib/demand/month-range";
 import { formatDayHeadingCL } from "@/lib/demand/dates";
 import { StatusPill } from "@/components/ui";
+import {
+  availableEventTypes,
+  eventTypeLabel,
+  type EventTypeId,
+} from "@/lib/demand/event-type";
 
 type Props = {
   events: AdminCalendarEvent[];
@@ -281,37 +285,67 @@ export function AdminEventCalendar({
   const initial = defaultPlanningMonth();
   const [year, setYear] = useState(initial.year);
   const [monthIndex, setMonthIndex] = useState(initial.monthIndex);
+  const [tipo, setTipo] = useState<EventTypeId | null>(null);
   const [editing, setEditing] = useState<AdminCalendarEvent | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
+  const upcomingEvents = useMemo(
+    () =>
+      events
+        .filter((ev) => ev.end >= today)
+        .sort(
+          (a, b) =>
+            a.start.localeCompare(b.start) || a.title.localeCompare(b.title),
+        ),
+    [events, today],
+  );
+
+  const typeOptions = useMemo(
+    () => availableEventTypes(upcomingEvents, (ev) => ev.eventType),
+    [upcomingEvents],
+  );
+
+  const typedUpcoming = useMemo(() => {
+    if (!tipo) return [];
+    return upcomingEvents.filter((ev) => ev.eventType === tipo);
+  }, [upcomingEvents, tipo]);
+
   const monthEvents = useMemo(() => {
     const { start, end } = monthRange(year, monthIndex);
-    return events.filter((ev) => ev.end >= start && ev.start <= end);
-  }, [events, year, monthIndex]);
+    const inMonth = events.filter((ev) => ev.end >= start && ev.start <= end);
+    if (!tipo) return inMonth;
+    return inMonth.filter((ev) => ev.eventType === tipo);
+  }, [events, year, monthIndex, tipo]);
 
-  const defaultDay = useMemo(() => {
-    const prefix = `${year}-${String(monthIndex + 1).padStart(2, "0")}-`;
-    if (today.startsWith(prefix)) {
-      const active = eventsActiveOnDay(monthEvents, today);
-      if (active.length > 0) return today;
-    }
-    return firstActiveDayInMonth(monthEvents, year, monthIndex);
-  }, [year, monthIndex, today, monthEvents]);
-
-  const [selectedDay, setSelectedDay] = useState<string | null>(defaultDay);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
   useEffect(() => {
-    setSelectedDay(defaultDay);
-  }, [defaultDay]);
+    setSelectedDay(null);
+  }, [year, monthIndex, tipo]);
 
   const grid = useMemo(
     () => buildMonthGrid(year, monthIndex, monthEvents, today),
     [year, monthIndex, monthEvents, today],
   );
 
-  const dayEvents = selectedDay
+  const monthListEvents = useMemo(() => {
+    return [...monthEvents].sort(
+      (a, b) =>
+        a.start.localeCompare(b.start) || a.title.localeCompare(b.title),
+    ) as AdminCalendarEvent[];
+  }, [monthEvents]);
+
+  const listEvents = selectedDay
     ? (eventsActiveOnDay(monthEvents, selectedDay) as AdminCalendarEvent[])
-    : [];
+    : monthListEvents;
+
+  function selectDay(iso: string) {
+    setSelectedDay((prev) => (prev === iso ? null : iso));
+  }
+
+  function clearDaySelection() {
+    setSelectedDay(null);
+  }
 
   const years = useMemo(() => {
     const base = defaultPlanningMonth().year;
@@ -367,135 +401,87 @@ export function AdminEventCalendar({
             overrides locales.
           </p>
         </div>
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={() => shiftMonth(-1)}
-            className="inline-flex size-8 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-base transition hover:border-[var(--accent)]"
-            aria-label="Mes anterior"
-          >
-            ‹
-          </button>
-          <select
-            className="rounded-md border border-[var(--line)] bg-[var(--panel)] px-2 py-1.5 text-xs font-medium"
-            value={monthIndex}
-            onChange={(e) => setMonthIndex(Number(e.target.value))}
-          >
-            {MONTH_NAMES_ES.map((label, i) => (
-              <option key={label} value={i}>
-                {label}
-              </option>
-            ))}
-          </select>
-          <select
-            className="rounded-md border border-[var(--line)] bg-[var(--panel)] px-2 py-1.5 text-xs font-medium"
-            value={year}
-            onChange={(e) => setYear(Number(e.target.value))}
-          >
-            {years.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
-          <button
-            type="button"
-            onClick={() => shiftMonth(1)}
-            className="inline-flex size-8 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-base transition hover:border-[var(--accent)]"
-            aria-label="Mes siguiente"
-          >
-            ›
-          </button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {typeOptions.length > 0 ? (
+            <select
+              className="rounded-md border border-[var(--line)] bg-[var(--panel)] px-2 py-1.5 text-xs font-medium"
+              value={tipo ?? "all"}
+              onChange={(e) => {
+                const v = e.target.value;
+                setTipo(v === "all" ? null : (v as EventTypeId));
+              }}
+              aria-label="Filtrar por tipo"
+            >
+              <option value="all">Todos los tipos</option>
+              {typeOptions.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.label} ({opt.count})
+                </option>
+              ))}
+            </select>
+          ) : null}
+          {!tipo ? (
+            <>
+              <button
+                type="button"
+                onClick={() => shiftMonth(-1)}
+                className="inline-flex size-8 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-base transition hover:border-[var(--accent)]"
+                aria-label="Mes anterior"
+              >
+                ‹
+              </button>
+              <select
+                className="rounded-md border border-[var(--line)] bg-[var(--panel)] px-2 py-1.5 text-xs font-medium"
+                value={monthIndex}
+                onChange={(e) => setMonthIndex(Number(e.target.value))}
+              >
+                {MONTH_NAMES_ES.map((label, i) => (
+                  <option key={label} value={i}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="rounded-md border border-[var(--line)] bg-[var(--panel)] px-2 py-1.5 text-xs font-medium"
+                value={year}
+                onChange={(e) => setYear(Number(e.target.value))}
+              >
+                {years.map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => shiftMonth(1)}
+                className="inline-flex size-8 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-base transition hover:border-[var(--accent)]"
+                aria-label="Mes siguiente"
+              >
+                ›
+              </button>
+            </>
+          ) : null}
         </div>
       </div>
 
       <div className="surface rounded-xl p-5 md:p-6">
         <h2 className="font-[family-name:var(--font-display)] text-xl">
-          {MONTH_NAMES_ES[monthIndex]} {year}
+          {tipo
+            ? `${eventTypeLabel(tipo)} · próximos`
+            : `${MONTH_NAMES_ES[monthIndex]} ${year}`}
         </h2>
 
-        <div className="mt-5 md:flex md:items-start md:gap-10">
-          <div className="mx-auto w-full max-w-[17.5rem] shrink-0 md:mx-0">
-            <div className="grid grid-cols-7 gap-0.5 text-center text-[10px] font-medium text-[var(--muted)]">
-              {weekdayLabelsEs().map((wd) => (
-                <div key={wd} className="py-0.5">
-                  {wd}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-0.5 grid grid-cols-7 gap-y-1 gap-x-0">
-              {grid.map((cell, i) => {
-                if (cell.kind === "empty") {
-                  return <div key={`e-${i}`} className="h-8" aria-hidden />;
-                }
-
-                const hasStart = cell.startsCount > 0;
-                const inBand = cell.inMultiDayBand;
-                const interactive = hasStart || inBand;
-                const selected = selectedDay === cell.iso;
-
-                if (!interactive) {
-                  return (
-                    <div
-                      key={cell.iso}
-                      className={`flex h-8 items-center justify-center text-[11px] ${
-                        cell.isToday
-                          ? "rounded-md font-semibold text-[var(--good)] ring-1 ring-[var(--good)]/40"
-                          : "text-[var(--muted)]/80"
-                      }`}
-                    >
-                      {cell.day}
-                    </div>
-                  );
-                }
-
-                const bandClass = inBand
-                  ? `${bandRadiusClass(cell.bandRole)} bg-[var(--good-soft)]`
-                  : "rounded-md";
-
-                return (
-                  <button
-                    key={cell.iso}
-                    type="button"
-                    onClick={() => setSelectedDay(cell.iso)}
-                    className={`relative flex h-8 flex-col items-center justify-center text-[11px] font-medium transition ${bandClass} ${
-                      selected
-                        ? "z-[1] bg-[var(--accent-soft)] text-[var(--ink)] ring-2 ring-[var(--accent)]"
-                        : hasStart
-                          ? "text-[var(--ink)] hover:bg-[var(--good-soft)]"
-                          : "text-[var(--muted)] hover:bg-[var(--panel-2)]"
-                    }`}
-                    aria-pressed={selected}
-                  >
-                    <span className={hasStart ? "font-semibold" : ""}>
-                      {cell.day}
-                    </span>
-                    {hasStart ? (
-                      <span
-                        className={`mt-0.5 block h-1 w-1 rounded-full ${
-                          selected ? "bg-[var(--accent)]" : "bg-[var(--warn)]"
-                        }`}
-                        aria-hidden
-                      />
-                    ) : null}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="mt-6 min-h-[5rem] flex-1 md:mt-0">
-            {selectedDay && dayEvents.length > 0 ? (
+        {tipo ? (
+          <div className="mt-5">
+            {typedUpcoming.length > 0 ? (
               <>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
-                  {formatDayHeadingCL(selectedDay)}
-                  {dayEvents.length > 1
-                    ? ` · ${dayEvents.length} eventos`
-                    : ""}
+                  Desde hoy · {typedUpcoming.length}{" "}
+                  {typedUpcoming.length === 1 ? "evento" : "eventos"}
                 </p>
                 <ul className="mt-3 space-y-2">
-                  {dayEvents.map((ev) => (
+                  {typedUpcoming.map((ev) => (
                     <li key={ev.id}>
                       <AdminEventRow
                         ev={ev}
@@ -508,14 +494,132 @@ export function AdminEventCalendar({
                 </ul>
               </>
             ) : (
-              <p className="text-sm text-[var(--muted)] md:pt-6">
-                {monthEvents.length === 0
-                  ? "No hay eventos en este mes."
-                  : "Elige un día marcado para administrar eventos."}
+              <p className="mt-3 text-sm text-[var(--muted)]">
+                No hay eventos próximos de este tipo.
               </p>
             )}
           </div>
-        </div>
+        ) : (
+          <div className="mt-5 md:flex md:items-start md:gap-10">
+            <div className="mx-auto w-full max-w-[17.5rem] shrink-0 md:mx-0">
+              <div className="grid grid-cols-7 gap-0.5 text-center text-[10px] font-medium text-[var(--muted)]">
+                {weekdayLabelsEs().map((wd) => (
+                  <div key={wd} className="py-0.5">
+                    {wd}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-0.5 grid grid-cols-7 gap-y-1 gap-x-0">
+                {grid.map((cell, i) => {
+                  if (cell.kind === "empty") {
+                    return <div key={`e-${i}`} className="h-8" aria-hidden />;
+                  }
+
+                  const hasStart = cell.startsCount > 0;
+                  const inBand = cell.inMultiDayBand;
+                  const interactive = hasStart || inBand;
+                  const selected = selectedDay === cell.iso;
+
+                  if (!interactive) {
+                    return (
+                      <div
+                        key={cell.iso}
+                        className={`flex h-8 items-center justify-center text-[11px] ${
+                          cell.isToday
+                            ? "rounded-md font-semibold text-[var(--good)] ring-1 ring-[var(--good)]/40"
+                            : "text-[var(--muted)]/80"
+                        }`}
+                      >
+                        {cell.day}
+                      </div>
+                    );
+                  }
+
+                  const bandClass = inBand
+                    ? `${bandRadiusClass(cell.bandRole)} bg-[var(--good-soft)]`
+                    : "rounded-md";
+
+                  return (
+                    <button
+                      key={cell.iso}
+                      type="button"
+                      onClick={() => selectDay(cell.iso)}
+                      className={`relative flex h-8 flex-col items-center justify-center text-[11px] font-medium transition ${bandClass} ${
+                        selected
+                          ? "z-[1] bg-[var(--accent-soft)] text-[var(--ink)] ring-2 ring-[var(--accent)]"
+                          : hasStart
+                            ? "text-[var(--ink)] hover:bg-[var(--good-soft)]"
+                            : "text-[var(--muted)] hover:bg-[var(--panel-2)]"
+                      }`}
+                      aria-pressed={selected}
+                    >
+                      <span className={hasStart ? "font-semibold" : ""}>
+                        {cell.day}
+                      </span>
+                      {hasStart ? (
+                        <span
+                          className={`mt-0.5 block h-1 w-1 rounded-full ${
+                            selected ? "bg-[var(--accent)]" : "bg-[var(--warn)]"
+                          }`}
+                          aria-hidden
+                        />
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mt-6 min-h-[5rem] flex-1 md:mt-0">
+              {listEvents.length > 0 ? (
+                <>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+                      {selectedDay
+                        ? formatDayHeadingCL(selectedDay)
+                        : `${MONTH_NAMES_ES[monthIndex]} · mes completo`}
+                      {listEvents.length > 1
+                        ? ` · ${listEvents.length} eventos`
+                        : listEvents.length === 1
+                          ? " · 1 evento"
+                          : ""}
+                    </p>
+                    {selectedDay ? (
+                      <button
+                        type="button"
+                        onClick={clearDaySelection}
+                        className="text-[11px] font-semibold text-[var(--accent-ink)] underline-offset-2 hover:underline"
+                      >
+                        Ver mes completo
+                      </button>
+                    ) : null}
+                  </div>
+                  <ul className="mt-3 space-y-2">
+                    {listEvents.map((ev) => (
+                      <li key={ev.id}>
+                        <AdminEventRow
+                          ev={ev}
+                          busy={busyId === ev.id}
+                          onEdit={() => setEditing(ev)}
+                          onDelete={() => void handleDelete(ev)}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <p className="text-sm text-[var(--muted)] md:pt-6">
+                  {monthEvents.length === 0
+                    ? "No hay eventos en este mes."
+                    : selectedDay
+                      ? "No hay eventos en este día. Elige otro o vuelve al mes completo."
+                      : "No hay eventos en este mes."}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {editing ? (

@@ -141,6 +141,7 @@ export function homeQueryString(params: {
   city?: CityId;
   year?: number;
   monthIndex?: number;
+  tipo?: string | null;
   hash?: string;
 }): string {
   const q = new URLSearchParams();
@@ -150,6 +151,9 @@ export function homeQueryString(params: {
   if (params.year != null && params.monthIndex != null) {
     q.set("year", String(params.year));
     q.set("month", String(params.monthIndex + 1));
+  }
+  if (params.tipo) {
+    q.set("tipo", params.tipo);
   }
   const base = q.toString();
   const hash = params.hash ? `#${params.hash}` : "";

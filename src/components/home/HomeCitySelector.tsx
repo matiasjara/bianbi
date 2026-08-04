@@ -11,11 +11,18 @@ type Props = {
   city: CityId;
   year?: number;
   monthIndex?: number;
+  theme?: "light" | "dark";
 };
 
-export function HomeCitySelector({ city, year, monthIndex }: Props) {
+export function HomeCitySelector({
+  city,
+  year,
+  monthIndex,
+  theme = "light",
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const dark = theme === "dark";
 
   function select(next: CityId) {
     if (next === city) return;
@@ -28,7 +35,11 @@ export function HomeCitySelector({ city, year, monthIndex }: Props) {
 
   return (
     <div
-      className="inline-flex rounded-lg border border-[var(--ms-line)] bg-white/80 p-1 shadow-sm"
+      className={`inline-flex rounded-lg p-1 shadow-sm ${
+        dark
+          ? "border border-white/20 bg-white/10 backdrop-blur-sm"
+          : "border border-[var(--ms-line)] bg-white/80"
+      }`}
       role="tablist"
       aria-label="Ciudad"
     >
@@ -43,8 +54,12 @@ export function HomeCitySelector({ city, year, monthIndex }: Props) {
             onClick={() => select(opt.id)}
             className={`rounded-md px-4 py-2 text-sm font-semibold transition ${
               selected
-                ? "bg-[var(--ms-ink)] text-white"
-                : "text-[var(--ms-muted)] hover:bg-[var(--ms-paper)] hover:text-[var(--ms-ink)]"
+                ? dark
+                  ? "bg-white text-[var(--ms-ink)]"
+                  : "bg-[var(--ms-ink)] text-white"
+                : dark
+                  ? "text-white/75 hover:bg-white/10 hover:text-white"
+                  : "text-[var(--ms-muted)] hover:bg-[var(--ms-paper)] hover:text-[var(--ms-ink)]"
             }`}
           >
             {opt.label}
@@ -64,6 +79,7 @@ export function cityCalendarHref(
   city: CityId,
   year: number,
   monthIndex: number,
+  tipo?: string | null,
 ): string {
-  return homeQueryString({ city, year, monthIndex, hash: "calendario" });
+  return homeQueryString({ city, year, monthIndex, tipo, hash: "calendario" });
 }

@@ -363,6 +363,19 @@ body {
 .ms-rise-d2 { animation-delay: 0.2s; }
 .ms-rise-d3 { animation-delay: 0.32s; }
 
+@keyframes ms-hero-kenburns {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+.ms-hero-kenburns {
+  animation: ms-hero-kenburns 7.2s ease-out both;
+}
+
 .ms-rail {
   position: relative;
 }

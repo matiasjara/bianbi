@@ -6,12 +6,19 @@ import { BrandIcon } from "@/components/brand/BrandIcon";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { HomeCitySelector } from "@/components/home/HomeCitySelector";
 import { HomeEventCalendar } from "@/components/home/HomeEventCalendar";
+import { HomeHeroBackdrop } from "@/components/home/HomeHeroBackdrop";
 import { HorizontalScrollRow } from "@/components/home/HorizontalScrollRow";
 import type { BrandIconName } from "@/lib/brand/icons";
 import { properties } from "@/lib/data/seed";
 import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
 import { cityLabel, parseCityParam } from "@/lib/demand/cities";
 import type { CalendarEvent } from "@/lib/demand/event-calendar";
+import { clampToCurrentOrFutureMonth } from "@/lib/demand/event-calendar";
+import {
+  classifyEventType,
+  eventTypeLabel,
+  parseEventTypeParam,
+} from "@/lib/demand/event-type";
 import { parseMonthParam } from "@/lib/demand/month-range";
 import { micrositePath } from "@/lib/demand/travel-brief";
 import { SITE_URL } from "@/lib/site/url";
@@ -177,36 +184,65 @@ function GuideCard({
   );
 }
 
+function packToCalendarEvent(
+  pack: CampaignPack,
+  sequenceMap: Map<string, number>,
+): CalendarEvent | null {
+  if (!pack.microsite) return null;
+  const eventType = classifyEventType({
+    title: pack.eventTitle,
+    venueName: pack.venueName,
+    interest: pack.interest,
+  });
+  return {
+    slug: pack.slug,
+    title: pack.microsite.guideTitle,
+    start: pack.eventStartsOn,
+    end: pack.eventEndsOn,
+    interestLabel: eventTypeLabel(eventType),
+    eventType,
+    venueName: pack.venueName,
+    eventDates: pack.eventDates,
+    coverUrl: coverFor(pack, sequenceMap),
+  };
+}
+
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ year?: string; month?: string; city?: string }>;
+  searchParams: Promise<{
+    year?: string;
+    month?: string;
+    city?: string;
+    tipo?: string;
+  }>;
 }) {
   const params = await searchParams;
   const city = parseCityParam(params.city);
-  const { year, monthIndex } = parseMonthParam(params.year, params.month);
+  const requested = parseMonthParam(params.year, params.month);
+  const { year, monthIndex } = clampToCurrentOrFutureMonth(
+    requested.year,
+    requested.monthIndex,
+  );
+  const tipo = parseEventTypeParam(params.tipo);
 
   const [packs, monthPacks] = await Promise.all([
-    loadAllCampaignPacks({ limit: 28, city }),
+    loadAllCampaignPacks({ limit: 80, city }),
     loadAllCampaignPacks({ year, monthIndex, limit: 80, city }),
   ]);
 
   const sortedPacks = sortUpcoming(packs);
   const photoSequence = buildRotatingSequenceMap(sortedPacks);
   const monthPhotoSequence = buildRotatingSequenceMap(monthPacks);
+  const today = new Date().toISOString().slice(0, 10);
 
   const calendarEvents: CalendarEvent[] = monthPacks
-    .filter((p) => p.microsite)
-    .map((p) => ({
-      slug: p.slug,
-      title: p.microsite!.guideTitle,
-      start: p.eventStartsOn,
-      end: p.eventEndsOn,
-      interestLabel: p.interestLabel,
-      venueName: p.venueName,
-      eventDates: p.eventDates,
-      coverUrl: coverFor(p, monthPhotoSequence),
-    }));
+    .map((p) => packToCalendarEvent(p, monthPhotoSequence))
+    .filter((e): e is CalendarEvent => e != null && e.end >= today);
+
+  const upcomingCalendarEvents: CalendarEvent[] = sortedPacks
+    .map((p) => packToCalendarEvent(p, photoSequence))
+    .filter((e): e is CalendarEvent => e != null);
   const featured = sortedPacks.slice(0, 6);
   const realProperties = properties.filter((p) => p.isReal && p.photos[0]);
   const stayPhotos = (
@@ -214,14 +250,6 @@ export default async function HomePage({
   )
     .map((id) => realProperties.find((p) => p.id === id))
     .filter(Boolean) as typeof realProperties;
-
-  /** Polaroids del hero: depto + nieve + centro (no repetir el mismo edificio) */
-  const heroCollage = [
-    realProperties.find((p) => p.id === "prop-e801")?.photos[0] ??
-      realProperties[0]?.photos[0],
-    "/guides/nieve/ski.png",
-    "/guides/santiago/centro-historico.jpg",
-  ].filter(Boolean) as string[];
 
   const categories = CATEGORIES.map((cat) => ({
     ...cat,
@@ -261,90 +289,61 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(listLd) }}
       />
 
-      {/* HERO — marca + una frase + collage */}
-      <header className="relative border-b border-[var(--ms-line)]/70">
-        <div
-          className="ms-stroke right-[-4rem] top-10 h-28 w-[18rem] -rotate-6 bg-[var(--ms-teal)]/25 md:right-8"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 pb-12 pt-14 md:grid-cols-[1.05fr_0.95fr] md:min-h-[78vh] md:pb-16 md:pt-16">
-          <div className="relative z-10">
+      {/* HERO — full-bleed + marca + CTA */}
+      <header className="relative overflow-hidden">
+        <div className="relative flex min-h-[88svh] flex-col justify-end md:min-h-[92svh]">
+          <HomeHeroBackdrop />
+          <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-12 pt-16 md:pb-16 md:pt-20">
             <div className="ms-rise">
-              <BianbiLogo variant="logo" href={null} tone="onLight" size="lg" priority />
+              <BianbiLogo
+                variant="logo"
+                href={null}
+                tone="onDark"
+                size="lg"
+                priority
+              />
             </div>
             <div className="ms-rise ms-rise-d1 mt-6">
               <Suspense
                 fallback={
-                  <div className="h-10 w-48 animate-pulse rounded-lg bg-[var(--ms-line)]/40" />
+                  <div className="h-10 w-48 animate-pulse rounded-lg bg-white/15" />
                 }
               >
                 <HomeCitySelector
                   city={city}
                   year={year}
                   monthIndex={monthIndex}
+                  theme="dark"
                 />
               </Suspense>
             </div>
-            <h1 className="ms-rise ms-rise-d1 ms-editorial mt-8 max-w-md text-2xl leading-tight md:text-[2.6rem]">
+            <h1 className="ms-rise ms-rise-d1 ms-editorial mt-8 max-w-xl text-[2.35rem] leading-[0.98] tracking-[-0.02em] text-white sm:text-5xl md:text-6xl">
               Todo lo que necesitas para tu viaje
             </h1>
-            <p className="ms-rise ms-rise-d2 mt-3 max-w-sm text-[15px] leading-relaxed text-[var(--ms-muted)]">
+            <p className="ms-rise ms-rise-d2 mt-4 max-w-lg text-lg font-semibold leading-snug text-white/90 sm:text-xl">
               {cityName}, evento a evento: guías esenciales y dónde quedarte cerca
               del venue.
             </p>
             <div className="ms-rise ms-rise-d3 mt-8 flex flex-wrap gap-3">
               <a
                 href="#calendario"
-                className="inline-flex items-center rounded-lg bg-[var(--ms-ink)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-black"
+                className="inline-flex items-center rounded-xl bg-[var(--ms-airbnb,#FF5A5F)] px-5 py-3.5 text-base font-bold text-white shadow-sm transition hover:brightness-95"
               >
                 Ver calendario
               </a>
               <Link
-                href="/santiago/feriados"
-                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
-              >
-                Feriado en Santiago
-              </Link>
-              <Link
                 href="/santiago"
-                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
+                className="inline-flex items-center rounded-xl bg-white px-5 py-3.5 text-base font-bold text-[var(--ms-ink)] transition hover:bg-white/90"
               >
                 Alojamientos
               </Link>
+              <Link
+                href="/santiago/feriados"
+                className="inline-flex items-center rounded-xl border border-white/30 bg-white/10 px-5 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition hover:bg-white/15"
+              >
+                Feriado en Santiago
+              </Link>
             </div>
-          </div>
-
-          <div className="relative mx-auto h-[340px] w-full max-w-md md:h-[420px] md:max-w-none">
-            {heroCollage.map((src, i) => {
-              const poses = [
-                "left-2 top-4 w-[58%] rotate-[-4deg] z-10",
-                "right-0 top-16 w-[52%] rotate-[5deg] z-20",
-                "left-[18%] bottom-0 w-[56%] rotate-[-2deg] z-30",
-              ];
-              return (
-                <div
-                  key={src}
-                  className={`ms-polaroid absolute ${poses[i]}`}
-                >
-                  <span
-                    className={`ms-tape ${
-                      i === 0
-                        ? "ms-tape-coral"
-                        : i === 1
-                          ? "ms-tape-olive"
-                          : "ms-tape-terracotta"
-                    } -top-2 left-1/3`}
-                  />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={mediaSrc(src, 720)}
-                    alt=""
-                    className="aspect-[4/5] w-full object-cover"
-                  />
-                </div>
-              );
-            })}
           </div>
         </div>
       </header>
@@ -360,6 +359,8 @@ export default async function HomePage({
             year={year}
             monthIndex={monthIndex}
             events={calendarEvents}
+            upcomingEvents={upcomingCalendarEvents}
+            tipo={tipo}
           />
         </div>
       </section>

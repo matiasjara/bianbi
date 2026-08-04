@@ -1,11 +1,15 @@
 /** Utilidades para calendario público de eventos. */
 
+import type { EventTypeId } from "./event-type";
+
 export type CalendarEvent = {
   slug: string;
   title: string;
   start: string;
   end: string;
   interestLabel: string;
+  /** Tipo fino para filtro (hockey, atletismo, concierto…). */
+  eventType: EventTypeId;
   venueName?: string;
   eventDates?: string;
   coverUrl?: string | null;
@@ -19,6 +23,28 @@ export function weekdayLabelsEs(): readonly string[] {
 
 export function isoToday(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+/** Evento aún vigente (no terminó antes de hoy). Guías pasadas quedan fuera de listados. */
+export function isUpcomingCalendarEvent(
+  ev: Pick<CalendarEvent, "end">,
+  today = isoToday(),
+): boolean {
+  return ev.end >= today;
+}
+
+/** Mes calendario no anterior al mes actual (listados públicos). */
+export function clampToCurrentOrFutureMonth(
+  year: number,
+  monthIndex: number,
+  from = new Date(),
+): { year: number; monthIndex: number } {
+  const minYear = from.getFullYear();
+  const minMonth = from.getMonth();
+  if (year < minYear || (year === minYear && monthIndex < minMonth)) {
+    return { year: minYear, monthIndex: minMonth };
+  }
+  return { year, monthIndex };
 }
 
 export function expandIsoRange(start: string, end: string): string[] {
