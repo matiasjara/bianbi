@@ -11,9 +11,13 @@ type CatalogUi = {
   metaTitle: string;
   metaDescription: string;
   eyebrow: string;
+  heroBadge: string;
   headline: string;
   subhead: CatalogSubheadPart[];
+  heroMeta: string;
+  heroStats: { value: string; label: string }[];
   ctaSee: string;
+  ctaMap: string;
   whyTitle: string;
   whyBody: string;
   attractionsTitle: string;
@@ -46,6 +50,7 @@ const UI: Record<Locale, CatalogUi> = {
     metaDescription:
       "Alojamientos en Santiago: Barrio Italia, Ñuñoa y Centro. Metro cerca, barrio seguro y reserva directa en Airbnb.",
     eyebrow: "Santiago",
+    heroBadge: "Santiago · Alojamientos",
     headline: "Alojamientos para tu estadía en Santiago",
     subhead: [
       {
@@ -58,7 +63,14 @@ const UI: Record<Locale, CatalogUi> = {
         text: " en eventos deportivos y conciertos. Barrios seguros, metro cerca y reserva directa en Airbnb.",
       },
     ],
+    heroMeta: "Estadio Nacional · Movistar Arena",
+    heroStats: [
+      { value: "5", label: "Deptos" },
+      { value: "3", label: "Barrios" },
+      { value: "★", label: "Superhost" },
+    ],
     ctaSee: "Ver alojamientos",
+    ctaMap: "Ver mapa",
     whyTitle: "Por qué estos alojamientos",
     whyBody:
       "No es un hotel genérico: son alojamientos completos en Santiago, pensados para llegar, descansar y moverte con facilidad.",
@@ -96,6 +108,7 @@ const UI: Record<Locale, CatalogUi> = {
     metaDescription:
       "Accommodations in Santiago: Barrio Italia, Ñuñoa and Centro. Near the metro, safe neighborhoods, book direct on Airbnb.",
     eyebrow: "Santiago",
+    heroBadge: "Santiago · Stays",
     headline: "Accommodations for your stay in Santiago",
     subhead: [
       {
@@ -108,7 +121,14 @@ const UI: Record<Locale, CatalogUi> = {
         text: " for sports events and concerts. Safe neighborhoods, metro nearby, book direct on Airbnb.",
       },
     ],
+    heroMeta: "Estadio Nacional · Movistar Arena",
+    heroStats: [
+      { value: "5", label: "Stays" },
+      { value: "3", label: "Areas" },
+      { value: "★", label: "Superhost" },
+    ],
     ctaSee: "See accommodations",
+    ctaMap: "See map",
     whyTitle: "Why these stays",
     whyBody:
       "Not a generic hotel: full accommodations in Santiago, made for arriving, resting, and getting around easily.",
@@ -146,6 +166,7 @@ const UI: Record<Locale, CatalogUi> = {
     metaDescription:
       "Alojamentos em Santiago: Barrio Italia, Ñuñoa e Centro. Perto do metrô, bairro seguro e reserva direta no Airbnb.",
     eyebrow: "Santiago",
+    heroBadge: "Santiago · Alojamentos",
     headline: "Alojamentos para sua estadia em Santiago",
     subhead: [
       {
@@ -158,7 +179,14 @@ const UI: Record<Locale, CatalogUi> = {
         text: " em eventos esportivos e shows. Bairros seguros, metrô perto e reserva direta no Airbnb.",
       },
     ],
+    heroMeta: "Estadio Nacional · Movistar Arena",
+    heroStats: [
+      { value: "5", label: "Aloj." },
+      { value: "3", label: "Bairros" },
+      { value: "★", label: "Superhost" },
+    ],
     ctaSee: "Ver alojamentos",
+    ctaMap: "Ver mapa",
     whyTitle: "Por que estes alojamentos",
     whyBody:
       "Não é um hotel genérico: são alojamentos completos em Santiago, pensados para chegar, descansar e se locomover com facilidade.",

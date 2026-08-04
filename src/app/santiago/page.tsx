@@ -24,12 +24,7 @@ type Props = {
   searchParams: Promise<{ lang?: string }>;
 };
 
-const HERO_COLLAGE = [
-  "/guides/barrios/barrio-italia.png",
-  "/guides/santiago/centro-historico.jpg",
-  "/guides/deportes/estadio-nacional.png",
-  "/guides/conciertos/movistar-arena.png",
-] as const;
+const HERO_BG = "/guides/deportes/estadio-nacional.png";
 
 async function resolveCatalogLocale(searchLang?: string) {
   const hdrs = await headers();
@@ -102,31 +97,46 @@ export default async function CatalogStayPage({ searchParams }: Props) {
     })),
   ];
 
+  const [heroMetaPrimary, heroMetaSecondary] = ui.heroMeta.split(" · ");
+
   return (
     <div lang={locale} className="ms-root min-h-screen overflow-x-hidden">
-      <header className="relative border-b border-[var(--ms-line)]/70">
-        <LandingLangSwitch basePath="/santiago" locale={locale} theme="light" />
-        <div
-          className="ms-stroke right-[-3rem] top-8 h-24 w-40 rotate-[-8deg] bg-[var(--ms-teal)]/20 md:right-10"
-          aria-hidden
+      <header className="relative overflow-hidden">
+        <LandingLangSwitch
+          basePath="/santiago"
+          locale={locale}
+          theme="dark"
         />
+        <div
+          className="relative flex min-h-[92svh] flex-col justify-end"
+          style={{
+            backgroundImage: `linear-gradient(180deg, rgba(22,26,34,0.25) 0%, rgba(22,26,34,0.55) 45%, rgba(22,26,34,0.96) 100%), url(${mediaSrc(HERO_BG, 1440)})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center 30%",
+          }}
+        >
+          <div className="mx-auto w-full max-w-5xl px-4 pb-10 pt-20 sm:px-5 sm:pb-12">
+            <div className="ms-rise flex items-center gap-3 pr-20">
+              <BianbiLogo
+                href={`/?lang=${locale}`}
+                variant="logo"
+                tone="onDark"
+                size="sm"
+              />
+            </div>
 
-        <div className="relative mx-auto grid max-w-5xl items-center gap-10 px-5 pb-14 pt-12 md:grid-cols-[1.05fr_0.95fr] md:pb-16 md:pt-14">
-          <div className="relative z-10">
-            <BianbiLogo variant="logo" href="/" tone="onLight" />
-            <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
-              {ui.eyebrow}
+            <p className="ms-rise ms-rise-d1 mt-8 inline-flex rounded-md bg-[var(--ms-terracotta)] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white sm:text-xs">
+              {ui.heroBadge}
             </p>
-            <h1 className="ms-editorial mt-2 max-w-lg text-3xl leading-tight md:text-[2.35rem]">
+
+            <h1 className="ms-rise ms-rise-d1 ms-editorial mt-4 max-w-[16ch] text-[2.65rem] leading-[0.98] tracking-[-0.02em] text-white sm:text-5xl md:max-w-none md:text-6xl lg:text-7xl">
               {ui.headline}
             </h1>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[var(--ms-muted)]">
+
+            <p className="ms-rise ms-rise-d2 mt-4 max-w-xl text-lg font-semibold leading-snug text-white/90 sm:text-xl md:text-2xl">
               {ui.subhead.map((part, i) =>
                 part.bold ? (
-                  <strong
-                    key={i}
-                    className="font-semibold text-[var(--ms-ink)]"
-                  >
+                  <strong key={i} className="font-bold text-white">
                     {part.text}
                   </strong>
                 ) : (
@@ -134,47 +144,49 @@ export default async function CatalogStayPage({ searchParams }: Props) {
                 ),
               )}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+
+            <p className="ms-rise ms-rise-d2 mt-3 text-base font-bold tracking-wide text-[var(--ms-gold)] sm:text-lg">
+              {heroMetaPrimary}
+              {heroMetaSecondary ? (
+                <>
+                  <span className="mx-2 text-white/40">·</span>
+                  <span className="text-white/85">{heroMetaSecondary}</span>
+                </>
+              ) : null}
+            </p>
+
+            <div className="ms-rise ms-rise-d3 mt-8 grid grid-cols-3 gap-2 sm:gap-3">
+              {ui.heroStats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-2xl border border-white/15 bg-white/10 px-2 py-3 text-center backdrop-blur-sm sm:px-3 sm:py-4"
+                >
+                  <p className="ms-editorial text-[1.75rem] leading-none text-[var(--ms-gold)] sm:text-4xl md:text-5xl">
+                    {stat.value}
+                  </p>
+                  <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white/75 sm:text-xs">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="ms-rise ms-rise-d3 mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
                 href="#deptos"
-                className="inline-flex items-center rounded-lg bg-[var(--ms-airbnb,#FF5A5F)] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition hover:brightness-95"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--ms-airbnb,#FF5A5F)] px-5 py-3.5 text-base font-bold text-white shadow-sm transition hover:brightness-95"
               >
+                <BrandIcon name="bed" size={24} tone="onDark" />
                 {ui.ctaSee}
               </a>
+              <a
+                href="#mapa"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 text-base font-bold text-[var(--ms-ink)] transition hover:bg-white/90"
+              >
+                <BrandIcon name="pin" size={24} />
+                {ui.ctaMap}
+              </a>
             </div>
-          </div>
-
-          <div className="relative mx-auto h-[360px] w-full max-w-md md:h-[440px] md:max-w-none">
-            {HERO_COLLAGE.map((src, i) => {
-              const poses = [
-                "left-0 top-2 w-[48%] rotate-[-5deg] z-10",
-                "right-0 top-6 w-[46%] rotate-[4deg] z-20",
-                "left-[4%] bottom-2 w-[46%] rotate-[2deg] z-30",
-                "right-[2%] bottom-0 w-[48%] rotate-[-3deg] z-40",
-              ];
-              const tapes = [
-                "ms-tape-coral",
-                "ms-tape-olive",
-                "ms-tape-terracotta",
-                "ms-tape-coral",
-              ] as const;
-              return (
-                <div
-                  key={src}
-                  className={`ms-polaroid absolute ${poses[i]}`}
-                >
-                  <span
-                    className={`ms-tape ${tapes[i]} -top-2 left-1/3`}
-                  />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={mediaSrc(src, 720)}
-                    alt=""
-                    className="aspect-[4/5] w-full object-cover"
-                  />
-                </div>
-              );
-            })}
           </div>
         </div>
       </header>

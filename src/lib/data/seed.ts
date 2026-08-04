@@ -285,14 +285,14 @@ export const pois: Poi[] = [
   },
   {
     id: "poi-lastarria",
-    name: "Barrio Lastarria",
+    name: "Centro Histórico",
     slug: "barrio-lastarria",
     category: "barrio",
     lat: -33.4405,
     lng: -70.6408,
     influenceRadiusKm: 1.2,
     seasonality: "Fuerte demanda turística todo el año",
-    description: "Barrio cultural y gastronómico caminable en el centro.",
+    description: "Centro cultural y gastronómico caminable de Santiago.",
   },
   {
     id: "poi-italia",
