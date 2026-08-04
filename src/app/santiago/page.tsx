@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { cookies, headers } from "next/headers";
 import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { BrandIcon } from "@/components/brand/BrandIcon";
@@ -28,7 +27,8 @@ type Props = {
 const HERO_COLLAGE = [
   "/guides/barrios/barrio-italia.png",
   "/guides/santiago/centro-historico.jpg",
-  "/guides/gastronomia/terraza.png",
+  "/guides/deportes/estadio-nacional.png",
+  "/guides/conciertos/movistar-arena.png",
 ] as const;
 
 async function resolveCatalogLocale(searchLang?: string) {
@@ -121,7 +121,18 @@ export default async function CatalogStayPage({ searchParams }: Props) {
               {ui.headline}
             </h1>
             <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[var(--ms-muted)]">
-              {ui.subhead}
+              {ui.subhead.map((part, i) =>
+                part.bold ? (
+                  <strong
+                    key={i}
+                    className="font-semibold text-[var(--ms-ink)]"
+                  >
+                    {part.text}
+                  </strong>
+                ) : (
+                  <span key={i}>{part.text}</span>
+                ),
+              )}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -130,47 +141,30 @@ export default async function CatalogStayPage({ searchParams }: Props) {
               >
                 {ui.ctaSee}
               </a>
-              <Link
-                href="/santiago/feriados"
-                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
-              >
-                Feriado / puente
-              </Link>
-              <Link
-                href="/santiago/negocios"
-                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
-              >
-                Viaje de trabajo
-              </Link>
-              <Link
-                href="/"
-                className="inline-flex items-center rounded-lg border border-[var(--ms-line)] bg-white/70 px-5 py-3 text-sm font-semibold transition hover:bg-white"
-              >
-                Ver guías de eventos
-              </Link>
             </div>
           </div>
 
-          <div className="relative mx-auto h-[320px] w-full max-w-md md:h-[400px] md:max-w-none">
+          <div className="relative mx-auto h-[360px] w-full max-w-md md:h-[440px] md:max-w-none">
             {HERO_COLLAGE.map((src, i) => {
               const poses = [
-                "left-0 top-2 w-[58%] rotate-[-4deg] z-10",
-                "right-0 top-14 w-[54%] rotate-[5deg] z-20",
-                "left-[16%] bottom-0 w-[56%] rotate-[-2deg] z-30",
+                "left-0 top-2 w-[48%] rotate-[-5deg] z-10",
+                "right-0 top-6 w-[46%] rotate-[4deg] z-20",
+                "left-[4%] bottom-2 w-[46%] rotate-[2deg] z-30",
+                "right-[2%] bottom-0 w-[48%] rotate-[-3deg] z-40",
               ];
+              const tapes = [
+                "ms-tape-coral",
+                "ms-tape-olive",
+                "ms-tape-terracotta",
+                "ms-tape-coral",
+              ] as const;
               return (
                 <div
                   key={src}
                   className={`ms-polaroid absolute ${poses[i]}`}
                 >
                   <span
-                    className={`ms-tape ${
-                      i === 0
-                        ? "ms-tape-coral"
-                        : i === 1
-                          ? "ms-tape-olive"
-                          : "ms-tape-terracotta"
-                    } -top-2 left-1/3`}
+                    className={`ms-tape ${tapes[i]} -top-2 left-1/3`}
                   />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

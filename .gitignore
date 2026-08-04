@@ -55,3 +55,4 @@ data/ingested/signal-suppressions.json
 
 # videos editoriales pesados (local)
 /public/guides/**/*.mp4
+tmp/

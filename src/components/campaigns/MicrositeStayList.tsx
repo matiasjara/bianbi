@@ -188,7 +188,7 @@ function StayGroupCard({
         <PhotoStoryCarousel
           photos={photos}
           alt={title}
-          caption={group.neighborhood}
+          caption={group.buildingName ?? group.neighborhood}
           className="aspect-[4/3] w-full sm:aspect-auto sm:h-60 md:h-72"
         />
       </div>

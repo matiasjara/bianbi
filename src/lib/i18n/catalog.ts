@@ -5,12 +5,14 @@ import type { CampaignPackProperty } from "@/lib/demand/types";
 import type { Locale } from "@/lib/i18n/locale";
 import type { Property } from "@/lib/types";
 
+export type CatalogSubheadPart = { text: string; bold?: boolean };
+
 type CatalogUi = {
   metaTitle: string;
   metaDescription: string;
   eyebrow: string;
   headline: string;
-  subhead: string;
+  subhead: CatalogSubheadPart[];
   ctaSee: string;
   whyTitle: string;
   whyBody: string;
@@ -45,8 +47,17 @@ const UI: Record<Locale, CatalogUi> = {
       "Alojamientos en Santiago: Barrio Italia, Ñuñoa y Centro. Metro cerca, barrio seguro y reserva directa en Airbnb.",
     eyebrow: "Santiago",
     headline: "Alojamientos para tu estadía en Santiago",
-    subhead:
-      "Alojamientos nuevos y modernos, full equipados y en excelentes condiciones. Barrios seguros, metro cerca y reserva directa en Airbnb.",
+    subhead: [
+      {
+        text: "Alojamientos nuevos y modernos, full equipados y en excelentes condiciones. Ideales para quedarte cerca del ",
+      },
+      { text: "Estadio Nacional", bold: true },
+      { text: " o del " },
+      { text: "Movistar Arena", bold: true },
+      {
+        text: " en eventos deportivos y conciertos. Barrios seguros, metro cerca y reserva directa en Airbnb.",
+      },
+    ],
     ctaSee: "Ver alojamientos",
     whyTitle: "Por qué estos alojamientos",
     whyBody:
@@ -86,8 +97,17 @@ const UI: Record<Locale, CatalogUi> = {
       "Accommodations in Santiago: Barrio Italia, Ñuñoa and Centro. Near the metro, safe neighborhoods, book direct on Airbnb.",
     eyebrow: "Santiago",
     headline: "Accommodations for your stay in Santiago",
-    subhead:
-      "New, modern stays — fully equipped and in excellent condition. Safe neighborhoods, metro nearby, book direct on Airbnb.",
+    subhead: [
+      {
+        text: "New, modern stays — fully equipped and in excellent condition. Ideal if you want to stay near ",
+      },
+      { text: "Estadio Nacional", bold: true },
+      { text: " or " },
+      { text: "Movistar Arena", bold: true },
+      {
+        text: " for sports events and concerts. Safe neighborhoods, metro nearby, book direct on Airbnb.",
+      },
+    ],
     ctaSee: "See accommodations",
     whyTitle: "Why these stays",
     whyBody:
@@ -127,8 +147,17 @@ const UI: Record<Locale, CatalogUi> = {
       "Alojamentos em Santiago: Barrio Italia, Ñuñoa e Centro. Perto do metrô, bairro seguro e reserva direta no Airbnb.",
     eyebrow: "Santiago",
     headline: "Alojamentos para sua estadia em Santiago",
-    subhead:
-      "Acomodações novas e modernas, totalmente equipadas e em excelentes condições. Bairros seguros, metrô perto e reserva direta no Airbnb.",
+    subhead: [
+      {
+        text: "Acomodações novas e modernas, totalmente equipadas e em excelentes condições. Ideais para ficar perto do ",
+      },
+      { text: "Estadio Nacional", bold: true },
+      { text: " ou da " },
+      { text: "Movistar Arena", bold: true },
+      {
+        text: " em eventos esportivos e shows. Bairros seguros, metrô perto e reserva direta no Airbnb.",
+      },
+    ],
     ctaSee: "Ver alojamentos",
     whyTitle: "Por que estes alojamentos",
     whyBody:

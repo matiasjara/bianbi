@@ -6,8 +6,8 @@ import type { Poi, Property } from "@/lib/types";
  */
 const BUILDING_ITALIA = {
   buildingId: "edificio-italia-irarrazaval",
-  buildingName: "Edificio Santa Elena · Barrio Italia",
-  neighborhood: "Santiago / Barrio Italia",
+  buildingName: "Barrio Italia / Metro Irarrázaval",
+  neighborhood: "Barrio Italia / Metro Irarrázaval",
   address: "Santa Elena 1316, Santiago, Región Metropolitana, Chile",
   metroStations: ["Irarrázaval"],
   nearbyPoiIds: [
@@ -28,8 +28,8 @@ const BUILDING_ITALIA = {
 
 const BUILDING_ESTADIO = {
   buildingId: "edificio-nunoa-estadio",
-  buildingName: "Ñuñoa · Estadio Nacional",
-  neighborhood: "Ñuñoa",
+  buildingName: "Ñuñoa / Estadio Nacional",
+  neighborhood: "Ñuñoa / Estadio Nacional",
   address: "Zañartu 2075, Ñuñoa, Región Metropolitana, Chile",
   metroStations: ["Estadio Nacional", "Ñuble"],
   nearbyPoiIds: [
@@ -48,8 +48,8 @@ const BUILDING_ESTADIO = {
 
 const BUILDING_TOESCA = {
   buildingId: "edificio-toesca-centro",
-  buildingName: "Santiago Centro · Metro Toesca",
-  neighborhood: "Santiago Centro",
+  buildingName: "Movistar Arena / Parque O'Higgins / Metro Toesca",
+  neighborhood: "Movistar Arena / Parque O'Higgins / Metro Toesca",
   address: "Toesca 112, Santiago, Región Metropolitana, Chile",
   metroStations: ["Toesca"],
   nearbyPoiIds: [
