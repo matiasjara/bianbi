@@ -319,11 +319,15 @@ function toCongressSignal(ev: CuratedCongressFair): DemandSignal {
   const resolvedPois =
     poiIds.length > 0
       ? poiIds
-      : /espacio riesco|huechuraba|metropolitan|centro parque|mapocho|las condes|vitacura/i.test(
-            blob,
-          )
-        ? ["poi-costanera"]
-        : ["poi-lastarria"];
+      : /espacio riesco|huechuraba/i.test(blob)
+        ? ["poi-espacio-riesco"]
+        : /metropolitan/i.test(blob)
+          ? ["poi-metropolitan"]
+          : /centro parque/i.test(blob)
+            ? ["poi-centro-parque"]
+            : /las condes|vitacura/i.test(blob)
+              ? ["poi-metropolitan"]
+              : ["poi-lastarria"];
   const potential = scoreEventPotential(ev.title, blob);
 
   return {

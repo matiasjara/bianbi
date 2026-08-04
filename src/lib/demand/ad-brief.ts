@@ -123,6 +123,8 @@ function mailingTargetsFor(pack: PackForPlan): MailingTargetSuggestion[] {
       if (/atletismo/.test(sportHint) && /atletismo/.test(seg)) score += 5;
       if (/voleibol|volley/.test(sportHint) && /voleibol|volley/.test(seg))
         score += 5;
+      if (/tenis|tennis|davis/.test(sportHint) && /tenis|tennis/.test(seg))
+        score += 5;
       if (/fútbol|futbol/.test(sportHint) && /futbol|fútbol/.test(seg))
         score += 5;
       if (/nieve|ski/.test(sportHint) && /ski|nieve/.test(seg)) score += 5;

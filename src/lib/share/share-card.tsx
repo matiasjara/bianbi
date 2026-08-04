@@ -4,7 +4,10 @@ import type { ReactElement } from "react";
 import { ImageResponse } from "next/og";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 import type { Locale } from "@/lib/i18n/locale";
-import { isMundialU17VolleyballTitle } from "@/lib/demand/microsite-event-overrides";
+import {
+  matchFlagship,
+  type FlagshipBrand,
+} from "@/lib/demand/flagship-events";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import {
   formatVenueMetroSnapshot,
@@ -12,9 +15,6 @@ import {
 } from "@/lib/demand/venue-metro";
 import { CRAMBIE_LOGO } from "@/lib/brand/logos";
 import { SITE_HOST } from "@/lib/site/url";
-
-/** Foto de acción de vóleibol — JPEG real (Satori falla si el MIME no coincide). */
-const GUERRERAS_COVER = "guides/deportes/volleyball-accion.jpg";
 
 export const SHARE_STORY = { width: 1080, height: 1920 } as const;
 export const SHARE_OG = { width: 1200, height: 630 } as const;
@@ -120,82 +120,19 @@ async function publicImageDataUri(relFromPublic: string) {
   return `data:${mime};base64,${file.toString("base64")}`;
 }
 
-function guerrerasStoryCopy(locale: Locale) {
-  if (locale === "en") {
-    return {
-      badge: "HISTORIC · CHILE 2026",
-      title: "Cheer on the Guerreras",
-      subtitle:
-        "Chile's first volleyball World Championship at home — for delegations, staff, families and fans",
-      venueLine: "Estadio Nacional · Ñuñoa",
-      stats: [
-        { value: "24", label: "TEAMS" },
-        { value: "9/14", label: "FROM REGIONS" },
-        { value: "20:00", label: "DEBUT AUG 6" },
-      ] as const,
-      tips: [
-        "Location: Estadio Nacional · Ñuñoa",
-        "Nearby metro: Estadio Nacional and Ñuble",
-        "Chile debut: Aug 6 at 20:00 vs Czechia",
-      ],
-      ctaLabel: "NEAR THE VENUE",
-      cta: "Find a stay nearby on Crambie",
-    };
-  }
-  if (locale === "pt") {
-    return {
-      badge: "HISTÓRICO · CHILE 2026",
-      title: "Apoie as Guerreiras",
-      subtitle:
-        "O primeiro Mundial de vôlei do Chile em casa — para delegações, staff, famílias e torcida",
-      venueLine: "Estadio Nacional · Ñuñoa",
-      stats: [
-        { value: "24", label: "SELEÇÕES" },
-        { value: "9/14", label: "DE REGIÕES" },
-        { value: "20:00", label: "ESTREIA 6 AGO" },
-      ] as const,
-      tips: [
-        "Local: Estadio Nacional · Ñuñoa",
-        "Metrô perto: Estadio Nacional e Ñuble",
-        "Estreia do Chile: 6 ago às 20h vs Tchéquia",
-      ],
-      ctaLabel: "PERTO DO RECINTO",
-      cta: "Encontre uma hospedagem perto na Crambie",
-    };
-  }
-  return {
-    badge: "HISTÓRICO · CHILE 2026",
-    title: "Apoya a las Guerreras",
-    subtitle:
-      "El primer Mundial de vóleibol de Chile, en casa — para delegaciones, staff, familias e hinchada",
-    venueLine: "Estadio Nacional · Ñuñoa",
-    stats: [
-      { value: "24", label: "SELECCIONES" },
-      { value: "9/14", label: "DE REGIONES" },
-      { value: "20:00", label: "DEBUT 6 AGO" },
-    ] as const,
-    tips: [
-      "Ubicación: Estadio Nacional · Ñuñoa",
-      "Metro cercano: Estadio Nacional y Ñuble",
-      "Debut Chile: 6 ago 20:00 vs República Checa",
-    ],
-    ctaLabel: "CERCA DEL RECINTO",
-    cta: "Encuentra un alojamiento cerca en Crambie",
-  };
-}
-
-function GuerrerasStoryCard({
+function FlagshipStoryCard({
   L,
   logoSrc,
   coverSrc,
   pageLabel,
+  copy,
 }: {
   L: LocalizedMicrosite;
   logoSrc: string;
   coverSrc: string;
   pageLabel: string;
+  copy: FlagshipBrand;
 }) {
-  const copy = guerrerasStoryCopy(L.locale);
   const dates = truncate(L.content.eventDates, 36);
 
   return (
@@ -1213,13 +1150,15 @@ export async function renderShareCard(
   const ui = L.ui;
   const nearest = L.properties[0];
   const isStory = opts.format === "story";
-  const isGuerreras = isMundialU17VolleyballTitle(m.eventTitle);
+  const flagship = matchFlagship(m.eventTitle);
+  const isFlagshipStory = Boolean(isStory && flagship);
   const logoSrc = await logoDataUri(
-    isStory && isGuerreras ? "onDark" : isStory ? "onDark" : "onLight",
+    isFlagshipStory || isStory ? "onDark" : "onLight",
   );
-  const guerrerasCover = isStory && isGuerreras
-    ? await publicImageDataUri(GUERRERAS_COVER)
-    : null;
+  const flagshipCover =
+    isFlagshipStory && flagship
+      ? await publicImageDataUri(flagship.coverRel)
+      : null;
   const fonts = await getFonts();
   const pageLabel = SITE_HOST;
   const storyMapHeight = 360;
@@ -1237,13 +1176,14 @@ export async function renderShareCard(
   const headline = shareHeadline(m);
   const heroMeta = `${truncate(m.eventDates, 28)} · ${truncate(whereLabel(m), 28)}`;
 
-  if (isStory && isGuerreras && guerrerasCover) {
+  if (isFlagshipStory && flagship && flagshipCover) {
     return new ImageResponse(
-      <GuerrerasStoryCard
+      <FlagshipStoryCard
         L={L}
         logoSrc={logoSrc}
-        coverSrc={guerrerasCover}
+        coverSrc={flagshipCover}
         pageLabel={pageLabel}
+        copy={flagship.brand(L.locale)}
       />,
       {
         ...size,

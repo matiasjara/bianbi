@@ -7,7 +7,7 @@ import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
 import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
-import { isMundialU17VolleyballTitle } from "@/lib/demand/microsite-event-overrides";
+import { isFlagshipTitle } from "@/lib/demand/flagship-events";
 import { localizeLanding } from "@/lib/i18n/landing";
 import { getMicrositeUi, localizeMicrosite } from "@/lib/i18n/microsite";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
@@ -102,7 +102,7 @@ export default async function CampaignLandingPage({
 
   const lead = L.properties[0];
   const stayUi = getMicrositeUi(locale);
-  const isGuerreras = isMundialU17VolleyballTitle(pack.eventTitle);
+  const isFlagship = isFlagshipTitle(pack.eventTitle);
 
   const mapMarkers = [
     {
@@ -259,10 +259,10 @@ export default async function CampaignLandingPage({
                 shareHeadline={guide.content.guideTitle}
                 shareBody={guide.ui.shareSectionBody}
                 shareHighlights={
-                  isGuerreras ? [] : guide.content.mustKnow.slice(0, 3)
+                  isFlagship ? [] : guide.content.mustKnow.slice(0, 3)
                 }
                 shareHighlightsTitle={
-                  isGuerreras ? undefined : guide.ui.shareHighlightsTitle
+                  isFlagship ? undefined : guide.ui.shareHighlightsTitle
                 }
                 shareLabel={guide.ui.shareLabel}
                 copyLabel={guide.ui.copyLabel}

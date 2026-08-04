@@ -69,6 +69,14 @@ function isCompetitionNews(title: string, description: string): boolean {
   if (/curso|arbitro|árbitro|entrenador|mini v[oó]ley|inscripciones para el curso/i.test(t)) {
     return false;
   }
+  // Noticias de contexto (sorteo, rivales, nómina) ≠ evento bookable.
+  if (
+    /\bsorteo\b|\brivales\b|\bgrupos del\b|\bn[oó]mina\b|\bya tiene\b|\bdefinidos los\b|\btodo listo para\b|\bel camino a\b/i.test(
+      t,
+    )
+  ) {
+    return false;
+  }
   return /mundial|campeonato|circuito|cnvp|liga|liname|final|clasificatorio|sede|santiago|ñu[nñ]oa|estadio nacional/i.test(
     t,
   );

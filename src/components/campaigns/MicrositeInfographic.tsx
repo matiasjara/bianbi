@@ -10,6 +10,7 @@ import {
   mediaSrc,
   resolveGuideImages,
 } from "@/lib/demand/guide-images";
+import { matchFlagship } from "@/lib/demand/flagship-events";
 import { isMundialU17VolleyballTitle } from "@/lib/demand/microsite-event-overrides";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import {
@@ -20,46 +21,21 @@ import { staySnapshotLine } from "@/lib/demand/venue-proximity-copy";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 import type { Locale } from "@/lib/i18n/locale";
 
-function guerrerasGuideUi(locale: Locale) {
-  if (locale === "en") {
-    return {
-      badge: "Historic · Chile 2026",
-      title: "Cheer on the Guerreras",
-      subtitle:
-        "Chile's first volleyball World Championship at home — for delegations, staff, families and fans",
-      stats: [
-        { value: "24", label: "Teams" },
-        { value: "9/14", label: "From regions" },
-        { value: "20:00", label: "Debut Aug 6" },
-      ],
-      snapshotTitle: "Why this World Cup matters",
-    };
-  }
-  if (locale === "pt") {
-    return {
-      badge: "Histórico · Chile 2026",
-      title: "Apoie as Guerreiras",
-      subtitle:
-        "O primeiro Mundial de vôlei do Chile em casa — para delegações, staff, famílias e torcida",
-      stats: [
-        { value: "24", label: "Seleções" },
-        { value: "9/14", label: "De regiões" },
-        { value: "20:00", label: "Estreia 6 ago" },
-      ],
-      snapshotTitle: "Por que este Mundial importa",
-    };
-  }
+function flagshipGuideUi(locale: Locale, eventTitle: string) {
+  const flagship = matchFlagship(eventTitle);
+  if (!flagship) return null;
+  const brand = flagship.brand(locale);
   return {
-    badge: "Histórico · Chile 2026",
-    title: "Apoya a las Guerreras",
-    subtitle:
-      "El primer Mundial de vóleibol de Chile, en casa — para delegaciones, staff, familias e hinchada",
-    stats: [
-      { value: "24", label: "Selecciones" },
-      { value: "9/14", label: "De regiones" },
-      { value: "20:00", label: "Debut 6 ago" },
-    ],
-    snapshotTitle: "Por qué este Mundial importa",
+    badge: brand.badge,
+    title: brand.title,
+    subtitle: brand.subtitle,
+    stats: brand.stats,
+    snapshotTitle:
+      locale === "en"
+        ? "Why this event matters"
+        : locale === "pt"
+          ? "Por que este evento importa"
+          : "Por qué este evento importa",
   };
 }
 
@@ -185,7 +161,8 @@ export function MicrositeInfographic({
 }) {
   const { ui, content: m, properties: props, locale } = L;
   const isGuerreras = isMundialU17VolleyballTitle(m.eventTitle);
-  const guerreras = isGuerreras ? guerrerasGuideUi(locale) : null;
+  const isFlagship = matchFlagship(m.eventTitle) != null;
+  const guerreras = flagshipGuideUi(locale, m.eventTitle);
 
   const venueMetros =
     m.interest === "concierto"
@@ -247,7 +224,7 @@ export function MicrositeInfographic({
   ] as const;
 
   const shareProps = {
-    title: isGuerreras && guerreras ? guerreras.title : m.eventTitle,
+    title: isFlagship && guerreras ? guerreras.title : m.eventTitle,
     shareText: m.shareText,
     path: `/g/${slug}`,
     slug,
@@ -264,13 +241,13 @@ export function MicrositeInfographic({
     whatsAppLabel: ui.whatsAppLabel,
     shareHeadline: ui.shareSectionTitle,
     shareBody: ui.shareSectionBody,
-    shareHighlights: isGuerreras ? [] : m.mustKnow.slice(0, 3),
-    shareHighlightsTitle: isGuerreras ? undefined : ui.shareHighlightsTitle,
+    shareHighlights: isFlagship ? [] : m.mustKnow.slice(0, 3),
+    shareHighlightsTitle: isFlagship ? undefined : ui.shareHighlightsTitle,
   };
 
   return (
     <div lang={locale} className="ms-root min-h-screen overflow-x-hidden pb-24 md:pb-0">
-      {isGuerreras && guerreras && heroPhoto ? (
+      {isFlagship && guerreras && heroPhoto ? (
         <header className="relative overflow-hidden">
           <LandingLangSwitch
             basePath={`/g/${slug}`}
@@ -681,7 +658,7 @@ export function MicrositeInfographic({
                 </span>
                 <p
                   className={`pt-1.5 leading-snug text-[var(--ms-ink)]/90 ${
-                    isGuerreras
+                    isFlagship
                       ? "text-lg font-semibold sm:text-xl"
                       : "text-[15px] leading-relaxed"
                   }`}

@@ -5,6 +5,7 @@
 import { formatDateRangeHuman, formatDateRangeLongEs } from "./dates";
 import type { Locale } from "@/lib/i18n/locale";
 import type { MicrositeCopyInput } from "./microsite-event-copy";
+import { matchFlagship } from "./flagship-events";
 import {
   guerrerasHeadlineProximity,
   stayNearStadiumPhrase,
@@ -200,8 +201,13 @@ export function getEventCopyOverride(
   locale: Locale,
   opts?: { nearestMins?: number },
 ): EventCopyOverride | null {
+  // Guerreras: copy histórico ya afinado (no tocar).
   if (isMundialU17Volleyball(pack)) {
     return mundialU17VolleyballOverride(pack, locale, opts?.nearestMins);
+  }
+  const flagship = matchFlagship(pack.eventTitle);
+  if (flagship?.buildCopy) {
+    return flagship.buildCopy(pack, locale, opts?.nearestMins);
   }
   return null;
 }

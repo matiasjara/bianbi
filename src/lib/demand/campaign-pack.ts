@@ -18,6 +18,7 @@ import {
 } from "./event-title";
 import { publicEventDescription } from "./public-event-description";
 import { attachTravelBriefAndMicrosite } from "./travel-brief";
+import { matchFlagship } from "./flagship-events";
 import {
   getEventCopyOverride,
   isMundialU17VolleyballTitle,
@@ -378,30 +379,28 @@ function buildCopy(input: {
     );
     if (override?.headline) headline = override.headline;
     if (override?.subhead) subhead = override.subhead;
-    if (override?.headline && /guerreras/i.test(override.headline)) {
-      const stayLine =
-        nearestMins <= 10
-          ? `Quédate a pasos del ${venueName}: barrio seguro, metro cerca y reserva directa en Airbnb.`
-          : `Buena ubicación con fácil acceso al ${venueName}: barrio seguro, metro cerca y reserva directa en Airbnb.`;
+    const flagship = matchFlagship(displayTitle) ?? matchFlagship(eventTitle);
+    if (flagship) {
+      const mail = flagship.mailing({
+        eventTitle: displayTitle,
+        eventDates,
+        venueName,
+        landingUrl: "{{LANDING_URL}}",
+      });
+      const brand = flagship.brand("es");
       return {
         headline,
         subhead,
-        mailingSubject: `[Santiago] Mundial Guerreras: alojamiento para delegaciones, staff y familias · ${eventDates}`,
-        mailingBody: [
-          `Hola,`,
-          ``,
-          `Chile organiza su primer Mundial de vóleibol (${eventDates}). Llegan delegaciones, staff, familias e hinchada de regiones.`,
-          stayLine,
-          `En estas fechas los alojamientos cerca del Estadio se llenan rápido: conviene reservar pronto.`,
-          audience.stayOffer,
-          ``,
-          `{{LANDING_URL}}`,
-        ].join("\n"),
-        adHeadline:
-          nearestMins <= 10
-            ? `Guerreras · a pasos del Nacional`
-            : `Guerreras · fácil acceso al Nacional`,
-        adPrimaryText: `Mundial en casa. ${nearestMins <= 10 ? "A pasos" : "Fácil acceso"} del Estadio: delegaciones, staff y familias. ${eventDates}. Metro + Airbnb.`,
+        mailingSubject: mail.subject,
+        mailingBody: [...mail.bodyLines.slice(0, -1), audience.stayOffer, "", "{{LANDING_URL}}"].join(
+          "\n",
+        ),
+        adHeadline: `${brand.title.slice(0, 28)} · ${nearestMins <= 10 ? "a pasos" : "cerca"}`.slice(
+          0,
+          40,
+        ),
+        adPrimaryText:
+          `${brand.subtitle} ${eventDates}. Metro + Airbnb.`.slice(0, 125),
       };
     }
     return {

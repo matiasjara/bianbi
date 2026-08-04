@@ -1,4 +1,5 @@
 import type { CampaignPack, CampaignPackProperty } from "@/lib/demand/types";
+import { matchFlagship } from "@/lib/demand/flagship-events";
 import {
   getEventCopyOverride,
   isMundialU17VolleyballTitle,
@@ -302,49 +303,18 @@ function localizeTrust(pack: CampaignPack, locale: Locale): string[] {
   return pack.trustPoints;
 }
 
-function withGuerrerasUi(ui: Ui, locale: Locale, venue: string): Ui {
-  if (locale === "en") {
-    return {
-      ...ui,
-      whyTitle: "A base near the court for the whole World Cup",
-      whyBody: () =>
-        `Chile's Guerreras are writing history at home. Staying near ${venue} works for delegations, staff, families and fans: you get to the gym on time and sleep nearby after long days.`,
-      unitsBody: () =>
-        `Sorted by distance to ${venue}. World Cup dates fill up fast nearby — book soon on Airbnb (protected payment).`,
-      urgencyNote: (dates) =>
-        `Stays near the stadium for ${dates} fill up fast. Worth booking soon.`,
-      closeTitle: "Book your base near the venue",
-      closeBody: (dates) =>
-        `Dates around ${dates} fill up fast near ${venue} — teams, staff, families and clubs are traveling for the World Cup. Book on Airbnb to lock in your stay.`,
-    };
-  }
-  if (locale === "pt") {
-    return {
-      ...ui,
-      whyTitle: "Uma base perto da quadra para todo o Mundial",
-      whyBody: () =>
-        `As Guerreiras do Chile escrevem história em casa. Ficar perto de ${venue} serve para delegações, staff, famílias e torcida: você chega a tempo e dorme perto depois de jornadas longas.`,
-      unitsBody: () =>
-        `Ordenados pela proximidade a ${venue}. Nas datas do Mundial as opções perto esgotam rápido — reserve logo no Airbnb (pagamento protegido).`,
-      urgencyNote: (dates) =>
-        `As hospedagens perto do Estádio para ${dates} esgotam rápido. Vale reservar logo.`,
-      closeTitle: "Reserve sua base perto do recinto",
-      closeBody: (dates) =>
-        `As datas de ${dates} enchem rápido perto de ${venue} — seleções, staff, famílias e clubes viajam pelo Mundial. Reserve no Airbnb e garanta a estadia.`,
-    };
-  }
+function withFlagshipUi(ui: Ui, locale: Locale, eventTitle: string): Ui {
+  const flagship = matchFlagship(eventTitle);
+  if (!flagship) return ui;
+  const L = flagship.landing(locale);
   return {
     ...ui,
-    whyTitle: "Base cerca de la cancha para todo el Mundial",
-    whyBody: () =>
-      `Las Guerreras escriben historia en casa. Quedarte cerca de ${venue} sirve para delegaciones, staff, familias e hinchada: llegas a tiempo al recinto y duermes cerca después de jornadas largas.`,
-    unitsBody: () =>
-      `Ordenados por cercanía a ${venue}. En fechas de Mundial se llenan rápido cerca del Estadio: conviene reservar pronto en Airbnb (pago protegido).`,
-    urgencyNote: (dates) =>
-      `Los alojamientos cerca del Estadio para ${dates} se llenan rápido. Conviene reservar pronto.`,
-    closeTitle: "Reserva tu base cerca del recinto",
-    closeBody: (dates) =>
-      `Las fechas de ${dates} se llenan rápido cerca de ${venue}: selecciones, staff, familias y clubes viajan por el Mundial. Arriendas en Airbnb y aseguras tu estadía.`,
+    whyTitle: L.whyTitle,
+    whyBody: L.whyBody,
+    unitsBody: L.unitsBody,
+    urgencyNote: L.urgencyNote,
+    closeTitle: L.closeTitle,
+    closeBody: L.closeBody,
   };
 }
 
@@ -516,10 +486,9 @@ export function localizeLanding(
 ): LocalizedLanding {
   const override = eventOverride(pack, locale);
   const baseUi = UI[locale];
-  const ui =
-    override && /guerreras|guerreiras/i.test(override.headline ?? "")
-      ? withGuerrerasUi(baseUi, locale, pack.venueName)
-      : baseUi;
+  const ui = matchFlagship(pack.eventTitle)
+    ? withFlagshipUi(baseUi, locale, pack.eventTitle)
+    : baseUi;
   const metros = [
     ...new Set(pack.properties.flatMap((p) => p.metroStations)),
   ];

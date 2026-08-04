@@ -37,12 +37,24 @@ export function preferredPoiOrder(
   if (interest === "nieve") {
     return ["poi-santiago-hub", "poi-italia", "poi-lastarria"];
   }
+  if (interest === "congreso_feria") {
+    return [
+      "poi-metropolitan",
+      "poi-espacio-riesco",
+      "poi-centro-parque",
+      "poi-costanera",
+      "poi-italia",
+      "poi-lastarria",
+    ];
+  }
   return [
     "poi-movistar",
     "poi-estadio",
     "poi-ohiggins",
     "poi-italia",
     "poi-lastarria",
+    "poi-metropolitan",
+    "poi-espacio-riesco",
     "poi-costanera",
   ];
 }

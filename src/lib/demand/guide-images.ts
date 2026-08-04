@@ -190,17 +190,59 @@ function sportPool(title: string, venue = ""): readonly string[] | null {
   return null;
 }
 
-function venuePool(venue: string, title: string): readonly string[] | null {
+/**
+ * Fotos por sede condicionadas al interés del pack.
+ * Un estadio multi-uso NO implica fútbol si el pack es un concierto.
+ */
+function venuePool(
+  venue: string,
+  title: string,
+  interest: CampaignInterest,
+): readonly string[] | null {
   const hay = `${venue} ${title}`.toLowerCase();
-  // Si el título ya define el deporte, no pisar con fotos del venue (ej. Estadio Nacional → fútbol).
+  // Si el título ya define el deporte, no pisar con fotos del venue.
   if (sportPool(title, venue)) return null;
+
+  if (interest === "concierto") {
+    if (
+      /estadio|arena|teatro|movistar|caupolic[aá]n|espacio riesco|national/i.test(
+        hay,
+      )
+    ) {
+      return CONCIERTOS;
+    }
+    return CONCIERTOS;
+  }
+
+  if (interest === "partido_futbol") {
+    if (/estadio|monumental|santa laura|el teniente|sausalito/i.test(hay)) {
+      return FUTBOL;
+    }
+    return FUTBOL;
+  }
+
+  if (interest === "deporte_competencia") {
+    if (/hockey|fehoch/.test(hay)) return HOCKEY;
+    if (/atletismo|marat[oó]n|track/.test(hay)) return ATLETISMO;
+    // Estadio Nacional sin disciplina clara → no asumir fútbol
+    return null;
+  }
+
   if (/hockey|fehoch/.test(hay)) return HOCKEY;
   if (/atletismo|marat[oó]n|estadio nacional.*atlet|track/.test(hay))
     return ATLETISMO;
   if (/movistar/.test(hay)) return CONCIERTOS;
-  if (/estadio nacional|nacional de chile/.test(hay)) return FUTBOL;
-  if (/arena|teatro|movistar|caupolic[aá]n|espacio riesco/.test(hay) &&
-      /concierto|show|tour|festival|m[uú]sica/.test(hay)) {
+  // Solo fútbol por sede si el título/venue sugieren partido (no show).
+  if (
+    /estadio nacional|nacional de chile/.test(hay) &&
+    /f[uú]tbol|soccer|clasico|clásico|vs\.?|campeonato chileno|liga/i.test(hay)
+  ) {
+    return FUTBOL;
+  }
+  if (
+    /arena|teatro|movistar|caupolic[aá]n|espacio riesco/.test(hay) &&
+    /concierto|show|tour|festival|m[uú]sica/.test(hay)
+  ) {
     return CONCIERTOS;
   }
   return null;
@@ -240,6 +282,8 @@ export function resolveGuideImages(input: {
   const title = input.eventTitle || "";
   const venue = input.venueName || "";
 
+  // Stack: disciplina del título → sede condicionada por interés → pool del interés.
+  // Nunca: Estadio Nacional → fútbol cuando el interés es concierto.
   const sportSpecific =
     input.interest === "deporte_competencia" ||
     input.interest === "partido_futbol" ||
@@ -248,11 +292,13 @@ export function resolveGuideImages(input: {
     )
       ? sportPool(title, venue)
       : null;
-  const venueSpecific = venuePool(venue, title);
+  const byInterest = interestPool(input.interest);
+  const venueSpecific = venuePool(venue, title, input.interest);
 
-  // Deporte del evento manda sobre sede genérica (Estadio Nacional ≠ siempre fútbol).
   const pool =
-    sportSpecific || venueSpecific || interestPool(input.interest);
+    input.interest === "concierto" || input.interest === "partido_futbol"
+      ? venueSpecific || byInterest
+      : sportSpecific || venueSpecific || byInterest;
 
   const rotateKey = rotatingPoolKey(title, venue);
   const useSequential =

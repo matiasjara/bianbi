@@ -4,10 +4,14 @@
  */
 import type { CampaignInterest, DemandSignal } from "./types";
 import {
+  competitionCampaignGroupKey,
+} from "./competition-group";
+import {
   hockeyCampaignGroupKey,
   isHockeySignal,
 } from "./hockey-group";
 import { isCongressOrFairEvent, isCongressOrFairSignal } from "./congress-fair";
+import { showCampaignGroupKey } from "./show-group";
 
 export type { CampaignInterest };
 
@@ -244,11 +248,13 @@ export function campaignGroupKey(
   if (interest === "deporte_competencia") {
     const hockeyKey = hockeyCampaignGroupKey(signal);
     if (hockeyKey) return hockeyKey;
+    const competitionKey = competitionCampaignGroupKey(signal);
+    if (competitionKey) return competitionKey;
     return `comp:${signal.startsOn}:${slugPart(signal.title).slice(0, 40)}`;
   }
 
   if (interest === "concierto") {
-    return `show:${signal.startsOn}:${slugPart(signal.title).slice(0, 40)}`;
+    return showCampaignGroupKey(signal);
   }
 
   if (interest === "congreso_feria") {
@@ -295,6 +301,9 @@ export function intentionSlugForInterest(
       if (pois.includes("poi-estadio")) return "estadio-nacional";
       return `show-${slugPart(lead?.title ?? "santiago").slice(0, 28)}`;
     case "congreso_feria":
+      if (pois.includes("poi-metropolitan")) return "metropolitan-santiago";
+      if (pois.includes("poi-espacio-riesco")) return "espacio-riesco";
+      if (pois.includes("poi-centro-parque")) return "centro-parque";
       if (pois.includes("poi-costanera")) return "congresos-oriente";
       return `congreso-${slugPart(lead?.title ?? "santiago").slice(0, 28)}`;
     case "turismo_general":

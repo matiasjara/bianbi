@@ -841,7 +841,10 @@ export function buildFaqs(
   ];
 
   if (pack.eventUrl) {
-    const vendor = extractTicketingSource(pack.description, pack.eventUrl);
+    const vendor = extractTicketingSource(
+      pack.eventDescription ?? "",
+      pack.eventUrl,
+    );
     eventFaqs.push({
       q: t(
         locale,

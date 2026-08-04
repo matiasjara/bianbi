@@ -3,6 +3,7 @@
  * de otras ciudades. Excluye fiestas locales, series de club y noches
  * recurrentes sin draw turístico (ej. "Martes se sale" en Subterráneo).
  */
+import { isFederationNewsOnly } from "./competition-group";
 import { isTheaterOrCulturalEvent } from "./interest";
 import { isHockeySignal, isRelevantHockeySignal } from "./hockey-group";
 import type { DemandSignal } from "./types";
@@ -129,6 +130,10 @@ export function isRelevantDemandSignal(signal: DemandSignal): boolean {
     signal.kind === "tourism_flow"
   ) {
     return true;
+  }
+
+  if (isFederationNewsOnly(signal)) {
+    return false;
   }
 
   if (signal.kind === "sport") {

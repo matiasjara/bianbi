@@ -8,9 +8,29 @@ import {
   sportsOrgSources,
 } from "./sports-organizations";
 import {
+  tennisOrganizations,
+  tennisOrgSources,
+} from "./tennis-organizations";
+import {
   volleyballOrganizations,
   volleyballOrgSources,
 } from "./volleyball-organizations";
+import {
+  athleticsOrganizations,
+  athleticsOrgSources,
+} from "./athletics-organizations";
+import {
+  hockeyOrganizations,
+  hockeyOrgSources,
+} from "./hockey-organizations";
+
+/** Deportes con directorio dedicado (evitar duplicar sports-organizations). */
+const DEDICATED_SPORTS = new Set([
+  "Voleibol",
+  "Tenis",
+  "Atletismo",
+  "Hockey césped",
+]);
 
 /** Etiquetas UI de categoría de outreach. */
 export const OUTREACH_CATEGORY_LABEL: Record<
@@ -48,26 +68,9 @@ export const OUTREACH_MAILING_ORG_TYPES: OutreachOrganization["orgType"][] = [
 ];
 
 /** Deportivas tipadas como outreach (categoría deporte). */
-const sportsAsOutreach: OutreachOrganization[] = rawSports.map((o) => ({
-  id: o.id,
-  name: o.name,
-  category: "deporte" as const,
-  orgType: o.orgType as OutreachOrganization["orgType"],
-  segment: o.sport,
-  sport: o.sport,
-  region: o.region,
-  emails: o.emails,
-  phones: o.phones,
-  address: o.address,
-  source: o.source,
-  sourceUrl: o.sourceUrl,
-  website: o.website,
-  mailingReady: o.mailingReady,
-  campaignInterests: ["partido_futbol", "deporte_competencia"],
-}));
-
-const volleyballAsOutreach: OutreachOrganization[] = volleyballOrganizations.map(
-  (o) => ({
+const sportsAsOutreach: OutreachOrganization[] = rawSports
+  .filter((o) => !DEDICATED_SPORTS.has(o.sport))
+  .map((o) => ({
     id: o.id,
     name: o.name,
     category: "deporte" as const,
@@ -82,13 +85,42 @@ const volleyballAsOutreach: OutreachOrganization[] = volleyballOrganizations.map
     sourceUrl: o.sourceUrl,
     website: o.website,
     mailingReady: o.mailingReady,
-    campaignInterests: ["deporte_competencia"],
-  }),
-);
+    campaignInterests: ["partido_futbol", "deporte_competencia"],
+  }));
+
+function sportsDirAsOutreach(
+  orgs: typeof volleyballOrganizations,
+): OutreachOrganization[] {
+  return orgs.map((o) => ({
+    id: o.id,
+    name: o.name,
+    category: "deporte" as const,
+    orgType: o.orgType as OutreachOrganization["orgType"],
+    segment: o.sport,
+    sport: o.sport,
+    region: o.region,
+    emails: o.emails,
+    phones: o.phones,
+    address: o.address,
+    source: o.source,
+    sourceUrl: o.sourceUrl,
+    website: o.website,
+    mailingReady: o.mailingReady,
+    campaignInterests: ["deporte_competencia" as const],
+  }));
+}
+
+const volleyballAsOutreach = sportsDirAsOutreach(volleyballOrganizations);
+const tennisAsOutreach = sportsDirAsOutreach(tennisOrganizations);
+const athleticsAsOutreach = sportsDirAsOutreach(athleticsOrganizations);
+const hockeyAsOutreach = sportsDirAsOutreach(hockeyOrganizations);
 
 export const outreachSources: OutreachSource[] = [
   ...sportsOrgSources,
   ...volleyballOrgSources,
+  ...tennisOrgSources,
+  ...athleticsOrgSources,
+  ...hockeyOrgSources,
   ...nonSportsSources,
 ];
 
@@ -96,6 +128,9 @@ export const outreachSources: OutreachSource[] = [
 export const outreachOrganizations: OutreachOrganization[] = [
   ...sportsAsOutreach,
   ...volleyballAsOutreach,
+  ...tennisAsOutreach,
+  ...athleticsAsOutreach,
+  ...hockeyAsOutreach,
   ...nonSportsOrganizations,
 ].filter((o) =>
   OUTREACH_MAILING_ORG_TYPES.includes(o.orgType),

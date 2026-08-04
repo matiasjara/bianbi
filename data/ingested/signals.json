@@ -1344,42 +1344,6 @@
     "scrapedAt": "2026-08-03T03:39:11.107Z"
   },
   {
-    "id": "fevochi-todo-listo-para-el-sorteo-del-mundial-u17-femenino-el-camino",
-    "kind": "sport",
-    "source": "fevochi",
-    "title": "TODO LISTO PARA EL SORTEO DEL MUNDIAL U17 FEMENINO: EL CAMINO A CHILE 2026 COMIENZA EN SUIZA",
-    "description": "La cuenta regresiva ya comenzó. Este 18 de marzo, la ciudad de Lausana será el epicentro del vóleibol mundial con la realización del Sorteo Oficial del Campeonato Mundial Femenino U17 Chile 2026, instancia clave que definirá el destino de las 24 selecciones participantes. El torn. Fecha: 18-03-2026.",
-    "startsOn": "2026-03-18",
-    "endsOn": "2026-03-18",
-    "intensity": 8,
-    "potentialScore": 80,
-    "potentialTier": "mega",
-    "potentialFactors": [
-      "evento deportivo federado",
-      "instancia decisiva (final/playoff)",
-      "evento internacional / federaciones → mailing + pernocta",
-      "detectado vía RSS FEVOCHI"
-    ],
-    "poiIds": [
-      "poi-lastarria"
-    ],
-    "audienceTags": [
-      "deportes",
-      "voleibol",
-      "fevochi",
-      "federaciones",
-      "mailing",
-      "rss"
-    ],
-    "propertyCodesPreferred": [
-      "E801",
-      "E214",
-      "T112"
-    ],
-    "url": "https://www.fevochi.cl/2026/03/18/todo-listo-para-el-sorteo-del-mundial-u17-femenino-el-camino-a-chile-2026-comienza-en-suiza/",
-    "scrapedAt": "2026-08-03T03:40:20.832Z"
-  },
-  {
     "id": "fehoch_tournaments-2026-nacional-primera-damas-c-torneo-nacional-2026-03-19",
     "kind": "sport",
     "source": "fehoch_tournaments",
@@ -3258,8 +3222,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -3625,8 +3588,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -4838,8 +4800,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -5215,44 +5176,6 @@
     "url": "https://www.campeonatochileno.cl/match/colo-colo-ohiggins-2026-08-16/",
     "scrapedAt": "2026-08-03T03:39:10.463Z",
     "city": "santiago"
-  },
-  {
-    "id": "fevochi-chile-ya-tiene-rivales-definidos-los-grupos-del-mundial-u17-",
-    "kind": "sport",
-    "source": "fevochi",
-    "title": "CHILE YA TIENE RIVALES: DEFINIDOS LOS GRUPOS DEL MUNDIAL U17 FEMENINO 2026",
-    "description": "La ilusión mundialista ya toma forma. Este martes se realizó el sorteo oficial del Campeonato Mundial Femenino U17 Chile 2026, instancia que definió los grupos del certamen planetario y el camino que deberá enfrentar la selección nacional en su histórica participación como anfitr. Fecha: 16-08-2026.",
-    "startsOn": "2026-08-16",
-    "endsOn": "2026-08-16",
-    "intensity": 7,
-    "potentialScore": 68,
-    "potentialTier": "alta",
-    "potentialFactors": [
-      "evento deportivo federado",
-      "evento internacional / federaciones → mailing + pernocta",
-      "sede Parque Estadio Nacional / Peñalolén",
-      "detectado vía RSS FEVOCHI"
-    ],
-    "poiIds": [
-      "poi-estadio"
-    ],
-    "audienceTags": [
-      "deportes",
-      "voleibol",
-      "fevochi",
-      "federaciones",
-      "mailing",
-      "rss"
-    ],
-    "propertyCodesPreferred": [
-      "Z114",
-      "Z107",
-      "E801",
-      "E214",
-      "T112"
-    ],
-    "url": "https://www.fevochi.cl/2026/03/19/chile-ya-tiene-rivales-definidos-los-grupos-del-mundial-u17-femenino-2026/",
-    "scrapedAt": "2026-08-03T03:40:20.832Z"
   },
   {
     "id": "campeonato_chileno-palestino-vs-huachipato-2026-08-17",
@@ -5884,8 +5807,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -5918,8 +5840,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -6592,8 +6513,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -7032,8 +6952,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -7066,8 +6985,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -8781,8 +8699,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-lastarria"
+      "poi-metropolitan"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -8816,7 +8733,7 @@
       "conciertos"
     ],
     "poiIds": [
-      "poi-movistar"
+      "poi-estadio"
     ],
     "propertyCodesPreferred": [
       "Z114",
@@ -15486,7 +15403,7 @@
       "recinto MICE / feria masiva"
     ],
     "poiIds": [
-      "poi-costanera"
+      "poi-metropolitan"
     ],
     "audienceTags": [
       "congresos",
@@ -15769,7 +15686,7 @@
       "recinto MICE / feria masiva"
     ],
     "poiIds": [
-      "poi-costanera"
+      "poi-metropolitan"
     ],
     "audienceTags": [
       "ferias",
@@ -15943,7 +15860,7 @@
       "sector con viajes corporativos"
     ],
     "poiIds": [
-      "poi-costanera"
+      "poi-metropolitan"
     ],
     "audienceTags": [
       "congresos",
@@ -16017,7 +15934,7 @@
       "recinto MICE / feria masiva"
     ],
     "poiIds": [
-      "poi-costanera"
+      "poi-centro-parque"
     ],
     "audienceTags": [
       "congresos",
@@ -16090,7 +16007,7 @@
       "recinto MICE / feria masiva"
     ],
     "poiIds": [
-      "poi-costanera"
+      "poi-espacio-riesco"
     ],
     "audienceTags": [
       "ferias",
@@ -16370,7 +16287,7 @@
       "sector con viajes corporativos"
     ],
     "poiIds": [
-      "poi-costanera"
+      "poi-espacio-riesco"
     ],
     "audienceTags": [
       "ferias",

@@ -28,6 +28,8 @@ export function guessPoi(text: string): string[] {
     t.includes("estadio nacional") ||
     t.includes("julio martínez") ||
     t.includes("court central") ||
+    t.includes("anita lizana") ||
+    t.includes("complejo ten") ||
     t.includes("claudia schüler") ||
     t.includes("claudia schuler") ||
     t.includes("hockey césped") ||
@@ -61,15 +63,25 @@ export function guessPoi(text: string): string[] {
   )
     return ["poi-lastarria"];
   if (t.includes("barrio italia") || t.includes("italia")) return ["poi-italia"];
-  if (t.includes("costanera")) return ["poi-costanera"];
+  // Venues MICE reales — nunca colapsar a Sky Costanera (mirador).
+  if (t.includes("espacio riesco") || t.includes("huechuraba")) {
+    return ["poi-espacio-riesco"];
+  }
   if (
-    t.includes("espacio riesco") ||
-    t.includes("huechuraba") ||
     t.includes("metropolitan santiago") ||
-    t.includes("centro parque") ||
-    (t.includes("metropolitan") && /convencion|congreso|feria|expo|mice/.test(t))
-  )
+    (t.includes("metropolitan") &&
+      /convencion|congreso|feria|expo|mice|las condes/.test(t))
+  ) {
+    return ["poi-metropolitan"];
+  }
+  if (t.includes("centro parque")) return ["poi-centro-parque"];
+  if (
+    t.includes("sky costanera") ||
+    t.includes("costanera center") ||
+    (t.includes("costanera") && !t.includes("centro parque"))
+  ) {
     return ["poi-costanera"];
+  }
   if (
     t.includes("morandé") ||
     t.includes("morande") ||
@@ -79,7 +91,6 @@ export function guessPoi(text: string): string[] {
   if (
     t.includes("caupolicán") ||
     t.includes("caupolican") ||
-    t.includes("metropolitan") ||
     t.includes("teatro coliseo") ||
     t.includes("estación mapocho") ||
     t.includes("mapocho") ||
