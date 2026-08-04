@@ -175,14 +175,14 @@ function sportPool(title: string, venue = ""): readonly string[] | null {
   if (/mundial.*u17|u17.*mundial|mundial femenino/.test(t) && /volley|v[oó]leibol/.test(t)) {
     return [
       // Acción primero; afiche de grupos como apoyo
-      "/guides/deportes/volleyball-accion.png",
+      "/guides/deportes/volleyball-accion.jpg",
       "/guides/deportes/volleyball.png",
       "/guides/deportes/volleyball-mundial-u17-chile-2026.png",
     ];
   }
   if (/volley|vóleibol|voleibol/.test(t))
     return [
-      "/guides/deportes/volleyball-accion.png",
+      "/guides/deportes/volleyball-accion.jpg",
       "/guides/deportes/volleyball.png",
     ];
   if (/f[uú]tbol|soccer|clasico|clásico|udechile|colo-colo|uc\b/.test(t))

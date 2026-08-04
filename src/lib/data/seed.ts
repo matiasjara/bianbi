@@ -31,7 +31,7 @@ const BUILDING_ESTADIO = {
   buildingName: "Ñuñoa · Estadio Nacional",
   neighborhood: "Ñuñoa",
   address: "Zañartu 2075, Ñuñoa, Región Metropolitana, Chile",
-  metroStations: ["Ñuñoa", "Estadio Nacional"],
+  metroStations: ["Estadio Nacional", "Ñuble"],
   nearbyPoiIds: [
     "poi-estadio", // ~0.9 km
     "poi-italia", // ~3.0 km
@@ -162,6 +162,8 @@ export const properties: Property[] = [
       "Check-in autónomo (smart lock)",
       "Mascotas permitidas",
       "Cerca del Estadio Nacional",
+      "Metro Estadio Nacional",
+      "Metro Ñuble",
     ],
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1589223102087983072/original/c37f24ca-e731-48d3-88fb-3c7792ecea96.jpeg",
@@ -171,7 +173,7 @@ export const properties: Property[] = [
     ],
     airbnbUrl: "https://www.airbnb.cl/rooms/1589223102087983072",
     description:
-      "Departamento moderno 1D/1B en Ñuñoa con cama matrimonial y sofá-cama (hasta 3 huéspedes), muy cerca del Estadio Nacional. Incluye estacionamiento.",
+      "Departamento moderno 1D/1B en Ñuñoa (Zañartu) con cama matrimonial y sofá-cama (hasta 3 huéspedes), cerca del Estadio Nacional y de los metros Estadio Nacional y Ñuble. Incluye estacionamiento.",
     rating: 5.0,
     reviewCount: 10,
     isSuperhost: true,
@@ -199,6 +201,8 @@ export const properties: Property[] = [
       "Estacionamiento",
       "Check-in autónomo (smart lock)",
       "Cerca del Estadio Nacional",
+      "Metro Estadio Nacional",
+      "Metro Ñuble",
     ],
     photos: [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1589231422574001170/original/d88292bb-89ec-44a9-a50c-783bfa6bb6a3.jpeg",
@@ -208,7 +212,7 @@ export const properties: Property[] = [
     ],
     airbnbUrl: "https://www.airbnb.cl/rooms/1589231422574001170",
     description:
-      "Departamento 1D/1B en Ñuñoa con cama matrimonial y sofá-cama (hasta 3 huéspedes), a pasos del Estadio Nacional. Incluye estacionamiento.",
+      "Departamento 1D/1B en Ñuñoa (Zañartu) con cama matrimonial y sofá-cama (hasta 3 huéspedes), a pasos del Estadio Nacional y cerca de los metros Estadio Nacional y Ñuble. Incluye estacionamiento.",
     rating: 5.0,
     reviewCount: 14,
     isSuperhost: true,

@@ -111,9 +111,9 @@ function mundialU17VolleyballOverride(
       ),
       t(
         locale,
-        "Si vienes con delegación, staff o a alentar: llega un día antes y reserva cerca del Parque Estadio Nacional.",
-        "Coming with a delegation, staff or to cheer: arrive a day early and stay near Parque Estadio Nacional.",
-        "Se você vem com delegação, staff ou para torcer: chegue um dia antes e fique perto do Parque Estadio Nacional.",
+        "Si vienes con delegación, staff o a alentar: llega un día antes y reserva pronto cerca del Parque Estadio Nacional — en fechas de Mundial se llenan rápido.",
+        "Coming with a delegation, staff or to cheer: arrive a day early and book soon near Parque Estadio Nacional — World Cup dates fill up fast.",
+        "Se você vem com delegação, staff ou para torcer: chegue um dia antes e reserve logo perto do Parque Estadio Nacional — nas datas do Mundial esgotam rápido.",
       ),
       t(
         locale,
@@ -123,15 +123,15 @@ function mundialU17VolleyballOverride(
       ),
       t(
         locale,
-        "Entradas desde $3.800 solo en Ticketpro. Crambie no vende tickets: te ayuda con la estadía cerca del recinto.",
-        "Tickets from CLP $3,800 only via Ticketpro. Crambie doesn't sell tickets — we help with stays near the venue.",
-        "Ingressos a partir de $3.800 só no Ticketpro. A Crambie não vende ingressos: ajuda com a estadia perto do recinto.",
+        "Entradas desde $3.800 solo en Ticketpro.",
+        "Tickets from CLP $3,800 only via Ticketpro.",
+        "Ingressos a partir de $3.800 só no Ticketpro.",
       ),
       t(
         locale,
-        `${stayNear} · metro Irarrázaval o Ñuble para moverte sin auto.`,
-        `${stayNear} · Irarrázaval or Ñuble metro to get around without a car.`,
-        `${stayNear} · metrô Irarrázaval ou Ñuble para circular sem carro.`,
+        `${stayNear} · metro Estadio Nacional o Ñuble para moverte sin auto.`,
+        `${stayNear} · Estadio Nacional or Ñuble metro to get around without a car.`,
+        `${stayNear} · metrô Estadio Nacional ou Ñuble para circular sem carro.`,
       ),
     ],
     news: [
@@ -175,9 +175,9 @@ function mundialU17VolleyballOverride(
       ),
       t(
         locale,
-        "Ñuñoa: barrio residencial, seguro y con metro Irarrázaval / Ñuble a mano",
-        "Ñuñoa: residential, safe neighborhood with Irarrázaval / Ñuble metro nearby",
-        "Ñuñoa: bairro residencial, seguro e com metrô Irarrázaval / Ñuble à mão",
+        "Ñuñoa: barrio residencial, seguro y con metro Estadio Nacional / Ñuble a mano",
+        "Ñuñoa: residential, safe neighborhood with Estadio Nacional / Ñuble metro nearby",
+        "Ñuñoa: bairro residencial, seguro e com metrô Estadio Nacional / Ñuble à mão",
       ),
       t(
         locale,

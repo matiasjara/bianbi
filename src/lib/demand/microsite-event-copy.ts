@@ -145,16 +145,16 @@ function venueAccessTip(pack: MicrositeCopyInput, locale: Locale): string | null
       if (isVolleyball) {
         return t(
           locale,
-          `${venueName} en Ñuñoa: metro Irarrázaval o Ñuble suelen ser los más cómodos; en días de partido hay mayor flujo de público y conviene llegar con anticipación.`,
-          `${venueName} in Ñuñoa: Irarrázaval or Ñuble metro are usually best; match days bring heavier crowds — arrive early.`,
-          `${venueName} em Ñuñoa: metrô Irarrázaval ou Ñuble costumam ser os mais práticos; em dias de jogo há mais público — chegue com antecedência.`,
+          `${venueName} en Ñuñoa: metro Estadio Nacional o Ñuble suelen ser los más cómodos; en días de partido hay mayor flujo de público y conviene llegar con anticipación.`,
+          `${venueName} in Ñuñoa: Estadio Nacional or Ñuble metro are usually best; match days bring heavier crowds — arrive early.`,
+          `${venueName} em Ñuñoa: metrô Estadio Nacional ou Ñuble costumam ser os mais práticos; em dias de jogo há mais público — chegue com antecedência.`,
         );
       }
       return t(
         locale,
-        `${venueName} en Ñuñoa: metro Irarrázaval o Ñuble suelen ser los más útiles; en partidos grandes hay cortes de calle y colas tempranas.`,
-        `${venueName} in Ñuñoa: Irarrázaval or Ñuble metro are usually best; big matches mean street closures and early queues.`,
-        `${venueName} em Ñuñoa: metrô Irarrázaval ou Ñuble costumam ser os mais úteis; em jogos grandes há bloqueios e filas cedo.`,
+        `${venueName} en Ñuñoa: metro Estadio Nacional o Ñuble suelen ser los más útiles; en partidos grandes hay cortes de calle y colas tempranas.`,
+        `${venueName} in Ñuñoa: Estadio Nacional or Ñuble metro are usually best; big matches mean street closures and early queues.`,
+        `${venueName} em Ñuñoa: metrô Estadio Nacional ou Ñuble costumam ser os mais úteis; em jogos grandes há bloqueios e filas cedo.`,
       );
     case "poi-ohiggins":
       return t(
@@ -766,20 +766,6 @@ function lodgingFaqs(
         "Só no Airbnb, no link de cada apartamento. Lá estão o pagamento protegido, o cancelamento conforme a política do anúncio e o chat com o anfitrião.",
       ),
     },
-    {
-      q: t(
-        locale,
-        "¿Crambie es parte de Airbnb?",
-        "Is Crambie part of Airbnb?",
-        "A Crambie faz parte do Airbnb?",
-      ),
-      a: t(
-        locale,
-        "No. Crambie te muestra opciones y la guía del evento; la reserva y el pago son siempre en el anuncio oficial de Airbnb.",
-        "No. Crambie shows options and the event guide; booking and payment are always on the official Airbnb listing.",
-        "Não. A Crambie mostra opções e o guia do evento; a reserva e o pagamento são sempre no anúncio oficial do Airbnb.",
-      ),
-    },
   ];
 }
 
@@ -855,6 +841,7 @@ export function buildFaqs(
   ];
 
   if (pack.eventUrl) {
+    const vendor = extractTicketingSource(pack.description, pack.eventUrl);
     eventFaqs.push({
       q: t(
         locale,
@@ -862,12 +849,20 @@ export function buildFaqs(
         `Where do I buy tickets for ${pack.eventTitle}?`,
         `Onde compro ingressos para ${pack.eventTitle}?`,
       ),
-      a: t(
-        locale,
-        `Consulta la venta oficial del evento (${pack.eventUrl}). Crambie no vende entradas; solo te ayuda con alojamiento y logística.`,
-        `Check official ticket sales (${pack.eventUrl}). Crambie does not sell tickets — we help with stays and logistics only.`,
-        `Consulte a venda oficial do evento (${pack.eventUrl}). A Crambie não vende ingressos; ajuda só com hospedagem e logística.`,
-      ),
+      a:
+        vendor === "Ticketpro"
+          ? t(
+              locale,
+              `En Ticketpro (venta oficial): ${pack.eventUrl}`,
+              `On Ticketpro (official sales): ${pack.eventUrl}`,
+              `No Ticketpro (venda oficial): ${pack.eventUrl}`,
+            )
+          : t(
+              locale,
+              `Consulta la venta oficial del evento: ${pack.eventUrl}`,
+              `Check official ticket sales: ${pack.eventUrl}`,
+              `Consulte a venda oficial do evento: ${pack.eventUrl}`,
+            ),
     });
   }
 

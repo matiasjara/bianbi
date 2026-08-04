@@ -63,6 +63,37 @@ function guerrerasGuideUi(locale: Locale) {
   };
 }
 
+function faqLinkLabel(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+function FaqAnswerText({ text }: { text: string }) {
+  const parts = text.split(/(https?:\/\/[^\s)]+)/g);
+  return (
+    <>
+      {parts.map((part, i) =>
+        /^https?:\/\//.test(part) ? (
+          <a
+            key={`${part}-${i}`}
+            href={part}
+            target="_blank"
+            rel="noreferrer"
+            className="font-medium text-[var(--ms-ink)] underline underline-offset-2 hover:text-[var(--ms-terracotta)]"
+          >
+            {faqLinkLabel(part)}
+          </a>
+        ) : (
+          <span key={`${i}-${part.slice(0, 12)}`}>{part}</span>
+        ),
+      )}
+    </>
+  );
+}
+
 function IconBadge({ name }: { name: BrandIconName }) {
   return (
     <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-[var(--ms-line)] bg-white/80 sm:size-14 sm:rounded-2xl">
@@ -211,8 +242,8 @@ export function MicrositeInfographic({
     ["tips", ui.navTips],
     ["clima", ui.navWeather],
     ["transporte", ui.navTransport],
-    ["faq", ui.navFaq],
     ["alojar", ui.navStay],
+    ["faq", ui.navFaq],
   ] as const;
 
   const shareProps = {
@@ -233,8 +264,8 @@ export function MicrositeInfographic({
     whatsAppLabel: ui.whatsAppLabel,
     shareHeadline: ui.shareSectionTitle,
     shareBody: ui.shareSectionBody,
-    shareHighlights: m.mustKnow.slice(0, 3),
-    shareHighlightsTitle: ui.shareHighlightsTitle,
+    shareHighlights: isGuerreras ? [] : m.mustKnow.slice(0, 3),
+    shareHighlightsTitle: isGuerreras ? undefined : ui.shareHighlightsTitle,
   };
 
   return (
@@ -778,32 +809,6 @@ export function MicrositeInfographic({
 
         <section className="ms-rise">
           <SectionHead
-            id="faq"
-            icon="info"
-            kicker={ui.kickerFaq}
-            title={ui.titleFaq}
-          />
-          <div className="mt-7 divide-y divide-[var(--ms-line)] border-y border-[var(--ms-line)]">
-            {m.faqs.map((f) => (
-              <details key={f.q} className="group py-4">
-                <summary className="cursor-pointer list-none font-medium marker:content-none [&::-webkit-details-marker]:hidden">
-                  <span className="flex items-start justify-between gap-4">
-                    <span>{f.q}</span>
-                    <span className="mt-0.5 text-[var(--ms-terracotta)] transition group-open:rotate-45">
-                      +
-                    </span>
-                  </span>
-                </summary>
-                <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-[var(--ms-muted)]">
-                  {f.a}
-                </p>
-              </details>
-            ))}
-          </div>
-        </section>
-
-        <section className="ms-rise">
-          <SectionHead
             id="alojar"
             icon="bed"
             kicker={ui.kickerStay}
@@ -823,6 +828,32 @@ export function MicrositeInfographic({
               locale,
             }}
           />
+        </section>
+
+        <section className="ms-rise">
+          <SectionHead
+            id="faq"
+            icon="info"
+            kicker={ui.kickerFaq}
+            title={ui.titleFaq}
+          />
+          <div className="mt-7 divide-y divide-[var(--ms-line)] border-y border-[var(--ms-line)]">
+            {m.faqs.map((f) => (
+              <details key={f.q} className="group py-4">
+                <summary className="cursor-pointer list-none font-medium marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span className="flex items-start justify-between gap-4">
+                    <span>{f.q}</span>
+                    <span className="mt-0.5 text-[var(--ms-terracotta)] transition group-open:rotate-45">
+                      +
+                    </span>
+                  </span>
+                </summary>
+                <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-[var(--ms-muted)]">
+                  <FaqAnswerText text={f.a} />
+                </p>
+              </details>
+            ))}
+          </div>
         </section>
       </div>
 

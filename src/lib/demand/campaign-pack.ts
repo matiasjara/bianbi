@@ -392,6 +392,7 @@ function buildCopy(input: {
           ``,
           `Chile organiza su primer Mundial de vóleibol (${eventDates}). Llegan delegaciones, staff, familias e hinchada de regiones.`,
           stayLine,
+          `En estas fechas los alojamientos cerca del Estadio se llenan rápido: conviene reservar pronto.`,
           audience.stayOffer,
           ``,
           `{{LANDING_URL}}`,

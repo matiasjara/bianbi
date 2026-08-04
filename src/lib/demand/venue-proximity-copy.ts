@@ -129,16 +129,17 @@ export function guerrerasLocationHighlights(
   locale: Locale,
 ): string[] {
   const items = [propertyStadiumProximity(mins, locale)];
-  if (metroStations[0]) {
-    const station = metroStations[0].startsWith("Metro ")
-      ? metroStations[0]
-      : `Metro ${metroStations[0]}`;
+  const metros = metroStations
+    .slice(0, 2)
+    .map((s) => (s.startsWith("Metro ") ? s.replace(/^Metro\s+/i, "") : s));
+  if (metros.length > 0) {
+    const label = metros.join(" / ");
     items.push(
       t(
         locale,
-        `${station} — a pasos`,
-        `${station} — steps away`,
-        `${station} — a poucos passos`,
+        `Metro ${label}`,
+        `Metro ${label}`,
+        `Metrô ${label}`,
       ),
     );
   }

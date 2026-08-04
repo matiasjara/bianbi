@@ -5,7 +5,6 @@ import { ImageResponse } from "next/og";
 import type { LocalizedMicrosite } from "@/lib/i18n/microsite";
 import type { Locale } from "@/lib/i18n/locale";
 import { isMundialU17VolleyballTitle } from "@/lib/demand/microsite-event-overrides";
-import { staySnapshotLine } from "@/lib/demand/venue-proximity-copy";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import {
   formatVenueMetroSnapshot,
@@ -14,8 +13,8 @@ import {
 import { CRAMBIE_LOGO } from "@/lib/brand/logos";
 import { SITE_HOST } from "@/lib/site/url";
 
-/** Foto de acción de vóleibol — no el afiche de grupos ni fútbol del Estadio Nacional. */
-const GUERRERAS_COVER = "guides/deportes/volleyball-accion.png";
+/** Foto de acción de vóleibol — JPEG real (Satori falla si el MIME no coincide). */
+const GUERRERAS_COVER = "guides/deportes/volleyball-accion.jpg";
 
 export const SHARE_STORY = { width: 1080, height: 1920 } as const;
 export const SHARE_OG = { width: 1200, height: 630 } as const;
@@ -84,15 +83,40 @@ async function logoDataUri(tone: "onLight" | "onDark" = "onLight") {
   return `data:image/png;base64,${file.toString("base64")}`;
 }
 
+function sniffImageMime(buf: Buffer): string | null {
+  if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) {
+    return "image/jpeg";
+  }
+  if (
+    buf.length >= 8 &&
+    buf[0] === 0x89 &&
+    buf[1] === 0x50 &&
+    buf[2] === 0x4e &&
+    buf[3] === 0x47
+  ) {
+    return "image/png";
+  }
+  if (
+    buf.length >= 12 &&
+    buf.toString("ascii", 0, 4) === "RIFF" &&
+    buf.toString("ascii", 8, 12) === "WEBP"
+  ) {
+    return "image/webp";
+  }
+  return null;
+}
+
 async function publicImageDataUri(relFromPublic: string) {
   const file = await readFile(path.join(process.cwd(), "public", relFromPublic));
   const ext = path.extname(relFromPublic).toLowerCase();
-  const mime =
+  const mimeFromExt =
     ext === ".jpg" || ext === ".jpeg"
       ? "image/jpeg"
       : ext === ".webp"
         ? "image/webp"
         : "image/png";
+  // Sniff bytes: algunos assets llegan como .png siendo JPEG (rompe Satori).
+  const mime = sniffImageMime(file) ?? mimeFromExt;
   return `data:${mime};base64,${file.toString("base64")}`;
 }
 
@@ -100,57 +124,63 @@ function guerrerasStoryCopy(locale: Locale) {
   if (locale === "en") {
     return {
       badge: "HISTORIC · CHILE 2026",
-      title: "CHEER ON THE GUERRERAS",
-      subtitle: "Chile's first volleyball World Championship at home",
+      title: "Cheer on the Guerreras",
+      subtitle:
+        "Chile's first volleyball World Championship at home — for delegations, staff, families and fans",
+      venueLine: "Estadio Nacional · Ñuñoa",
       stats: [
         { value: "24", label: "TEAMS" },
         { value: "9/14", label: "FROM REGIONS" },
         { value: "20:00", label: "DEBUT AUG 6" },
       ] as const,
       tips: [
-        "First volleyball World Cup Chile has ever hosted",
-        "For delegations, staff, families and fans near the court",
-        "Opens Aug 6 at 20:00 vs Czechia — Estadio Nacional",
+        "Location: Estadio Nacional · Ñuñoa",
+        "Nearby metro: Estadio Nacional and Ñuble",
+        "Chile debut: Aug 6 at 20:00 vs Czechia",
       ],
-      stayLabel: "STAY NEAR THE COURT",
-      cta: "Stay close. Compete, work or cheer.",
+      ctaLabel: "NEAR THE VENUE",
+      cta: "Find a stay nearby on Crambie",
     };
   }
   if (locale === "pt") {
     return {
       badge: "HISTÓRICO · CHILE 2026",
-      title: "APOIE AS GUERREIRAS",
-      subtitle: "O primeiro Mundial de vôlei do Chile em casa",
+      title: "Apoie as Guerreiras",
+      subtitle:
+        "O primeiro Mundial de vôlei do Chile em casa — para delegações, staff, famílias e torcida",
+      venueLine: "Estadio Nacional · Ñuñoa",
       stats: [
         { value: "24", label: "SELEÇÕES" },
         { value: "9/14", label: "DE REGIÕES" },
         { value: "20:00", label: "ESTREIA 6 AGO" },
       ] as const,
       tips: [
-        "Primeiro Mundial de vôlei que o Chile organiza",
-        "Para delegações, staff, famílias e torcida perto da quadra",
-        "Estreia 6 ago às 20h vs Tchéquia — Estadio Nacional",
+        "Local: Estadio Nacional · Ñuñoa",
+        "Metrô perto: Estadio Nacional e Ñuble",
+        "Estreia do Chile: 6 ago às 20h vs Tchéquia",
       ],
-      stayLabel: "FIQUE PERTO DA QUADRA",
-      cta: "Fique perto. Compita, trabalhe ou torça.",
+      ctaLabel: "PERTO DO RECINTO",
+      cta: "Encontre uma hospedagem perto na Crambie",
     };
   }
   return {
     badge: "HISTÓRICO · CHILE 2026",
-    title: "APOYA A LAS GUERRERAS",
-    subtitle: "El primer Mundial de vóleibol de Chile, en casa",
+    title: "Apoya a las Guerreras",
+    subtitle:
+      "El primer Mundial de vóleibol de Chile, en casa — para delegaciones, staff, familias e hinchada",
+    venueLine: "Estadio Nacional · Ñuñoa",
     stats: [
       { value: "24", label: "SELECCIONES" },
       { value: "9/14", label: "DE REGIONES" },
       { value: "20:00", label: "DEBUT 6 AGO" },
     ] as const,
     tips: [
-      "Primer Mundial de vóleibol que Chile organiza",
-      "Para delegaciones, staff, familias e hinchada cerca de la cancha",
-      "Debut 6 ago 20:00 vs República Checa · Estadio Nacional",
+      "Ubicación: Estadio Nacional · Ñuñoa",
+      "Metro cercano: Estadio Nacional y Ñuble",
+      "Debut Chile: 6 ago 20:00 vs República Checa",
     ],
-    stayLabel: "QUÉDATE CERCA DE LA CANCHA",
-    cta: "Quédate cerca. Compite, trabaja o alienta.",
+    ctaLabel: "CERCA DEL RECINTO",
+    cta: "Encuentra un alojamiento cerca en Crambie",
   };
 }
 
@@ -166,7 +196,6 @@ function GuerrerasStoryCard({
   pageLabel: string;
 }) {
   const copy = guerrerasStoryCopy(L.locale);
-  const nearest = L.properties[0];
   const dates = truncate(L.content.eventDates, 36);
 
   return (
@@ -180,172 +209,211 @@ function GuerrerasStoryCard({
         position: "relative",
       }}
     >
-      {/* Hero full-bleed con foto de cancha */}
+      {/* Hero overlay — foto + gradiente + textos (como /g/) */}
       <div
         style={{
           ...FLEX,
           flexDirection: "column",
-          justifyContent: "flex-end",
           width: "100%",
-          height: 860,
+          height: 1280,
           overflow: "hidden",
           backgroundColor: INK,
-          backgroundImage: `linear-gradient(180deg, rgba(22,26,34,0.15) 0%, rgba(22,26,34,0.42) 38%, rgba(22,26,34,0.92) 78%, rgba(22,26,34,1) 100%), url(${coverSrc})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center 55%",
-          padding: "48px 52px 40px",
+          position: "relative",
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={coverSrc}
+          alt=""
+          width={1080}
+          height={1280}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: 1080,
+            height: 1280,
+            objectFit: "cover",
+            objectPosition: "center 28%",
+          }}
+        />
         <div
           style={{
             ...FLEX,
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: 1080,
+            height: 1280,
+            backgroundImage:
+              "linear-gradient(180deg, rgba(22,26,34,0.28) 0%, rgba(22,26,34,0.52) 40%, rgba(22,26,34,0.96) 100%)",
+          }}
+        />
+
+        <div
+          style={{
+            ...FLEX,
+            position: "relative",
             flexDirection: "column",
+            justifyContent: "flex-end",
             width: "100%",
+            height: "100%",
+            padding: "48px 48px 40px",
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logoSrc}
             alt="Crambie"
-            width={200}
-            height={40}
+            width={180}
+            height={36}
             style={{ objectFit: "contain", objectPosition: "left" }}
           />
+
           <div
             style={{
               ...FLEX,
-              marginTop: 28,
+              marginTop: 36,
               alignSelf: "flex-start",
               backgroundColor: TERRACOTTA,
               color: "#FFFFFF",
               fontSize: 18,
               fontFamily: "Manrope",
               fontWeight: 700,
-              letterSpacing: "0.14em",
+              letterSpacing: "0.16em",
               textTransform: "uppercase",
-              padding: "12px 22px",
-              borderRadius: 10,
+              padding: "12px 18px",
+              borderRadius: 8,
             }}
           >
             {copy.badge}
           </div>
+
           <div
             style={{
               ...FLEX,
               marginTop: 22,
-              fontSize: 72,
+              fontSize: 78,
               fontFamily: "Fraunces",
               fontWeight: 700,
-              lineHeight: 0.98,
+              lineHeight: 0.96,
               color: "#FFFFFF",
-              letterSpacing: "-0.02em",
-              maxWidth: 960,
+              letterSpacing: "-0.03em",
+              maxWidth: 980,
             }}
           >
             {copy.title}
           </div>
+
           <div
             style={{
               ...FLEX,
-              marginTop: 18,
-              fontSize: 30,
+              marginTop: 20,
+              fontSize: 32,
               fontFamily: "Manrope",
               fontWeight: 600,
-              lineHeight: 1.25,
-              color: "rgba(244,240,232,0.92)",
-              maxWidth: 920,
+              lineHeight: 1.28,
+              color: "rgba(255,255,255,0.92)",
+              maxWidth: 960,
             }}
           >
             {copy.subtitle}
           </div>
+
           <div
             style={{
               ...FLEX,
-              marginTop: 16,
+              marginTop: 18,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 12,
               fontSize: 28,
               fontFamily: "Manrope",
               fontWeight: 700,
-              color: MUSTARD,
-              letterSpacing: "0.04em",
             }}
           >
-            {dates}
+            <span style={{ color: MUSTARD }}>{dates}</span>
+            <span style={{ color: "rgba(255,255,255,0.4)" }}>·</span>
+            <span style={{ color: "rgba(255,255,255,0.88)" }}>
+              {copy.venueLine}
+            </span>
+          </div>
+
+          <div
+            style={{
+              ...FLEX,
+              flexDirection: "row",
+              width: "100%",
+              gap: 12,
+              marginTop: 32,
+            }}
+          >
+            {copy.stats.map((stat) => (
+              <div
+                key={stat.label}
+                style={{
+                  ...FLEX,
+                  flexDirection: "column",
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "22px 10px",
+                  backgroundColor: "rgba(255,255,255,0.12)",
+                  border: "1.5px solid rgba(255,255,255,0.2)",
+                  borderRadius: 18,
+                }}
+              >
+                <div
+                  style={{
+                    ...FLEX,
+                    fontSize: 52,
+                    fontFamily: "Fraunces",
+                    fontWeight: 700,
+                    lineHeight: 1,
+                    color: MUSTARD,
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div
+                  style={{
+                    ...FLEX,
+                    marginTop: 10,
+                    fontSize: 15,
+                    fontFamily: "Manrope",
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    color: "rgba(255,255,255,0.78)",
+                    textAlign: "center",
+                  }}
+                >
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Stats + tips */}
+      {/* Pie compacto: tips + estadía */}
       <div
         style={{
           ...FLEX,
           flexDirection: "column",
           flex: 1,
           width: "100%",
-          padding: "36px 48px 40px",
+          padding: "28px 44px 32px",
           backgroundColor: PAPER,
-          gap: 22,
+          gap: 14,
+          justifyContent: "space-between",
         }}
       >
         <div
           style={{
             ...FLEX,
-            flexDirection: "row",
-            width: "100%",
-            gap: 14,
-          }}
-        >
-          {copy.stats.map((stat) => (
-            <div
-              key={stat.label}
-              style={{
-                ...FLEX,
-                flexDirection: "column",
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "22px 12px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: 20,
-                border: `2px solid ${LINE}`,
-                boxShadow: "0 10px 28px rgba(22,26,34,0.07)",
-              }}
-            >
-              <div
-                style={{
-                  ...FLEX,
-                  fontSize: 56,
-                  fontFamily: "Fraunces",
-                  fontWeight: 700,
-                  lineHeight: 1,
-                  color: TERRACOTTA,
-                }}
-              >
-                {stat.value}
-              </div>
-              <div
-                style={{
-                  ...FLEX,
-                  marginTop: 10,
-                  fontSize: 18,
-                  fontFamily: "Manrope",
-                  fontWeight: 700,
-                  letterSpacing: "0.1em",
-                  color: MUTED,
-                  textAlign: "center",
-                }}
-              >
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div
-          style={{
-            ...FLEX,
             flexDirection: "column",
             width: "100%",
-            gap: 14,
+            gap: 12,
           }}
         >
           {copy.tips.map((tip, i) => (
@@ -355,23 +423,23 @@ function GuerrerasStoryCard({
                 ...FLEX,
                 flexDirection: "row",
                 alignItems: "center",
-                gap: 18,
+                gap: 16,
                 width: "100%",
-                padding: "20px 24px",
+                padding: "16px 20px",
                 backgroundColor: i === 0 ? INK : "#FFFFFF",
-                borderRadius: 18,
+                borderRadius: 16,
                 border: i === 0 ? "none" : `2px solid ${LINE}`,
               }}
             >
               <div
                 style={{
                   ...FLEX,
-                  width: 48,
-                  height: 48,
+                  width: 44,
+                  height: 44,
                   borderRadius: 999,
                   backgroundColor: i === 0 ? TERRACOTTA : OLIVE,
                   color: "#FFFFFF",
-                  fontSize: 22,
+                  fontSize: 20,
                   fontFamily: "Manrope",
                   fontWeight: 700,
                   alignItems: "center",
@@ -385,7 +453,7 @@ function GuerrerasStoryCard({
                 style={{
                   ...FLEX,
                   flex: 1,
-                  fontSize: 30,
+                  fontSize: 26,
                   fontFamily: "Manrope",
                   fontWeight: 700,
                   lineHeight: 1.25,
@@ -403,54 +471,35 @@ function GuerrerasStoryCard({
             ...FLEX,
             flexDirection: "column",
             width: "100%",
-            marginTop: 4,
-            padding: "24px 28px",
+            padding: "24px 26px",
             backgroundColor: INK,
-            borderRadius: 20,
+            borderRadius: 18,
             gap: 12,
+            alignItems: "center",
           }}
         >
           <div
             style={{
               ...FLEX,
-              fontSize: 16,
+              fontSize: 15,
               fontFamily: "Manrope",
               fontWeight: 700,
               letterSpacing: "0.14em",
               color: "rgba(244,240,232,0.65)",
             }}
           >
-            {copy.stayLabel}
+            {copy.ctaLabel}
           </div>
           <div
             style={{
               ...FLEX,
-              fontSize: 36,
+              fontSize: 32,
               fontFamily: "Fraunces",
               fontWeight: 700,
+              lineHeight: 1.15,
               color: "#FFFFFF",
-            }}
-          >
-            {nearest
-              ? staySnapshotLine(
-                  nearest.walkingMinutes,
-                  nearest.neighborhood,
-                  L.locale,
-                )
-              : staySnapshotLine(8, "Ñuñoa", L.locale)}
-          </div>
-          <div
-            style={{
-              ...FLEX,
-              marginTop: 4,
-              alignSelf: "flex-start",
-              backgroundColor: OLIVE,
-              color: "#FFFFFF",
-              fontSize: 24,
-              fontFamily: "Manrope",
-              fontWeight: 700,
-              padding: "14px 24px",
-              borderRadius: 14,
+              textAlign: "center",
+              maxWidth: 900,
             }}
           >
             {copy.cta}
@@ -462,7 +511,7 @@ function GuerrerasStoryCard({
             ...FLEX,
             width: "100%",
             justifyContent: "center",
-            fontSize: 22,
+            fontSize: 20,
             fontFamily: "Manrope",
             fontWeight: 600,
             color: MUTED,

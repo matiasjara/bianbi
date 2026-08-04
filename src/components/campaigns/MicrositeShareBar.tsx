@@ -26,6 +26,9 @@ type Props = {
   previewCloseLabel?: string;
   previewLoadingLabel?: string;
   whatsAppLabel?: string;
+  /** CTA centrado al pie del recuadro featured (ej. ir a la guía /g/). */
+  guideHref?: string;
+  guideLinkLabel?: string;
 };
 
 function IconShare({ className }: { className?: string }) {
@@ -360,6 +363,8 @@ export function MicrositeShareBar({
   previewCloseLabel = "Cerrar",
   previewLoadingLabel = "Generando imagen…",
   whatsAppLabel = "Enviar por WhatsApp",
+  guideHref,
+  guideLinkLabel,
 }: Props) {
   const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -662,6 +667,16 @@ export function MicrositeShareBar({
                 onClick={openPreview}
               />
             </div>
+            {guideHref && guideLinkLabel ? (
+              <div className="mt-7 flex justify-center border-t border-black/8 pt-6">
+                <a
+                  href={guideHref}
+                  className="inline-flex items-center justify-center rounded-lg bg-[#222222] px-6 py-3.5 text-center text-base font-semibold text-white transition hover:bg-[#111111] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#222222]"
+                >
+                  {guideLinkLabel}
+                </a>
+              </div>
+            ) : null}
           </div>
         ) : (
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

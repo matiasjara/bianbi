@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
@@ -8,6 +7,7 @@ import { MicrositeShareBar } from "@/components/campaigns/MicrositeShareBar";
 import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
+import { isMundialU17VolleyballTitle } from "@/lib/demand/microsite-event-overrides";
 import { localizeLanding } from "@/lib/i18n/landing";
 import { getMicrositeUi, localizeMicrosite } from "@/lib/i18n/microsite";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
@@ -102,6 +102,7 @@ export default async function CampaignLandingPage({
 
   const lead = L.properties[0];
   const stayUi = getMicrositeUi(locale);
+  const isGuerreras = isMundialU17VolleyballTitle(pack.eventTitle);
 
   const mapMarkers = [
     {
@@ -166,6 +167,11 @@ export default async function CampaignLandingPage({
               {ui.ctaSeeUnits}
             </a>
           </div>
+          {ui.urgencyNote ? (
+            <p className="animate-rise-delay mt-5 max-w-xl text-[13px] leading-relaxed text-white/75">
+              {ui.urgencyNote(pack.eventDates)}
+            </p>
+          ) : null}
         </div>
       </div>
 
@@ -252,8 +258,12 @@ export default async function CampaignLandingPage({
                 variant="featured"
                 shareHeadline={guide.content.guideTitle}
                 shareBody={guide.ui.shareSectionBody}
-                shareHighlights={guide.content.mustKnow.slice(0, 3)}
-                shareHighlightsTitle={guide.ui.shareHighlightsTitle}
+                shareHighlights={
+                  isGuerreras ? [] : guide.content.mustKnow.slice(0, 3)
+                }
+                shareHighlightsTitle={
+                  isGuerreras ? undefined : guide.ui.shareHighlightsTitle
+                }
                 shareLabel={guide.ui.shareLabel}
                 copyLabel={guide.ui.copyLabel}
                 copiedLabel={guide.ui.copiedLabel}
@@ -264,16 +274,10 @@ export default async function CampaignLandingPage({
                 previewCloseLabel={guide.ui.previewCloseLabel}
                 previewLoadingLabel={guide.ui.previewLoadingLabel}
                 whatsAppLabel={guide.ui.whatsAppLabel}
+                guideHref={`/g/${slug}?lang=${locale}`}
+                guideLinkLabel={guide.ui.guideLinkLabel}
               />
             </div>
-            <p className="mt-6 text-center text-sm">
-              <Link
-                href={`/g/${slug}?lang=${locale}`}
-                className="font-semibold text-[#222] underline-offset-4 hover:underline"
-              >
-                {guide.ui.guideLinkLabel} →
-              </Link>
-            </p>
           </div>
         </section>
       ) : null}
