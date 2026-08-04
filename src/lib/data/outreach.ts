@@ -69,7 +69,7 @@ export const OUTREACH_MAILING_ORG_TYPES: OutreachOrganization["orgType"][] = [
 
 /** Deportivas tipadas como outreach (categoría deporte). */
 const sportsAsOutreach: OutreachOrganization[] = rawSports
-  .filter((o) => !DEDICATED_SPORTS.has(o.sport))
+  .filter((o) => !DEDICATED_SPORTS.has(o.sport ?? ""))
   .map((o) => ({
     id: o.id,
     name: o.name,
