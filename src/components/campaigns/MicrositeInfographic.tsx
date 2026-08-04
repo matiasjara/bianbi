@@ -193,11 +193,14 @@ export function MicrositeInfographic({
   const propertyPhoto =
     nearest?.photos?.[0] || nearest?.photo || props[1]?.photo || "";
   const heroPhoto = editorial.cover || propertyPhoto;
+  const groupsPoster =
+    [editorial.cover, ...editorial.support].find((src) =>
+      /volleyball-mundial-u17/i.test(src ?? ""),
+    ) ?? null;
   const sidePhoto =
-    editorial.support[0] ||
+    editorial.support.find((src) => src !== heroPhoto && src !== groupsPoster) ||
     props[1]?.photos?.[0] ||
     props[1]?.photo ||
-    editorial.support[1] ||
     (heroPhoto !== propertyPhoto ? propertyPhoto : "");
 
   const nav = [
@@ -461,11 +464,11 @@ export function MicrositeInfographic({
           </div>
         ) : null}
 
-        {isGuerreras && editorial.support[0] ? (
+        {isGuerreras && groupsPoster ? (
           <div className="mb-10 overflow-hidden rounded-2xl border border-[var(--ms-line)] bg-white shadow-sm">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={mediaSrc(editorial.support[0], 1080)}
+              src={mediaSrc(groupsPoster, 1080)}
               alt={
                 locale === "en"
                   ? "U17 World Championship groups A–D"

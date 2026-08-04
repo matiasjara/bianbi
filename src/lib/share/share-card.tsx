@@ -14,8 +14,8 @@ import {
 import { CRAMBIE_LOGO } from "@/lib/brand/logos";
 import { SITE_HOST } from "@/lib/site/url";
 
-/** Foto de cancha / hinchada — no el afiche de grupos (poco usable como hero). */
-const GUERRERAS_COVER = "guides/deportes/volleyball.png";
+/** Foto de acción de vóleibol — no el afiche de grupos ni fútbol del Estadio Nacional. */
+const GUERRERAS_COVER = "guides/deportes/volleyball-accion.png";
 
 export const SHARE_STORY = { width: 1080, height: 1920 } as const;
 export const SHARE_OG = { width: 1200, height: 630 } as const;

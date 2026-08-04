@@ -174,13 +174,17 @@ function sportPool(title: string, venue = ""): readonly string[] | null {
   if (/rugby/.test(t)) return ["/guides/deportes/rugby.png"];
   if (/mundial.*u17|u17.*mundial|mundial femenino/.test(t) && /volley|v[oó]leibol/.test(t)) {
     return [
-      // Acción / hinchada primero (hero); afiche de grupos como apoyo
+      // Acción primero; afiche de grupos como apoyo
+      "/guides/deportes/volleyball-accion.png",
       "/guides/deportes/volleyball.png",
       "/guides/deportes/volleyball-mundial-u17-chile-2026.png",
     ];
   }
   if (/volley|vóleibol|voleibol/.test(t))
-    return ["/guides/deportes/volleyball.png"];
+    return [
+      "/guides/deportes/volleyball-accion.png",
+      "/guides/deportes/volleyball.png",
+    ];
   if (/f[uú]tbol|soccer|clasico|clásico|udechile|colo-colo|uc\b/.test(t))
     return FUTBOL;
   return null;
@@ -188,6 +192,8 @@ function sportPool(title: string, venue = ""): readonly string[] | null {
 
 function venuePool(venue: string, title: string): readonly string[] | null {
   const hay = `${venue} ${title}`.toLowerCase();
+  // Si el título ya define el deporte, no pisar con fotos del venue (ej. Estadio Nacional → fútbol).
+  if (sportPool(title, venue)) return null;
   if (/hockey|fehoch/.test(hay)) return HOCKEY;
   if (/atletismo|marat[oó]n|estadio nacional.*atlet|track/.test(hay))
     return ATLETISMO;
@@ -234,18 +240,19 @@ export function resolveGuideImages(input: {
   const title = input.eventTitle || "";
   const venue = input.venueName || "";
 
-  const venueSpecific = venuePool(venue, title);
   const sportSpecific =
     input.interest === "deporte_competencia" ||
     input.interest === "partido_futbol" ||
-    /hockey|fehoch|rugby|volley|atletismo|marat[oó]n|running|track/i.test(
+    /hockey|fehoch|rugby|volley|v[oó]leibol|atletismo|marat[oó]n|running|track/i.test(
       `${title} ${venue}`,
     )
       ? sportPool(title, venue)
       : null;
+  const venueSpecific = venuePool(venue, title);
 
+  // Deporte del evento manda sobre sede genérica (Estadio Nacional ≠ siempre fútbol).
   const pool =
-    venueSpecific || sportSpecific || interestPool(input.interest);
+    sportSpecific || venueSpecific || interestPool(input.interest);
 
   const rotateKey = rotatingPoolKey(title, venue);
   const useSequential =
