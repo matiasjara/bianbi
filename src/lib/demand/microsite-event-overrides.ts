@@ -21,6 +21,7 @@ export type EventCopyOverride = {
   mustKnow?: string[];
   news?: string[];
   trustPoints?: string[];
+  faqs?: Array<{ q: string; a: string }>;
 };
 
 /** Campos mínimos para decidir / armar overrides editoriales. */
@@ -494,6 +495,8 @@ function isFedachiMarathonTitle(title: string): boolean {
   );
 }
 
+export { isFedachiMarathonTitle };
+
 function fedachiMarathonOverride(
   pack: EventCopyOverrideInput,
   locale: Locale,
@@ -600,6 +603,64 @@ function fedachiMarathonOverride(
         "Book direct on Airbnb: protected payment and real reviews",
         "Reserva direta no Airbnb: pagamento protegido e avaliações reais",
       ),
+    ],
+    faqs: [
+      {
+        q: t(
+          locale,
+          "¿Cuándo es el FEDACHI Marathon Sudamericano 2026?",
+          "When is FEDACHI Marathon South American 2026?",
+          "Quando é o FEDACHI Marathon Sul-Americano 2026?",
+        ),
+        a: t(
+          locale,
+          `Domingo 15 de noviembre de 2026. Largada general a las 06:30 hrs. Entrega de kits: 13 y 14 de noviembre, 10:00–20:00 hrs (lugar por confirmar).`,
+          `Sunday 15 November 2026. General start at 06:30. Kit pickup: 13–14 November, 10:00–20:00 (venue TBC).`,
+          `Domingo 15 de novembro de 2026. Largada geral às 06:30. Retirada de kits: 13 e 14 de novembro, 10:00–20:00 (local a confirmar).`,
+        ),
+      },
+      {
+        q: t(
+          locale,
+          "¿Dónde se realiza el FEDACHI Marathon?",
+          "Where does FEDACHI Marathon take place?",
+          "Onde acontece o FEDACHI Marathon?",
+        ),
+        a: t(
+          locale,
+          `En el Estadio Nacional de Santiago (Ñuñoa). La prueba reina 42K larga y termina en el recinto; 5K, 10K y 21K recorren calles de la ciudad. Metro Estadio Nacional o Ñuble suelen ser los más útiles. Ese domingo hay cortes de tránsito en torno al sector desde temprano: conviene llegar con anticipación si retiras kit, corres o apoyas en meta.`,
+          `At Estadio Nacional, Santiago (Ñuñoa). The 42K starts and finishes at the stadium; 5K, 10K and 21K use city streets. Estadio Nacional or Ñuble metro are usually best. On race Sunday expect road closures around the venue from early morning — arrive early for kit pickup, your start or the finish.`,
+          `No Estadio Nacional de Santiago (Ñuñoa). A prova rainha 42K tem largada e chegada no recinto; 5K, 10K e 21K percorrem ruas da cidade. Metrô Estadio Nacional ou Ñuble costumam ser os mais práticos. Nesse domingo há bloqueios de trânsito no entorno desde cedo — chegue com antecedência para retirada de kit, largada ou chegada.`,
+        ),
+      },
+      {
+        q: t(
+          locale,
+          "¿Cómo me inscribo al FEDACHI Marathon?",
+          "How do I register for FEDACHI Marathon?",
+          "Como me inscrevo no FEDACHI Marathon?",
+        ),
+        a: t(
+          locale,
+          `Inscripción oficial (con dorsal y chip) en ${siteUrl} — no es venta de entradas para espectadores. Cupos limitados; valores y distancias en el sitio oficial. Consultas: info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
+          `Official registration (bib and chip) at ${siteUrl} — not spectator ticket sales. Limited spots; prices and distances on the official site. info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
+          `Inscrição oficial (número e chip) em ${siteUrl} — não é venda de ingressos para espectadores. Vagas limitadas; valores e distâncias no site oficial. info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
+        ),
+      },
+      {
+        q: t(
+          locale,
+          "¿Debo reservar alojamiento con anticipación?",
+          "Should I book accommodation early?",
+          "Devo reservar hospedagem com antecedência?",
+        ),
+        a: t(
+          locale,
+          "Sí. Se esperan ~12.000 corredores y acompañantes; el fin de semana coincide con otras competencias en el Estadio Nacional. Ñuñoa y Providencia se llenan rápido — conviene reservar con anticipación si vienes de regiones.",
+          "Yes. Around 12,000 runners and supporters are expected; the weekend overlaps other meets at Estadio Nacional. Ñuñoa and Providencia fill up fast — book early if you're traveling from outside Santiago.",
+          "Sim. Esperam-se ~12.000 corredores e acompanhantes; o fim de semana coincide com outras competições no Estadio Nacional. Ñuñoa e Providencia esgotam rápido — reserve cedo se vier de outras regiões.",
+        ),
+      },
     ],
   };
 }

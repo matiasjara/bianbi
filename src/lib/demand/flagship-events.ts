@@ -413,6 +413,137 @@ const copaDavis: FlagshipSportEvent = {
   }),
 };
 
+/* ─── FEDACHI Marathon Sudamericano 2026 ─── */
+
+const fedachiMarathonFlagship: FlagshipSportEvent = {
+  id: "fedachi-marathon-2026",
+  sportHints: ["atletismo", "athletics", "running", "maraton"],
+  brevoListName: "Atletismo",
+  coverRel: "guides/deportes/atletismo.png",
+  match: (title) =>
+    /fedachi marathon|fedachimarathon|sudamericano marat[oó]n fedachi/i.test(
+      title,
+    ),
+  brand: (locale) => {
+    if (locale === "en") {
+      return {
+        badge: "MARATHON · SANTIAGO 2026",
+        title: "FEDACHI Marathon South American 2026",
+        subtitle:
+          "~12,000 runners at Estadio Nacional — 5K, 10K, 21K and 42K · South American Championship by ASICS",
+        venueLine: "Estadio Nacional · Ñuñoa",
+        stats: [
+          { value: "12K", label: "RUNNERS" },
+          { value: "42K", label: "FINISH" },
+          { value: "SUD", label: "CHAMP" },
+        ],
+        tips: [
+          "Chile's official athletics marathon — World Athletics certified",
+          "42K start and finish at Estadio Nacional; kit pickup 13–14 Nov",
+          "For runners, clubs, federations and families from every region",
+        ],
+        ctaLabel: "NEAR THE START",
+        cta: "Find a stay nearby on Crambie",
+      };
+    }
+    if (locale === "pt") {
+      return {
+        badge: "MARATONA · SANTIAGO 2026",
+        title: "FEDACHI Marathon Sul-Americano 2026",
+        subtitle:
+          "~12.000 corredores no Estadio Nacional — 5K, 10K, 21K e 42K · Campeonato Sul-Americano by ASICS",
+        venueLine: "Estadio Nacional · Ñuñoa",
+        stats: [
+          { value: "12K", label: "CORREDORES" },
+          { value: "42K", label: "META" },
+          { value: "SUD", label: "CAMPEONATO" },
+        ],
+        tips: [
+          "Maratona oficial do atletismo no Chile — certificada World Athletics",
+          "42K com largada e chegada no Estadio Nacional; retirada de kit 13–14 nov",
+          "Para corredores, clubes, federações e famílias de todas as regiões",
+        ],
+        ctaLabel: "PERTO DA LARGADA",
+        cta: "Encontre uma hospedagem perto na Crambie",
+      };
+    }
+    return {
+      badge: "MARATÓN · SANTIAGO 2026",
+      title: "FEDACHI Marathon Sudamericano 2026",
+      subtitle:
+        "~12.000 corredores en Estadio Nacional — 5K, 10K, 21K y 42K · Campeonato Sudamericano by ASICS",
+      venueLine: "Estadio Nacional · Ñuñoa",
+      stats: [
+        { value: "12K", label: "CORREDORES" },
+        { value: "42K", label: "META" },
+        { value: "SUD", label: "CAMPEONATO" },
+      ],
+      tips: [
+        "El maratón oficial del atletismo en Chile — certificado World Athletics",
+        "42K con largada y meta en el Estadio Nacional; kit pickup 13–14 nov",
+        "Para corredores, clubes, federaciones y familias de regiones",
+      ],
+      ctaLabel: "CERCA DE LA LARGADA",
+      cta: "Encuentra un alojamiento cerca en Crambie",
+    };
+  },
+  landing: (locale) => {
+    if (locale === "en") {
+      return {
+        whyTitle: "A base near the start for marathon weekend",
+        whyBody: (venue) =>
+          `FEDACHI Marathon brings ~12,000 runners and supporters to ${venue}. Staying in Ñuñoa keeps kit pickup, race morning and the finish line within reach.`,
+        unitsBody: (venue) =>
+          `Sorted by distance to ${venue}. Marathon weekend fills up fast — book soon on Airbnb.`,
+        urgencyNote: (dates) =>
+          `Stays near Estadio Nacional for ${dates} fill up fast with runners and García Huidobro overlap. Worth booking early.`,
+        closeTitle: "Book your base for FEDACHI Marathon",
+        closeBody: (dates, venue) =>
+          `Around ${dates}, rooms near ${venue} go quickly with ~12,000 runners in town. Book on Airbnb.`,
+      };
+    }
+    if (locale === "pt") {
+      return {
+        whyTitle: "Uma base perto da largada no fim de semana do maratona",
+        whyBody: (venue) =>
+          `O FEDACHI Marathon reúne ~12.000 corredores e acompanhantes em ${venue}. Ficar em Ñuñoa facilita retirada de kit, manhã de prova e chegada.`,
+        unitsBody: (venue) =>
+          `Ordenados por proximidade a ${venue}. No fim de semana do maratona esgota rápido — reserve logo no Airbnb.`,
+        urgencyNote: (dates) =>
+          `Hospedagens perto do Estadio para ${dates} esgotam rápido com corredores e sobreposição com García Huidobro. Vale reservar cedo.`,
+        closeTitle: "Reserve sua base para o FEDACHI Marathon",
+        closeBody: (dates, venue) =>
+          `Em torno de ${dates}, perto de ${venue} enche com ~12.000 corredores. Garanta no Airbnb.`,
+      };
+    }
+    return {
+      whyTitle: "Base cerca de la largada para el fin de semana del maratón",
+      whyBody: (venue) =>
+        `El FEDACHI Marathon convoca ~12.000 corredores y acompañantes en ${venue}. Quedarte en Ñuñoa facilita kit pickup, madrugada de carrera y meta.`,
+      unitsBody: (venue) =>
+        `Ordenados por cercanía a ${venue}. El fin de semana del maratón se llena rápido: conviene reservar pronto en Airbnb.`,
+      urgencyNote: (dates) =>
+        `Los alojamientos cerca del Estadio para ${dates} se llenan rápido con corredores y coincidencia con García Huidobro. Conviene reservar con anticipación.`,
+      closeTitle: "Reserva tu base para el FEDACHI Marathon",
+      closeBody: (dates, venue) =>
+        `En torno a ${dates}, cerca de ${venue} se llena con ~12.000 corredores. Arriendas en Airbnb y aseguras tu estadía.`,
+    };
+  },
+  mailing: ({ eventTitle, eventDates, venueName, landingUrl }) => ({
+    subject: `FEDACHI Marathon Sudamericano: alojamiento cerca del Estadio Nacional · ${eventDates}`,
+    bodyLines: [
+      "Hola,",
+      "",
+      `Por ${eventTitle} (${eventDates}) se esperan ~12.000 corredores en ${venueName}.`,
+      "Armamos alojamientos a pasos del Estadio Nacional para corredores, clubes, federaciones y familias que viajan.",
+      "Ideal para kit pickup (13–14 nov) y largada matinal: metro Estadio Nacional / Ñuble, barrio seguro y reserva en Airbnb.",
+      "El fin de semana del maratón en Ñuñoa se llena rápido: conviene reservar pronto.",
+      "",
+      landingUrl,
+    ],
+  }),
+};
+
 /* ─── Atletismo (Interescolar Final + Masters / FEDACHI potentes) ─── */
 
 const atletismoFlagship: FlagshipSportEvent = {
@@ -423,7 +554,11 @@ const atletismoFlagship: FlagshipSportEvent = {
   match: (title) =>
     /atletismo|interescolar|fedachi|marat[oó]n|posta de santiago|ram[oó]n sandoval|garc[ií]a huidobro|orlando guaita|mario correa/i.test(
       title,
-    ) && !/hockey|voleibol|davis|futbol|fútbol/i.test(title),
+    ) &&
+    !/fedachi marathon|fedachimarathon|sudamericano marat[oó]n fedachi/i.test(
+      title,
+    ) &&
+    !/hockey|voleibol|davis|futbol|fútbol/i.test(title),
   brand: (locale) => {
     if (locale === "en") {
       return {
@@ -799,6 +934,7 @@ const hockeyFlagship: FlagshipSportEvent = {
 export const FLAGSHIP_EVENTS: FlagshipSportEvent[] = [
   guerreras,
   copaDavis,
+  fedachiMarathonFlagship,
   atletismoFlagship,
   hockeyFlagship,
 ];

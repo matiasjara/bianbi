@@ -11,6 +11,7 @@ import {
   resolveGuideImages,
 } from "@/lib/demand/guide-images";
 import { matchFlagship } from "@/lib/demand/flagship-events";
+import { buildSnapshotIntro } from "@/lib/demand/microsite-event-copy";
 import { isMundialU17VolleyballTitle } from "@/lib/demand/microsite-event-overrides";
 import { uniquePropertyLocations } from "@/lib/demand/property-groups";
 import {
@@ -30,12 +31,6 @@ function flagshipGuideUi(locale: Locale, eventTitle: string) {
     title: brand.title,
     subtitle: brand.subtitle,
     stats: brand.stats,
-    snapshotTitle:
-      locale === "en"
-        ? "Why this event matters"
-        : locale === "pt"
-          ? "Por que este evento importa"
-          : "Por qué este evento importa",
   };
 }
 
@@ -163,6 +158,7 @@ export function MicrositeInfographic({
   const isGuerreras = isMundialU17VolleyballTitle(m.eventTitle);
   const isFlagship = matchFlagship(m.eventTitle) != null;
   const guerreras = flagshipGuideUi(locale, m.eventTitle);
+  const snapshotIntro = buildSnapshotIntro(m.eventSummary, m.eventDescription);
 
   const venueMetros =
     m.interest === "concierto"
@@ -460,16 +456,14 @@ export function MicrositeInfographic({
             {ui.snapshotKicker}
           </p>
           <h2 className="ms-editorial mt-1 text-2xl leading-tight sm:text-3xl md:text-4xl">
-            {guerreras?.snapshotTitle ?? ui.snapshotTitle}
+            {ui.snapshotTitle}
           </h2>
         </div>
 
-        {isGuerreras && m.eventDescription ? (
-          <div className="mb-8 max-w-2xl space-y-4 text-base leading-relaxed text-[var(--ms-ink)]/90 sm:text-lg">
-            {m.eventDescription.split("\n\n").map((paragraph) => (
-              <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-            ))}
-          </div>
+        {snapshotIntro ? (
+          <p className="mb-8 max-w-2xl text-base leading-relaxed text-[var(--ms-ink)]/90 sm:text-lg">
+            {snapshotIntro}
+          </p>
         ) : null}
 
         {isGuerreras && groupsPoster ? (

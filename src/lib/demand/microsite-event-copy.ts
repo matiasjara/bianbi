@@ -4,6 +4,7 @@
 import { formatPeople } from "./attendance";
 import {
   getEventCopyOverride,
+  isFedachiMarathonTitle,
   isInternalNewsLine,
 } from "./microsite-event-overrides";
 import {
@@ -130,8 +131,31 @@ function audienceOriginLine(pack: MicrositeCopyInput, locale: Locale): string | 
   );
 }
 
+function isFootballAtEstadio(
+  eventTitle: string,
+  interest: CampaignInterest,
+): boolean {
+  return (
+    interest === "partido_futbol" ||
+    /f[uú]tbol|colo.?colo|u\.?\s*de\s*chile|audax|huachipato|palestino|o'?higgins/i.test(
+      eventTitle,
+    )
+  );
+}
+
+function isAthleticsAtEstadio(
+  eventTitle: string,
+  interest: CampaignInterest,
+): boolean {
+  if (interest !== "deporte_competencia") return false;
+  if (isFedachiMarathonTitle(eventTitle)) return false;
+  return /atletismo|athletics|interescolar|fedachi|pista|garc[ií]a huidobro|orlando guaita|mario record[oó]n|u16|u18|masters|posta|ram[oó]n sandoval/i.test(
+    eventTitle,
+  );
+}
+
 function venueAccessTip(pack: MicrositeCopyInput, locale: Locale): string | null {
-  const { venuePoiId, venueName, eventTitle } = pack;
+  const { venuePoiId, venueName, eventTitle, interest } = pack;
   const isVolleyball = /voleibol|v[oó]leibol|volley/i.test(eventTitle);
   switch (venuePoiId) {
     case "poi-movistar":
@@ -142,6 +166,14 @@ function venueAccessTip(pack: MicrositeCopyInput, locale: Locale): string | null
         `${venueName} fica no Parque O'Higgins (Av. Beaucheff): combine Metrô Toesca ou Irarrázaval com caminhada ou rideshare conforme sua hospedagem.`,
       );
     case "poi-estadio":
+      if (isFedachiMarathonTitle(eventTitle)) {
+        return t(
+          locale,
+          `${venueName} en Ñuñoa: la 42K larga y termina aquí; metro Estadio Nacional o Ñuble suelen ser los más útiles. El domingo de carrera hay cortes de tránsito en torno al recinto desde temprano.`,
+          `${venueName} in Ñuñoa: the 42K starts and finishes here; Estadio Nacional or Ñuble metro are usually best. On race Sunday expect road closures around the venue from early morning.`,
+          `${venueName} em Ñuñoa: a 42K tem largada e chegada aqui; metrô Estadio Nacional ou Ñuble costumam ser os mais práticos. No domingo da prova há bloqueios de trânsito no entorno desde cedo.`,
+        );
+      }
       if (isVolleyball) {
         return t(
           locale,
@@ -150,11 +182,27 @@ function venueAccessTip(pack: MicrositeCopyInput, locale: Locale): string | null
           `${venueName} em Ñuñoa: metrô Estadio Nacional ou Ñuble costumam ser os mais práticos; em dias de jogo há mais público — chegue com antecedência.`,
         );
       }
+      if (isAthleticsAtEstadio(eventTitle, interest)) {
+        return t(
+          locale,
+          `${venueName} en Ñuñoa (Parque Estadio Nacional / pista): metro Estadio Nacional o Ñuble suelen ser los más útiles. En fechas de campeonato hay más flujo de atletas y familias; conviene llegar con margen.`,
+          `${venueName} in Ñuñoa (Parque Estadio Nacional / track): Estadio Nacional or Ñuble metro are usually best. Championship dates bring more athletes and families — arrive with extra time.`,
+          `${venueName} em Ñuñoa (Parque Estadio Nacional / pista): metrô Estadio Nacional ou Ñuble costumam ser os mais úteis. Em datas de campeonato há mais atletas e famílias — chegue com margem.`,
+        );
+      }
+      if (isFootballAtEstadio(eventTitle, interest)) {
+        return t(
+          locale,
+          `${venueName} en Ñuñoa: metro Estadio Nacional o Ñuble suelen ser los más útiles; en partidos grandes hay cortes de calle y colas tempranas.`,
+          `${venueName} in Ñuñoa: Estadio Nacional or Ñuble metro are usually best; big matches mean street closures and early queues.`,
+          `${venueName} em Ñuñoa: metrô Estadio Nacional ou Ñuble costumam ser os mais úteis; em jogos grandes há bloqueios e filas cedo.`,
+        );
+      }
       return t(
         locale,
-        `${venueName} en Ñuñoa: metro Estadio Nacional o Ñuble suelen ser los más útiles; en partidos grandes hay cortes de calle y colas tempranas.`,
-        `${venueName} in Ñuñoa: Estadio Nacional or Ñuble metro are usually best; big matches mean street closures and early queues.`,
-        `${venueName} em Ñuñoa: metrô Estadio Nacional ou Ñuble costumam ser os mais úteis; em jogos grandes há bloqueios e filas cedo.`,
+        `${venueName} en Ñuñoa: metro Estadio Nacional o Ñuble suelen ser los más útiles; revisa accesos oficiales el día del evento.`,
+        `${venueName} in Ñuñoa: Estadio Nacional or Ñuble metro are usually best; check official access routes on event day.`,
+        `${venueName} em Ñuñoa: metrô Estadio Nacional ou Ñuble costumam ser os mais úteis; confira acessos oficiais no dia do evento.`,
       );
     case "poi-ohiggins":
       return t(
@@ -198,6 +246,28 @@ function stayNightsTip(pack: MicrositeCopyInput, locale: Locale): string | null 
     `Single-day event (${pack.eventDates}): book the event night with arrival buffer.`,
     `Evento de um dia (${pack.eventDates}): reserve a noite do evento com margem de chegada.`,
   );
+}
+
+const GENERIC_EVENT_SUMMARY =
+  /^Gu[ií]a para |^Guide for |^Guia para |^Temporada \d|^Season \d|^Temporada de neve/i;
+
+/** Párrafo breve para la sección snapshot («Por qué este evento importa»). */
+export function buildSnapshotIntro(
+  eventSummary: string,
+  eventDescription: string,
+): string | null {
+  const summary = eventSummary.trim();
+  const description = eventDescription.trim();
+  const firstParagraph =
+    description.split(/\n\n+/)[0]?.trim() || description || null;
+
+  if (summary && !GENERIC_EVENT_SUMMARY.test(summary)) {
+    return summary;
+  }
+  if (firstParagraph) {
+    return firstParagraph;
+  }
+  return summary || null;
 }
 
 export function buildEventSummary(
@@ -780,6 +850,11 @@ export function buildFaqs(
   pack: MicrositeCopyInput,
   locale: Locale,
 ): Array<{ q: string; a: string }> {
+  const override = getEventCopyOverride(pack, locale);
+  if (override?.faqs) {
+    return [...override.faqs, ...lodgingFaqs(pack, locale)];
+  }
+
   if (pack.interest === "nieve") {
     const neighborhoods = hoods(pack);
     const metro = pack.properties[0]?.metroStations[0];
