@@ -34,24 +34,15 @@ function guideKind(interest: CampaignInterest): MicrositeContent["guideKind"] {
 function guideTitle(pack: PackCore): string {
   const raw = cleanPublicEventTitle(pack.eventTitle);
   switch (pack.interest) {
-    case "concierto":
-      return raw.startsWith("Guía") ? raw : `Guía del concierto: ${raw}`;
-    case "partido_futbol":
-      return raw.startsWith("Guía") ? raw : `Guía del partido: ${raw}`;
-    case "deporte_competencia":
-      return raw.startsWith("Guía") ? raw : `Guía: ${raw}`;
-    case "congreso_feria":
-      return raw.startsWith("Guía") ? raw : `Guía del congreso: ${raw}`;
     case "nieve":
-      return "Guía de nieve: Santiago como base hacia la cordillera";
+      return "Santiago como base hacia la cordillera";
     case "feriado_puente":
-      return `Guía ${raw} en Santiago`;
     case "vacaciones_familias":
-      return `Guía ${raw} en Santiago`;
     case "turismo_general":
-      return `Guía ${raw} en Santiago`;
+    case "otro_evento":
+      return /santiago/i.test(raw) ? raw : `${raw} en Santiago`;
     default:
-      return `Guía ${raw} en Santiago`;
+      return raw;
   }
 }
 

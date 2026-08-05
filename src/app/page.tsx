@@ -163,7 +163,7 @@ function GuideCard({
               <BrandIcon name="pin" size={40} />
             </div>
           )}
-          <span className="absolute left-3 top-3 rounded-full bg-[var(--ms-paper)]/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--ms-ink)]">
+          <span className="absolute left-3 top-3 rounded-full bg-[var(--ms-paper)]/92 px-2.5 py-1 text-[10px] font-semibold tracking-[0.04em] text-[var(--ms-ink)]">
             {pack.interestLabel}
           </span>
         </div>

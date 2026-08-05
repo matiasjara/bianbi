@@ -88,7 +88,7 @@ function EventMiniCard({ ev }: { ev: CalendarEvent }) {
         )}
       </div>
       <div className="min-w-0 flex-1 py-0.5">
-        <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[var(--ms-terracotta)]">
+        <span className="text-[9px] font-semibold tracking-[0.04em] text-[var(--ms-terracotta)]">
           {ev.interestLabel}
         </span>
         <p className="mt-0.5 line-clamp-2 text-sm font-medium leading-snug text-[var(--ms-ink)] group-hover:text-[var(--ms-olive)]">

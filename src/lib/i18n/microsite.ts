@@ -317,44 +317,34 @@ function guideTitle(
 ): string {
   const override = getEventCopyOverride(copyInput(pack), locale);
   if (override?.shortTitle) {
-    return locale === "en"
-      ? `Guide: ${override.shortTitle}`
-      : locale === "pt"
-        ? `Guia: ${override.shortTitle}`
-        : `Guía: ${override.shortTitle}`;
+    return override.shortTitle;
   }
 
   const t = cleanPublicEventTitle(pack.eventTitle);
   const interest = pack.interest;
   if (locale === "en") {
-    if (interest === "concierto") return `Concert guide: ${t}`;
-    if (interest === "partido_futbol") return `Match guide: ${t}`;
-    if (interest === "deporte_competencia") return `Travel guide: ${t}`;
-    if (interest === "congreso_feria") return `Congress guide: ${t}`;
-    if (interest === "nieve") return `Snow travel guide: Santiago as your base`;
+    if (interest === "nieve") return "Santiago as your base for the mountains";
     if (
       interest === "feriado_puente" ||
       interest === "vacaciones_familias" ||
-      interest === "turismo_general"
+      interest === "turismo_general" ||
+      interest === "otro_evento"
     ) {
-      return `Travel guide: ${t} in Santiago`;
+      return /santiago/i.test(t) ? t : `${t} in Santiago`;
     }
-    return `Event guide: ${t}`;
+    return t;
   }
   if (locale === "pt") {
-    if (interest === "concierto") return `Guia do show: ${t}`;
-    if (interest === "partido_futbol") return `Guia do jogo: ${t}`;
-    if (interest === "deporte_competencia") return `Guia de viagem: ${t}`;
-    if (interest === "congreso_feria") return `Guia do congresso: ${t}`;
-    if (interest === "nieve") return `Guia de neve: Santiago como base`;
+    if (interest === "nieve") return "Santiago como base na cordilheira";
     if (
       interest === "feriado_puente" ||
       interest === "vacaciones_familias" ||
-      interest === "turismo_general"
+      interest === "turismo_general" ||
+      interest === "otro_evento"
     ) {
-      return `Guia de viagem: ${t} em Santiago`;
+      return /santiago/i.test(t) ? t : `${t} em Santiago`;
     }
-    return `Guia do evento: ${t}`;
+    return t;
   }
   return pack.microsite.guideTitle;
 }

@@ -121,10 +121,138 @@ function trimPublicLength(text: string, max = 88): string {
   return `${text.slice(0, max - 1).trim()}…`;
 }
 
+/** Siglas / códigos que deben quedar en mayúsculas. */
+const ACRONYM_CANONICAL: Record<string, string> = {
+  fih: "FIH",
+  fivb: "FIVB",
+  atp: "ATP",
+  wta: "WTA",
+  anfp: "ANFP",
+  fehoch: "FEHOCH",
+  fedachi: "FEDACHI",
+  fevochi: "FEVOCHI",
+  ind: "IND",
+  fifa: "FIFA",
+  conmebol: "CONMEBOL",
+  uefa: "UEFA",
+  dj: "DJ",
+  vip: "VIP",
+  og: "OG",
+  usa: "USA",
+  uk: "UK",
+  nba: "NBA",
+  mlb: "MLB",
+  nfl: "NFL",
+  ucl: "UCL",
+  h5: "H5",
+  rm: "RM",
+  cl: "CL",
+  vs: "vs",
+  xxv: "XXV",
+  xxiv: "XXIV",
+  xxiii: "XXIII",
+  xxii: "XXII",
+  xxi: "XXI",
+  xx: "XX",
+  u12: "U12",
+  u14: "U14",
+  u15: "U15",
+  u16: "U16",
+  u17: "U17",
+  u18: "U18",
+  u19: "U19",
+  u20: "U20",
+  u21: "U21",
+  u23: "U23",
+};
+
+function asciiFold(s: string): string {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function isAllCapsWord(word: string): boolean {
+  const letters = word.replace(/[^\p{L}]/gu, "");
+  if (letters.length < 1) return false;
+  return letters === letters.toUpperCase() && /[\p{Lu}]/u.test(letters);
+}
+
+function isRomanNumeral(word: string): boolean {
+  return /^[ivxlcdm]+$/i.test(word) && word.length >= 2;
+}
+
+function sentenceCaseToken(token: string, atPhraseStart: boolean): string {
+  const m = token.match(
+    /^([^\p{L}\p{N}]*)([\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*)([^\p{L}\p{N}]*)$/u,
+  );
+  if (!m) return token;
+  const [, lead, core, trail] = m;
+  const key = asciiFold(core).toLowerCase();
+
+  if (ACRONYM_CANONICAL[key]) {
+    return `${lead}${ACRONYM_CANONICAL[key]}${trail}`;
+  }
+  if (/^u\d{1,2}$/i.test(core)) {
+    return `${lead}${core.toUpperCase()}${trail}`;
+  }
+  if (/^sub\d{1,2}$/i.test(core)) {
+    return `${lead}Sub${core.slice(3)}${trail}`;
+  }
+  if (isRomanNumeral(core) && isAllCapsWord(core)) {
+    return `${lead}${core.toUpperCase()}${trail}`;
+  }
+  if (isAllCapsWord(core)) {
+    const lower = core.toLowerCase();
+    if (atPhraseStart) {
+      return `${lead}${lower.charAt(0).toUpperCase()}${lower.slice(1)}${trail}`;
+    }
+    return `${lead}${lower}${trail}`;
+  }
+  return token;
+}
+
+function capitalizeSentenceStarts(text: string): string {
+  return text.replace(
+    /(^|[.!?…]\s+| · | — |: |★\s*|-\s+)(\p{Ll})/gu,
+    (_, sep: string, ch: string) => sep + ch.toUpperCase(),
+  );
+}
+
+/**
+ * Formato oración: baja mayúsculas sostenidas, conserva siglas conocidas
+ * y nombres que ya venían en capitalización mixta.
+ */
+export function toSentenceCaseTitle(text: string): string {
+  const t = collapseWhitespace(text);
+  if (!t) return t;
+
+  let atPhraseStart = true;
+  const converted = t
+    .split(/(\s+)/)
+    .map((part) => {
+      if (/^\s+$/.test(part)) return part;
+      const out = sentenceCaseToken(part, atPhraseStart);
+      atPhraseStart = /[.!?…·—:★)\]»"”'-]$/.test(part);
+      return out;
+    })
+    .join("");
+
+  return capitalizeSentenceStarts(converted);
+}
+
 /** Título corto para guías públicas, cards y señales ingestadas. */
 export function normalizePublicEventTitle(raw: string): string {
   let t = collapseWhitespace(raw);
   if (!t) return raw.trim();
+
+  t = t
+    .replace(
+      /^gu[ií]a(?:\s+del?\s+(?:concierto|partido|evento|congreso|viaje|nieve|show|jogo))?[:\s]+/i,
+      "",
+    )
+    .replace(/^(?:concert|match|event|travel|congress|snow)\s+guide:\s*/i, "")
+    .replace(/^guia\s+do\s+(?:show|jogo|evento|congresso):\s*/i, "")
+    .replace(/^guia\s+de\s+(?:viagem|neve):\s*/i, "")
+    .trim();
 
   t = stripAudienceAndCta(t);
   t = stripVenuePrefix(t);
@@ -136,6 +264,7 @@ export function normalizePublicEventTitle(raw: string): string {
   t = stripWorkshopMeta(t);
   t = stripSeasonalRuleNoise(t);
   t = t.replace(/\s*[-–—/]\s*$/g, "").trim();
+  t = toSentenceCaseTitle(t);
 
   if (!t) return collapseWhitespace(raw);
   return trimPublicLength(t);
@@ -196,12 +325,7 @@ export function cleanSportDetail(raw: string): string {
   // Guiones raros
   t = t.replace(/\s*[-–]\s*/g, " ").replace(/\s+/g, " ").trim();
 
-  // Capitalizar suave si viene todo en mayúsculas cortas
-  if (t.length > 0 && t === t.toUpperCase() && t.length < 80) {
-    t = t
-      .toLowerCase()
-      .replace(/(^|\s)([a-záéíóúñ])/g, (_, a, b) => a + b.toUpperCase());
-  }
+  t = toSentenceCaseTitle(t);
 
   return t || raw.trim();
 }

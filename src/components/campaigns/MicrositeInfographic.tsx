@@ -359,8 +359,8 @@ export function MicrositeInfographic({
                 </span>
               </div>
 
-              <p className="ms-rise ms-rise-d1 mt-5 font-[family-name:var(--font-display)] text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-terracotta)] sm:mt-7 sm:text-xs">
-                {ui.productLabel} · {m.interestLabel}
+              <p className="ms-rise ms-rise-d1 mt-5 font-[family-name:var(--font-display)] text-[10px] font-semibold tracking-[0.04em] text-[var(--ms-terracotta)] sm:mt-7 sm:text-xs">
+                {m.interestLabel}
               </p>
 
               <h1 className="ms-rise ms-rise-d1 ms-editorial mt-2 max-w-xl text-[1.65rem] leading-[1.12] sm:mt-3 sm:text-[2.15rem] md:text-5xl">
