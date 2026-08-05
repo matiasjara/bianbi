@@ -352,15 +352,16 @@ function buildCopy(input: {
   if (interest === "deporte_competencia") {
     const { sport, detail, displayTitle } = sportCopyParts(leadSignal);
     const sportName = sport && sport !== "Deporte" ? sport : "Competencia";
+    let effectiveVenueName = venueName;
     let headline = sportLandingHeadline({
       signal: leadSignal,
-      venueName,
+      venueName: effectiveVenueName,
       nearestMins,
     });
     let subhead = sportLandingSubhead({
       signal: leadSignal,
       eventDates,
-      venueName,
+      venueName: effectiveVenueName,
       nearestMins,
       placeHook,
       stayHint,
@@ -371,7 +372,7 @@ function buildCopy(input: {
         eventDates,
         eventStartsOn: leadSignal?.startsOn ?? "",
         eventEndsOn: leadSignal?.endsOn ?? leadSignal?.startsOn ?? "",
-        venueName,
+        venueName: effectiveVenueName,
         properties: [],
       },
       "es",
@@ -379,13 +380,13 @@ function buildCopy(input: {
     );
     if (override?.headline) headline = override.headline;
     if (override?.subhead) subhead = override.subhead;
-    if (override?.venueName) venueName = override.venueName;
+    if (override?.venueName) effectiveVenueName = override.venueName;
     const flagship = matchFlagship(displayTitle) ?? matchFlagship(eventTitle);
     if (flagship) {
       const mail = flagship.mailing({
         eventTitle: displayTitle,
         eventDates,
-        venueName,
+        venueName: effectiveVenueName,
         landingUrl: "{{LANDING_URL}}",
       });
       const brand = flagship.brand("es");
@@ -407,17 +408,17 @@ function buildCopy(input: {
     return {
       headline,
       subhead,
-      mailingSubject: `[Santiago] ${sportName}: alojamiento cerca de ${venueName} · ${eventDates}`,
+      mailingSubject: `[Santiago] ${sportName}: alojamiento cerca de ${effectiveVenueName} · ${eventDates}`,
       mailingBody: [
         `Hola,`,
         ``,
-        `Por ${displayTitle} (${eventDates}) hay alojamientos a ~${nearestMins} min de ${venueName}.`,
+        `Por ${displayTitle} (${eventDates}) hay alojamientos a ~${nearestMins} min de ${effectiveVenueName}.`,
         `Ideal si vienen a competir o acompañar: barrio seguro, metro cerca y reserva directa en Airbnb.`,
         audience.stayOffer,
         ``,
         `{{LANDING_URL}}`,
       ].join("\n"),
-      adHeadline: `${sportName} · a ${nearestMins} min de ${venueName}`,
+      adHeadline: `${sportName} · a ${nearestMins} min de ${effectiveVenueName}`,
       adPrimaryText: `${detail} · ${eventDates} · metro + barrio seguro · Airbnb`,
     };
   }

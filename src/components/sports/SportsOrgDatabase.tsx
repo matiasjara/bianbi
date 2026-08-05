@@ -14,6 +14,7 @@ import { Metric, StatusPill } from "@/components/ui";
 
 const SOURCE_LABEL: Record<OutreachOrganization["source"], string> = {
   tabla_asociaciones: "Tabla / IND",
+  aarm: "AARM",
   registro_fdn: "Registro FDN",
   fehoch: "FEHOCH",
   fevochi_asociaciones: "FEVOCHI",

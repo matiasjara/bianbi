@@ -96,6 +96,7 @@ export type OutreachOrgType =
 
 export type OutreachSourceId =
   | "tabla_asociaciones"
+  | "aarm"
   | "registro_fdn"
   | "fehoch"
   | "fevochi_asociaciones"
