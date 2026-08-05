@@ -13831,13 +13831,13 @@
     "id": "fedachi-sudamericano-maraton-fedachi-marathon-2026-11-15",
     "kind": "sport",
     "source": "fedachi",
-    "title": "Atletismo · Sudamericano Maratón FEDACHI MARATHON",
-    "description": "FEDACHI Marathon Sudamericano 2026 · 15 nov, 06:30 · Estadio Nacional · distancias 5K, 10K, 21K y 42K (Campeonato Sudamericano). Inscripción en fedachimarathon.cl.",
+    "title": "FEDACHI Marathon · Sudamericano 2026",
+    "description": "El maratón oficial del atletismo en Chile · ~12.000 corredores · 15 nov 2026, 06:30 · Estadio Nacional · Campeonato Sudamericano 5K/10K/21K/42K · fedachimarathon.cl",
     "startsOn": "2026-11-15",
     "endsOn": "2026-11-15",
-    "intensity": 7,
-    "potentialScore": 68,
-    "potentialTier": "media",
+    "intensity": 9,
+    "potentialScore": 78,
+    "potentialTier": "alta",
     "potentialFactors": [
       "evento deportivo federado",
       "evento internacional / federaciones → mailing + pernocta"

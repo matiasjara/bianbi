@@ -3,10 +3,13 @@ import { BianbiLogo } from "@/components/brand/BianbiLogo";
 
 export function PublicSiteFooter({
   note,
+  guideDisclaimer,
   tone = "dark",
   showLogin = false,
 }: {
   note?: string;
+  /** Aviso legal para guías de evento (no oficial, solo informativo). */
+  guideDisclaimer?: string;
   tone?: "dark" | "light";
   /** Solo el home debe mostrar el acceso privado */
   showLogin?: boolean;
@@ -27,7 +30,14 @@ export function PublicSiteFooter({
           tone={dark ? "onDark" : "onLight"}
         />
       </div>
-      {note ? <p className="mx-auto mt-5 max-w-2xl">{note}</p> : null}
+      {guideDisclaimer ? (
+        <p className="mx-auto mt-5 max-w-2xl">{guideDisclaimer}</p>
+      ) : null}
+      {note ? (
+        <p className={`mx-auto max-w-2xl ${guideDisclaimer ? "mt-3" : "mt-5"}`}>
+          {note}
+        </p>
+      ) : null}
       {showLogin ? (
         <p className="mt-6">
           <Link

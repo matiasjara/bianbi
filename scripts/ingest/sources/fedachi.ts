@@ -34,6 +34,7 @@ function toDate(iso: string): string {
 }
 
 type FedachiEnrichment = {
+  title?: string;
   endsOn?: string;
   description?: string;
   url?: string;
@@ -62,8 +63,9 @@ const FEDACHI_ENRICHMENTS: Array<{ match: RegExp; enrich: FedachiEnrichment }> =
     {
       match: /sudamericano marat[oó]n fedachi marathon/i,
       enrich: {
+        title: "FEDACHI Marathon · Sudamericano 2026",
         description:
-          "FEDACHI Marathon Sudamericano 2026 · 15 nov, 06:30 · Estadio Nacional · distancias 5K, 10K, 21K y 42K (Campeonato Sudamericano). Inscripción en fedachimarathon.cl.",
+          "El maratón oficial del atletismo en Chile · ~12.000 corredores · 15 nov 2026, 06:30 · Estadio Nacional · Campeonato Sudamericano 5K/10K/21K/42K · fedachimarathon.cl",
         url: "https://fedachimarathon.cl/",
       },
     },
@@ -77,6 +79,7 @@ function applyFedachiEnrichment(
     if (match.test(ev.name)) {
       return {
         ...signal,
+        title: enrich.title ?? signal.title,
         endsOn: enrich.endsOn ?? signal.endsOn,
         description: enrich.description ?? signal.description,
         url: enrich.url ?? signal.url,

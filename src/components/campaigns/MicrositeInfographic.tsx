@@ -841,7 +841,10 @@ export function MicrositeInfographic({
             <MicrositeShareBar {...shareProps} theme="dark" variant="inline" />
           </div>
         </div>
-        <PublicSiteFooter note={ui.footerNote} />
+        <PublicSiteFooter
+          guideDisclaimer={ui.footerGuideDisclaimer}
+          note={ui.footerNote}
+        />
       </div>
 
       <MicrositeShareSticky

@@ -489,7 +489,9 @@ function campeonatoNacionalU18Override(
 }
 
 function isFedachiMarathonTitle(title: string): boolean {
-  return /fedachi marathon|sudamericano marat[oó]n fedachi/i.test(title);
+  return /fedachi marathon|fedachimarathon|sudamericano marat[oó]n fedachi/i.test(
+    title,
+  );
 }
 
 function fedachiMarathonOverride(
@@ -511,68 +513,86 @@ function fedachiMarathonOverride(
     ),
     headline: t(
       locale,
-      `FEDACHI Marathon en Estadio Nacional · a ~${mins} min de tu alojamiento`,
-      `FEDACHI Marathon at Estadio Nacional · ~${mins} min from your stay`,
-      `FEDACHI Marathon no Estadio Nacional · ~${mins} min da sua hospedagem`,
+      `~12.000 corredores · FEDACHI Marathon en Estadio Nacional · a ~${mins} min de tu alojamiento`,
+      `~12,000 runners · FEDACHI Marathon at Estadio Nacional · ~${mins} min from your stay`,
+      `~12.000 corredores · FEDACHI Marathon no Estadio Nacional · ~${mins} min da sua hospedagem`,
     ),
     subhead: t(
       locale,
-      `Domingo 15 de noviembre de 2026, 06:30 hrs · Estadio Nacional.\n\nCampeonato Sudamericano en 4 distancias: 5K, 10K, 21K y 42K. El maratón oficial del atletismo en Chile.`,
-      `Sunday 15 November 2026, 06:30 · Estadio Nacional.\n\nSouth American Championship in four distances: 5K, 10K, 21K and 42K. Chile's official athletics marathon.`,
-      `Domingo 15 de novembro de 2026, 06:30 · Estadio Nacional.\n\nCampeonato Sul-Americano em 4 distâncias: 5K, 10K, 21K e 42K. O maratona oficial do atletismo no Chile.`,
+      `${dates}, 06:30 hrs · Estadio Nacional, Santiago.\n\nEl maratón oficial del atletismo en Chile. Campeonato Sudamericano 2026 by ASICS en cuatro distancias — la cita más grande del calendario running chileno.`,
+      `${dates}, 06:30 · Estadio Nacional, Santiago.\n\nChile's official athletics marathon. 2026 South American Championship by ASICS over four distances — the biggest date on the Chilean running calendar.`,
+      `${dates}, 06:30 · Estadio Nacional, Santiago.\n\nO maratona oficial do atletismo no Chile. Campeonato Sul-Americano 2026 by ASICS em quatro distâncias — a maior data do calendário running chileno.`,
     ),
     eventSummary: t(
       locale,
-      `15 de noviembre de 2026, inicio 06:30 hrs. FEDACHI Marathon Sudamericano 2026 by ASICS: 5K familiar, 10K, medio maratón 21K y maratón 42K con largada y meta en Estadio Nacional.`,
-      `15 November 2026, start 06:30. FEDACHI Marathon South American 2026 by ASICS: family 5K, 10K, half marathon 21K and 42K marathon with start and finish at Estadio Nacional.`,
-      `15 de novembro de 2026, início 06:30. FEDACHI Marathon Sul-Americano 2026 by ASICS: 5K familiar, 10K, meia maratona 21K e maratona 42K com largada e chegada no Estadio Nacional.`,
+      `Domingo 15 de noviembre de 2026, 06:30 hrs. FEDACHI Marathon Sudamericano 2026: ~12.000 corredores en 5K, 10K, 21K y 42K. La prueba reina (42K) larga y termina en el Estadio Nacional; recorrido urbano por Santiago. Certificado World Athletics.`,
+      `Sunday 15 November 2026, 06:30. FEDACHI Marathon South American 2026: ~12,000 runners across 5K, 10K, 21K and 42K. The main 42K starts and finishes at Estadio Nacional; urban course through Santiago. World Athletics certified.`,
+      `Domingo 15 de novembro de 2026, 06:30. FEDACHI Marathon Sul-Americano 2026: ~12.000 corredores em 5K, 10K, 21K e 42K. A prova rainha (42K) tem largada e chegada no Estadio Nacional; percurso urbano por Santiago. Certificado World Athletics.`,
     ),
     eventDescription: t(
       locale,
-      `El FEDACHI Marathon Sudamericano 2026 se realiza el domingo 15 de noviembre de 2026 con inicio del evento a las 06:30 hrs en el Estadio Nacional de Santiago. Organiza la Federación Atlética de Chile (FEDACHI) con apoyo de Caja Los Andes y ASICS.\n\nDistancias con categoría de Campeonato Sudamericano: 5K (desde 10 años), 10K (desde 16), medio maratón 21K y maratón 42K (desde 18). La prueba reina tiene largada y meta en el Estadio Nacional.\n\nInscripción incluye polera oficial ASICS, morral de competencia, dorsal con chip y medalla finisher. Entrega de kits: 13 y 14 de noviembre, 10:00–20:00 hrs (lugar por confirmar).\n\nInscríbete y revisa valores en ${siteUrl} · info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
-      `FEDACHI Marathon South American 2026 takes place Sunday 15 November 2026 with event start at 06:30 at Estadio Nacional, Santiago. Organized by the Chilean Athletics Federation (FEDACHI) with Caja Los Andes and ASICS.\n\nDistances with South American Championship status: 5K (from age 10), 10K (from 16), 21K half marathon and 42K marathon (from 18). The main race starts and finishes at Estadio Nacional.\n\nEntry includes official ASICS shirt, race bag, chipped bib and finisher medal. Kit pickup: 13–14 November, 10:00–20:00 (venue TBC).\n\nRegister at ${siteUrl} · info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
-      `O FEDACHI Marathon Sul-Americano 2026 será no domingo 15 de novembro de 2026 com início às 06:30 no Estadio Nacional de Santiago. Organiza a Federação Atlética do Chile (FEDACHI) com Caja Los Andes e ASICS.\n\nDistâncias com categoria de Campeonato Sul-Americano: 5K (a partir de 10 anos), 10K (a partir de 16), meia maratona 21K e maratona 42K (a partir de 18). A prova rainha tem largada e chegada no Estadio Nacional.\n\nInscrição inclui camiseta oficial ASICS, mochila, número com chip e medalha finisher. Retirada de kits: 13 e 14 de novembro, 10:00–20:00 (local a confirmar).\n\nInscreva-se em ${siteUrl} · info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
+      `El FEDACHI Marathon Sudamericano 2026 es el maratón oficial del atletismo en Chile — organizado por la Federación Atlética de Chile (FEDACHI), certificado por World Athletics y presentado por Caja Los Andes y ASICS. Se espera la participación de aproximadamente 12.000 corredores entre elite sudamericano, corredores federados y público general.\n\nFecha y sede: domingo 15 de noviembre de 2026, inicio del evento a las 06:30 hrs en el Estadio Nacional de Santiago. Cuatro distancias con categoría de Campeonato Sudamericano:\n· 5K familiar (desde 10 años)\n· 10K (desde 16 años)\n· Medio maratón 21K (desde 18 años)\n· Maratón 42K (desde 18 años) — largada y meta en el Estadio Nacional\n\nTu inscripción incluye polera oficial ASICS, morral de competencia, dorsal con chip de cronometraje y medalla finisher al cruzar la meta. Entrega de kits: 13 y 14 de noviembre, 10:00–20:00 hrs (lugar por confirmar).\n\nValores desde $20.000 (5K preventa) hasta $40.000 (42K general). Afiliados Caja Los Andes: $7.000 de descuento. Cupos limitados.\n\nInscripción y bases: ${siteUrl} · info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
+      `FEDACHI Marathon South American 2026 is Chile's official athletics marathon — organized by the Chilean Athletics Federation (FEDACHI), World Athletics certified, presented by Caja Los Andes and ASICS. Around 12,000 runners are expected across South American elite, club athletes and the general public.\n\nDate and venue: Sunday 15 November 2026, event start 06:30 at Estadio Nacional, Santiago. Four distances with South American Championship status:\n· Family 5K (from age 10)\n· 10K (from 16)\n· 21K half marathon (from 18)\n· 42K marathon (from 18) — start and finish at Estadio Nacional\n\nEntry includes official ASICS shirt, race bag, chipped bib and finisher medal. Kit pickup: 13–14 November, 10:00–20:00 (venue TBC).\n\nPrices from CLP $20,000 (5K presale) to $40,000 (42K general). Caja Los Andes members: $7,000 discount. Limited spots.\n\nRegister: ${siteUrl} · info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
+      `O FEDACHI Marathon Sul-Americano 2026 é o maratona oficial do atletismo no Chile — organizado pela Federação Atlética do Chile (FEDACHI), certificado pela World Athletics, apresentado por Caja Los Andes e ASICS. Esperam-se cerca de 12.000 corredores entre elite sul-americano, atletas federados e público geral.\n\nData e sede: domingo 15 de novembro de 2026, início às 06:30 no Estadio Nacional de Santiago. Quatro distâncias com categoria de Campeonato Sul-Americano:\n· 5K familiar (a partir de 10 anos)\n· 10K (a partir de 16)\n· Meia maratona 21K (a partir de 18)\n· Maratona 42K (a partir de 18) — largada e chegada no Estadio Nacional\n\nInscrição inclui camiseta oficial ASICS, mochila, número com chip e medalha finisher. Retirada de kits: 13 e 14 de novembro, 10:00–20:00 (local a confirmar).\n\nValores desde $20.000 (5K preventa) até $40.000 (42K geral). Afiliados Caja Los Andes: $7.000 de desconto. Vagas limitadas.\n\nInscrição: ${siteUrl} · info@fedachimarathon.cl · cambios@fedachimarathon.cl`,
     ),
     mustKnow: [
       t(
         locale,
-        "Largada general 06:30 hrs · horarios por distancia se confirmarán antes del evento.",
-        "General start 06:30 · per-distance start times to be confirmed.",
-        "Largada geral 06:30 · horários por distância serão confirmados antes do evento.",
+        "El maratón oficial del atletismo en Chile — ~12.000 corredores esperados; cupos limitados.",
+        "Chile's official athletics marathon — ~12,000 runners expected; limited spots.",
+        "O maratona oficial do atletismo no Chile — ~12.000 corredores esperados; vagas limitadas.",
       ),
       t(
         locale,
-        "42K con largada y meta en Estadio Nacional; recorrido urbano por avenidas de Santiago.",
-        "42K starts and finishes at Estadio Nacional; urban course through Santiago avenues.",
-        "42K com largada e chegada no Estadio Nacional; percurso urbano pelas avenidas de Santiago.",
+        "42K con largada y meta en el Estadio Nacional; 5K, 10K y 21K con recorridos urbanos por Santiago.",
+        "42K starts and finishes at Estadio Nacional; 5K, 10K and 21K on urban courses through Santiago.",
+        "42K com largada e chegada no Estadio Nacional; 5K, 10K e 21K em percursos urbanos por Santiago.",
       ),
       t(
         locale,
-        `Sitio oficial e inscripción: ${siteUrl}`,
-        `Official site and registration: ${siteUrl}`,
-        `Site oficial e inscrição: ${siteUrl}`,
+        "Campeonato Sudamericano en las cuatro distancias · certificación World Athletics.",
+        "South American Championship in all four distances · World Athletics certified.",
+        "Campeonato Sul-Americano nas quatro distâncias · certificação World Athletics.",
+      ),
+      t(
+        locale,
+        "Largada general 06:30 hrs · kit pickup 13–14 nov · reserva alojamiento en Ñuñoa con anticipación.",
+        "General start 06:30 · kit pickup 13–14 Nov · book Ñuñoa stays early.",
+        "Largada geral 06:30 · retirada de kit 13–14 nov · reserve hospedagem em Ñuñoa com antecedência.",
+      ),
+      t(
+        locale,
+        `Inscripción oficial: ${siteUrl}`,
+        `Official registration: ${siteUrl}`,
+        `Inscrição oficial: ${siteUrl}`,
       ),
     ],
     news: [
       t(
         locale,
-        "Evento internacional Sudamericano 2026 — atrae corredores elite y masivos de Chile y la región.",
-        "2026 South American event — draws elite and mass runners from Chile and the region.",
-        "Evento internacional Sul-Americano 2026 — atrai corredores elite e amadores do Chile e da região.",
+        "Sudamericano 2026 by ASICS — máxima convocatoria internacional de running en Chile; elite y masivo en la misma jornada.",
+        "2026 South American by ASICS — Chile's largest international running meet; elite and mass fields on the same day.",
+        "Sul-Americano 2026 by ASICS — máxima convocatória internacional de running no Chile; elite e amadores no mesmo dia.",
       ),
       t(
         locale,
-        "Coincide con el fin de semana del García Huidobro (14–15 nov): alta demanda de alojamiento en Ñuñoa.",
-        "Same weekend as García Huidobro (14–15 Nov): high accommodation demand in Ñuñoa.",
-        "Coincide com o fim de semana do García Huidobro (14–15 nov): alta demanda de hospedagem em Ñuñoa.",
+        "Fin de semana peak: coincide con García Huidobro (14–15 nov) — alta presión hotelera en Ñuñoa y Providencia.",
+        "Peak weekend: overlaps García Huidobro (14–15 Nov) — heavy hotel demand in Ñuñoa and Providencia.",
+        "Fim de semana peak: coincide com García Huidobro (14–15 nov) — alta pressão hoteleira em Ñuñoa e Providencia.",
+      ),
+      t(
+        locale,
+        "Corredores de regiones e internacionales suelen pernoctar cerca del Estadio Nacional para kit pickup y largada matinal.",
+        "Regional and international runners often stay near Estadio Nacional for kit pickup and the early start.",
+        "Corredores de regiões e internacionais costumam pernoitar perto do Estadio Nacional para retirada de kit e largada matinal.",
       ),
     ],
     trustPoints: [
       t(
         locale,
-        "Ñuñoa a pasos del Estadio Nacional: ideal para kit pickup (13–14 nov) y largada matinal",
-        "Ñuñoa steps from Estadio Nacional: ideal for kit pickup (13–14 Nov) and early start",
-        "Ñuñoa a passos do Estadio Nacional: ideal para retirada de kit (13–14 nov) e largada matinal",
+        "Ñuñoa a pasos del Estadio Nacional: base ideal para ~12.000 corredores y acompañantes",
+        "Ñuñoa steps from Estadio Nacional: ideal base for ~12,000 runners and supporters",
+        "Ñuñoa a passos do Estadio Nacional: base ideal para ~12.000 corredores e acompanhantes",
       ),
       t(
         locale,

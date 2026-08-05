@@ -121,6 +121,24 @@ function fillRange(
 }
 
 function estimateSport(text: string): AttendanceEstimate {
+  if (/fedachi marathon|fedachimarathon|sudamericano marat[oó]n fedachi/i.test(text)) {
+    const a = fillRange(12_000, 0.12);
+    const o = fillRange(4_200, 0.3);
+    return {
+      attendees: a.mid,
+      attendeesLow: a.low,
+      attendeesHigh: a.high,
+      overnight: o.mid,
+      overnightLow: o.low,
+      overnightHigh: o.high,
+      venueCapacity: 12_000,
+      dimension: dimensionFrom(a.mid, o.mid),
+      confidence: "alta",
+      method:
+        "~12.000 corredores inscritos (evento masivo) · meta 42K en Estadio Nacional · fedachimarathon.cl",
+    };
+  }
+
   const venue = resolveVenue(text);
   const capacity = venue?.capacity ?? 35_000; // estadio típico Santiago
 

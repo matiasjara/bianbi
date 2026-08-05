@@ -353,6 +353,10 @@ export function polishEventTitle(signal: DemandSignal): string {
     return baseTitle.slice(0, 140);
   }
 
+  if (/fedachi marathon|fedachimarathon/i.test(`${signal.title} ${signal.description}`)) {
+    return "FEDACHI Marathon · Sudamericano 2026".slice(0, 140);
+  }
+
   const sport = sportLabelForSignal(signal);
   if (!sport) return baseTitle.slice(0, 140);
 

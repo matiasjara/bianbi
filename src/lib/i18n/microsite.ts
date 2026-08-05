@@ -80,6 +80,7 @@ type Ui = {
   minWalk: string;
   ctaAirbnb: string;
   footerShare: string;
+  footerGuideDisclaimer: string;
   footerNote: string;
 };
 
@@ -148,6 +149,8 @@ const UI: Record<Locale, Ui> = {
     minWalk: "min",
     ctaAirbnb: "Reservar en Airbnb",
     footerShare: "La guía concreta del evento. Compártela y llega preparado.",
+    footerGuideDisclaimer:
+      "Estas guías son solo informativas. No están relacionadas con los organizadores del evento, no constituyen información oficial y pueden contener errores. Confirma fechas, sedes e inscripciones en las fuentes oficiales.",
     footerNote:
       "Este sitio no es parte de Airbnb ni está afiliado a Airbnb, Inc. La reserva y el pago se hacen en el anuncio oficial.",
   },
@@ -215,6 +218,8 @@ const UI: Record<Locale, Ui> = {
     minWalk: "min",
     ctaAirbnb: "Book on Airbnb",
     footerShare: "The concrete event guide. Share it and arrive prepared.",
+    footerGuideDisclaimer:
+      "These guides are for information only. They are not affiliated with event organizers, are not official information, and may contain errors. Confirm dates, venues and registration with official sources.",
     footerNote:
       "This site is not part of Airbnb and is not affiliated with Airbnb, Inc. Booking and payment happen on the official listing.",
   },
@@ -282,6 +287,8 @@ const UI: Record<Locale, Ui> = {
     minWalk: "min",
     ctaAirbnb: "Reservar no Airbnb",
     footerShare: "O guia concreto do evento. Compartilhe e chegue preparado.",
+    footerGuideDisclaimer:
+      "Estes guias são apenas informativos. Não estão relacionados aos organizadores do evento, não constituem informação oficial e podem conter erros. Confirme datas, sedes e inscrições nas fontes oficiais.",
     footerNote:
       "Este site não faz parte do Airbnb e não é afiliado à Airbnb, Inc. A reserva e o pagamento são feitos no anúncio oficial.",
   },
@@ -502,6 +509,7 @@ export function localizeMicrosite(
   const content: MicrositeContent = {
     ...pack.microsite,
     guideTitle: title,
+    eventTitle: title,
     productLabel: ui.productLabel,
     productLabelEs: ui.productLabel,
     eventSummary: summary,
@@ -539,7 +547,15 @@ export function localizeMicrosite(
         : locale === "pt"
           ? `Mundial das Guerreiras no Chile (${pack.eventDates}). O essencial para delegações, staff, famílias e torcida — fique perto da quadra:`
           : `Mundial de las Guerreras en Chile (${pack.eventDates}). Lo esencial para delegaciones, staff, familias e hinchada — quédate cerca de la cancha:`
-      : pack.interest === "nieve"
+      : /fedachi marathon|fedachimarathon|sudamericano marat[oó]n fedachi/i.test(
+            pack.eventTitle,
+          )
+        ? locale === "en"
+          ? `FEDACHI Marathon (${pack.eventDates}) — ~12,000 runners, Estadio Nacional. Official athletics marathon in Chile. Where to stay:`
+          : locale === "pt"
+            ? `FEDACHI Marathon (${pack.eventDates}) — ~12.000 corredores, Estadio Nacional. Maratona oficial do atletismo no Chile. Onde ficar:`
+            : `FEDACHI Marathon (${pack.eventDates}) — ~12.000 corredores, Estadio Nacional. El maratón oficial del atletismo en Chile. Dónde quedarte:`
+        : pack.interest === "nieve"
         ? locale === "en"
           ? `${title} — ${pack.eventDates}. Essentials for your snow trip:`
           : locale === "pt"
