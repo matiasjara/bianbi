@@ -24,7 +24,13 @@ export function preferredPoiOrder(
     return ["poi-movistar", "poi-ohiggins", "poi-estadio", "poi-italia"];
   }
   if (interest === "partido_futbol" || interest === "deporte_competencia") {
-    return ["poi-estadio", "poi-movistar", "poi-italia", "poi-lastarria"];
+    return [
+      "poi-estadio",
+      "poi-escuela-militar",
+      "poi-movistar",
+      "poi-italia",
+      "poi-lastarria",
+    ];
   }
   if (interest === "vacaciones_familias") {
     return [

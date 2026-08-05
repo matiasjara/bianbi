@@ -271,6 +271,11 @@ const POI_BLURB: Record<string, Record<Locale, string>> = {
     en: "Football and sports events",
     pt: "Futebol e eventos esportivos",
   },
+  "poi-escuela-militar": {
+    es: "Posta atlética escolar y federada",
+    en: "School and club relay athletics",
+    pt: "Atletismo escolar e federado por revezamento",
+  },
   "poi-lastarria": {
     es: "Cultura y gastronomía caminable",
     en: "Walkable culture and food",

@@ -407,6 +407,18 @@ export const pois: Poi[] = [
     seasonality: "Carreras y eventos",
     description: "Histórico club hípico de Santiago.",
   },
+  {
+    id: "poi-escuela-militar",
+    name: "Escuela Militar",
+    slug: "escuela-militar",
+    category: "venue",
+    lat: -33.4122,
+    lng: -70.5828,
+    influenceRadiusKm: 2.5,
+    seasonality: "Atletismo escolar y federado",
+    description:
+      "Circuito interno de la Escuela Militar (Av. Presidente Riesco 4601, Las Condes).",
+  },
 ];
 
 export function getPoi(id: string) {

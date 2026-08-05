@@ -379,6 +379,7 @@ function buildCopy(input: {
     );
     if (override?.headline) headline = override.headline;
     if (override?.subhead) subhead = override.subhead;
+    if (override?.venueName) venueName = override.venueName;
     const flagship = matchFlagship(displayTitle) ?? matchFlagship(eventTitle);
     if (flagship) {
       const mail = flagship.mailing({
@@ -527,17 +528,6 @@ export function buildCampaignPack(
         ? "Llega un día antes y quédate hasta el cierre."
         : "Bloquea la noche del evento con margen de llegada.";
 
-  const copy = buildCopy({
-    playbook: campaign.playbook,
-    interest: campaign.interest,
-    eventTitle,
-    eventDates,
-    venueName: poi.name,
-    nearestMins,
-    stayHint: nightsHint,
-    audience: campaign.audience,
-    leadSignal: lead,
-  });
   const copyOverride = getEventCopyOverride(
     {
       eventTitle,
@@ -550,10 +540,22 @@ export function buildCampaignPack(
     "es",
     { nearestMins },
   );
+  const venueName = copyOverride?.venueName ?? poi.name;
+  const copy = buildCopy({
+    playbook: campaign.playbook,
+    interest: campaign.interest,
+    eventTitle,
+    eventDates,
+    venueName,
+    nearestMins,
+    stayHint: nightsHint,
+    audience: campaign.audience,
+    leadSignal: lead,
+  });
   const trustPoints =
     copyOverride?.trustPoints ??
     buildTrustPoints({
-      venueName: poi.name,
+      venueName,
       nearestMins,
       properties: props,
       interest: campaign.interest,
@@ -579,7 +581,7 @@ export function buildCampaignPack(
   const eventDescription = publicEventDescription({
     signal: lead,
     eventTitle,
-    venueName: poi.name,
+    venueName,
     interest: campaign.interest,
     eventDates,
     eventStartsOn: eventStart,
@@ -626,7 +628,7 @@ export function buildCampaignPack(
     eventDates,
     eventStartsOn: eventStart,
     eventEndsOn: eventEnd,
-    venueName: poi.name,
+    venueName,
     venuePoiId: poi.id,
     venueLat: poi.lat,
     venueLng: poi.lng,

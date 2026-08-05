@@ -25,6 +25,12 @@ export function guessPoi(text: string): string[] {
   if (t.includes("movistar arena") || t.includes("movistar-arena"))
     return ["poi-movistar"];
   if (
+    t.includes("escuela militar") ||
+    t.includes("presidente riesco") ||
+    /bernard o['']?higgins/.test(t) && t.includes("escuela")
+  )
+    return ["poi-escuela-militar"];
+  if (
     t.includes("estadio nacional") ||
     t.includes("julio martínez") ||
     t.includes("court central") ||
@@ -46,10 +52,11 @@ export function guessPoi(text: string): string[] {
     return ["poi-estadio"];
   if (t.includes("fantasilandia")) return ["poi-fantasilandia"];
   if (
-    t.includes("o'higgins") ||
-    t.includes("ohiggins") ||
-    t.includes("parque o higgins") ||
-    t.includes("parque o'higgins")
+    (t.includes("o'higgins") ||
+      t.includes("ohiggins") ||
+      t.includes("parque o higgins") ||
+      t.includes("parque o'higgins")) &&
+    !t.includes("escuela militar")
   )
     return ["poi-movistar", "poi-ohiggins"];
   if (t.includes("lastarria")) return ["poi-lastarria"];
@@ -103,6 +110,9 @@ export function guessPoi(text: string): string[] {
 
 export function guessPropertyCodes(poiIds: string[], text = ""): string[] {
   const t = text.toLowerCase();
+  if (poiIds.includes("poi-escuela-militar")) {
+    return ["E801", "E214", "T112"];
+  }
   if (poiIds.includes("poi-estadio") || poiIds.includes("poi-movistar")) {
     return ["Z114", "Z107", "E801", "E214", "T112"];
   }

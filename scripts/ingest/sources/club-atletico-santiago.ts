@@ -16,6 +16,8 @@ import {
 
 const SOURCE_URL = "https://clubatleticosantiago.cl/torneos/";
 const CONTACT = "secretaria@clubatleticosantiago.cl";
+const POSTA_BASES_URL =
+  "https://clubatleticosantiago.cl/wp-content/uploads/2026/01/Bases-40a-Posta-de-Santiago-Escuela-Militar-2026.pdf";
 
 const MONTHS: Record<string, number> = {
   enero: 1,
@@ -99,7 +101,7 @@ function isSantiagoVenue(lugar: string, title: string): boolean {
   ) {
     return false;
   }
-  return /santiago|estadio nacional|mario record[oó]n|escuela militar|pe[nñ]alol[eé]n|ñu[nñ]oa|recoleta|providencia/.test(
+  return /santiago|estadio nacional|mario record[oó]n|escuela militar|pe[nñ]alol[eé]n|ñu[nñ]oa|recoleta|providencia|las condes|presidente riesco/.test(
     t,
   );
 }
@@ -162,13 +164,16 @@ function toSignal(t: ParsedTournament): DemandSignal | null {
   if (!range) return null;
   if (!isSantiagoVenue(t.lugar, t.title)) return null;
 
-  const blob = `${t.title} ${t.lugar} atletismo interescolar federado`;
-  const poiIds = guessPoi(blob);
-  const resolved =
-    poiIds.length > 0
-      ? poiIds
+  const isPosta = /posta de santiago/i.test(t.title);
+  const blob = isPosta
+    ? `${t.title} ${t.lugar} escuela militar las condes atletismo interescolar federado`
+    : `${t.title} ${t.lugar} atletismo interescolar federado`;
+  const poiIds = isPosta
+    ? ["poi-escuela-militar"]
+    : guessPoi(blob).length > 0
+      ? guessPoi(blob)
       : /escuela militar/i.test(t.lugar)
-        ? ["poi-lastarria"]
+        ? ["poi-escuela-militar"]
         : ["poi-estadio"];
   const potential = scoreEventPotential(t.title, blob);
   const isInterescolar = /interescolar/i.test(t.title);
@@ -179,27 +184,32 @@ function toSignal(t: ParsedTournament): DemandSignal | null {
     "federaciones",
     "mailing",
     ...(isInterescolar ? ["interescolar", "colegios", "regiones", "familias"] : []),
+    ...(isPosta ? ["posta", "escuela_militar", "colegios", "regiones", "familias"] : []),
     ...(/master/i.test(t.title) ? ["master"] : []),
   ];
+
+  const description = isPosta
+    ? `40ª Posta de Santiago · Escuela Militar (Av. Presidente Riesco 4601, Las Condes). Dom 23 ago 2026, 10:00–12:30. Inscripciones hasta jue 20 ago en ${CONTACT}. Colegios de Santiago y regiones, clubes AARM y asociaciones invitadas. Bases: ${POSTA_BASES_URL}`
+    : `Torneo CAS · ${t.lugar}. Fecha: ${t.fechaRaw}. Contacto mailing: ${CONTACT}`;
 
   return {
     id: `club_atletico_santiago-${slugify(`${t.title}-${range.startsOn}`)}`,
     kind: "sport",
     source: "club_atletico_santiago",
     title: t.title.slice(0, 140),
-    description: `Torneo CAS · ${t.lugar}. Fecha: ${t.fechaRaw}. Contacto mailing: ${CONTACT}`,
+    description,
     startsOn: range.startsOn,
     endsOn: range.endsOn,
     intensity: potential.intensity,
     potentialScore: potential.score,
     potentialTier: potential.tier,
     potentialFactors: potential.factors,
-    poiIds: resolved,
+    poiIds,
     audienceTags: tags,
-    propertyCodesPreferred: guessPropertyCodes(resolved, blob).length
-      ? guessPropertyCodes(resolved, blob)
+    propertyCodesPreferred: guessPropertyCodes(poiIds, blob).length
+      ? guessPropertyCodes(poiIds, blob)
       : ["Z114", "Z107", "E801", "E214"],
-    url: SOURCE_URL,
+    url: isPosta ? POSTA_BASES_URL : SOURCE_URL,
     scrapedAt: new Date().toISOString(),
   };
 }

@@ -6289,7 +6289,7 @@
     "kind": "sport",
     "source": "club_atletico_santiago",
     "title": "40ª Posta de Santiago 2026",
-    "description": "Torneo CAS · Escuela Militar General Bernardo O'Higgins. Fecha: 23-08-2026. Contacto mailing: secretaria@clubatleticosantiago.cl",
+    "description": "40ª Posta de Santiago · Escuela Militar (Av. Presidente Riesco 4601, Las Condes). Dom 23 ago 2026, 10:00–12:30. Inscripciones hasta jue 20 ago en secretaria@clubatleticosantiago.cl. Colegios de Santiago y regiones, clubes AARM y asociaciones invitadas. Bases: https://clubatleticosantiago.cl/wp-content/uploads/2026/01/Bases-40a-Posta-de-Santiago-Escuela-Militar-2026.pdf",
     "startsOn": "2026-08-23",
     "endsOn": "2026-08-23",
     "intensity": 6,
@@ -6300,24 +6300,26 @@
       "atletismo interescolar/federado → familias + regiones"
     ],
     "poiIds": [
-      "poi-movistar",
-      "poi-ohiggins"
+      "poi-escuela-militar"
     ],
     "audienceTags": [
       "deportes",
       "atletismo",
       "club_atletico_santiago",
       "federaciones",
-      "mailing"
+      "mailing",
+      "posta",
+      "escuela_militar",
+      "colegios",
+      "regiones",
+      "familias"
     ],
     "propertyCodesPreferred": [
-      "Z114",
-      "Z107",
       "E801",
       "E214",
       "T112"
     ],
-    "url": "https://clubatleticosantiago.cl/torneos/",
+    "url": "https://clubatleticosantiago.cl/wp-content/uploads/2026/01/Bases-40a-Posta-de-Santiago-Escuela-Militar-2026.pdf",
     "scrapedAt": "2026-08-03T03:39:13.382Z"
   },
   {
@@ -7924,9 +7926,9 @@
     "kind": "sport",
     "source": "fedachi",
     "title": "Atletismo · Campeonato Nacional U18",
-    "description": "Atletismo FEDACHI Nacional · Santiago-CHILE. Asociaciones regionales → mailing. Fecha: 05-09-2026.",
+    "description": "Campeonato Nacional U18 FEDACHI · 5–6 sep 2026 · Estadio Atlético Mario Recordón, Parque Estadio Nacional. Inscripciones vía asociaciones regionales.",
     "startsOn": "2026-09-05",
-    "endsOn": "2026-09-05",
+    "endsOn": "2026-09-06",
     "intensity": 4,
     "potentialScore": 42,
     "potentialTier": "baja",
@@ -7952,7 +7954,7 @@
       "E214",
       "T112"
     ],
-    "url": "https://fedachi.cl/calendar",
+    "url": "https://www.instagram.com/p/Danr5lvkV4S",
     "scrapedAt": "2026-08-03T03:39:14.257Z"
   },
   {
@@ -8367,7 +8369,7 @@
     "kind": "sport",
     "source": "fedachi",
     "title": "Atletismo · Campeonato Nacional U16",
-    "description": "Atletismo FEDACHI Nacional · Santiago-CHILE. Asociaciones regionales → mailing. Fecha: 12-09-2026.",
+    "description": "Campeonato Nacional U16 FEDACHI · 12 sep 2026 · Santiago, Chile. Sede por confirmar.",
     "startsOn": "2026-09-12",
     "endsOn": "2026-09-12",
     "intensity": 4,
@@ -8376,9 +8378,7 @@
     "potentialFactors": [
       "evento deportivo federado"
     ],
-    "poiIds": [
-      "poi-estadio"
-    ],
+    "poiIds": [],
     "audienceTags": [
       "deportes",
       "atletismo",
@@ -8388,13 +8388,7 @@
       "regiones",
       "nacional"
     ],
-    "propertyCodesPreferred": [
-      "Z114",
-      "Z107",
-      "E801",
-      "E214",
-      "T112"
-    ],
+    "propertyCodesPreferred": [],
     "url": "https://fedachi.cl/calendar",
     "scrapedAt": "2026-08-03T03:39:14.257Z"
   },
@@ -13021,7 +13015,7 @@
     "kind": "sport",
     "source": "fedachi",
     "title": "Atletismo · Sudamericano Maratón FEDACHI MARATHON",
-    "description": "Atletismo FEDACHI Internacional · Santiago-CHILE. Asociaciones regionales → mailing. Fecha: 15-11-2026.",
+    "description": "FEDACHI Marathon Sudamericano 2026 · 15 nov, 06:30 · Estadio Nacional · distancias 5K, 10K, 21K y 42K (Campeonato Sudamericano). Inscripción en fedachimarathon.cl.",
     "startsOn": "2026-11-15",
     "endsOn": "2026-11-15",
     "intensity": 7,
@@ -13050,7 +13044,7 @@
       "E214",
       "T112"
     ],
-    "url": "https://fedachi.cl/calendar",
+    "url": "https://fedachimarathon.cl/",
     "scrapedAt": "2026-08-03T03:39:14.257Z"
   },
   {

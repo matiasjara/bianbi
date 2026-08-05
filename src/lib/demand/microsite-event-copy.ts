@@ -163,6 +163,13 @@ function venueAccessTip(pack: MicrositeCopyInput, locale: Locale): string | null
         `Events at ${venueName} / Club Hípico: Toesca metro is relatively close; check official access routes for your date.`,
         `Eventos em ${venueName} / Club Hípico: metrô Toesca fica relativamente perto; confira acessos oficiais do dia.`,
       );
+    case "poi-escuela-militar":
+      return t(
+        locale,
+        `${venueName} (Av. Presidente Riesco 4601, Las Condes): metro Tobalaba o El Golf suelen ser los más cómodos; el circuito es interno al recinto militar.`,
+        `${venueName} (4601 Presidente Riesco Ave., Las Condes): Tobalaba or El Golf metro are usually best; the course is inside the military school grounds.`,
+        `${venueName} (Av. Presidente Riesco 4601, Las Condes): metrô Tobalaba ou El Golf costumam ser os mais práticos; o circuito fica dentro da escola militar.`,
+      );
     default:
       return null;
   }

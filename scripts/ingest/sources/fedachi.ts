@@ -33,6 +33,64 @@ function toDate(iso: string): string {
   return iso.slice(0, 10);
 }
 
+type FedachiEnrichment = {
+  endsOn?: string;
+  description?: string;
+  url?: string;
+  poiIds?: string[];
+};
+
+const FEDACHI_ENRICHMENTS: Array<{ match: RegExp; enrich: FedachiEnrichment }> =
+  [
+    {
+      match: /campeonato nacional u16/i,
+      enrich: {
+        description:
+          "Campeonato Nacional U16 FEDACHI · 12 sep 2026 · Santiago, Chile. Sede por confirmar.",
+        poiIds: [],
+      },
+    },
+    {
+      match: /campeonato nacional u18/i,
+      enrich: {
+        endsOn: "2026-09-06",
+        description:
+          "Campeonato Nacional U18 FEDACHI · 5–6 sep 2026 · Estadio Atlético Mario Recordón, Parque Estadio Nacional. Inscripciones vía asociaciones regionales.",
+        url: "https://www.instagram.com/p/Danr5lvkV4S",
+      },
+    },
+    {
+      match: /sudamericano marat[oó]n fedachi marathon/i,
+      enrich: {
+        description:
+          "FEDACHI Marathon Sudamericano 2026 · 15 nov, 06:30 · Estadio Nacional · distancias 5K, 10K, 21K y 42K (Campeonato Sudamericano). Inscripción en fedachimarathon.cl.",
+        url: "https://fedachimarathon.cl/",
+      },
+    },
+  ];
+
+function applyFedachiEnrichment(
+  ev: FedachiEvent,
+  signal: DemandSignal,
+): DemandSignal {
+  for (const { match, enrich } of FEDACHI_ENRICHMENTS) {
+    if (match.test(ev.name)) {
+      return {
+        ...signal,
+        endsOn: enrich.endsOn ?? signal.endsOn,
+        description: enrich.description ?? signal.description,
+        url: enrich.url ?? signal.url,
+        poiIds: enrich.poiIds ?? signal.poiIds,
+        propertyCodesPreferred:
+          enrich.poiIds !== undefined
+            ? guessPropertyCodes(enrich.poiIds, signal.title)
+            : signal.propertyCodesPreferred,
+      };
+    }
+  }
+  return signal;
+}
+
 function toSignal(ev: FedachiEvent): DemandSignal {
   const date = toDate(ev.date);
   const blob = `${ev.name} ${ev.location ?? ""} atletismo fedachi nacional`;
@@ -53,7 +111,7 @@ function toSignal(ev: FedachiEvent): DemandSignal {
     ? rawName.slice(0, 140)
     : `Atletismo · ${rawName}`.slice(0, 140);
 
-  return {
+  const signal: DemandSignal = {
     id: `fedachi-${slugify(`${ev.name}-${date}`)}`,
     kind: "sport",
     source: "fedachi",
@@ -73,6 +131,7 @@ function toSignal(ev: FedachiEvent): DemandSignal {
     url: ev.registrationUrl || SOURCE_URL,
     scrapedAt: new Date().toISOString(),
   };
+  return applyFedachiEnrichment(ev, signal);
 }
 
 export async function scrapeFedachi(): Promise<SourceResult> {

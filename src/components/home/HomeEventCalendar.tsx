@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useEffect } from "react";
+import { Fragment, useMemo, useState, useEffect } from "react";
 import {
   buildMonthGrid,
   clampToCurrentOrFutureMonth,
@@ -65,6 +65,84 @@ function chunkEvents<T>(items: T[], size: number): T[][] {
     out.push(items.slice(i, i + size));
   }
   return out;
+}
+
+function monthKeyFromIso(iso: string): string {
+  return iso.slice(0, 7);
+}
+
+function monthLabelFromKey(key: string): string {
+  const [y, m] = key.split("-").map(Number);
+  if (!y || !m || m < 1 || m > 12) return key;
+  return `${MONTH_NAMES_ES[m - 1]} ${y}`;
+}
+
+function groupEventsByMonth(events: CalendarEvent[]): {
+  key: string;
+  label: string;
+  events: CalendarEvent[];
+}[] {
+  const map = new Map<string, CalendarEvent[]>();
+  for (const ev of events) {
+    const key = monthKeyFromIso(ev.start);
+    const list = map.get(key) ?? [];
+    list.push(ev);
+    map.set(key, list);
+  }
+  return [...map.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, list]) => ({
+      key,
+      label: monthLabelFromKey(key),
+      events: list,
+    }));
+}
+
+function MonthDivider({ label, first }: { label: string; first: boolean }) {
+  return (
+    <div className="flex shrink-0 items-center gap-3 self-stretch">
+      {first ? null : (
+        <span className="h-full w-px bg-[var(--ms-line)]" aria-hidden />
+      )}
+      <span className="rotate-180 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--ms-muted)] [writing-mode:vertical-rl]">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function EventColumnsScroll({
+  events,
+  groupByMonth = false,
+}: {
+  events: CalendarEvent[];
+  groupByMonth?: boolean;
+}) {
+  const groups = groupByMonth
+    ? groupEventsByMonth(events)
+    : [{ key: "all", label: "", events }];
+
+  return (
+    <HorizontalScrollRow className="mt-3" step={292}>
+      {groups.map((group, groupIdx) => (
+        <Fragment key={group.key}>
+          {groupByMonth ? (
+            <MonthDivider label={group.label} first={groupIdx === 0} />
+          ) : null}
+          {chunkEvents(group.events, 4).map((column, colIdx) => (
+            <div
+              key={`${group.key}-col-${colIdx}-${column[0]?.slug ?? colIdx}`}
+              className="flex w-[260px] shrink-0 flex-col gap-2 sm:w-[280px]"
+            >
+              {column.map((ev) => (
+                <EventMiniCard key={ev.slug} ev={ev} />
+              ))}
+            </div>
+          ))}
+        </Fragment>
+      ))}
+    </HorizontalScrollRow>
+  );
 }
 
 function EventMiniCard({ ev }: { ev: CalendarEvent }) {
@@ -191,11 +269,6 @@ export function HomeEventCalendar({
     ? eventsActiveOnDay(monthEvents, selectedDay)
     : monthListEvents;
 
-  const listColumns = useMemo(
-    () => chunkEvents(listEvents, 4),
-    [listEvents],
-  );
-
   function selectDay(iso: string) {
     setSelectedDay((prev) => (prev === iso ? null : iso));
   }
@@ -301,17 +374,11 @@ export function HomeEventCalendar({
         <div className="mt-5 md:mt-6">
           {typedUpcoming.length > 0 ? (
             <>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--ms-muted)]">
+              <p className="text-[11px] font-semibold tracking-[0.04em] text-[var(--ms-muted)]">
                 Desde hoy · {typedUpcoming.length}{" "}
                 {typedUpcoming.length === 1 ? "guía" : "guías"}
               </p>
-              <ul className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-                {typedUpcoming.map((ev) => (
-                  <li key={ev.slug}>
-                    <EventMiniCard ev={ev} />
-                  </li>
-                ))}
-              </ul>
+              <EventColumnsScroll events={typedUpcoming} groupByMonth />
             </>
           ) : (
             <p className="text-sm text-[var(--ms-muted)]">
@@ -418,18 +485,7 @@ export function HomeEventCalendar({
                     </button>
                   ) : null}
                 </div>
-                <HorizontalScrollRow className="mt-3" step={292}>
-                  {listColumns.map((column, colIdx) => (
-                    <div
-                      key={`col-${colIdx}-${column[0]?.slug ?? colIdx}`}
-                      className="flex w-[260px] shrink-0 flex-col gap-2 sm:w-[280px]"
-                    >
-                      {column.map((ev) => (
-                        <EventMiniCard key={ev.slug} ev={ev} />
-                      ))}
-                    </div>
-                  ))}
-                </HorizontalScrollRow>
+                <EventColumnsScroll events={listEvents} />
               </>
             ) : (
               <p className="text-sm text-[var(--ms-muted)]">
