@@ -1,5 +1,6 @@
 import { BianbiLogo } from "@/components/brand/BianbiLogo";
 import { BrandIcon } from "@/components/brand/BrandIcon";
+import { GuideRichText } from "@/components/campaigns/GuideRichText";
 import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { MicrositeShareBar, MicrositeShareSticky } from "@/components/campaigns/MicrositeShareBar";
@@ -32,37 +33,6 @@ function flagshipGuideUi(locale: Locale, eventTitle: string) {
     subtitle: brand.subtitle,
     stats: brand.stats,
   };
-}
-
-function faqLinkLabel(url: string) {
-  try {
-    return new URL(url).hostname.replace(/^www\./, "");
-  } catch {
-    return url;
-  }
-}
-
-function FaqAnswerText({ text }: { text: string }) {
-  const parts = text.split(/(https?:\/\/[^\s)]+)/g);
-  return (
-    <>
-      {parts.map((part, i) =>
-        /^https?:\/\//.test(part) ? (
-          <a
-            key={`${part}-${i}`}
-            href={part}
-            target="_blank"
-            rel="noreferrer"
-            className="font-medium text-[var(--ms-ink)] underline underline-offset-2 hover:text-[var(--ms-terracotta)]"
-          >
-            {faqLinkLabel(part)}
-          </a>
-        ) : (
-          <span key={`${i}-${part.slice(0, 12)}`}>{part}</span>
-        ),
-      )}
-    </>
-  );
 }
 
 function IconBadge({ name }: { name: BrandIconName }) {
@@ -370,7 +340,7 @@ export function MicrositeInfographic({
               </p>
 
               <p className="ms-rise ms-rise-d2 mt-4 max-w-md text-[15px] leading-relaxed text-[var(--ms-muted)]">
-                {m.eventSummary}
+                <GuideRichText text={m.eventSummary} />
               </p>
 
               {m.eventDescription ? (
@@ -380,7 +350,9 @@ export function MicrositeInfographic({
                   </p>
                   <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
                     {m.eventDescription.split("\n\n").map((paragraph) => (
-                      <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                      <p key={paragraph.slice(0, 48)}>
+                        <GuideRichText text={paragraph} />
+                      </p>
                     ))}
                   </div>
                 </div>
@@ -462,7 +434,7 @@ export function MicrositeInfographic({
 
         {snapshotIntro ? (
           <p className="mb-8 max-w-2xl text-base leading-relaxed text-[var(--ms-ink)]/90 sm:text-lg">
-            {snapshotIntro}
+            <GuideRichText text={snapshotIntro} />
           </p>
         ) : null}
 
@@ -596,6 +568,21 @@ export function MicrositeInfographic({
           ))}
         </div>
 
+        {isFlagship && m.eventDescription ? (
+          <div className="mt-8 max-w-2xl rounded-2xl border border-[var(--ms-line)]/90 bg-white/55 px-5 py-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--ms-muted)]">
+              {ui.kickerAbout}
+            </p>
+            <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-[var(--ms-ink)]/90">
+              {m.eventDescription.split("\n\n").map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>
+                  <GuideRichText text={paragraph} />
+                </p>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         <nav className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold text-[var(--ms-muted)]">
           {nav.map(([id, label], i) => (
             <span key={id} className="inline-flex items-center gap-3">
@@ -657,7 +644,7 @@ export function MicrositeInfographic({
                       : "text-[15px] leading-relaxed"
                   }`}
                 >
-                  {tip}
+                  <GuideRichText text={tip} />
                 </p>
               </li>
             ))}
@@ -686,7 +673,9 @@ export function MicrositeInfographic({
                       i % 2 === 0 ? "var(--ms-olive)" : "var(--ms-terracotta)",
                   }}
                 />
-                <p className="pl-2 text-[14px] leading-relaxed">{item}</p>
+                <p className="pl-2 text-[14px] leading-relaxed">
+                  <GuideRichText text={item} />
+                </p>
               </div>
             ))}
           </div>
@@ -730,7 +719,7 @@ export function MicrositeInfographic({
                   {i + 1}
                 </span>
                 <p className="text-[14px] leading-relaxed text-[var(--ms-ink)]/90">
-                  {r}
+                  <GuideRichText text={r} />
                 </p>
               </li>
             ))}
@@ -771,7 +760,9 @@ export function MicrositeInfographic({
                       <span className="mt-1 min-h-[1.5rem] w-px flex-1 border-l border-dashed border-[var(--ms-line)]" />
                     ) : null}
                   </span>
-                  <p className="pb-1 text-[14px] leading-relaxed">{t}</p>
+                  <p className="pb-1 text-[14px] leading-relaxed">
+                    <GuideRichText text={t} />
+                  </p>
                 </li>
               ))}
             </ol>
@@ -820,7 +811,7 @@ export function MicrositeInfographic({
                   </span>
                 </summary>
                 <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-[var(--ms-muted)]">
-                  <FaqAnswerText text={f.a} />
+                  <GuideRichText text={f.a} />
                 </p>
               </details>
             ))}

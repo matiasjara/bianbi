@@ -2,23 +2,43 @@
 const UTM = "utm_source=brevo&utm_medium=email&utm_campaign=atletismo-agenda-2026";
 const BASE = "https://crambie.com";
 
+const GUIDE_DISCLAIMER =
+  "Estas guías son solo informativas. No están relacionadas con los organizadores del evento, no constituyen información oficial y pueden contener errores. Confirma fechas, sedes e inscripciones en las fuentes oficiales.";
+
 const heroImage =
   "https://a0.muscache.com/im/pictures/hosting/Hosting-1589223102087983072/original/c37f24ca-e731-48d3-88fb-3c7792ecea96.jpeg?im_w=1200";
 
-const events = [
+type AgendaEvent = {
+  title: string;
+  dates: string;
+  venue: string;
+  teaser: string;
+  photo: string;
+  guide: string;
+  externalUrl?: string;
+  externalLabel?: string;
+};
+
+/** Copy alineado con microsite-event-overrides y datos FEDACHI/CAS 2026. */
+const events: AgendaEvent[] = [
   {
     title: "40ª Posta de Santiago",
     dates: "23 ago 2026 · 10:00–12:30",
     venue: "Escuela Militar · Las Condes",
+    teaser:
+      "Posta por relevos escolar y federada. Colegios de Santiago y regiones, clubes AARM e instituciones invitadas.",
     photo: `${BASE}/guides/deportes/atletismo.png`,
     guide: `${BASE}/g/deporte-competencia-competencia-atletismo-40-posta-de-santia-2026-08-23atletismo?lang=es&${UTM}&utm_content=evento-posta`,
-    basesUrl:
+    externalUrl:
       "https://clubatleticosantiago.cl/wp-content/uploads/2026/01/Bases-40a-Posta-de-Santiago-Escuela-Militar-2026.pdf",
+    externalLabel: "Bases oficiales (PDF) →",
   },
   {
     title: "2° Torneo Master «Ramón Sandoval»",
     dates: "30 ago 2026",
-    venue: "Estadio Nacional",
+    venue: "Estadio Mario Recordón · Parque Estadio Nacional",
+    teaser:
+      "Torneo master en pista. Atletas federados, clubes AARM y categorías master del calendario CAS.",
     photo: `${BASE}/guides/deportes/atletismo-1.png`,
     guide: `${BASE}/g/deporte-competencia-competencia-estadio-2026-08-30atletismo-2-t-r-ramon-sandoval?lang=es&${UTM}&utm_content=evento-master-sandoval`,
   },
@@ -27,42 +47,47 @@ const events = [
     dates: "5–6 sep 2026",
     venue: "Estadio Mario Recordón · Parque Estadio Nacional",
     teaser:
-      "Campeonato Nacional U18 FEDACHI en pista. Atletas de asociaciones regionales.",
-    externalUrl: "https://www.instagram.com/p/Danr5lvkV4S",
-    externalLabel: "Convocatoria FEDACHI (Instagram) →",
+      "Campeonato Nacional U18 FEDACHI en pista y campo. Atletas de asociaciones regionales con entrenadores y familias.",
     photo: `${BASE}/guides/deportes/atletismo-2.png`,
     guide: `${BASE}/g/deporte-competencia-competencia-estadio-2026-09-05atletismo-cam-ato-nacional-u18?lang=es&${UTM}&utm_content=evento-u18`,
+    externalUrl: "https://www.instagram.com/p/Danr5lvkV4S",
+    externalLabel: "Convocatoria FEDACHI (Instagram) →",
   },
   {
     title: "Campeonato Nacional U16",
     dates: "12 sep 2026",
     venue: "Santiago, Chile",
-    teaser: "Sede exacta por confirmar. Revisa el calendario FEDACHI antes de viajar.",
-    externalUrl: "https://fedachi.cl/calendar",
-    externalLabel: "Calendario FEDACHI →",
+    teaser:
+      "Campeonato Nacional U16 FEDACHI. Sede exacta por confirmar — revisa el calendario oficial antes de viajar.",
     photo: `${BASE}/guides/deportes/atletismo-3.png`,
     guide: `${BASE}/g/deporte-competencia-competencia-estadio-2026-09-12atletismo-cam-ato-nacional-u16?lang=es&${UTM}&utm_content=evento-u16`,
+    externalUrl: "https://fedachi.cl/calendar",
+    externalLabel: "Calendario FEDACHI →",
   },
   {
-    title: "Campeonato Interescolar Femenino y Masculino Final",
+    title: "Campeonato Interescolar Final",
     dates: "30 oct – 1 nov 2026",
-    venue: "Estadio Nacional",
+    venue: "Parque Estadio Nacional · Ñuñoa",
+    teaser:
+      "Finales escolares femenino y masculino. Colegios de Santiago y regiones en el calendario interescolar CAS.",
     photo: `${BASE}/guides/deportes/atletismo-4.png`,
     guide: `${BASE}/g/deporte-competencia-competencia-estadio-2026-10-3078-campeonato--heck-y-91-campe?lang=es&${UTM}&utm_content=evento-interescolar`,
   },
   {
-    title: "61° Torneo «Guillermo García Huidobro»",
+    title: "61° Torneo «Guillermo García-Huidobro»",
     dates: "14–15 nov 2026",
-    venue: "Estadio Nacional",
+    venue: "Estadio Mario Recordón · Parque Estadio Nacional",
+    teaser:
+      "Torneo CAS en pista. Una de las fechas clásicas del Club Atlético Santiago antes del cierre de temporada.",
     photo: `${BASE}/guides/deportes/atletismo-5.png`,
     guide: `${BASE}/g/deporte-competencia-competencia-estadio-2026-11-14atletismo-61---garcia-huidobro?lang=es&${UTM}&utm_content=evento-garcia-huidobro`,
   },
 ];
 
 const marathonFeatured = {
-  title: "FEDACHI Marathon · Sudamericano 2026",
+  title: "FEDACHI Marathon Sudamericano 2026",
   dates: "15 nov 2026 · 06:30",
-  venue: "Estadio Nacional",
+  venue: "Estadio Nacional · Ñuñoa",
   photo: `${BASE}/guides/deportes/atletismo.png`,
   guide: `${BASE}/g/deporte-competencia-competencia-estadio-2026-11-15atletismo-sud-fedachi-marathon?lang=es&${UTM}&utm_content=evento-maraton`,
   officialUrl: "https://fedachimarathon.cl/",
@@ -95,12 +120,12 @@ const stays = [
     href: `${BASE}/santiago?lang=es&${UTM}&utm_content=depto-italia#deptos`,
   },
   {
-    label: "Cerca de Movistar Arena",
-    sub: "Metro Toesca · Parque O'Higgins",
-    name: "Centro · Metro Toesca",
+    label: "Cerca de Escuela Militar",
+    sub: "Las Condes · Posta de Santiago",
+    name: "Providencia / Barrio Italia",
     photo:
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1575446462764908645/original/ba1290cc-676c-4f3e-8833-f26643367303.jpeg?im_w=720",
-    href: `${BASE}/santiago?lang=es&${UTM}&utm_content=depto-toesca#deptos`,
+    href: `${BASE}/santiago?lang=es&${UTM}&utm_content=depto-las-condes#deptos`,
   },
 ];
 
@@ -121,13 +146,13 @@ function heroBlock(santiagoUrl: string, heroGuide: string) {
         Atletismo · ago–nov 2026 · Santiago
       </p>
       <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.12;color:#ffffff;font-weight:700;">
-        Esta es la agenda de atletismo del año en Santiago
+        Agenda de atletismo 2026 en Santiago
       </h1>
       <p style="margin:16px 0 0;font-size:16px;line-height:1.5;color:rgba(255,255,255,0.9);">
-        Siete fechas entre agosto y noviembre — y en noviembre llega el gran cierre: el <strong style="color:#ffffff;">FEDACHI Marathon Sudamericano</strong> en Estadio Nacional.
+        Siete fechas clave entre agosto y noviembre — con cierre en el <strong style="color:#ffffff;">FEDACHI Marathon Sudamericano 2026</strong> (~12.000 corredores, Estadio Nacional).
       </p>
       <p style="margin:12px 0 0;font-size:16px;line-height:1.5;color:rgba(255,255,255,0.9);">
-        <strong style="color:#ffffff;">Anticipate y reserva tu alojamiento en Santiago.</strong>
+        <strong style="color:#ffffff;">Guías por evento, sede confirmada y recomendaciones de alojamiento.</strong>
       </p>
       <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:24px;">
         <tr>
@@ -137,7 +162,7 @@ function heroBlock(santiagoUrl: string, heroGuide: string) {
         </tr>
         <tr>
           <td>
-            <a href="${heroGuide}" style="display:inline-block;border:1px solid rgba(255,255,255,0.55);color:#ffffff;text-decoration:none;font-weight:600;font-size:16px;padding:13px 22px;border-radius:10px;">Ver primera guía · Posta de Santiago</a>
+            <a href="${heroGuide}" style="display:inline-block;border:1px solid rgba(255,255,255,0.55);color:#ffffff;text-decoration:none;font-weight:600;font-size:16px;padding:13px 22px;border-radius:10px;">Ver guía · 40ª Posta de Santiago</a>
           </td>
         </tr>
       </table>
@@ -171,7 +196,7 @@ function marathonFeaturedBlock() {
     </td></tr>
     <tr><td style="padding:20px 24px 32px;font-family:Arial,Helvetica,sans-serif;">
       <p style="margin:0;font-size:16px;line-height:1.55;color:rgba(255,255,255,0.9);">
-        El <strong style="color:#fff;">maratón oficial del atletismo en Chile</strong>. Campeonato Sudamericano 2026 by ASICS en cuatro distancias. Polera oficial, dorsal con chip, medalla finisher. Kit pickup 13–14 nov.
+        El <strong style="color:#fff;">maratón oficial del atletismo en Chile</strong>. Campeonato Sudamericano 2026 by ASICS · ~12.000 corredores en cuatro distancias. La 42K con largada y meta en el Estadio Nacional. Kit pickup 13–14 nov.
       </p>
       <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:20px;">
         <tr>
@@ -212,8 +237,8 @@ function eventRows() {
               <td>
                 <p style="margin:0;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#6a6a6a;font-weight:700;">${e.dates} · ${e.venue}</p>
                 <p style="margin:6px 0 0;font-size:17px;line-height:1.28;color:#222222;font-weight:700;">${e.title}</p>
-                ${"teaser" in e && e.teaser ? `<p style="margin:8px 0 0;font-size:13px;line-height:1.45;color:#555555;">${e.teaser}</p>` : ""}
-                ${"externalUrl" in e && e.externalUrl ? `<p style="margin:8px 0 0;font-size:13px;"><a href="${e.externalUrl}" style="color:#FF5A5F;font-weight:600;text-decoration:none;">${"externalLabel" in e && e.externalLabel ? e.externalLabel : "Sitio oficial →"}</a></p>` : ""}
+                <p style="margin:8px 0 0;font-size:13px;line-height:1.45;color:#555555;">${e.teaser}</p>
+                ${e.externalUrl ? `<p style="margin:8px 0 0;font-size:13px;"><a href="${e.externalUrl}" style="color:#FF5A5F;font-weight:600;text-decoration:none;">${e.externalLabel ?? "Fuente oficial →"}</a></p>` : ""}
                 <p style="margin:10px 0 0;font-size:14px;line-height:1.4;color:#FF5A5F;font-weight:700;">Ver guía del evento →</p>
               </td>
             </tr>
@@ -261,7 +286,7 @@ export const athleticsAgendaHtml = `<!DOCTYPE html>
 </head>
 <body style="margin:0;padding:0;background:#f7f4f0;color:#222222;font-family:Georgia,'Times New Roman',serif;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">
-    Agenda de atletismo 2026 en Santiago: 7 fechas clave. Destacado: FEDACHI Marathon Sudamericano 15 nov. Anticipa tu alojamiento.
+    7 fechas de atletismo en Santiago (ago–nov 2026). Destacado: FEDACHI Marathon Sudamericano 2026, 15 nov. Guías por evento y alojamiento.
   </div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f4f0;">
     <tr><td align="center" style="padding:0;">
@@ -276,7 +301,7 @@ export const athleticsAgendaHtml = `<!DOCTYPE html>
             6 eventos más · guías por fecha
           </h2>
           <p style="margin:10px 0 24px;font-size:15px;line-height:1.55;color:#6a6a6a;">
-            Además del FEDACHI Marathon, estas son las fechas clave del calendario federado en Santiago. Haz clic para ver sede, contexto y recomendaciones de estadía.
+            Cada guía resume sede, contexto del evento y recomendaciones de estadía en Santiago. Haz clic en la foto o en el título.
           </p>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             ${eventRows()}
@@ -288,7 +313,7 @@ export const athleticsAgendaHtml = `<!DOCTYPE html>
             Elige tu alojamiento en Santiago
           </h2>
           <p style="margin:10px 0 24px;font-size:15px;line-height:1.55;color:#6a6a6a;">
-            Deptos cerca del Estadio Nacional para el FEDACHI Marathon y el resto del calendario. En fines de semana de campeonato se llenan rápido: conviene reservar con anticipación.
+            Deptos cerca del Estadio Nacional para el maratón y el calendario federado; opciones útiles también para la Posta en Las Condes. En fines de semana de campeonato se llenan rápido.
           </p>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             ${stayCards()}
@@ -306,7 +331,7 @@ export const athleticsAgendaHtml = `<!DOCTYPE html>
             Reserva con anticipación
           </h2>
           <p style="margin:14px auto 0;max-width:480px;font-size:15px;line-height:1.55;color:rgba(255,255,255,0.75);">
-            La temporada de atletismo concentra viajes de asociaciones, clubes y familias. Asegura tu base en Santiago antes de que suba la demanda.
+            La temporada de atletismo concentra viajes de asociaciones, clubes, corredores y familias. Asegura tu base en Santiago antes de que suba la demanda.
           </p>
           <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto 0;">
             <tr><td style="background:#FF5A5F;border-radius:10px;">
@@ -316,6 +341,9 @@ export const athleticsAgendaHtml = `<!DOCTYPE html>
         </td></tr>
 
         <tr><td style="background:#f7f4f0;padding:22px 24px 36px;font-family:Arial,Helvetica,sans-serif;">
+          <p style="margin:0 0 12px;font-size:12px;line-height:1.55;color:#6a6a6a;text-align:center;">
+            ${GUIDE_DISCLAIMER}
+          </p>
           <p style="margin:0;font-size:12px;line-height:1.5;color:#6a6a6a;text-align:center;">
             Alojamiento independiente en Santiago · ago–nov 2026. Este sitio no es parte de Airbnb ni está afiliado a Airbnb, Inc. Solo mostramos opciones y te redirigimos al anuncio oficial.
           </p>
