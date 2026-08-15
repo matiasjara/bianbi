@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Fraunces, Manrope, Syne } from "next/font/google";
 import { SITE_URL } from "@/lib/site/url";
 import "./globals.css";
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
 };
 
-const GTM_ID = "GTM-MGG27CP6";
+const GA_MEASUREMENT_ID = "G-4XLF22BEK7";
 
 export default function RootLayout({
   children,
@@ -55,8 +55,8 @@ export default function RootLayout({
       lang="es"
       className={`${display.variable} ${editorial.variable} ${body.variable} h-full`}
     >
-      <GoogleTagManager gtmId={GTM_ID} />
       <body className="min-h-full antialiased">{children}</body>
+      <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
     </html>
   );
 }
