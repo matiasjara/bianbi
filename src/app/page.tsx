@@ -20,7 +20,8 @@ import {
   parseEventTypeParam,
 } from "@/lib/demand/event-type";
 import { parseMonthParam } from "@/lib/demand/month-range";
-import { micrositePath } from "@/lib/demand/travel-brief";
+import { resolveEventHref } from "@/lib/demand/event-path";
+import { loadEventPathMap } from "@/lib/demand/load-event-records";
 import { SITE_URL } from "@/lib/site/url";
 import {
   buildRotatingSequenceMap,
@@ -135,16 +136,18 @@ function GuideCard({
   pack,
   tilt,
   sequenceMap,
+  href,
 }: {
   pack: CampaignPack;
   tilt?: "l" | "r";
   sequenceMap: Map<string, number>;
+  href: string;
 }) {
   const cover = coverFor(pack, sequenceMap);
   const mins = pack.properties[0]?.walkingMinutes;
   return (
     <Link
-      href={micrositePath(pack.slug)}
+      href={href}
       className={`group relative block ${
         tilt === "l" ? "md:-rotate-1" : tilt === "r" ? "md:rotate-1" : ""
       }`}
@@ -187,6 +190,7 @@ function GuideCard({
 function packToCalendarEvent(
   pack: CampaignPack,
   sequenceMap: Map<string, number>,
+  pathMap: Map<string, string>,
 ): CalendarEvent | null {
   if (!pack.microsite) return null;
   const eventType = classifyEventType({
@@ -196,6 +200,7 @@ function packToCalendarEvent(
   });
   return {
     slug: pack.slug,
+    href: resolveEventHref(pack.slug, pathMap),
     title: pack.microsite.guideTitle,
     start: pack.eventStartsOn,
     end: pack.eventEndsOn,
@@ -226,9 +231,10 @@ export default async function HomePage({
   );
   const tipo = parseEventTypeParam(params.tipo);
 
-  const [packs, monthPacks] = await Promise.all([
+  const [packs, monthPacks, pathMap] = await Promise.all([
     loadAllCampaignPacks({ limit: 80, city }),
     loadAllCampaignPacks({ year, monthIndex, limit: 80, city }),
+    loadEventPathMap(),
   ]);
 
   const sortedPacks = sortUpcoming(packs);
@@ -237,11 +243,11 @@ export default async function HomePage({
   const today = new Date().toISOString().slice(0, 10);
 
   const calendarEvents: CalendarEvent[] = monthPacks
-    .map((p) => packToCalendarEvent(p, monthPhotoSequence))
+    .map((p) => packToCalendarEvent(p, monthPhotoSequence, pathMap))
     .filter((e): e is CalendarEvent => e != null && e.end >= today);
 
   const upcomingCalendarEvents: CalendarEvent[] = sortedPacks
-    .map((p) => packToCalendarEvent(p, photoSequence))
+    .map((p) => packToCalendarEvent(p, photoSequence, pathMap))
     .filter((e): e is CalendarEvent => e != null);
   const featured = sortedPacks.slice(0, 6);
   const realProperties = properties.filter((p) => p.isReal && p.photos[0]);
@@ -273,7 +279,7 @@ export default async function HomePage({
     itemListElement: featured.map((p, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `${SITE_URL}${micrositePath(p.slug)}`,
+      url: `${SITE_URL}${resolveEventHref(p.slug, pathMap)}`,
       name: p.microsite.guideTitle,
     })),
   };
@@ -454,6 +460,7 @@ export default async function HomePage({
                   pack={pack}
                   tilt={i % 2 === 0 ? "l" : "r"}
                   sequenceMap={photoSequence}
+                  href={resolveEventHref(pack.slug, pathMap)}
                 />
               ))}
             </div>
@@ -485,7 +492,11 @@ export default async function HomePage({
                     key={pack.campaignId}
                     className="w-[260px] shrink-0 sm:w-[280px]"
                   >
-                    <GuideCard pack={pack} sequenceMap={photoSequence} />
+                    <GuideCard
+                      pack={pack}
+                      sequenceMap={photoSequence}
+                      href={resolveEventHref(pack.slug, pathMap)}
+                    />
                   </div>
                 ))}
               </HorizontalScrollRow>

@@ -10,6 +10,9 @@ function isPublicPath(pathname: string): boolean {
   if (pathname === "/santiago") return true;
   if (pathname === "/quedate") return true; // redirect abajo
   if (pathname === "/g" || pathname.startsWith("/g/")) return true;
+  if (pathname.startsWith("/eventos/")) return true;
+  if (pathname === "/llms.txt") return true;
+  if (pathname === "/santiago/feriados" || pathname === "/santiago/negocios") return true;
   if (pathname === "/sitemap.xml" || pathname === "/robots.txt") return true;
   if (pathname.startsWith("/api/share-card/")) return true;
   return false;

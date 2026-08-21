@@ -82,6 +82,14 @@ async function main() {
     JSON.stringify(manifest, null, 2),
   );
 
+  const { buildAndWriteEventCanonical } = await import(
+    "../../src/lib/demand/load-event-records"
+  );
+  const canonical = await buildAndWriteEventCanonical(200);
+  console.log(
+    `Event canonical: ${canonical.records.length} registros (${canonical.manifest.indexable} indexables)`,
+  );
+
   console.log(`Pipeline completo: ${all.length} señales`);
   for (const s of sources) {
     console.log(

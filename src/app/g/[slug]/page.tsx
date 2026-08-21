@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { MicrositeInfographic } from "@/components/campaigns/MicrositeInfographic";
 import { buildRotatingSequenceMap } from "@/lib/demand/guide-images";
 import {
   loadAllCampaignPacks,
   loadCampaignPackBySlug,
 } from "@/lib/demand/load-campaign-packs";
+import { loadEventRecordByGuideSlug } from "@/lib/demand/load-event-records";
 import { localizeMicrosite } from "@/lib/i18n/microsite";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
 
@@ -73,6 +74,13 @@ export default async function MicrositeGuidePage({
 }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
+
+  const canonical = await loadEventRecordByGuideSlug(slug);
+  if (canonical?.indexable) {
+    const lang = sp.lang ? `?lang=${sp.lang}` : "";
+    redirect(`/eventos/${canonical.slug}${lang}`);
+  }
+
   const pack = await loadCampaignPackBySlug(slug);
   if (!pack?.microsite) notFound();
 

@@ -148,7 +148,7 @@ function EventColumnsScroll({
 function EventMiniCard({ ev }: { ev: CalendarEvent }) {
   return (
     <Link
-      href={micrositePath(ev.slug)}
+      href={ev.href ?? micrositePath(ev.slug)}
       className="group flex gap-3 rounded-xl border border-[var(--ms-line)] bg-white/90 p-2.5 transition hover:border-[var(--ms-olive)]"
     >
       <div className="relative h-14 w-[4.5rem] shrink-0 overflow-hidden rounded-lg bg-[var(--ms-mist,#cfc9c0)]/40">

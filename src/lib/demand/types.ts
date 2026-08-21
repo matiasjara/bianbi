@@ -394,3 +394,68 @@ export interface IngestManifest {
     error?: string;
   }>;
 }
+
+/** Estados del pipeline Event Intelligence (editorial / técnico). */
+export type EventPipelineStatus =
+  | "DISCOVERED"
+  | "NORMALIZED"
+  | "NEEDS_REVIEW"
+  | "VALIDATED"
+  | "ENRICHED"
+  | "READY"
+  | "PUBLISHED"
+  | "UPDATE_REQUIRED"
+  | "COMPLETED"
+  | "ARCHIVED"
+  | "REJECTED";
+
+/** Estado del evento para el visitante. */
+export type EventLifecycleStatus =
+  | "UPCOMING"
+  | "ONGOING"
+  | "COMPLETED"
+  | "CANCELLED"
+  | "POST_EVENT";
+
+export type ConfidenceLevel = "HIGH" | "MEDIUM" | "LOW";
+
+/** Entidad canónica de evento para SEO, admin y publicación en /eventos/[slug]. */
+export interface EventRecord {
+  id: string;
+  /** URL pública corta: /eventos/{slug} */
+  slug: string;
+  /** Slug legacy del CampaignPack (/g/{guideSlug}). */
+  guideSlug: string;
+  name: string;
+  shortDescription: string;
+  description: string;
+  eventType: string;
+  interest: CampaignInterest;
+  startDate: string;
+  endDate: string;
+  venueId: string;
+  venueName: string;
+  city: CityId;
+  officialUrl?: string;
+  ticketUrl?: string;
+  source: SignalSource;
+  sourceUrl?: string;
+  sourceUpdatedAt?: string;
+  pipelineStatus: EventPipelineStatus;
+  lifecycleStatus: EventLifecycleStatus;
+  sourceConfidence: ConfidenceLevel;
+  dataConfidence: ConfidenceLevel;
+  contentQualityScore: number;
+  indexable: boolean;
+  lastVerifiedAt: string;
+  signalIds: string[];
+  potentialScore?: number;
+  potentialTier?: DemandSignal["potentialTier"];
+}
+
+export interface EventCanonicalManifest {
+  builtAt: string;
+  total: number;
+  indexable: number;
+  needsReview: number;
+}

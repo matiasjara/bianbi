@@ -1,22 +1,19 @@
 import type { MetadataRoute } from "next";
-import { loadAllCampaignPacks } from "@/lib/demand/load-campaign-packs";
-import { micrositePath } from "@/lib/demand/travel-brief";
+import { eventPublicPath } from "@/lib/demand/event-path";
+import { loadIndexableEventRecords } from "@/lib/demand/load-event-records";
 
 import { SITE_URL } from "@/lib/site/url";
 
 const SITE = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const today = new Date().toISOString().slice(0, 10);
-  const packs = (await loadAllCampaignPacks(40)).filter(
-    (p) => p.microsite && p.eventEndsOn >= today,
-  );
+  const records = await loadIndexableEventRecords();
 
-  const guides: MetadataRoute.Sitemap = packs.map((p) => ({
-    url: `${SITE}${micrositePath(p.slug)}`,
-    lastModified: new Date(),
+  const events: MetadataRoute.Sitemap = records.map((r) => ({
+    url: `${SITE}${eventPublicPath(r)}`,
+    lastModified: new Date(r.lastVerifiedAt),
     changeFrequency: "weekly",
-    priority: 0.8,
+    priority: r.potentialTier === "mega" ? 0.9 : 0.8,
   }));
 
   return [
@@ -44,6 +41,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.85,
     },
-    ...guides,
+    ...events,
   ];
 }

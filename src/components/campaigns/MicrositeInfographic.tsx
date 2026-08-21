@@ -118,13 +118,17 @@ export function MicrositeInfographic({
   slug,
   L,
   photoSequenceIndex,
+  basePath,
 }: {
   slug: string;
   L: LocalizedMicrosite;
   /** Posición en la cola del deporte (0 = foto 1, 1 = foto 2…) */
   photoSequenceIndex?: number;
+  /** Ruta pública para share/lang switch (default /g/{slug}). */
+  basePath?: string;
 }) {
   const { ui, content: m, properties: props, locale } = L;
+  const publicBase = basePath ?? `/g/${slug}`;
   const isGuerreras = isMundialU17VolleyballTitle(m.eventTitle);
   const isFlagship = matchFlagship(m.eventTitle) != null;
   const guerreras = flagshipGuideUi(locale, m.eventTitle);
@@ -192,7 +196,7 @@ export function MicrositeInfographic({
   const shareProps = {
     title: isFlagship && guerreras ? guerreras.title : m.eventTitle,
     shareText: m.shareText,
-    path: `/g/${slug}`,
+    path: publicBase,
     slug,
     locale,
     shareLabel: ui.shareLabel,
@@ -216,7 +220,7 @@ export function MicrositeInfographic({
       {isFlagship && guerreras && heroPhoto ? (
         <header className="relative overflow-hidden">
           <LandingLangSwitch
-            basePath={`/g/${slug}`}
+            basePath={publicBase}
             locale={locale}
             theme="dark"
           />
@@ -300,7 +304,7 @@ export function MicrositeInfographic({
       ) : (
         <header className="relative border-b border-[var(--ms-line)]/80">
           <LandingLangSwitch
-            basePath={`/g/${slug}`}
+            basePath={publicBase}
             locale={locale}
             theme="light"
           />
@@ -835,7 +839,7 @@ export function MicrositeInfographic({
       <MicrositeShareSticky
         slug={slug}
         locale={locale}
-        path={`/g/${slug}`}
+        path={publicBase}
         shareText={m.shareText}
         title={m.eventTitle}
         whatsAppLabel={ui.whatsAppLabel}

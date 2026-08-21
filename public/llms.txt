@@ -1,0 +1,31 @@
+# Crambie
+
+> Guía de eventos y alojamiento temporal en Santiago, Chile.
+
+Crambie conecta eventos deportivos, conciertos, ferias y competencias con información práctica (fechas, sede, transporte, entorno) y departamentos temporales cercanos a los recintos.
+
+## Qué es
+
+- Plataforma de discovery de eventos en Santiago
+- Guías editoriales por evento con mapa, transporte y FAQ
+- Catálogo de alojamiento independiente (Airbnb) cerca de venues clave
+
+## Dónde opera
+
+- Santiago, Chile (Región Metropolitana)
+- Venues: Estadio Nacional, Movistar Arena, Parque O'Higgins, y otros recintos
+
+## Páginas principales
+
+- Home / cartelera: https://crambie.com/
+- Eventos (detalle): https://crambie.com/eventos/{slug}
+- Alojamiento Santiago: https://crambie.com/santiago
+- Guías legacy: https://crambie.com/g/{slug}
+
+## Propiedades
+
+Deptos temporales en Ñuñoa (Estadio Nacional) y Santiago Centro (Movistar Arena / Parque O'Higgins).
+
+## Fuentes
+
+Los datos de eventos provienen de ticketeras, federaciones y fuentes públicas. Cada guía enlaza a la fuente oficial cuando existe.

@@ -267,6 +267,11 @@ export function micrositePath(slug: string): string {
   return `/g/${slug}`;
 }
 
+/** URL pública canónica cuando ya se conoce el slug SEO. */
+export function eventDetailPath(publicSlug: string): string {
+  return `/eventos/${publicSlug}`;
+}
+
 export function propertiesForMicrosite(
   props: CampaignPackProperty[],
 ): CampaignPackProperty[] {

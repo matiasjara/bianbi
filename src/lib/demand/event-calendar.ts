@@ -4,6 +4,8 @@ import type { EventTypeId } from "./event-type";
 
 export type CalendarEvent = {
   slug: string;
+  /** Ruta pública preferida (/eventos/ o /g/). */
+  href?: string;
   title: string;
   start: string;
   end: string;
