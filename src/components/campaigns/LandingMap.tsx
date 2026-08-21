@@ -21,6 +21,10 @@ type Props = {
   initialZoomBoost?: number;
   /** Padding relativo extra al calcular el encuadre (default 0.22). */
   fitBoundsPad?: number;
+  /** Centra el mapa en el primer marcador de este tipo (en lugar de fitBounds). */
+  centerOnKind?: MapMarker["kind"];
+  /** Zoom al usar centerOnKind (default 14). */
+  centerZoom?: number;
 };
 
 function escapeHtml(text: string) {
@@ -159,6 +163,8 @@ export function LandingMap({
   className,
   initialZoomBoost = 0,
   fitBoundsPad = 0.22,
+  centerOnKind,
+  centerZoom = 14,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
@@ -209,7 +215,10 @@ export function LandingMap({
         bounds.extend([m.lat, m.lng]);
       }
 
-      if (placed.length === 1) {
+      if (centerOnKind) {
+        const center = placed.find((m) => m.kind === centerOnKind) ?? placed[0];
+        map.setView([center.lat, center.lng], centerZoom + initialZoomBoost);
+      } else if (placed.length === 1) {
         map.setView([placed[0].lat, placed[0].lng], 15 + initialZoomBoost);
       } else {
         const padded = bounds.pad(fitBoundsPad);
@@ -235,7 +244,7 @@ export function LandingMap({
         mapRef.current = null;
       }
     };
-  }, [markers, initialZoomBoost, fitBoundsPad]);
+  }, [markers, initialZoomBoost, fitBoundsPad, centerOnKind, centerZoom]);
 
   return (
     <div

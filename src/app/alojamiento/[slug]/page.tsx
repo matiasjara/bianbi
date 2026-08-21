@@ -7,11 +7,9 @@ import { LandingLangSwitch } from "@/components/campaigns/LandingLangSwitch";
 import { LandingMap } from "@/components/campaigns/LandingMap";
 import { MicrositeStayList } from "@/components/campaigns/MicrositeStayList";
 import { PublicSiteFooter } from "@/components/site/PublicSiteFooter";
-import {
-  getAllStayBuildingSlugs,
-  getStayBuildingNearbyPois,
-} from "@/lib/data/stay-buildings";
+import { getAllStayBuildingSlugs } from "@/lib/data/stay-buildings";
 import { mediaSrc } from "@/lib/demand/guide-images";
+import { buildStayBuildingMapMarkers } from "@/lib/demand/stay-building-map";
 import { stayBuildingPublicPath } from "@/lib/demand/stay-building-path";
 import {
   getBuildingPageAttractions,
@@ -108,22 +106,7 @@ export default async function StayBuildingPage({ params, searchParams }: Props) 
   const attractions = getBuildingPageAttractions(building, locale);
   const basePath = stayBuildingPublicPath(building.buildingId);
 
-  const mapMarkers = [
-    {
-      lat: building.lat,
-      lng: building.lng,
-      label: building.buildingName,
-      kind: "property" as const,
-    },
-    ...getStayBuildingNearbyPois(building).slice(0, 4).map((poi) => ({
-      lat: poi.lat,
-      lng: poi.lng,
-      label: poi.name,
-      kind: (poi.category === "venue" ? "venue" : "property") as
-        | "property"
-        | "venue",
-    })),
-  ];
+  const mapMarkers = buildStayBuildingMapMarkers(building);
 
   const [heroMetaPrimary, heroMetaSecondary] = copy.heroMeta.split(" · ");
 
@@ -282,7 +265,8 @@ export default async function StayBuildingPage({ params, searchParams }: Props) 
             <LandingMap
               markers={mapMarkers}
               className="h-96 w-full"
-              initialZoomBoost={3}
+              centerOnKind="property"
+              centerZoom={14}
             />
           </div>
         </div>

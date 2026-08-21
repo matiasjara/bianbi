@@ -63,6 +63,7 @@ export const SANTIAGO_METRO_STATIONS = [
 export const METRO_LOGO_SRC = "/brand/metro-santiago.png";
 export const ESTADIO_NACIONAL_ICON_SRC = "/brand/estadio-nacional.png";
 export const MOVISTAR_ARENA_ICON_SRC = "/brand/movistar-arena.png";
+export const BARRIO_ITALIA_ICON_SRC = "/guides/barrios/barrio-italia.png";
 
 export function isEstadioNacionalLabel(label: string): boolean {
   return /estadio nacional/i.test(label) && !/^metro /i.test(label);
@@ -70,6 +71,10 @@ export function isEstadioNacionalLabel(label: string): boolean {
 
 export function isMovistarArenaLabel(label: string): boolean {
   return /movistar arena/i.test(label) && !/^metro /i.test(label);
+}
+
+export function isBarrioItaliaLabel(label: string): boolean {
+  return /barrio italia/i.test(label) && !/^metro /i.test(label);
 }
 
 export type CustomVenuePin = {
@@ -88,6 +93,12 @@ export function resolveCustomVenuePin(label: string): CustomVenuePin | null {
     return {
       iconSrc: MOVISTAR_ARENA_ICON_SRC,
       displayLabel: "Movistar Arena",
+    };
+  }
+  if (isBarrioItaliaLabel(label)) {
+    return {
+      iconSrc: BARRIO_ITALIA_ICON_SRC,
+      displayLabel: "Barrio Italia",
     };
   }
   return null;
