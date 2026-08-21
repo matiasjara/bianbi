@@ -8,6 +8,7 @@ import {
 } from "@/lib/demand/property-groups";
 import type { CampaignPackProperty } from "@/lib/demand/types";
 import { publicPropertyLocation } from "@/lib/demand/public-location";
+import { stayBuildingPublicPath } from "@/lib/demand/stay-building-path";
 import {
   formatParkingIncluded,
   formatStayReviews,
@@ -281,6 +282,14 @@ function StayGroupCard({
             );
           })}
         </div>
+        {variant === "landing" && group.buildingId && ui.seeBuildingPage ? (
+          <a
+            href={`${stayBuildingPublicPath(group.buildingId)}?lang=${ui.locale}`}
+            className="mt-4 inline-flex text-sm font-semibold text-[#222] underline-offset-4 hover:underline"
+          >
+            {ui.seeBuildingPage}
+          </a>
+        ) : null}
       </div>
     </article>
   );

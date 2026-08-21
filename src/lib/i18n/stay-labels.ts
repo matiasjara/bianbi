@@ -5,6 +5,8 @@ export type StayListUi = {
   minWalk: string;
   ctaAirbnb: string;
   locale: Locale;
+  /** Link a la landing del edificio (/alojamiento/[slug]). */
+  seeBuildingPage?: string;
 };
 
 export const STAY_RATING = 5;

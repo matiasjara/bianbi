@@ -260,6 +260,7 @@ export default async function CatalogStayPage({ searchParams }: Props) {
               minWalk: stayUi.minWalk,
               ctaAirbnb: ui.ctaBook,
               locale,
+              seeBuildingPage: ui.seeBuildingPage,
             }}
           />
           <p className="mt-6 text-xs text-[var(--ms-muted)]">{ui.paySafe}</p>

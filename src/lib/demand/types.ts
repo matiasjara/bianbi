@@ -184,6 +184,8 @@ export interface CampaignPackProperty {
   neighborhood: string;
   /** Agrupa unidades en el mismo edificio (UI compacta). */
   buildingName?: string;
+  /** Slug canónico del edificio (/alojamiento/[slug]). */
+  buildingId?: string;
   address: string;
   amenities: string[];
   distanceKm: number;

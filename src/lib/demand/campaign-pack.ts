@@ -235,6 +235,7 @@ function pickProperties(
       bedrooms: p.bedrooms,
       neighborhood: p.neighborhood,
       buildingName: p.buildingName,
+      buildingId: p.buildingId,
       address: publicPropertyLocation(p.neighborhood, p.address),
       amenities: [
         "Cama matrimonial",

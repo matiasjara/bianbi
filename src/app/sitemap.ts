@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { eventPublicPath } from "@/lib/demand/event-path";
+import { stayBuildingPublicPath } from "@/lib/demand/stay-building-path";
 import { loadIndexableEventRecords } from "@/lib/demand/load-event-records";
+import { getAllStayBuildingSlugs } from "@/lib/data/stay-buildings";
 
 import { SITE_URL } from "@/lib/site/url";
 
@@ -15,6 +17,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly",
     priority: r.potentialTier === "mega" ? 0.9 : 0.8,
   }));
+
+  const buildings: MetadataRoute.Sitemap = getAllStayBuildingSlugs().map(
+    (slug) => ({
+      url: `${SITE}${stayBuildingPublicPath(slug)}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.88,
+    }),
+  );
 
   return [
     {
@@ -41,6 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.85,
     },
+    ...buildings,
     ...events,
   ];
 }

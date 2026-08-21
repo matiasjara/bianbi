@@ -40,6 +40,7 @@ type CatalogUi = {
   closeTitle: string;
   closeBody: string;
   ctaGo: string;
+  seeBuildingPage: string;
   footerStay: string;
   footerDisclaimer: string;
 };
@@ -99,6 +100,7 @@ const UI: Record<Locale, CatalogUi> = {
     closeBody:
       "Arriendas en Airbnb: pago protegido, check-in coordinado y reseñas reales. Nosotros te mostramos las opciones.",
     ctaGo: "Ver en Airbnb",
+    seeBuildingPage: "Ver edificio completo →",
     footerStay: "Alojamiento independiente en Santiago",
     footerDisclaimer:
       "Este sitio no es parte de Airbnb ni está afiliado a Airbnb, Inc. No gestionamos arriendos, no cobramos reservas ni procesamos pagos: solo mostramos opciones y te redirigimos al anuncio oficial en Airbnb para que reserves allí.",
@@ -157,6 +159,7 @@ const UI: Record<Locale, CatalogUi> = {
     closeBody:
       "You book on Airbnb: protected payment, arranged check-in and real reviews. We just show the options.",
     ctaGo: "View on Airbnb",
+    seeBuildingPage: "View building page →",
     footerStay: "Independent stay in Santiago",
     footerDisclaimer:
       "This site is not part of Airbnb and is not affiliated with Airbnb, Inc. We do not manage rentals, take bookings, or process payments — we only show options and send you to the official Airbnb listing to book there.",
@@ -215,6 +218,7 @@ const UI: Record<Locale, CatalogUi> = {
     closeBody:
       "Você aluga no Airbnb: pagamento protegido, check-in combinado e avaliações reais. Nós só mostramos as opções.",
     ctaGo: "Ver no Airbnb",
+    seeBuildingPage: "Ver edifício completo →",
     footerStay: "Hospedagem independente em Santiago",
     footerDisclaimer:
       "Este site não faz parte do Airbnb e não é afiliado à Airbnb, Inc. Não gerenciamos aluguéis, não cobramos reservas nem processamos pagamentos: só mostramos opções e redirecionamos para o anúncio oficial no Airbnb para você reservar lá.",
@@ -452,6 +456,7 @@ export function getCatalogStayProperties(locale: Locale): CampaignPackProperty[]
         bedrooms: p.bedrooms,
         neighborhood: p.neighborhood,
         buildingName: p.buildingName,
+        buildingId: p.buildingId,
         address: publicPropertyLocation(p.neighborhood, p.address),
         amenities: p.amenities.slice(0, 6),
         distanceKm: 0,

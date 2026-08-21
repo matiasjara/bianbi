@@ -13,6 +13,7 @@ export type StayUnit = {
 
 export type PropertyStayGroup = {
   key: string;
+  buildingId?: string;
   buildingName?: string;
   neighborhood: string;
   address: string;
@@ -62,6 +63,7 @@ export function groupPropertiesByLocation(
     indexByKey.set(key, groups.length);
     groups.push({
       key,
+      buildingId: p.buildingId,
       buildingName: p.buildingName,
       neighborhood: p.neighborhood,
       address: p.address,

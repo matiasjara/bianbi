@@ -20,6 +20,10 @@ Crambie conecta eventos deportivos, conciertos, ferias y competencias con inform
 - Home / cartelera: https://crambie.com/
 - Eventos (detalle): https://crambie.com/eventos/{slug}
 - Alojamiento Santiago: https://crambie.com/santiago
+- Edificios / agrupaciones:
+  - Barrio Italia (2 deptos): https://crambie.com/alojamiento/edificio-italia-irarrazaval
+  - Ñuñoa / Estadio Nacional (2 deptos): https://crambie.com/alojamiento/edificio-nunoa-estadio
+  - Metro Toesca / Movistar Arena (1 depto): https://crambie.com/alojamiento/edificio-toesca-centro
 - Guías legacy: https://crambie.com/g/{slug}
 
 ## Propiedades
