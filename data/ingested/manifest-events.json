@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-08-03T03:41:09.455Z",
+  "ranAt": "2026-08-21T03:01:34.350Z",
   "sources": [
     {
       "name": "tocador",
@@ -9,17 +9,22 @@
     {
       "name": "ticketplus_cl",
       "ok": true,
-      "count": 195
+      "count": 168
     },
     {
       "name": "campeonato_chileno",
       "ok": true,
-      "count": 32
+      "count": 27
     },
     {
       "name": "ind_cl",
       "ok": true,
       "count": 4
+    },
+    {
+      "name": "congresos_ferias_cl",
+      "ok": true,
+      "count": 28
     },
     {
       "name": "club_atletico_santiago",
@@ -34,22 +39,22 @@
     {
       "name": "fehoch_tournaments",
       "ok": true,
-      "count": 30
+      "count": 6
     },
     {
       "name": "fevochi",
       "ok": true,
-      "count": 3
+      "count": 1
     },
     {
       "name": "ticketmaster_cl",
       "ok": true,
-      "count": 9
+      "count": 10
     },
     {
       "name": "puntoticket",
       "ok": true,
-      "count": 144
+      "count": 159
     },
     {
       "name": "passline",
