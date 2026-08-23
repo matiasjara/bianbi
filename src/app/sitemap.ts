@@ -6,6 +6,8 @@ import { getAllStayBuildingSlugs } from "@/lib/data/stay-buildings";
 
 import { SITE_URL } from "@/lib/site/url";
 
+export const revalidate = 3600;
+
 const SITE = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

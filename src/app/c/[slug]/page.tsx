@@ -13,7 +13,7 @@ import { getMicrositeUi, localizeMicrosite } from "@/lib/i18n/microsite";
 import { LANG_COOKIE, resolveLocale } from "@/lib/i18n/locale";
 import { loadCampaignPackBySlug } from "@/lib/demand/load-campaign-packs";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 type Props = {
   params: Promise<{ slug: string }>;

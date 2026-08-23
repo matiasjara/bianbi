@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { unstable_cache } from "next/cache";
 import { buildSeasonalitySignals } from "./seasonality";
 import { enrichSignalCity, signalMatchesCity } from "./cities";
 import { normalizeSignal } from "./dates";
@@ -9,6 +10,10 @@ import {
   loadSignalAdminState,
 } from "./signal-admin";
 import { isRelevantDemandSignal } from "./signal-relevance";
+import {
+  getIngestCacheVersion,
+  INGEST_DATA_REVALIDATE_SEC,
+} from "./ingest-cache";
 import type { CityId, DemandSignal } from "./types";
 
 async function readJsonSafe<T>(file: string, fallback: T): Promise<T> {
@@ -31,9 +36,7 @@ function sanitizeSignalDates(s: DemandSignal): DemandSignal | null {
   return { ...s, endsOn: s.startsOn };
 }
 
-export async function loadAllSignals(options?: {
-  city?: CityId;
-}): Promise<{
+async function loadAllSignalsImpl(cityKey: string): Promise<{
   signals: DemandSignal[];
   ingestedAt: string | null;
   sourceCounts: Record<string, number>;
@@ -68,14 +71,13 @@ export async function loadAllSignals(options?: {
     byId.set(s.id, s);
   }
 
-  // Recalcula potencial de eventos (BTS ≠ teatro chico) aunque el JSON sea viejo
   const enriched = enrichSignalPotentials([...byId.values()])
     .filter(isRelevantDemandSignal)
     .map(enrichSignalCity);
   const admin = await loadSignalAdminState();
   let signals = applySignalAdmin(enriched, admin);
-  if (options?.city) {
-    signals = signals.filter((s) => signalMatchesCity(s, options.city!));
+  if (cityKey !== "all") {
+    signals = signals.filter((s) => signalMatchesCity(s, cityKey as CityId));
   }
   const sourceCounts: Record<string, number> = {};
   for (const s of signals) {
@@ -87,4 +89,25 @@ export async function loadAllSignals(options?: {
     ingestedAt: manifest.ranAt ?? null,
     sourceCounts,
   };
+}
+
+const loadAllSignalsCached = unstable_cache(
+  async (ingestVersion: string, cityKey: string) => {
+    void ingestVersion;
+    return loadAllSignalsImpl(cityKey);
+  },
+  ["load-all-signals"],
+  { revalidate: INGEST_DATA_REVALIDATE_SEC, tags: ["ingest-data"] },
+);
+
+export async function loadAllSignals(options?: {
+  city?: CityId;
+}): Promise<{
+  signals: DemandSignal[];
+  ingestedAt: string | null;
+  sourceCounts: Record<string, number>;
+}> {
+  const cityKey = options?.city ?? "all";
+  const version = await getIngestCacheVersion();
+  return loadAllSignalsCached(version, cityKey);
 }

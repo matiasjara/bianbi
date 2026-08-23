@@ -31,7 +31,7 @@ import {
 } from "@/lib/demand/guide-images";
 import type { CampaignInterest, CampaignPack } from "@/lib/demand/types";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: {

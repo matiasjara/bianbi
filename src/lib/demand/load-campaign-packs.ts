@@ -1,14 +1,19 @@
+import { cache } from "react";
 import { addDays, format } from "date-fns";
+import { unstable_cache } from "next/cache";
 import {
   detectCampaignOpportunities,
   suggestCampaignsFromPeaks,
 } from "./calendar";
 import { buildCampaignPacks, findPackBySlug } from "./campaign-pack";
-import { parseCityParam } from "./cities";
 import type { CityId } from "./types";
 import { isPublishableGuidePeak } from "./guide-eligibility";
 import { loadAllSignals } from "./load-signals";
 import { monthRange } from "./month-range";
+import {
+  getIngestCacheVersion,
+  INGEST_DATA_REVALIDATE_SEC,
+} from "./ingest-cache";
 import type { CampaignPack, DemandPeak } from "./types";
 
 /** Mezcla intereses; reserva cupo para congresos/ferias (alto valor MICE). */
@@ -61,11 +66,26 @@ export type LoadCampaignPacksOptions = {
   city?: CityId;
 };
 
-export async function loadAllCampaignPacks(
-  options: number | LoadCampaignPacksOptions = 16,
+function normalizeOptions(
+  options: number | LoadCampaignPacksOptions,
+): LoadCampaignPacksOptions {
+  return typeof options === "number" ? { limit: options } : options;
+}
+
+function optionsCacheKey(opts: LoadCampaignPacksOptions): string {
+  const limit = opts.limit ?? 16;
+  const includeGeneric = opts.includeGeneric ?? false;
+  const city = opts.city ?? "santiago";
+  if (opts.year != null && opts.monthIndex != null) {
+    return `${city}:${limit}:${includeGeneric}:m:${opts.year}-${opts.monthIndex}`;
+  }
+  const day = format(new Date(), "yyyy-MM-dd");
+  return `${city}:${limit}:${includeGeneric}:r:${day}`;
+}
+
+async function loadAllCampaignPacksImpl(
+  opts: LoadCampaignPacksOptions,
 ): Promise<CampaignPack[]> {
-  const opts: LoadCampaignPacksOptions =
-    typeof options === "number" ? { limit: options } : options;
   const limit = opts.limit ?? 16;
   const includeGeneric = opts.includeGeneric ?? false;
   const city = opts.city ?? "santiago";
@@ -84,7 +104,6 @@ export async function loadAllCampaignPacks(
     end = format(addDays(new Date(), 120), "yyyy-MM-dd");
   }
 
-  // Una oportunidad = un interés (nieve, partido, concierto, competencia…)
   const opportunities = detectCampaignOpportunities(signals, start, end, 24);
   const eligible = includeGeneric
     ? opportunities
@@ -93,6 +112,39 @@ export async function loadAllCampaignPacks(
   const suggestions = suggestCampaignsFromPeaks(diverse, limit);
   return buildCampaignPacks(suggestions, eligible);
 }
+
+const loadAllCampaignPacksCached = unstable_cache(
+  async (ingestVersion: string, optsKey: string) => {
+    void ingestVersion;
+    const opts = JSON.parse(optsKey) as LoadCampaignPacksOptions;
+    return loadAllCampaignPacksImpl(opts);
+  },
+  ["load-all-campaign-packs"],
+  { revalidate: INGEST_DATA_REVALIDATE_SEC, tags: ["ingest-data"] },
+);
+
+export async function loadAllCampaignPacks(
+  options: number | LoadCampaignPacksOptions = 16,
+): Promise<CampaignPack[]> {
+  const opts = normalizeOptions(options);
+  const version = await getIngestCacheVersion();
+  return loadAllCampaignPacksCached(version, optionsCacheKey(opts));
+}
+
+const loadWideFallbackPacksCached = unstable_cache(
+  async (ingestVersion: string) => {
+    void ingestVersion;
+    const { signals } = await loadAllSignals();
+    const start = format(addDays(new Date(), -60), "yyyy-MM-dd");
+    const end = format(addDays(new Date(), 220), "yyyy-MM-dd");
+    const opportunities = detectCampaignOpportunities(signals, start, end, 18);
+    const eligible = opportunities.filter(isPublishableGuidePeak);
+    const suggestions = suggestCampaignsFromPeaks(eligible, 120);
+    return buildCampaignPacks(suggestions, eligible);
+  },
+  ["load-campaign-packs-wide-fallback"],
+  { revalidate: INGEST_DATA_REVALIDATE_SEC, tags: ["ingest-data"] },
+);
 
 function monthsAroundSlug(slug: string): Array<{ year: number; monthIndex: number }> {
   const full = slug.match(/(\d{4})-(\d{2})-(\d{2})/);
@@ -112,10 +164,9 @@ function monthsAroundSlug(slug: string): Array<{ year: number; monthIndex: numbe
   return out;
 }
 
-export async function loadCampaignPackBySlug(
+async function loadCampaignPackBySlugImpl(
   slug: string,
 ): Promise<CampaignPack | null> {
-  // 1) Primero el mes del slug (links desde /campanas?year=&month=)
   const months = monthsAroundSlug(slug);
   if (months.length > 0) {
     const bySlug = new Map<string, CampaignPack>();
@@ -127,19 +178,14 @@ export async function loadCampaignPackBySlug(
     if (fromMonths) return fromMonths;
   }
 
-  // 2) Ventana rolling
   const rolling = await loadAllCampaignPacks({ limit: 80 });
   const fromRolling = findPackBySlug(rolling, slug);
   if (fromRolling) return fromRolling;
 
-  // 3) Ventana amplia de respaldo
-  const { signals } = await loadAllSignals();
-  const start = format(addDays(new Date(), -60), "yyyy-MM-dd");
-  const end = format(addDays(new Date(), 220), "yyyy-MM-dd");
-  const opportunities = detectCampaignOpportunities(signals, start, end, 18);
-  const eligible = opportunities.filter(isPublishableGuidePeak);
-  const suggestions = suggestCampaignsFromPeaks(eligible, 120);
-  return (
-    findPackBySlug(buildCampaignPacks(suggestions, eligible), slug) ?? null
-  );
+  const version = await getIngestCacheVersion();
+  const wide = await loadWideFallbackPacksCached(version);
+  return findPackBySlug(wide, slug) ?? null;
 }
+
+/** Dedupe metadata + page en el mismo request. */
+export const loadCampaignPackBySlug = cache(loadCampaignPackBySlugImpl);
