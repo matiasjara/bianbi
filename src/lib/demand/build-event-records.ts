@@ -19,7 +19,7 @@ import {
   suggestCampaignsFromPeaks,
 } from "./calendar";
 import { buildCampaignPacks } from "./campaign-pack";
-import { loadAllSignals } from "./load-signals";
+import { loadIngestedSignals } from "./load-signals";
 import type {
   CampaignPack,
   DemandSignal,
@@ -123,7 +123,7 @@ function packToEventRecord(
 export async function buildEventRecordsFromPacks(
   limit = 200,
 ): Promise<EventRecord[]> {
-  const { signals } = await loadAllSignals();
+  const { signals } = await loadIngestedSignals();
   const start = format(new Date(), "yyyy-MM-dd");
   const end = format(addDays(new Date(), 365), "yyyy-MM-dd");
   const opportunities = detectCampaignOpportunities(signals, start, end, 48);

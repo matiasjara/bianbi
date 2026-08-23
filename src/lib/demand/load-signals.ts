@@ -100,6 +100,18 @@ const loadAllSignalsCached = unstable_cache(
   { revalidate: INGEST_DATA_REVALIDATE_SEC, tags: ["ingest-data"] },
 );
 
+/** Lectura directa de señales (scripts de ingest, sin unstable_cache). */
+export async function loadIngestedSignals(options?: {
+  city?: CityId;
+}): Promise<{
+  signals: DemandSignal[];
+  ingestedAt: string | null;
+  sourceCounts: Record<string, number>;
+}> {
+  const cityKey = options?.city ?? "all";
+  return loadAllSignalsImpl(cityKey);
+}
+
 export async function loadAllSignals(options?: {
   city?: CityId;
 }): Promise<{

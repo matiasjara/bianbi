@@ -90,6 +90,14 @@ async function main() {
     `Event canonical: ${canonical.records.length} registros (${canonical.manifest.indexable} indexables)`,
   );
 
+  const { buildAndWriteCampaignPacksCache } = await import(
+    "../../src/lib/demand/campaign-packs-cache"
+  );
+  const packsCache = await buildAndWriteCampaignPacksCache();
+  console.log(
+    `Campaign packs cache: ${packsCache.publishable.length} publicables, ${packsCache.all.length} total (${packsCache.windowStart} → ${packsCache.windowEnd})`,
+  );
+
   console.log(`Pipeline completo: ${all.length} señales`);
   for (const s of sources) {
     console.log(
