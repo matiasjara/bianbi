@@ -65,15 +65,18 @@ function normalizeOptions(
   return typeof options === "number" ? { limit: options } : options;
 }
 
-function optionsCacheKey(opts: LoadCampaignPacksOptions): string {
-  const limit = opts.limit ?? 16;
-  const includeGeneric = opts.includeGeneric ?? false;
-  const city = opts.city ?? "santiago";
-  if (opts.year != null && opts.monthIndex != null) {
-    return `${city}:${limit}:${includeGeneric}:m:${opts.year}-${opts.monthIndex}`;
-  }
-  const day = format(new Date(), "yyyy-MM-dd");
-  return `${city}:${limit}:${includeGeneric}:r:${day}`;
+function serializeOptsForCache(opts: LoadCampaignPacksOptions): string {
+  return JSON.stringify({
+    limit: opts.limit ?? 16,
+    includeGeneric: opts.includeGeneric ?? false,
+    city: opts.city ?? "santiago",
+    year: opts.year,
+    monthIndex: opts.monthIndex,
+    rollingDay:
+      opts.year == null || opts.monthIndex == null
+        ? format(new Date(), "yyyy-MM-dd")
+        : undefined,
+  });
 }
 
 async function loadAllCampaignPacksCompute(
@@ -119,7 +122,9 @@ async function loadAllCampaignPacksImpl(
 const loadAllCampaignPacksCached = unstable_cache(
   async (ingestVersion: string, optsKey: string) => {
     void ingestVersion;
-    const opts = JSON.parse(optsKey) as LoadCampaignPacksOptions;
+    const { rollingDay: _, ...opts } = JSON.parse(optsKey) as LoadCampaignPacksOptions & {
+      rollingDay?: string;
+    };
     return loadAllCampaignPacksImpl(opts);
   },
   ["load-all-campaign-packs"],
@@ -131,7 +136,7 @@ export async function loadAllCampaignPacks(
 ): Promise<CampaignPack[]> {
   const opts = normalizeOptions(options);
   const version = await getIngestCacheVersion();
-  return loadAllCampaignPacksCached(version, optionsCacheKey(opts));
+  return loadAllCampaignPacksCached(version, serializeOptsForCache(opts));
 }
 
 async function loadWideFallbackPacksImpl(): Promise<CampaignPack[]> {
