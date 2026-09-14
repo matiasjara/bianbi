@@ -43,7 +43,7 @@ const clients: Client[] = [
       {
         id: "kc-asset-proposal-docx",
         title: "Propuesta extendida (Word)",
-        description: "Documento completo · 45 UF · v2",
+        description: "Documento completo · v2",
         href: DOWNLOAD_PATH,
       },
     ],

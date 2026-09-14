@@ -205,12 +205,14 @@ export function ProposalCarousel() {
           label="Lámina anterior"
           onClick={() => go(index - 1)}
         />
-        <SideArrow
-          direction="next"
-          label="Siguiente lámina"
-          emphasize
-          onClick={() => go(index + 1)}
-        />
+        {last ? null : (
+          <SideArrow
+            direction="next"
+            label="Siguiente lámina"
+            emphasize
+            onClick={() => go(index + 1)}
+          />
+        )}
       </div>
 
       <div className="mt-4 flex justify-center gap-2">
@@ -236,43 +238,35 @@ export function ProposalCarousel() {
         >
           ← Anterior
         </button>
-        <button
-          type="button"
-          onClick={() => go(last ? 0 : index + 1)}
-          className="inline-flex min-h-14 flex-[1.4] items-center justify-center rounded-full bg-[#de6347] px-4 text-base font-semibold text-white shadow-[0_8px_20px_rgba(222,99,71,0.35)] transition hover:bg-[#c8553a]"
-        >
-          {last ? "↻ Volver al inicio" : "Siguiente lámina →"}
-        </button>
+        {last ? null : (
+          <button
+            type="button"
+            onClick={() => go(index + 1)}
+            className="inline-flex min-h-14 flex-[1.4] items-center justify-center rounded-full bg-[#de6347] px-4 text-base font-semibold text-white shadow-[0_8px_20px_rgba(222,99,71,0.35)] transition hover:bg-[#c8553a]"
+          >
+            Siguiente lámina →
+          </button>
+        )}
       </div>
 
-      {last ? (
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <a
-            href={DOWNLOAD_PATH}
-            className="inline-flex items-center justify-center rounded-full bg-[#111311] px-5 py-3.5 text-sm font-semibold text-[#e9e8e1] transition hover:bg-black"
-          >
-            Descargar propuesta extendida
-          </a>
-          <Link
-            href={DEMO_BASE}
-            className="inline-flex items-center justify-center rounded-full border-2 border-[#de6347] bg-white px-5 py-3.5 text-sm font-semibold text-[#de6347] transition hover:bg-[#de6347] hover:text-white"
-          >
-            Ver demo del sitio
-          </Link>
-        </div>
-      ) : (
-        <p className="mt-4 text-center text-sm text-[#777d75]">
-          Recorre las {TOTAL} láminas. Al final podrás descargar el Word y abrir la
-          demo.
-        </p>
-      )}
-
-      {last ? (
-        <p className="mt-3 text-center text-xs text-[#777d75]">
-          El Word tiene el detalle completo: alcance, exclusiones, responsabilidades
-          y posibles etapas futuras.
-        </p>
-      ) : null}
+      <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <a
+          href={DOWNLOAD_PATH}
+          className="inline-flex items-center justify-center rounded-full border border-[#c5cbc3] bg-transparent px-4 py-2 text-sm font-medium text-[#5c625c] transition hover:border-[#111311] hover:text-[#111311]"
+        >
+          Descargar propuesta extendida
+        </a>
+        <Link
+          href={DEMO_BASE}
+          className="inline-flex items-center justify-center rounded-full border border-[#c5cbc3] bg-transparent px-4 py-2 text-sm font-medium text-[#5c625c] transition hover:border-[#111311] hover:text-[#111311]"
+        >
+          Ver demo del sitio
+        </Link>
+      </div>
+      <p className="mt-3 text-center text-xs text-[#777d75]">
+        El Word tiene el detalle completo: alcance, exclusiones, responsabilidades
+        y posibles etapas futuras.
+      </p>
     </div>
   );
 }

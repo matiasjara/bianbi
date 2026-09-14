@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const filePath = path.join(
     process.cwd(),
-    "data/clients/kitchencare/Propuesta_KitchenCare_45UF_v2.docx",
+    "data/clients/kitchencare/Propuesta_KitchenCare_v2.docx",
   );
   const file = await readFile(filePath);
 
@@ -17,7 +17,7 @@ export async function GET() {
       "Content-Type":
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "Content-Disposition":
-        'attachment; filename="Propuesta_KitchenCare_45UF.docx"',
+        'attachment; filename="Propuesta_KitchenCare_v2.docx"',
       "Cache-Control": "private, no-store",
       "X-Robots-Tag": NOINDEX_ROBOTS_TAG,
     },
