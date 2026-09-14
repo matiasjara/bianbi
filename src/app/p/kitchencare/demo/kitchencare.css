@@ -27,6 +27,12 @@
   overflow: hidden;
 }
 
+.kc-proposal .kc-slide-body {
+  flex: 1 1 auto;
+  overflow: visible;
+  min-height: auto;
+}
+
 .kc-slide-title {
   margin: 0;
   font-size: clamp(28px, 5vw, 52px);
