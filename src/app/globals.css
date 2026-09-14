@@ -46,6 +46,12 @@
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
   --font-editorial: var(--font-editorial);
+  --color-carbon: #202522;
+  --color-ivory: #f5f2ea;
+  --color-sage: #9da99f;
+  --color-sage-dark: #7a857c;
+  --color-terracotta: #de6347;
+  --color-terracotta-hover: #c8553a;
 }
 
 * {

@@ -1,0 +1,43 @@
+@theme inline {
+  --color-carbon: #202522;
+  --color-ivory: #f5f2ea;
+  --color-sage: #9da99f;
+  --color-sage-dark: #7a857c;
+  --color-terracotta: #de6347;
+  --color-terracotta-hover: #c8553a;
+  --font-serif: var(--font-playfair), Georgia, serif;
+}
+
+.kc-demo {
+  background: #f5f2ea;
+  color: #202522;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.kc-demo .font-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.kc-slide-body {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.kc-slide-title {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1.06;
+}
+
+.kc-slide-copy {
+  margin: 0;
+  max-width: 580px;
+  font-size: clamp(13px, 1.8vw, 17px);
+  line-height: 1.45;
+}

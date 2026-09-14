@@ -159,3 +159,72 @@ export type SportsOrganization = Omit<OutreachOrganization, "category" | "segmen
   segment?: string | null;
   sport: string | null;
 };
+
+/** Cliente operativo (gestión interna, no público). */
+export type ClientStatus = "active" | "paused" | "prospect";
+
+export type ClientContact = {
+  id: string;
+  name: string;
+  role?: string;
+  email?: string;
+  phone?: string;
+  notes?: string;
+};
+
+export type ClientNote = {
+  id: string;
+  title: string;
+  body: string;
+  updatedAt: string;
+};
+
+export type ClientLink = {
+  id: string;
+  label: string;
+  url: string;
+};
+
+export type ClientAsset = {
+  id: string;
+  title: string;
+  description?: string;
+  href: string;
+};
+
+export type ClientWorkItem = {
+  id: string;
+  title: string;
+  kind: "campaña" | "entrega" | "otro";
+  status?: string;
+  notes?: string;
+  href?: string;
+};
+
+export type ClientProposal = {
+  id: string;
+  number: number;
+  title: string;
+  status: string;
+  summary?: string;
+  webHref: string;
+  demoHref?: string;
+  downloadHref?: string;
+};
+
+export interface Client {
+  id: string;
+  slug: string;
+  name: string;
+  status: ClientStatus;
+  industry?: string;
+  website?: string;
+  location?: string;
+  summary?: string;
+  contacts: ClientContact[];
+  notes: ClientNote[];
+  links: ClientLink[];
+  assets: ClientAsset[];
+  work: ClientWorkItem[];
+  proposals?: ClientProposal[];
+}

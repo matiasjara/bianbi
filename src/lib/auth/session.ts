@@ -61,21 +61,23 @@ export async function passwordsMatch(
   return diff === 0;
 }
 
-export async function createSessionToken(
+export async function createScopedSessionToken(
+  scope: string,
   maxAgeSec = SESSION_MAX_AGE_SEC,
 ): Promise<string | null> {
   const secret = getAuthSecret();
-  if (!secret) return null;
+  if (!secret || !scope) return null;
   const exp = Math.floor(Date.now() / 1000) + maxAgeSec;
-  const payload = `v1.${exp}`;
+  const payload = `${scope}.${exp}`;
   const sig = await signPayload(payload, secret);
   return `${payload}.${sig}`;
 }
 
-export async function verifySessionToken(
+export async function verifyScopedSessionToken(
+  scope: string,
   token: string | undefined | null,
 ): Promise<boolean> {
-  if (!token) return false;
+  if (!token || !scope) return false;
   const secret = getAuthSecret();
   if (!secret) return false;
 
@@ -83,9 +85,10 @@ export async function verifySessionToken(
   if (lastDot <= 0) return false;
   const payload = token.slice(0, lastDot);
   const sig = token.slice(lastDot + 1);
-  if (!payload.startsWith("v1.")) return false;
+  const prefix = `${scope}.`;
+  if (!payload.startsWith(prefix)) return false;
 
-  const exp = Number(payload.slice(3));
+  const exp = Number(payload.slice(prefix.length));
   if (!Number.isFinite(exp) || exp < Math.floor(Date.now() / 1000)) {
     return false;
   }
@@ -101,6 +104,18 @@ export async function verifySessionToken(
   } catch {
     return false;
   }
+}
+
+export async function createSessionToken(
+  maxAgeSec = SESSION_MAX_AGE_SEC,
+): Promise<string | null> {
+  return createScopedSessionToken("v1", maxAgeSec);
+}
+
+export async function verifySessionToken(
+  token: string | undefined | null,
+): Promise<boolean> {
+  return verifyScopedSessionToken("v1", token);
 }
 
 export function sessionCookieOptions(maxAge = SESSION_MAX_AGE_SEC) {

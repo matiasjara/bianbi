@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LoginForm } from "@/app/login/login-form";
 import { BianbiLogo } from "@/components/brand/BianbiLogo";
+import { PRIVATE_ROBOTS } from "@/lib/site/indexing";
 
 export const metadata: Metadata = {
   title: "Entrar",
-  robots: { index: false, follow: false },
+  robots: PRIVATE_ROBOTS,
 };
 
 export default async function LoginPage({

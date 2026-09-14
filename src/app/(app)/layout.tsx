@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { AppNav } from "@/components/AppNav";
+import { PRIVATE_ROBOTS } from "@/lib/site/indexing";
+
+export const metadata: Metadata = {
+  robots: PRIVATE_ROBOTS,
+};
 
 export default function ShellLayout({
   children,
