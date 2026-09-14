@@ -8,16 +8,15 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const filePath = path.join(
     process.cwd(),
-    "data/clients/kitchencare/Propuesta_KitchenCare_v2.docx",
+    "data/clients/kitchencare/Propuesta_KitchenCare_v2.pdf",
   );
   const file = await readFile(filePath);
 
   return new NextResponse(file, {
     headers: {
-      "Content-Type":
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "Content-Type": "application/pdf",
       "Content-Disposition":
-        'attachment; filename="Propuesta_KitchenCare_v2.docx"',
+        'attachment; filename="Propuesta_KitchenCare_v2.pdf"',
       "Cache-Control": "private, no-store",
       "X-Robots-Tag": NOINDEX_ROBOTS_TAG,
     },

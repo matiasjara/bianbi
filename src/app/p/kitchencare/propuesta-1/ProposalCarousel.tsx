@@ -11,10 +11,11 @@ const TOTAL = 5;
 
 export function ProposalCarousel() {
   const [index, setIndex] = useState(0);
+  const first = index === 0;
   const last = index === TOTAL - 1;
 
   function go(n: number) {
-    setIndex((n + TOTAL) % TOTAL);
+    setIndex(Math.max(0, Math.min(TOTAL - 1, n)));
   }
 
   useEffect(() => {
@@ -203,16 +204,16 @@ export function ProposalCarousel() {
         <SideArrow
           direction="prev"
           label="Lámina anterior"
+          disabled={first}
           onClick={() => go(index - 1)}
         />
-        {last ? null : (
-          <SideArrow
-            direction="next"
-            label="Siguiente lámina"
-            emphasize
-            onClick={() => go(index + 1)}
-          />
-        )}
+        <SideArrow
+          direction="next"
+          label="Siguiente"
+          emphasize
+          disabled={last}
+          onClick={() => go(index + 1)}
+        />
       </div>
 
       <div className="mt-4 flex justify-center gap-2">
@@ -230,41 +231,49 @@ export function ProposalCarousel() {
         ))}
       </div>
 
-      <div className="mt-4 flex gap-3">
+      <div className="mt-4 grid grid-cols-2 gap-3">
         <button
           type="button"
           onClick={() => go(index - 1)}
-          className="inline-flex min-h-14 flex-1 items-center justify-center rounded-full border-2 border-[#111311] bg-white px-4 text-base font-semibold text-[#111311] transition hover:bg-[#f4f1ea]"
+          disabled={first}
+          className="inline-flex min-h-14 items-center justify-center rounded-full border-2 border-[#111311] bg-white px-4 text-base font-semibold text-[#111311] transition hover:bg-[#f4f1ea] disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-white"
         >
           ← Anterior
         </button>
-        {last ? null : (
-          <button
-            type="button"
-            onClick={() => go(index + 1)}
-            className="inline-flex min-h-14 flex-[1.4] items-center justify-center rounded-full bg-[#de6347] px-4 text-base font-semibold text-white shadow-[0_8px_20px_rgba(222,99,71,0.35)] transition hover:bg-[#c8553a]"
-          >
-            Siguiente lámina →
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={() => go(index + 1)}
+          disabled={last}
+          className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#de6347] px-4 text-base font-semibold text-white shadow-[0_8px_20px_rgba(222,99,71,0.35)] transition hover:bg-[#c8553a] disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-[#de6347]"
+        >
+          Siguiente →
+        </button>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+      <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3">
         <a
           href={DOWNLOAD_PATH}
-          className="inline-flex items-center justify-center rounded-full border border-[#c5cbc3] bg-transparent px-4 py-2 text-sm font-medium text-[#5c625c] transition hover:border-[#111311] hover:text-[#111311]"
+          className={
+            last
+              ? "inline-flex min-h-12 items-center justify-center rounded-full bg-[#e74c3c] px-4 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(26,188,156,0.35)] transition hover:bg-[#16a085]"
+              : "inline-flex items-center justify-center rounded-full border border-[#c5cbc3] bg-transparent px-3 py-2 text-sm font-medium text-[#5c625c] transition hover:border-[#111311] hover:text-[#111311]"
+          }
         >
-          Descargar propuesta extendida
+          Descargar PDF
         </a>
         <Link
           href={DEMO_BASE}
-          className="inline-flex items-center justify-center rounded-full border border-[#c5cbc3] bg-transparent px-4 py-2 text-sm font-medium text-[#5c625c] transition hover:border-[#111311] hover:text-[#111311]"
+          className={
+            last
+              ? "inline-flex min-h-12 items-center justify-center rounded-full bg-[#2ecc71] px-4 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(46,204,113,0.35)] transition hover:bg-[#27ae60]"
+              : "inline-flex items-center justify-center rounded-full border border-[#c5cbc3] bg-transparent px-3 py-2 text-sm font-medium text-[#5c625c] transition hover:border-[#111311] hover:text-[#111311]"
+          }
         >
           Ver demo del sitio
         </Link>
       </div>
       <p className="mt-3 text-center text-xs text-[#777d75]">
-        El Word tiene el detalle completo: alcance, exclusiones, responsabilidades
+        El PDF tiene el detalle completo: alcance, exclusiones, responsabilidades
         y posibles etapas futuras.
       </p>
     </div>
@@ -276,26 +285,29 @@ function SideArrow({
   label,
   onClick,
   emphasize,
+  disabled,
 }: {
   direction: "prev" | "next";
   label: string;
   onClick: () => void;
   emphasize?: boolean;
+  disabled?: boolean;
 }) {
   const next = direction === "next";
   return (
     <button
       type="button"
       aria-label={label}
+      disabled={disabled}
       onClick={onClick}
-      className={`absolute bottom-3 z-20 grid h-14 w-14 place-items-center rounded-full border-0 shadow-[0_10px_28px_rgba(0,0,0,0.28)] sm:bottom-4 sm:h-16 sm:w-16 ${
+      className={`absolute bottom-3 z-20 grid h-14 w-14 place-items-center rounded-full border-0 shadow-[0_10px_28px_rgba(0,0,0,0.28)] sm:bottom-4 sm:h-16 sm:w-16 disabled:cursor-not-allowed disabled:opacity-35 ${
         next
           ? "right-3 sm:right-4"
           : "left-3 sm:left-4"
       } ${
         emphasize
-          ? "bg-[#de6347] text-white hover:bg-[#c8553a]"
-          : "bg-white text-[#111311] hover:bg-[#f4f1ea]"
+          ? "bg-[#de6347] text-white hover:bg-[#c8553a] disabled:hover:bg-[#de6347]"
+          : "bg-white text-[#111311] hover:bg-[#f4f1ea] disabled:hover:bg-white"
       }`}
     >
       <span aria-hidden className="text-3xl leading-none sm:text-4xl">
