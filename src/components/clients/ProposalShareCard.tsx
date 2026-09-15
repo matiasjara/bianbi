@@ -94,7 +94,7 @@ export function ProposalShareCard({
             href={proposal.downloadHref}
             className="text-[var(--accent-ink)] hover:underline"
           >
-            Descargar PDF →
+            Descargar Propuesta →
           </a>
         ) : null}
       </div>

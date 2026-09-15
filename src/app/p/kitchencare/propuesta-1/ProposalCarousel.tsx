@@ -259,7 +259,7 @@ export function ProposalCarousel() {
               : "inline-flex items-center justify-center rounded-full border border-[#c5cbc3] bg-transparent px-3 py-2 text-sm font-medium text-[#5c625c] transition hover:border-[#111311] hover:text-[#111311]"
           }
         >
-          Descargar PDF
+          Descargar Propuesta
         </a>
         <Link
           href={DEMO_BASE}
